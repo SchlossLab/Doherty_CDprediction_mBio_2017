@@ -1,0 +1,10 @@
+*.an.0.03.subsample.summary
+*.an.summary
+*.shared
+*.Rhistory
+*.Rdata
+*.Rproj.user
+.Rproj.user
+*.rabund
+*.map
+

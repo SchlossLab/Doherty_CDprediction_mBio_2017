@@ -1,0 +1,12 @@
+base
+randomForest
+AUCRF
+pROC
+permute
+lattice
+vegan
+dplyr
+knitr
+gridExtra
+devtools
+pgirmess

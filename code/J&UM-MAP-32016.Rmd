@@ -1,0 +1,453 @@
+---
+title: "J&UM-MAP-32016"
+author: "Matt Doherty"
+date: "April 8, 2016"
+output: html_document
+---
+```{r startup, echo=F, message=F, warning=F}
+deps = c("AUCRF","pROC", "vegan", "dplyr", "ggplot2");
+for (dep in deps){
+  if (dep %in% installed.packages()[,"Package"] == FALSE){
+    install.packages(as.character(dep), quiet=TRUE);
+  }
+  library(dep, verbose=FALSE, character.only=TRUE)
+}
+```
+
+```{r readdata, echo=F, message=F, warning=FALSE}
+#Read in all data
+#metadata
+md<-read.table(file="Jan400.mdshared.wmg.txt", sep="\t", header=T) #wmg=with merged groups
+
+#APV_3_2016 subsets metadata variable from March 2016 analysis Plan (AnalysisPlanVariables)
+APmd<-subset(md, select=c(group, Site, visit, TRTGR, TRTGRINDMAN:COUNTRY, BAMINO, BANTIBIO, BCORT, BIMM, BL_BMI:tissinvol, BRSP_TNF, BL_FLACT:BL_FLACTLEV, BOWSTRICT, RESPONSEwk4:REMISSwk22, RSP_Rwk8n22:RSP_SRwk8N22, cdai_wk0))
+
+
+#shared
+#merge APmd and Jan400.an.0.03.subsampled.shared
+ss3k_shared<-read.table(file="Jan400.ScreenRespwk22.0.03.subsample.shared", sep="\t", header=T)#Jan400 subsampled to 3K visit=Screening
+APmd_shared<-merge(APmd, ss3k_shared, by.x="group", by.y="Group")#nonmatch removed
+screen_RESPwk22<- APmd_shared[!is.na(APmd_shared$RESPONSEwk22),] #removes any group with NA in RESPONSEwk22
+#write.table(screen_RESPwk22, file="Jan400.APmd_screenRESPwk22.ss3k.txt", sep="\t", row.names=F, quote=F)
+
+#screen_data<-read.table(file="Jan400.APmd_screenRESPwk22.ss3k.txt", sep="\t", header=T, na.strings=c("NA", "NULL"))
+screen_data<-na.omit(screen_RESPwk22)
+```
+
+
+#```{r compare_models, echo=F, cache=T, warning=F, message=F, results='hide', fig.height=5, fig.width=10}
+
+#stool_shared<-shared[meta$type=='stool',]
+#stool_data<-merge(meta, stool_shared, by.x='sample',by.y='Group')
+#responder data (resp)
+resp_data <- screen_data[screen_data$RESPONSEwk22=='Yes',]
+#resp_screen <- resp_data[resp_data$visit=='Screening']
+	
+#all_data[,c('lesion',colnames(stool_data)[grep('Otu[0123456789]', colnames(stool_data))])]
+
+#non-responder data (nr)
+#fit_shared<-shared[meta$type=='fit',]
+#fit_data<-merge(meta, fit_shared, by.x='sample',by.y='Group')
+nr_data <- screen_data[screen_data$RESPONSEwk22=='No',]
+#nr_screen <- nr_data[resp_data$visit=='Screening']
+	#all_data[,c('lesion',colnames(stool_data)[grep('Otu[0123456789]', colnames(stool_data))])]
+
+
+### Responder vs Nonresponder models 
+set.seed(32016)
+levels(screen_data$RESPONSEwk22) <- c(0,1)
+
+resp <- screen_data[screen_data$visit=='Screening', c('RESPONSEwk22','AGE', 'TRTGRINDMAN', 'SEX', 'BAMINO', 'BANTIBIO', 'BCORT', 'BIMM', 'BL_BMI', 'DDUR15', 'tissinvol', 'BL_FLACT', 'BL_FCALP', 'BL_CRP',   colnames(screen_data)[grep('Otu[0123456789]', colnames(screen_data))])]
+#resp <- na.omit(resp)
+
+resp_rf <- AUCRF(RESPONSEwk22~., data=resp, ranking='MDA', ntree=500, pdel=0.2)
+resp_rf # prints list of optimal features
+plot(resp_rf) #AUC for each number of features
+resp_probs <- predict(resp_rf$RFopt, type='prob')[,2]
+resp_roc <- roc(resp$RESPONSEwk22~resp_probs)
+
+cutoff <- coords(roc=resp_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
+
+set.seed(32016)
+resp <- screen_data[screen_data$visit=='Screening', c('RESPONSEwk22', colnames(screen_data)[grep('Otu[0123456789]', colnames(screen_data))])]
+resp_rf <- AUCRF(RESPONSEwk22~., data=resp, ranking='MDA', ntree=500, pdel=0.2)
+resp_rf # prints list of optimal OTUs
+plot(resp_rf) #AUC for each number of features
+resp_probs <- predict(resp_rf$RFopt, type='prob')[,2]
+resp_roc <- roc(resp$RESPONSEwk22~resp_probs)
+plot(resp_roc)
+
+### Plot ROC curves
+layout(matrix(c(1,2), nrow=1))
+par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
+plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
+plot(resp_rf, add=T, lwd=2, col='purple', lty=1)
+#plot(stool_canc_roc, add=T, lwd=2, col='green3', lty=1)
+legend('bottomright', c(sprintf('resp: AUC=%.3f',resp_roc$auc)), lwd=2, col=c('purple','green3'), bty='n', lty=1)
+mtext('A', at=1.1, side=3, line=0.1, font=2)
+
+
+### Plot model probabilities - scatter plot
+plot(stool_canc_probs,fit_canc_probs, bg=c('royalblue1','red')[stool_data$lesion], pch=21, ylab='Probability of Lesion (FIT cartridge)', xlab='Probability of Lesion (stool)', ylim=c(0,1), xlim=c(0,1), las=1)
+legend('topleft', c('Cancer','Normal'), pch=21, pt.bg=c('red','royalblue1'))
+mtext('B', at=-0.1, side=3, line=0.1, font=2)
+
+canc_corr <- cor.test(fit_canc_probs,stool_canc_probs)
+
+
+
+#```
+
+#```{r, message=FALSE, warning=FALSE}
+set.seed(32016)
+resp <- screen_data[screen_data$visit=='Screening', c('RSP_SRwk22', colnames(screen_data)[grep('Otu[0123456789]', colnames(screen_data))])]
+resp_rf <- AUCRF(RSP_SRwk22~., data=resp, ranking='MDA', ntree=500, pdel=0.2)
+resp_rf # prints list of optimal OTUs
+plot(resp_rf) #AUC for each number of features
+resp_probs <- predict(resp_rf$RFopt, type='prob')[,2]
+resp_roc <- roc(RSP_SRwk22~resp_probs)
+plot(resp_roc)
+#```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+Janssen and University of Michigan Microbiome Analysis Plan
+March 2016
+
+16S and Metagenomic Data Analysis: Specific Aims (ordered by priority)
+	1.	Assess the potential of baseline microbiome profiles to predict clinical response to Stelara
+		a.	Verification of predictive signatures identified in phase 1 of the collaboration (do I need to and can I ID and pull samples from first 100 patients? And repeat this)
+
+Microbiome at Screening and r colnames(all_data$RESSPONSEwk6
+	Compared to preliminary findings
+	By a-div invsimp Wilcoxon/ KW
+By beta-div 
+By AMOVA
+		By HMOVA
+	By relabund 
+By LEFSE
+
+Microbiome at Screening and Response at Week 22
+	Compared to preliminary findings
+	By a-div invsimp Wilcoxon/ KW
+By beta-div 
+By AMOVA
+```mothur
+amova(phylip=Jan400.ScreenRespwk22.0.03.subsample.thetayc.0.03.lt.ave.dist, design=screening.byRESPONSEwk22.design)
+No-Yes	Among	Within	Total
+SS	0.566249	151.047	151.613
+df	1	383	384
+MS	0.566249	0.394379
+
+Fs:	1.4358
+p-value: 0.098
+
+Output File Names:Jan400.ScreenRespwk22.ss3k.byRESPONSEwk22.thetayc.0.03.lt.ave.amova)
+```
+		By HMOVA
+```mothur
+homova(phylip=Jan400.ScreenRespwk22.0.03.subsample.thetayc.0.03.lt.ave.dist, design=screening.byRESPONSEwk22.design)
+HOMOVA	BValue	P-value	SSwithin/(Ni-1)_values
+No-Yes	0.0085702	0.494	0.392741	0.398661
+Experiment-wise error rate: 0.05
+If you have borderline P-values, you should try increasing the number of iterations
+
+Output File Names: 
+Jan400.ScreenRespwk22.ss3k.byRESPONSEwk22.lt.ave.homova) 
+```
+	By relabund 
+By LEFSE
+```mothur
+lefse(shared=Jan400.ScreenRespwk22.0.03.subsample.shared, design=screening.byRESPONSEwk22.design)
+Number of discriminative features with abs LDA score > 2 : 3.
+
+Output File Names: 
+Jan400.ScreenRespwk22.ss3k.byRESPONSEwk22.lefse_summary)
+```
+b.	Identify de novo predictive signatures in expanded sample set
+i.	Variables of interest (see Metadata file): RESPONSEwk4, RESPONSEwk8, RESPONSEwk22, REMISSwk4, REMISSwk8, REMISSwk22, RSP_SRwk8, RSP_SRwk22 baed on cdai
+1.	Time point: ‘visit’=Screening
+
+Microbiome at Screening and Response at Week 4
+	Compared to preliminary findings
+	By a-div invsimp Wilcoxon/ KW
+By beta-div 
+By AMOVA
+
+```mothur 
+amova(phylip=Jan400.ScreenRespwk22.0.03.subsample.thetayc.0.03.lt.ave.dist, design=screening.byRESPONSEwk4.design)
+No-Yes	Among	Within	Total
+SS	0.598673	151.015	151.613
+df	1	383	384
+MS	0.598673	0.394294
+
+Fs:	1.51834
+p-value: 0.06
+
+Jan400.ScreenRespwk22.ss3k.byRESPONSEwk4.thetayc.0.03.lt.ave.amova)
+```
+
+		By HMOVA
+```mothur
+homova(phylip=Jan400.ScreenRespwk22.0.03.subsample.thetayc.0.03.lt.ave.dist, design=screening.byRESPONSEwk4.design)
+HOMOVA	BValue	P-value	SSwithin/(Ni-1)_values
+No-Yes	0.00226256	0.739	0.393475	0.396551
+Experiment-wise error rate: 0.05
+
+Jan400.ScreenRespwk22.ss3k.byRESPONSEwk4.lt.ave.homova)
+```
+	By relabund 
+By LEFSE
+```mothur
+lefse(shared=Jan400.ScreenRespwk22.0.03.subsample.shared, design=screening.byRESPONSEwk4.design)
+Number of discriminative features with abs LDA score > 2 : 5.
+
+Output File Names: 
+Jan400.ScreenRespwk22.ss3k.byRESPONSEwk4.lefse_summary
+```
+
+```r
+x<-"Jan400.ScreenRespwk22.ss3k.byRESPONSEwk4.lefse_summary"
+tax<-read.table("mothur/Jan400.an.cons.taxonomy", header=T, sep='\t')
+Lsum<-read.table(x, header=T, na.strings=c("NA", "NULL"), sep="\t", fill=T)
+Lsum<-na.omit(Lsum)
+Lsumtax<-merge(tax, Lsum, by='OTU')
+```
+`r Lsumtax`
+
+Microbiome at Screening and Response at Week 8
+	Compared to preliminary findings
+	By a-div invsimp Wilcoxon/ KW
+By beta-div 
+By AMOVA
+```mothur
+amova(phylip=Jan400.ScreenRespwk22.0.03.subsample.thetayc.0.03.lt.ave.dist, design=screening.byRESPONSEwk8.design)
+No-Yes	Among	Within	Total
+SS	0.624633	150.989	151.613
+df	1	383	384
+MS	0.624633	0.394227
+
+Fs:	1.58445
+p-value: 0.046*
+
+4-11-16 - newer shared file explains difference?
+amova(phylip=Jan400.ScreenRespwk22.0.03.subsample.thetayc.0.03.lt.ave.dist, design=screening.byRESPONSEwk8.design)
+No-Yes	Among	Within	Total
+SS	0.624633	150.989	151.613
+df	1	383	384
+MS	0.624633	0.394227
+
+Fs:	1.58445
+p-value: 0.059
+```
+		By HMOVA
+```mothur
+homova(phylip=Jan400.ScreenRespwk22.0.03.subsample.thetayc.0.03.lt.ave.dist, design=screening.byRESPONSEwk8.design)
+HOMOVA	BValue	P-value	SSwithin/(Ni-1)_values
+No-Yes	0.029373	0.215	0.391071	0.401863
+
+Jan400.ScreenRespwk22.ss3k.byRESPONSEwk8.lt.ave.homova
+```
+
+	By relabund 
+By LEFSE
+```mothur
+lefse(shared=Jan400.ScreenRespwk22.0.03.subsample.shared, design=screening.byRESPONSEwk8.design)
+Number of discriminative features with abs LDA score > 2 : 1.
+
+Output File Names: Jan400.ScreenRespwk22.ss3k.byRESPONSEwk8.lefse_summary
+```
+```r
+
+```
+Microbiome at Screening and Response at Week 22
+	Compared to preliminary findings
+	By a-div invsimp Wilcoxon/ KW
+By beta-div 
+By AMOVA
+```mothur
+amova(phylip=Jan400.ScreenRespwk22.0.03.subsample.thetayc.0.03.lt.ave.dist, design=Jan400_Screening_respwk22.design)
+No-Yes	Among	Within	Total
+SS	0.566249	151.047	151.613
+df	1	383	384
+MS	0.566249	0.394379
+
+Fs:	1.4358
+p-value: 0.087
+```
+		By HMOVA
+	By relabund 
+By LEFSE
+
+Microbiome at Screening and Remission at Week 8
+	Compared to preliminary findings
+	By a-div invsimp Wilcoxon/ KW
+By beta-div 
+By AMOVA
+```mothur
+amova(phylip=Jan400.ScreenRespwk22.0.03.subsample.thetayc.0.03.lt.ave.dist, design=screening.byREMISSwk8.design)
+No-Yes	Among	Within	Total
+SS	0.748274	150.865	151.613
+df	1	383	384
+MS	0.748274	0.393904
+
+Fs:	1.89964
+p-value: 0.017*
+
+Jan400.ScreenRespwk22.ss3k.byREMISSwk8.thetayc.0.03.lt.ave.amova
+```
+
+		By HMOVA
+	By relabund 
+By LEFSE
+
+Microbiome at Screening and Remission at Week 22
+	Compared to preliminary findings
+	By a-div invsimp Wilcoxon/ KW
+By beta-div 
+By AMOVA
+```mothur
+amova(phylip=Jan400.ScreenRespwk22.0.03.subsample.thetayc.0.03.lt.ave.dist, design=screening.byREMISSwk22.design)
+No-Yes	Among	Within	Total
+SS	0.748274	150.865	151.613
+df	1	383	384
+MS	0.748274	0.393904
+
+Fs:	1.89964
+p-value: 0.016*
+```
+		By HMOVA
+	By relabund 
+By LEFSE
+
+Microbiome at Screening and SuperResponse at Week 8
+	Compared to preliminary findings
+	By a-div invsimp Wilcoxon/ KW
+By beta-div 
+By AMOVA
+```mothur
+amova(phylip=Jan400.ScreenRespwk22.0.03.subsample.thetayc.0.03.lt.ave.dist, design=screening.byRSP_SRwk8.design)
+NR-PR-R100-150-SR	Among	Within	Total
+SS	1.63587	149.978	151.613
+df	3	381	384
+MS	0.545289	0.393642
+
+Fs:	1.38524
+p-value: 0.046*
+
+NR-PR	Among	Within	Total
+SS	0.344891	105.635	105.98
+df	1	270	271
+MS	0.344891	0.391242
+
+Fs:	0.881529
+p-value: 0.566
+
+NR-R100-150	Among	Within	Total
+SS	0.402692	91.6914	92.0941
+df	1	230	231
+MS	0.402692	0.398658
+
+Fs:	1.01012
+p-value: 0.401
+
+NR-SR	Among	Within	Total
+SS	0.809143	97.7535	98.5626
+df	1	247	248
+MS	0.809143	0.395763
+
+Fs:	2.04451
+p-value: 0.013
+
+PR-R100-150	Among	Within	Total
+SS	0.612989	52.2241	52.8371
+df	1	134	135
+MS	0.612989	0.389732
+
+Fs:	1.57285
+p-value: 0.059
+
+PR-SR	Among	Within	Total
+SS	0.538782	58.2862	58.825
+df	1	151	152
+MS	0.538782	0.386001
+
+Fs:	1.39581
+p-value: 0.133
+
+R100-150-SR	Among	Within	Total
+SS	0.666342	44.3423	45.0086
+df	1	111	112
+MS	0.666342	0.39948
+
+Fs:	1.66802
+p-value: 0.043
+
+Experiment-wise error rate: 0.05
+Pair-wise error rate (Bonferroni): 0.00833333
+If you have borderline P-values, you should try increasing the number of iterations
+```
+		By HMOVA
+	By relabund 
+By LEFSE
+
+Microbiome at Screening and SuperResponse at Week 22
+	Compared to preliminary findings
+	By a-div invsimp Wilcoxon/ KW
+By beta-div 
+By AMOVA
+		By HMOVA
+	By relabund 
+By LEFSE
+
+2.	Treatment, induction: ‘TRTGR’ (ustekinumab, placebo)
+Treatment, induction + maintenance: ‘TRTGRINDMAN’
+c.	Use for prediction then look at grind man parse out subgroups
+d.	Use AMOVA and AUCRF and lefse
+Are the microbiomes of responders different from non-responders at Week 22
+2.	Determine the association between the baseline microbiome and CD-relevant clinical traits
+a.	Assess the association between the baseline microbiome and Crohn’s disease severity
+i.	Variables of interest (see Metadata file): cdail_wk0, BL_CRP, BL_FCALP, BL_FLACT, cdai subscores***
+1.	Time point: ‘visit’=Screening
+2.	Corr.tests
+Microbiome at Screening and cdai_wk0
+	Compared to preliminary findings
+	By a-div invsimp Wilcoxon/ KW
+By beta-div 
+By AMOVA
+	By HMOVA
+	By relabund 
+By LEFSE
+
+Microbiome at Screening and SuperResponse at Week 8
+	Compared to preliminary findings
+	By a-div invsimp Wilcoxon/ KW
+By beta-div 
+By AMOVA
+	By HMOVA
+	By relabund 
+By LEFSE
+
+b.	Assess the association between the baseline microbiome and baseline patient metadata
+i.	Variables of interest: Site, BL_BMI, AGE, SEX, RACE, COUNTRY, BANTIBIO, BAMINO, BIMM. BCORT, DDUR, tissinvol, BOWSTRICT
+1.	Time point: ‘visit’=Screening
+Looking at clinicaldata
+Use AMOVA lefse
+
+3.	Determine whether drug treatment has pharmacodynamics effects on the microbiome
+a.	Analysis to be performed separately for ustekinumab- vs. placebo-treated patients, independent of response status
+i.	Variables of interest: visit, TRTGR, TRTGRINDMAN
+For each TRTGR
+Compare Screening vs. Wk4 vs. Wk6 vs. Wk22
+Pharmico dynamic effects on microbiome
+Use AMOVA lefse
+
+4.	Assess the relationship between clinical response and changes in the microbiome
+a.	Analysis to be performed separately for ustekinumab- vs. placebo-treated patients
+i.	Variables of interest: visit, TRTGR, TRTGRINDMAN
+For each visit
+For each TRTGR
+Compare Responder vs. Non-responder using the following response definitions: RESPONSEwk4, RESPONSEwk8, RESPONSEwk22, REMISSwk4, REMISSwk8, REMISSwk22, RSP_SRwk8, RSP_SRwk22
+
+
+04/11/2016) no difference wrt baseline and week 22 but response and remiss at week 8 are sig dif

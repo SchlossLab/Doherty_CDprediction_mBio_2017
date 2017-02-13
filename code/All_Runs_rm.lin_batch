@@ -1,0 +1,26 @@
+set.dir(input=/mnt/EXT/Schloss-data/Janssen/Janssen_data/data/mothur/All_reran, output=/mnt/EXT/Schloss-data/Janssen/Janssen_data/data/mothur/All_reran)
+summary.seqs(fasta=All_reran.trim.contigs.fasta, processors=8)
+screen.seqs(fasta=All_reran.trim.contigs.fasta, group=All_reran.contigs.groups, summary=All_reran.trim.contigs.summary, maxambig=0, maxlength=275, processors=8)
+
+set.dir(input=/mnt/EXT/Schloss-data/Janssen/Janssen_data/data/mothur/All_reran, output=/mnt/EXT/Schloss-data/Janssen/Janssen_data/data/mothur/All_reran)
+summary.seqs(fasta=All_reran.trim.contigs.good.fasta)
+unique.seqs(fasta=All_reran.trim.contigs.good.fasta)
+count.seqs(name=All_reran.trim.contigs.good.names, group=All_reran.contigs.good.groups)
+summary.seqs(count=All_reran.trim.contigs.good.count_table)
+pcr.seqs(fasta=/mnt/EXT/Schloss-data/Janssen/Janssen_data/data/references/silva.bacteria.fasta, start=11894, end=25319, keepdots=F, processors=8)
+
+system(mv /mnt/EXT/Schloss-data/Janssen/Janssen_data/data/mothur/All_reran/silva.bacteria.pcr.fasta /mnt/EXT/Schloss-data/Janssen/Janssen_data/data/mothur/All_reran/silva.v4.fasta)
+
+align.seqs(fasta=All_reran.trim.contigs.good.unique.fasta, reference=/mnt/EXT/Schloss-data/Janssen/Janssen_data/data/mothur/All_reran/silva.v4.fasta, processors=8)
+summary.seqs(fasta=All_reran.trim.contigs.good.unique.align, count=All_reran.trim.contigs.good.count_table, processors=8)
+screen.seqs(fasta=All_reran.trim.contigs.good.unique.align, count=All_reran.trim.contigs.good.count_table, summary=All_reran.trim.contigs.good.unique.summary, start=1968, end=11550, maxhomop=8)
+summary.seqs(fasta=current, count=current)
+filter.seqs(fasta=All_reran.trim.contigs.good.unique.good.align, vertical=T, trump=.)
+unique.seqs(fasta=All_reran.trim.contigs.good.unique.good.filter.fasta, count=All_reran.trim.contigs.good.good.count_table)
+pre.cluster(fasta=/mnt/EXT/Schloss-data/Janssen/Janssen_data/data/mothur/All_reran/All_reran.trim.contigs.good.unique.good.filter.unique.fasta, count=/mnt/EXT/Schloss-data/Janssen/Janssen_data/data/mothur/All_reran/All_reran.trim.contigs.good.unique.good.filter.count_table, diffs=2, processors=2)
+chimera.uchime(fasta=All_reran.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=All_reran.trim.contigs.good.unique.good.filter.unique.precluster.count_table, dereplicate=t, processors=8)
+remove.seqs(fasta=All_reran.trim.contigs.good.unique.good.filter.unique.precluster.fasta, accnos=All_reran.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.accnos)
+summary.seqs(fasta=All_reran.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=All_reran.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table, processors=8)
+
+classify.seqs(fasta=All_reran.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=All_reran.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, reference=/mnt/EXT/Schloss-data/Janssen/Janssen_data/data/references/trainset14_032015.pds.fasta, taxonomy=/mnt/EXT/Schloss-data/Janssen/Janssen_data/data/references/trainset14_032015.pds.tax, cutoff=80, processors=8)
+remove.lineage(fasta=All_reran.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=All_reran.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, taxonomy=All_reran.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.taxonomy, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota)
