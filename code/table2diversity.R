@@ -9,10 +9,10 @@ for (i in divers){
 	table2<-rbind(table2, get(i))
 }
 
-tiff('tables/table2diversity.tiff', height=10, width=10, units='in', res=300)
+tiff('tables/table2diversity.tiff', height=4, width=10, units='in', res=300)
 grid.table(table2)
 dev.off()
 
-pdf(file='tables/table2diversity.pdf', height=10, width=10)
+pdf(file='tables/table2diversity.pdf', height=4, width=10)
 grid.table(table2)
 dev.off()

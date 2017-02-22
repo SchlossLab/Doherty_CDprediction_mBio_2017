@@ -67,6 +67,9 @@ APmd$CDAMASSM_Screening<-as.factor(APmd$CDAMASSM_Screening)
 
 APmd<-APmd[APmd$USUBJID!='C0743T26030100002',]
 APmd<-APmd[APmd$group!='E4859941-5',]
+APmd<-APmd[APmd$TRTGRINDMAN!="Placebo_Not",]
+APmd<-APmd[APmd$TRTGRINDMAN!="Treated_Not",]
+
 
 
 #shared
@@ -77,5 +80,9 @@ adiv<-read.table(file="../data/Jan400.all.na.omit.cmd.groups.summary", sep="\t",
 ss3k_shared<-read.table(file="../data/Jan400.all.na.omit.cmd.0.03.subsample.shared", sep="\t", header=T)#Jan400 subsampled to 3K visit=Screening
 APmd_adiv<-merge(APmd, adiv, by.x="group", by.y="group")#nonmatch removed
 APmd_shared<-merge(APmd_adiv, ss3k_shared, by.x="group", by.y="Group")
+APmd_shared$TRT_REMwk6 <- as.factor(paste(APmd_shared$TRTGR, APmd_shared$REMISSwk6))
+APmd_shared$TRT_REMwk22 <- as.factor(paste(APmd_shared$TRTGR, APmd_shared$REMISSwk22))
 
+APmd_shared$TRT_RelRSPwk6 <- as.factor(paste(APmd_shared$TRTGR, APmd_shared$RelRSPwk6))
+APmd_shared$TRT_RelRSPwk22 <- as.factor(paste(APmd_shared$TRTGR, APmd_shared$RelRSPwk22))
 APmd_RSPwk22<-APmd_shared
