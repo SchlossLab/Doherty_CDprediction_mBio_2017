@@ -20,43 +20,8 @@ bibliography: CTP_DOI2BIB.bib
 ---
 
 ```{r knitr_settings, eval=TRUE, echo=FALSE, cache=FALSE}
-knitr::opts_chunk$set("echo" = FALSE)
-knitr::opts_chunk$set("tidy" = TRUE)
-knitr::opts_chunk$set("eval" = TRUE)
-knitr::opts_chunk$set("warning" = FALSE)
-knitr::opts_chunk$set("message" = FALSE)
-knitr::opts_chunk$set("cache" = FALSE)
-
-inline_hook <- function(x){
-		print(x)
-	
-		if(is.list(x)){
-			x <- unlist(x)
-		}
-	
-		if(is.numeric(x)){
-			if(abs(x - round(x)) < .Machine$double.eps^0.5){
-				paste(format(x,big.mark=',', digits=3, scientific=FALSE))
-			} else {
-				paste(format(x,big.mark=',', digits=3, nsmall=1, scientific=FALSE))
-			}
-		} else {
-	    	paste(x)      
-		}
-	}
-knitr::knit_hooks$set(inline=inline_hook)
-```
-
-```{r setup, include=F, echo=FALSE, cache=FALSE}
-deps = c("AUCRF","pROC", "vegan", "dplyr", 'knitr', "gridExtra", "grid", "devtools", "pgirmess", "knitcitations", "scales", "tidyr");
-for (dep in deps){
-	if (dep %in% installed.packages()[,"Package"] == FALSE){
-		install.packages(as.character(dep), quiet=TRUE);
-	}
-	library(dep, verbose=FALSE, character.only=TRUE)
-}
-
-set.seed(32016)
+source('../code/knitr_settings.R')
+source('../code/R_packages_setup.R')
 ```
 
 
