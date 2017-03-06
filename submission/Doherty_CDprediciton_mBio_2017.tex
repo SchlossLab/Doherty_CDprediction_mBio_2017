@@ -116,7 +116,32 @@ Ann Arbor, MI, USA
 
 \subsection{Abstract}\label{abstract}
 
-\emph{Background:} Crohn's disease (CD) is a global health issue
+\emph{Abstract:} The 16S rRNA gene from patient stool samples was
+sequenced using the Illumina MiSeq platform. The resulting sequences
+were curated and assigned to taxonomic groups using the mothur software
+package to determine the bacterial communities and relative abundance of
+bacterial species present in these patients. The relative abundance
+among the fecal microbiota, patient demographic data, and clinical
+metadata were used as input to a random forest machine-learning
+algorithm to predict disease severity and response to treatment with
+UST.
+
+Fecal microbial diversity at baseline significantly correlates with
+markers for disease severity, such as Crohn's Disease Activity Index
+(CDAI), stool frequency, and disease duration. Additionally, the overall
+community structure of the microbiome was significantly different based
+on stool frequency, CRP, fecal lactoferrin, fecal calprotectin,
+corticosteroid use, disease duration, and tissue involvement. Baseline
+fecal microbiome community structures and species diversity were
+significantly different among responders and non-responders to UST
+treatment. Faecalibacterium, among other taxa, was significantly more
+abundant in responders/remitters. Additionally, the microbiome of
+clinical responders changed over time, in contrast to nonresponsive
+subjects. Using AUC-RF, differences in the baseline microbiome and
+clinical metadata were able to predict response to UST, especially
+remission, with some AUCs approaching 0.85.
+
+\emph{Importance:} Crohn's disease (CD) is a global health issue
 characterized by patches of ulceration and inflammation along the
 gastrointestinal tract. Individuals with CD have reduced microbial
 diversity in their guts, compared to healthy individuals. It remains
@@ -127,40 +152,14 @@ Ustekinumab (UST) in a Phase 2b study to determine whether the fecal
 microbiome at baseline is predictive of disease severity and therapeutic
 response, as well as if the fecal microbiota changes due to therapy.
 
-\emph{Methods:} The 16S rRNA gene from patient stool samples was
-sequenced using the Illumina MiSeq platform. The resulting sequences
-were curated and assigned to taxonomic groups using the mothur software
-package to determine the bacterial communities and relative abundance of
-bacterial species present in these patients. The relative abundance
-among the fecal microbiota, patient demographic data, and clinical
-metadata were used as input to a random forest machine-learning
-algorithm to predict disease severity and response to treatment with
-UST.
-
-\emph{Results:} Fecal microbial diversity at baseline significantly
-correlates with markers for disease severity, such as Crohn's Disease
-Activity Index (CDAI), stool frequency, and disease duration.
-Additionally, the overall community structure of the microbiome was
-significantly different based on stool frequency, CRP, fecal
-lactoferrin, fecal calprotectin, corticosteroid use, disease duration,
-and tissue involvement. Baseline fecal microbiome community structures
-and species diversity were significantly different among responders and
-non-responders to UST treatment. Faecalibacterium, among other taxa, was
-significantly more abundant in responders/remitters. Additionally, the
-microbiome of clinical responders changed over time, in contrast to
-nonresponsive subjects. Using AUC-RF, differences in the baseline
-microbiome and clinical metadata were able to predict response to UST,
-especially remission, with some AUCs approaching 0.85.
-
-\emph{Conclusions:} The ability to predict and monitor response to
-treatment using the microbiome will likely provide another clinical tool
-in treating CD patients. Additionally, the observed baseline differences
-in fecal microbiota and changes due to therapeutic response will allow
-further investigation into the microbes important in CD pathogenesis as
-well as establishing and maintaining CD remission. Finally, beneficial
-microbes associated with response to treatment could be developed as
-probiotics to increase the likelihood of response while undergoing
-treatment.
+The ability to predict and monitor response to treatment using the
+microbiome will likely provide another clinical tool in treating CD
+patients. Additionally, the observed baseline differences in fecal
+microbiota and changes due to therapeutic response will allow further
+investigation into the microbes important in CD pathogenesis as well as
+establishing and maintaining CD remission. Finally, beneficial microbes
+associated with response to treatment could be developed as probiotics
+to increase the likelihood of response while undergoing treatment.
 
 \textbf{Keywords: Crohn's Disease, fecal microbiome, biologics,
 prediction}
@@ -178,27 +177,27 @@ along the gastrointestinal tract, most commonly in the ileum and colon.
 Individuals with CD experience frequent diarrhea, abdominal pain,
 fatigue, and weight loss resulting in significant health care costs,
 lower quality of life, and economic impacts due to loss of productivity
-({\textbf{???}}, 2, 4) (2, 4, 5). Current treatments for CD include
-antibiotics, anti-inflammatory drugs, immunomodulators, surgery, and
-biologic agents targeting tumor necrosis factor alpha
-(TNF-\({\alpha}\)), such as Infliximab (Remicade). Within 10 years of
-diagnosis, approximately half of individuals with CD will require
-surgery and the majority will experience escalating immunosuppressive
-treatment (5) (6). Currently, individuals with CD are treated based on
-disease location and risk of complications using escalating
-immunosuppressive treatment and/or surgery with the goal of achieving
-and sustaining remission (4, 6) (5, 7). Faster induction of remission
-following diagnosis reduces the risk of irreversible intestinal damage
-and disability (6--8) (7-9). Anti-TNF-\({\alpha}\) therapy in
-combination with thiopurines has emerged as the preferred treatment for
-CD, but up to half of individuals with CD fail to respond or lose
-response to anti-TNF-\({\alpha}\) therapy (5, 6) (6, 7). Ustekinumab
-(UST), a monoclonal antibody directed against the shared p40 subunit of
-IL-12 and IL-23, has been proposed as an alternative therapy for these
-patients (9) (10). While clinical trials have demonstrated that UST is a
-viable option for the treatment of CD (6, 9--11) (7, 10-12), some
-patients within these trials were non-responsive to UST, which may be
-explained by differences in the patients' gut microbiomes.
+(2, 4, 5). Current treatments for CD include antibiotics,
+anti-inflammatory drugs, immunomodulators, surgery, and biologic agents
+targeting tumor necrosis factor alpha (TNF-\({\alpha}\)), such as
+Infliximab (Remicade). Within 10 years of diagnosis, approximately half
+of individuals with CD will require surgery and the majority will
+experience escalating immunosuppressive treatment (6). Currently,
+individuals with CD are treated based on disease location and risk of
+complications using escalating immunosuppressive treatment and/or
+surgery with the goal of achieving and sustaining remission (5, 7).
+Faster induction of remission following diagnosis reduces the risk of
+irreversible intestinal damage and disability (7--9) (7-9).
+Anti-TNF-\({\alpha}\) therapy in combination with thiopurines has
+emerged as the preferred treatment for CD, but up to half of individuals
+with CD fail to respond or lose response to anti-TNF-\({\alpha}\)
+therapy (6, 7). Ustekinumab (UST), a monoclonal antibody directed
+against the shared p40 subunit of IL-12 and IL-23, has been proposed as
+an alternative therapy for these patients (10). While clinical trials
+have demonstrated that UST is a viable option for the treatment of CD
+(7, 10--12) (7, 10-12), some patients within these trials were
+non-responsive to UST, which may be explained by differences in the
+patients' gut microbiomes.
 
 The precise etiology of CD remains unknown, but host genetics,
 environmental exposure, and the gut microbiome appear involved (1, 13).
@@ -211,16 +210,16 @@ has also been shown to play a key role in inflammation, immunity, and
 IBD (15). Individuals with CD have reduced microbial diversity in their
 guts, compared to healthy individuals, with a lower relative abundance
 of Firmicutes and an increased relative abundance of Enterobacteraciae
-and Bacteroides, at the phylum level (14, 16-19). Additionally, previous
-studies have shown that the gut microbiome can be predictive of disease
-severity in new-onset, pediatric CD patients (19, 20). It remains to be
-determined, however, whether the microbiome can predict response to
-therapy in CD (14). Additionally, the effect of biologic treatment on
-the gut microbiome is not well understood. If the fecal microbiome can
-be used as a theraprognostic tool to non-invasively determine and
-monitor disease severity as well as predict response to specific
-treatment modalities, then more targeted treatment could result in
-reduced adverse effects of less effective therapies and faster
+and Bacteroides, at the phylum level (14, 16--19) . Additionally,
+previous studies have shown that the gut microbiome can be predictive of
+disease severity in new-onset, pediatric CD patients (19, 20). It
+remains to be determined, however, whether the microbiome can predict
+response to therapy in CD (14). Additionally, the effect of biologic
+treatment on the gut microbiome is not well understood. If the fecal
+microbiome can be used as a theraprognostic tool to non-invasively
+determine and monitor disease severity as well as predict response to
+specific treatment modalities, then more targeted treatment could result
+in reduced adverse effects of less effective therapies and faster
 achievement of remission.
 
 Our lab was approached to analyze the gut microbiomes of individuals who
@@ -247,20 +246,20 @@ outcome.
 
 \textbf{Characteristics of Study Population} We studied the fecal
 microbiota in a subset of TNF-\({\alpha}\) refractory CD patients who
-took park in the CERTIFI clinical trial described in Sandborn et al 2012
-(10). Briefly, patients with a history of moderate to severe CD were
-randomly assigned to a treatment group in the induction phase of the
-study. Subjects provided a stool sample at screening (Week 0), Week 4
-and Week 6. At Week 8 patients were re-randomized into maintenance
-therapy groups. A final stool sample was provided at Week 22. Response
-to therapy was evaluated at week 4, 6, 8, and 22 based on change in
-CDAI. Samples from subjects that completed the clinical trial and had
-complete clinical metadata were included in our analysis. We used 16s
-rRNA gene sequencing to analyze the microbiome from 306 fecal samples
-provided prior to treatment as well as 258 Week 4, 289 Week 6, and 205
-Week 22 post-treatment fecal samples, for a total of 1058 samples.
-Demographic and baseline disease characteristics are summarized in
-supplemental table 1.
+took park in the CERTIFI clinical trial described in (10). Briefly,
+patients with a history of moderate to severe CD were randomly assigned
+to a treatment group in the induction phase of the study. Subjects
+provided a stool sample at screening (Week 0), Week 4 and Week 6. At
+Week 8 patients were re-randomized into maintenance therapy groups. A
+final stool sample was provided at Week 22. Response to therapy was
+evaluated at week 4, 6, 8, and 22 based on change in CDAI. Samples from
+subjects that completed the clinical trial and had complete clinical
+metadata were included in our analysis. We used 16s rRNA gene sequencing
+to analyze the microbiome from 306 fecal samples provided prior to
+treatment as well as 258 Week 4, 289 Week 6, and 205 Week 22
+post-treatment fecal samples, for a total of 1058 samples. Demographic
+and baseline disease characteristics are summarized in supplemental
+table 1.
 
 \textbf{Comparison of microbiome at screening based on clinical
 variables} To determine if there were any significant associations
@@ -367,18 +366,18 @@ metadata, and combined microbiome and clinical data (22, 23). We ran
 these models for response and remission at Week 4, 6, 8, and 22 of the
 study. The optimal models for response and remission at the primary
 endpoint (Week 6) are shown in Figure 1. Using only clinical metadata to
-predict response, the model predicted response with an AUC of 0.662 with
-a specificity of 0.807 and a sensitivity of 0.524. Using only microbiome
-data, the model predicted response with an AUC of 0.737 with a
-specificity of 0.753 and a sensitivity of 0.622. When combining clinical
+predict response, the model predicted response with an AUC of 0.694 with
+a specificity of 0.765 and a sensitivity of 0.575. Using only microbiome
+data, the model predicted response with an AUC of 0.701 with a
+specificity of 0.62 and a sensitivity of 0.736. When combining clinical
 metadata with the microbiome, the model predicted response with an AUC
-of 0.742 with a specificity of 0.787 and a sensitivity of 0.622. With
+of 0.707 with a specificity of 0.615 and a sensitivity of 0.736. With
 respect to Week 6 remission, using solely clinical metadata we achieved
-AUC of 0.625 with a specificity of 0.711 and a sensitivity of 0.581.
-Using only fecal microbiome data we achieved an AUC of 0.837 with a
-specificity of 0.716 and a sensitivity of 0.903. When combining clinical
-metadata with the microbiome AUC of 0.818 with a specificity of 0.721
-and a sensitivity of 0.839.
+AUC of 0.676 with a specificity of 0.457 and a sensitivity of 0.871.
+Using only fecal microbiome data we achieved an AUC of 0.811 with a
+specificity of 0.621 and a sensitivity of 0.968. When combining clinical
+metadata with the microbiome AUC of 0.846 with a specificity of 0.663
+and a sensitivity of 0.935.
 
 Across all weeks and responses, prediction with clinical metadata alone
 did not perform as well as models using the fecal microbiome at
@@ -456,7 +455,7 @@ earlier biologic intervention may `preserve' microbiome that promotes
 remission and reduces the likelihood of relapse. Publications have come
 out in support of earlier biologic intervention, as it appears to
 increase the likelihood of inducing remission and mucosal healing
-(31-33). However, the cost of biologics for patients is hindrance to
+(31--33). However, the cost of biologics for patients is hindrance to
 early biologic intervention. Using aptamers in place of monoclonal
 antibodies may reduce this cost and make earlier intervention possible.
 Aptamers are short strands of DNA or RNA capable of specifically binding
@@ -574,22 +573,21 @@ system, as previously described (22, 36). The V4 region of the 16S rRNA
 gene from each sample was amplified and sequenced using the Illumina
 MiSeq Personal Sequencing platform as described elsewhere (27).
 Sequences were curated as described previously using the mothur software
-package (28) (37). Briefly, we reduced sequencing and PCR errors,
-aligned the resulting sequences to the SILVA 16S rRNA sequence database
-(29), and removed any chimeric sequences flagged by UCHIME (30) (38).
-After curation, we obtained between 1 and 130,074 sequences per sample
-(median 13786), with a median length of 253 bp. To limit effects of
-uneven sampling, we rarefied the dataset to 3,000 sequences per sample.
-Parallel sequencing of a mock community revealed an error rate of 0.017
-\%. Sequences were clustered into operational taxonomic units (OTU), as
-previously described (39). Briefly, OTUs were clustered at a 97\%
-similarity cutoff and the relative abundance was calculated for OTUs in
-each sample. All sequences were classified using a naive Bayesian
-classifier trained against the RDP training set (version 11) and OTUs
-were assigned a classification based on which taxonomy had the majority
-consensus of sequences within a given OTU (31) (40). All fastq files and
-the MIMARKS spreadsheet with de-identified clinical metadata are
-available at TBD.
+package (37). Briefly, we reduced sequencing and PCR errors, aligned the
+resulting sequences to the SILVA 16S rRNA sequence database, and removed
+any chimeric sequences flagged by UCHIME (38). After curation, we
+obtained between 1 and 130,074 sequences per sample (median 13786), with
+a median length of 253 bp. To limit effects of uneven sampling, we
+rarefied the dataset to 3,000 sequences per sample. Parallel sequencing
+of a mock community revealed an error rate of 0.017 \%. Sequences were
+clustered into operational taxonomic units (OTU), as previously
+described (39). Briefly, OTUs were clustered at a 97\% similarity cutoff
+and the relative abundance was calculated for OTUs in each sample. All
+sequences were classified using a naive Bayesian classifier trained
+against the RDP training set (version 11) and OTUs were assigned a
+classification based on which taxonomy had the majority consensus of
+sequences within a given OTU (40). All fastq files and the MIMARKS
+spreadsheet with de-identified clinical metadata are available at TBD.
 
 \paragraph{Gut microbiome biomarker discovery
 analysis}\label{gut-microbiome-biomarker-discovery-analysis}
@@ -598,14 +596,14 @@ Mothur as well as the R software package were used for our data
 analysis. Alpha diversity metrics (e.g.~Shannon, Inverse Simpson) were
 calculated for each sample in the dataset, and compared using
 non-parametric statistical tests (i.e Kruskal-Wallace and Wilcox Test)
-(41) (42). Beta diversity was calculated the distance between samples
+(41, 42). Beta diversity was calculated the distance between samples
 using the theta YC metric, which takes into account the types of
 bacteria and their abundance to calculate the differences between the
 communities (43). These distance matrices were visualized by generating
 non-metric dimensional scaling (NMDS) plots of the distances. Overlap
 between sets of communities was assessed using the non-parametric
 analysis of molecular variance (AMOVA) and homogeneity of variance
-(HOMOVA) tests (44) (vegan). Differentially abundant OTUs were selected
+(HOMOVA) tests (21, 44). Differentially abundant OTUs were selected
 using the biomarker discovery algorithm, LEfSe {[}linear discriminant
 analysis (LDA) effect size{]} for each pairwise comparison of clinical
 groups (45). In short, This method uses the Wilcox non-parametric test
@@ -714,72 +712,266 @@ Week 6 samples}
 \addcontentsline{toc}{section}{References}
 
 \hypertarget{refs}{}
-\hypertarget{ref-Ananthakrishnan_2015}{}
-1. Ananthakrishnan AN. 2015. Epidemiology and risk factors for IBD.
-Nature Reviews Gastroenterology \& Hepatology 12:205--217.
+\hypertarget{ref-ananthakrishnan_epidemiology_2015}{}
+1. Ananthakrishnan AN. 2015. Epidemiology and risk factors for IBD. Nat
+Rev Gastroenterol Hepatol 12:205--217.
 
-\hypertarget{ref-Floyd_2014}{}
-2. Floyd DN, Langham S, Séverac HC, Levesque BG. 2014. The economic and
+\hypertarget{ref-floyd_economicburden_2015}{}
+2. Floyd DN, Langham S, Severac HC, Levesque BG. 2015. The economic and
 quality-of-life burden of crohn's disease in europe and the united
-states, 2000 to 2013: A systematic review. Digestive Diseases and
-Sciences 60:299--312.
+states, 2000 to 2013: A systematic review. Dig Dis Sci 60:299--312.
 
-\hypertarget{ref-Molodecky_2012}{}
+\hypertarget{ref-molodecky_increasingIBD_2012}{}
 3. Molodecky NA, Soon IS, Rabi DM, Ghali WA, Ferris M, Chernoff G,
 Benchimol EI, Panaccione R, Ghosh S, Barkema HW, Kaplan GG. 2012.
 Increasing incidence and prevalence of the inflammatory bowel diseases
-with time, based on systematic review. Gastroenterology 142:46--54.e42.
+with time, based on systematic review. Gastroenterology 142:46--54.e42;
+quiz e30.
 
-\hypertarget{ref-Randall_2015}{}
-4. Randall CW, Vizuete JA, Martinez N, Alvarez JJ, Garapati KV,
+\hypertarget{ref-mantzaris_clinical_2015}{}
+4. Mantzaris GJ, Viazis N, Polymeros D, Papamichael K, Bamias G,
+Koutroubakis IE. 2015. Clinical profiles of moderate and severe crohn's
+disease patients and use of anti-tumor necrosis factor agents: Greek
+expert consensus guidelines. Ann Gastroenterol 28:417--25.
+
+\hypertarget{ref-randall_CDbiologics_2015}{}
+5. Randall CW, Vizuete JA, Martinez N, Alvarez JJ, Garapati KV,
 Malakouti M, Taboada CM. 2015. From historical perspectives to modern
 therapy: A review of current and future biological treatments for
-crohn's disease. Therapeutic Advances in Gastroenterology 8:143--159.
+crohn's disease. Therap Adv Gastroenterol 8:143--59.
 
-\hypertarget{ref-Boyapati_2015}{}
-5. Boyapati R, Satsangi J, Ho GT. 2015. Pathogenesis of crohns disease.
-F1000Prime Reports 7.
+\hypertarget{ref-boyapati_pathCD_2015}{}
+6. Boyapati R, Satsangi J, Ho GT. 2015. Pathogenesis of crohn's disease.
+F1000Prime Rep 7:44.
 
-\hypertarget{ref-Wils_2016}{}
-6. Wils P, Bouhnik Y, Michetti P, Flourie B, Brixi H, Bourrier A, Allez
-M, Duclos B, Grimaud J-C, Buisson A, Amiot A, Fumery M, Roblin X,
+\hypertarget{ref-wils_ust_2015}{}
+7. Wils P, Bouhnik Y, Michetti P, Flourie B, Brixi H, Bourrier A, Allez
+M, Duclos B, Grimaud JC, Buisson A, Amiot A, Fumery M, Roblin X,
 Peyrin-Biroulet L, Filippi J, Bouguen G, Abitbol V, Coffin B, Simon M,
-Laharie D, Pariente B. 2016. Subcutaneous ustekinumab provides clinical
+Laharie D, Pariente B. 2015. Subcutaneous ustekinumab provides clinical
 benefit for two-thirds of patients with crohn's disease refractory to
-antiTumor necrosis factor agents. Clinical Gastroenterology and
-Hepatology 14:242--250.e2.
+anti-tumor necrosis factor agents. Clin Gastroenterol Hepatol.
 
-\hypertarget{ref-Colombel_2015}{}
-7. Colombel J-F, Reinisch W, Mantzaris GJ, Kornbluth A, Rutgeerts P,
-Tang KL, Oortwijn A, Bevelander GS, Cornillie FJ, Sandborn WJ. 2015.
+\hypertarget{ref-colombel_deepremission_2015}{}
+8. Colombel JF, Reinisch W, Mantzaris GJ, Kornbluth A, Rutgeerts P, Tang
+KL, Oortwijn A, Bevelander GS, Cornillie FJ, Sandborn WJ. 2015.
 Randomised clinical trial: Deep remission in biologic and
-immunomodulator naïve patients with crohns disease - a SONIC post hoc
-analysis. Alimentary Pharmacology \& Therapeutics 41:734--746.
+immunomodulator naive patients with crohn's disease - a SONIC post hoc
+analysis. Aliment Pharmacol Ther 41:734--46.
 
-\hypertarget{ref-Baert_2010}{}
-8. Baert F, Moortgat L, Assche GV, Caenepeel P, Vergauwe P, Vos MD,
+\hypertarget{ref-baert_mucosalhealing_2010}{}
+9. Baert F, Moortgat L, Van Assche G, Caenepeel P, Vergauwe P, De Vos M,
 Stokkers P, Hommes D, Rutgeerts P, Vermeire S, D'Haens G. 2010. Mucosal
 healing predicts sustained clinical remission in patients with
-early-stage crohns disease. Gastroenterology 138:463--468.
+early-stage crohn's disease. Gastroenterology 138:463--8; quiz e10--1.
 
-\hypertarget{ref-Sandborn_2012}{}
-9. Sandborn WJ, Gasink C, Gao L-L, Blank MA, Johanns J, Guzzo C, Sands
+\hypertarget{ref-sandborn_ust_2012}{}
+10. Sandborn WJ, Gasink C, Gao LL, Blank MA, Johanns J, Guzzo C, Sands
 BE, Hanauer SB, Targan S, Rutgeerts P, Ghosh S, Villiers WJ de,
 Panaccione R, Greenberg G, Schreiber S, Lichtiger S, Feagan BG. 2012.
-Ustekinumab induction and maintenance therapy in refractory crohns
-disease. New England Journal of Medicine 367:1519--1528.
+Ustekinumab induction and maintenance therapy in refractory crohn's
+disease. N Engl J Med 367:1519--28.
 
-\hypertarget{ref-Sandborn_2008}{}
-10. Sandborn WJ, Feagan BG, Fedorak RN, Scherl E, Fleisher MR, Katz S,
+\hypertarget{ref-sandborn_ust_2008}{}
+11. Sandborn WJ, Feagan BG, Fedorak RN, Scherl E, Fleisher MR, Katz S,
 Johanns J, Blank M, Rutgeerts P. 2008. A randomized trial of
 ustekinumab, a human interleukin-12/23 monoclonal antibody, in patients
-with moderate-to-severe crohns disease. Gastroenterology 135:1130--1141.
+with moderate-to-severe crohn's disease. Gastroenterology 135:1130--41.
 
-\hypertarget{ref-Kopylov_2014}{}
-11. Kopylov U, Afif W, Cohen A, Bitton A, Wild G, Bessissow T, Wyse J,
+\hypertarget{ref-kopylov_ust_2014}{}
+12. Kopylov U, Afif W, Cohen A, Bitton A, Wild G, Bessissow T, Wyse J,
 Al-Taweel T, Szilagyi A, Seidman E. 2014. Subcutaneous ustekinumab for
-the treatment of anti-TNF resistant crohns diseaseThe McGill experience.
-Journal of Crohns and Colitis 8:1516--1522.
+the treatment of anti-TNF resistant crohn's disease--the McGill
+experience. J Crohns Colitis 8:1516--22.
+
+\hypertarget{ref-sartor_IBDpath_2006}{}
+13. Sartor RB. 2006. Mechanisms of disease: Pathogenesis of crohn's
+disease and ulcerative colitis. Nat Clin Pract Gastroenterol Hepatol
+3:390--407.
+
+\hypertarget{ref-wright_CDmicrobiome_2015}{}
+14. Wright EK, Kamm MA, Teo SM, Inouye M, Wagner J, Kirkwood CD. 2015.
+Recent advances in characterizing the gastrointestinal microbiome in
+crohn's disease: A systematic review. Inflamm Bowel Dis 21:1219--28.
+
+\hypertarget{ref-haag_CDpath_2015}{}
+15. Haag LM, Siegmund B. 2015. Intestinal microbiota and the innate
+immune system - a crosstalk in crohn's disease pathogenesis. Front
+Immunol 6:489.
+
+\hypertarget{ref-manichanh_diversityCD_2006}{}
+16. Manichanh C, Rigottier-Gois L, Bonnaud E, Gloux K, Pelletier E,
+Frangeul L, Nalin R, Jarrin C, Chardon P, Marteau P, Roca J, Dore J.
+2006. Reduced diversity of faecal microbiota in crohn's disease revealed
+by a metagenomic approach. Gut 55:205--11.
+
+\hypertarget{ref-hansen_pedsIBD_2012}{}
+17. Hansen R, Russell RK, Reiff C, Louis P, McIntosh F, Berry SH,
+Mukhopadhya I, Bisset WM, Barclay AR, Bishop J, Flynn DM, McGrogan P,
+Loganathan S, Mahdi G, Flint HJ, El-Omar EM, Hold GL. 2012. Microbiota
+of de-novo pediatric IBD: Increased faecalibacterium prausnitzii and
+reduced bacterial diversity in crohn's but not in ulcerative colitis. Am
+J Gastroenterol 107:1913--22.
+
+\hypertarget{ref-haberman_pedsCD_2014}{}
+18. Haberman Y, Tickle TL, Dexheimer PJ, Kim MO, Tang D, Karns R,
+Baldassano RN, Noe JD, Rosh J, Markowitz J, Heyman MB, Griffiths AM,
+Crandall WV, Mack DR, Baker SS, Huttenhower C, Keljo DJ, Hyams JS,
+Kugathasan S, Walters TD, Aronow B, Xavier RJ, Gevers D, Denson LA.
+2014. Pediatric crohn disease patients exhibit specific ileal
+transcriptome and microbiome signature. J Clin Invest 124:3617--33.
+
+\hypertarget{ref-gevers_pedsCD_2014}{}
+19. Gevers D, Kugathasan S, Denson LA, Vazquez-Baeza Y, Van Treuren W,
+Ren B, Schwager E, Knights D, Song SJ, Yassour M, Morgan XC, Kostic AD,
+Luo C, Gonzalez A, McDonald D, Haberman Y, Walters T, Baker S, Rosh J,
+Stephens M, Heyman M, Markowitz J, Baldassano R, Griffiths A, Sylvester
+F, Mack D, Kim S, Crandall W, Hyams J, Huttenhower C, Knight R, Xavier
+RJ. 2014. The treatment-naive microbiome in new-onset crohn's disease.
+Cell Host Microbe 15:382--92.
+
+\hypertarget{ref-wang_pedsCD_2016}{}
+20. Wang F, Kaplan JL, Gold BD, Bhasin MK, Ward NL, Kellermayer R,
+Kirschner BS, Heyman MB, Dowd SE, Cox SB, Dogan H, Steven B, Ferry GD,
+Cohen SA, Baldassano RN, Moran CJ, Garnett EA, Drake L, Otu HH, Mirny
+LA, Libermann TA, Winter HS, Korolev KS. 2016. Detecting microbial
+dysbiosis associated with pediatric crohn disease despite the high
+variability of the gut microbiota. Cell Rep.
+
+\hypertarget{ref-oksanen_vegan_2016}{}
+21. Oksanen J, Blanchet FG, Friendly M, Kindt R, Legendre P, McGlinn D,
+Minchin PR, O'Hara RB, Simpson GL, Solymos P, Stevens MHH, Szoecs E,
+Wagner H. 2016. Vegan: Community ecology package. r package version
+2.4-1.
+
+\hypertarget{ref-baxter_FIT_2016}{}
+22. Baxter NT, Ruffin MT th, Rogers MA, Schloss PD. 2016.
+Microbiota-based model improves the sensitivity of fecal immunochemical
+test for detecting colonic lesions. Genome Med 8:37.
+
+\hypertarget{ref-calle_aucrf_2011}{}
+23. Calle ML, Urrea V, Boulesteix A-L, Malats N. 2011. AUC-RF: A new
+strategy for genomic profiling with random forest. Human Heredity
+72:121--132.
+
+\hypertarget{ref-papa_pedsIBD_2012}{}
+24. Papa E, Docktor M, Smillie C, Weber S, Preheim SP, Gevers D,
+Giannoukos G, Ciulla D, Tabbaa D, Ingram J, Schauer DB, Ward DV,
+Korzenik JR, Xavier RJ, Bousvaros A, Alm EJ. 2012. Non-invasive mapping
+of the gastrointestinal microbiota identifies children with inflammatory
+bowel disease. PLoS One 7:e39242.
+
+\hypertarget{ref-tedjo_CDactivity_2016}{}
+25. Tedjo DI, Smolinska A, Savelkoul PH, Masclee AA, Schooten FJ van,
+Pierik MJ, Penders J, Jonkers DMAE. 2016. The fecal microbiota as a
+biomarker for disease activity in crohn's disease. Scientific Reports,
+Published online: 13 October 2016; doi:101038/srep35216.
+
+\hypertarget{ref-boon_fmarkers_2015}{}
+26. Boon GJ, Day AS, Mulder CJ, Gearry RB. 2015. Are faecal markers good
+indicators of mucosal healing in inflammatory bowel disease? World J
+Gastroenterol 21:11469--80.
+
+\hypertarget{ref-chang_monitoring_2015}{}
+27. Chang S, Malter L, Hudesman D. 2015. Disease monitoring in
+inflammatory bowel disease. World J Gastroenterol 21:11246--59.
+
+\hypertarget{ref-vandeputte_stoolcon_2016}{}
+28. Vandeputte D, Falony G, Vieira-Silva S, Tito RY, Joossens M, Raes J.
+2016. Original article: Stool consistency is strongly associated with
+gut microbiota richness and composition, enterotypes and bacterial
+growth rates. Gut 65:57--62.
+
+\hypertarget{ref-naftali_tissinvol_2016}{}
+29. Naftali T, Reshef L, Kovacs A, Porat R, Amir I, Konikoff FM, Gophna
+U. 2016. Distinct microbiotas are associated with ileum-restricted and
+colon-involving crohn's disease. Inflamm Bowel Dis 22:293--302.
+
+\hypertarget{ref-huang_cort_2015}{}
+30. Huang EY, Inoue T, Leone VA, Dalal S, Touw K, Wang Y, Musch MW,
+Theriault B, Higuchi K, Donovan S, Gilbert J, Chang EB. 2015. Using
+corticosteroids to reshape the gut microbiome: Implications for
+inflammatory bowel diseases. Inflamm Bowel Dis 21:963--72.
+
+\hypertarget{ref-monteleone_mongersen_2015}{}
+31. Monteleone G, Neurath MF, Ardizzone S, Di Sabatino A, Fantini MC,
+Castiglione F, Scribano ML, Armuzzi A, Caprioli F, Sturniolo GC, Rogai
+F, Vecchi M, Atreya R, Bossa F, Onali S, Fichera M, Corazza GR, Biancone
+L, Savarino V, Pica R, Orlando A, Pallone F. 2015. Mongersen, an oral
+SMAD7 antisense oligonucleotide, and crohn's disease. N Engl J Med
+372:1104--13.
+
+\hypertarget{ref-monteleone_mongersen_2016}{}
+32. Monteleone G, Di Sabatino A, Ardizzone S, Pallone F, Usiskin K, Zhan
+X, Rossiter G, Neurath MF. 2016. Impact of patient characteristics on
+the clinical efficacy of mongersen (GED-0301), an oral smad7 antisense
+oligonucleotide, in active crohn's disease. Aliment Pharmacol Ther
+43:717--24.
+
+\hypertarget{ref-ardizzone_mongersen_2016}{}
+33. Ardizzone S, Bevivino G, Monteleone G. 2016. Mongersen, an oral
+smad7 antisense oligonucleotide, in patients with active crohn's
+disease. Therap Adv Gastroenterol 9:527--32.
+
+\hypertarget{ref-orava_short_2013}{}
+34. Orava EW, Jarvik N, Shek YL, Sidhu SS, Gariepy J. 2013. A short DNA
+aptamer that recognizes TNFalpha and blocks its activity in vitro. ACS
+Chem Biol 8:170--8.
+
+\hypertarget{ref-sartor_microbesIBD_2016}{}
+35. Sartor RB, Wu GD. 2016. Roles for intestinal bacteria, viruses, and
+fungi in pathogenesis of inflammatory bowel diseases and therapeutic
+approaches. Gastroenterology.
+
+\hypertarget{ref-zackular_CRC_2014}{}
+36. Zackular JP, Rogers MA, Ruffin MT th, Schloss PD. 2014. The human
+gut microbiome as a screening tool for colorectal cancer. Cancer Prev
+Res (Phila) 7:1112--21.
+
+\hypertarget{ref-schloss_PCRartifacts_2011}{}
+37. Schloss PD, Gevers D, Westcott SL. 2011. Reducing the effects of PCR
+amplification and sequencing artifacts on 16S rRNA-based studies. PLoS
+One 6:e27310.
+
+\hypertarget{ref-edgar_uchime_2011}{}
+38. Edgar RC, Haas BJ, Clemente JC, Quince C, Knight R. 2011. UCHIME
+improves sensitivity and speed of chimera detection. Bioinformatics
+27:2194--200.
+
+\hypertarget{ref-schloss_OTUanalysis_2011}{}
+39. Schloss PD, Westcott SL. 2011. Assessing and improving methods used
+in operational taxonomic unit-based approaches for 16S rRNA gene
+sequence analysis. Appl Environ Microbiol 77:3219--26.
+
+\hypertarget{ref-wang_taxonomy_2007}{}
+40. Wang Q, Garrity GM, Tiedje JM, Cole JR. 2007. Naive bayesian
+classifier for rapid assignment of rRNA sequences into the new bacterial
+taxonomy. Appl Environ Microbiol 73:5261--7.
+
+\hypertarget{ref-sokal_biometrystats_1995}{}
+41. Sokal RR, Rohlf FJ. 1995. Biometry: The principles and practice of
+statistics in biological research, 3rd ed. Freeman, New York.
+
+\hypertarget{ref-magurran_measuring_2004}{}
+42. Magurran AE. 2004. Measuring biological diversity. Blackwell Pub.,
+Malden, Ma.
+
+\hypertarget{ref-yue_thetaYC_2005}{}
+43. Yue JC, Clayton MK. 2005. A similarity measure based on species
+proportions. Communications in Statistics-Theory and Methods
+34:2123--2131.
+
+\hypertarget{ref-schloss_commstruct_2008}{}
+44. Schloss PD. 2008. Evaluating different approaches that test whether
+microbial communities have the same structure. ISME J 2:265--75.
+
+\hypertarget{ref-segata_biomarker_2011}{}
+45. Segata N, Izard J, Waldron L, Gevers D, Miropolsky L, Garrett WS,
+Huttenhower C. 2011. Metagenomic biomarker discovery and explanation.
+Genome Biol 12:R60.
+
+\hypertarget{ref-breiman_rf_2001}{}
+46. Breiman L. 2001. Random forests. Machine Learning 45:5--32.
 
 
 \end{document}
