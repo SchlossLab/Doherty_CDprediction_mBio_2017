@@ -8,8 +8,17 @@ APmd<-subset(md, select=c(group, USUBJID, Site, visit, TRTGR, TRTGRINDMAN:COUNTR
 
 levels(APmd$TRTGR)<-c("Placebo", "Treated")
 levels(APmd$TRTGRINDMAN)<-c("Placebo_Not", "Placebo_Placebo", "Placebo_Treated", "Treated_Not", "Treated_Placebo", "Treated_Treated")
-levels(APmd$visit) <- c("Screening", "Week 4", "Week 6", "Week 22")
 
+#levels(APmd$visit)
+APmd$visit <- ordered(APmd$visit, levels=c("Screening", "Week 4", "Week 6", "Week 22"))
+
+getINDTRTGR <- function(TRTGRINDMAN){
+	INDTRTGR <- ifelse(TRTGRINDMAN == "Treated_Placebo", "Treated",
+										 ifelse(TRTGRINDMAN == "Treated_Treated", "Treated", "Placebo"))
+	return(INDTRTGR) 
+}
+
+APmd$INDTRTGR <- as.factor(getINDTRTGR(APmd$TRTGRINDMAN))
 
 delta<- function(finalcdai, initialcdai=APmd$cdail_wk0){
 	deltacdai <- finalcdai-initialcdai
