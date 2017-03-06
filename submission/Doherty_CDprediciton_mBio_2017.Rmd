@@ -2078,7 +2078,7 @@ summary(subset(wk046_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, R
 
 wk046_data<-wk046_data[wk046_data$USUBJID!='C0743T26030100002',]
 
-summary(subset(wk046_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
+summary(subset(wk046_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8, INDTRTGR)))
 
 wk046wk22remitters<-wk046_data[wk046_data$REMISSwk22=="Yes",]
 summary(subset(wk046wk22remitters, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, REMISSwk22)))
