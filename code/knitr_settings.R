@@ -6,7 +6,7 @@ knitr::opts_chunk$set("tidy" = TRUE)
 knitr::opts_chunk$set("eval" = TRUE)
 knitr::opts_chunk$set("warning" = FALSE)
 knitr::opts_chunk$set("message" = FALSE)
-knitr::opts_chunk$set("cache" = FALSE)
+knitr::opts_chunk$set("cache" = T)
 
 inline_hook <- function(x){
 	print(x)
