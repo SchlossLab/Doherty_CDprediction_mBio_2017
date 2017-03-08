@@ -10,22 +10,51 @@ mean_otu_trtRemWk6_matrix <- subset(mean_otu_trtRemWk6, select=-c(TRTGRrem))
 mean_otu_trtRemWk6_matrix <- as.matrix(t(subset(mean_otu_trtRemWk6_matrix, select=-c(1:2))))
 colnames(mean_otu_trtRemWk6_matrix) <- mean_otu_trtRemWk6$TRTGRrem
 
-mean_otu <- aggregate(otu_rel_abund, by=list(screen_data$REMISSwk6), mean)
-mean_otu_matrix <- subset(mean_otu, select=-c(Group.1))
-mean_otu_matrix <- as.matrix(t(subset(mean_otu_matrix)))
-colnames(mean_otu_matrix) <- mean_otu$Group.1
-
 median_otu_trtRemWk6 <- aggregate(otu_rel_abund, by=list(screen_data$TRTGR, screen_data$REMISSwk6), median)
 median_otu_trtRemWk6$TRTGRrem <- paste(median_otu_trtRemWk6$Group.1, median_otu_trtRemWk6$Group.2)
 median_otu_trtRemWk6_matrix <- subset(median_otu_trtRemWk6, select=-c(TRTGRrem))
 median_otu_trtRemWk6_matrix <- as.matrix(t(subset(median_otu_trtRemWk6_matrix, select=-c(1:2))))
 colnames(median_otu_trtRemWk6_matrix) <- median_otu_trtRemWk6$TRTGRrem
 
-median_otu <- aggregate(otu_rel_abund, by=list(screen_data$REMISSwk6), median)
-median_otu_matrix <- subset(median_otu, select=-c(Group.1))
-median_otu_matrix <- as.matrix(t(median_otu_matrix))
-colnames(median_otu_matrix) <- median_otu$Group.1
+mean_otu_RelRSPwk6 <- aggregate(otu_rel_abund, by=list(screen_data$RelRSPwk6), mean)
+mean_otu_RelRSPwk6_matrix <- subset(mean_otu_RelRSPwk6, select=-c(Group.1))
+mean_otu_RelRSPwk6_matrix <- as.matrix(t(subset(mean_otu_RelRSPwk6_matrix)))
+colnames(mean_otu_RelRSPwk6_matrix) <- mean_otu_RelRSPwk6$Group.1
 
+median_otu_RelRSPwk6 <- aggregate(otu_rel_abund, by=list(screen_data$RelRSPwk6), median)
+median_otu_RelRSPwk6_matrix <- subset(median_otu_RelRSPwk6, select=-c(Group.1))
+median_otu_RelRSPwk6_matrix <- as.matrix(t(median_otu_RelRSPwk6_matrix))
+colnames(median_otu_RelRSPwk6_matrix) <- median_otu_RelRSPwk6$Group.1
+
+mean_otu_REMISSwk6 <- aggregate(otu_rel_abund, by=list(screen_data$REMISSwk6), mean)
+mean_otu_REMISSwk6_matrix <- subset(mean_otu_REMISSwk6, select=-c(Group.1))
+mean_otu_REMISSwk6_matrix <- as.matrix(t(subset(mean_otu_REMISSwk6_matrix)))
+colnames(mean_otu_REMISSwk6_matrix) <- mean_otu_REMISSwk6$Group.1
+
+median_otu_REMISSwk6 <- aggregate(otu_rel_abund, by=list(screen_data$REMISSwk6), median)
+median_otu_REMISSwk6_matrix <- subset(median_otu_REMISSwk6, select=-c(Group.1))
+median_otu_REMISSwk6_matrix <- as.matrix(t(median_otu_REMISSwk6_matrix))
+colnames(median_otu_REMISSwk6_matrix) <- median_otu_REMISSwk6$Group.1
+
+mean_otu_RelRSPwk22 <- aggregate(otu_rel_abund, by=list(screen_data$RelRSPwk22), mean)
+mean_otu_RelRSPwk22_matrix <- subset(mean_otu_RelRSPwk22, select=-c(Group.1))
+mean_otu_RelRSPwk22_matrix <- as.matrix(t(subset(mean_otu_RelRSPwk22_matrix)))
+colnames(mean_otu_RelRSPwk22_matrix) <- mean_otu_RelRSPwk22$Group.1
+
+median_otu_RelRSPwk22 <- aggregate(otu_rel_abund, by=list(screen_data$RelRSPwk22), median)
+median_otu_RelRSPwk22_matrix <- subset(median_otu_RelRSPwk22, select=-c(Group.1))
+median_otu_RelRSPwk22_matrix <- as.matrix(t(median_otu_RelRSPwk22_matrix))
+colnames(median_otu_RelRSPwk22_matrix) <- median_otu_RelRSPwk22$Group.1
+
+mean_otu_REMISSwk22 <- aggregate(otu_rel_abund, by=list(screen_data$REMISSwk22), mean)
+mean_otu_REMISSwk22_matrix <- subset(mean_otu_REMISSwk22, select=-c(Group.1))
+mean_otu_REMISSwk22_matrix <- as.matrix(t(subset(mean_otu_REMISSwk22_matrix)))
+colnames(mean_otu_REMISSwk22_matrix) <- mean_otu_REMISSwk22$Group.1
+
+median_otu_REMISSwk22 <- aggregate(otu_rel_abund, by=list(screen_data$REMISSwk22), median)
+median_otu_REMISSwk22_matrix <- subset(median_otu_REMISSwk22, select=-c(Group.1))
+median_otu_REMISSwk22_matrix <- as.matrix(t(median_otu_REMISSwk22_matrix))
+colnames(median_otu_REMISSwk22_matrix) <- median_otu_REMISSwk22$Group.1
 
 sd_otu <- aggregate(otu_rel_abund, by=list(screen_data$TRTGR, screen_data$REMISSwk6), sd)
 sd_otu$TRTGRrem <- paste(sd_otu$Group.1, sd_otu$Group.2)
@@ -91,3 +120,5 @@ sig_REMISSwk22_wilcox_otu_adj_p <-REMISSwk22_wilcox_otu_adj_p  < 0.05
 
 RelRSPwk22_wilcox_otu_adj_p <- na.omit(p.adjust(RelRSPwk22_wilcox_otu_p, method="BH"))
 sig_RelRSPwk22_wilcox_otu_adj_p <-RelRSPwk22_wilcox_otu_adj_p  < 0.05
+
+

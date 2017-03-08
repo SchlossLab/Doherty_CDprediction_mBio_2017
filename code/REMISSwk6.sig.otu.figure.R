@@ -1,7 +1,9 @@
+source('../code/otu.analysis.R')
+
 #significant otus
-tax_mean_otu_matrix <- merge(tax, mean_otu_matrix, by.x = "OTU", by.y="row.names")
-sig_REMISSwk6_wilcox_otu_adj_p_otus <- rownames(mean_otu_matrix)[sig_REMISSwk6_wilcox_otu_adj_p]
-mean_signif_REMISSwk6_otu_matrix <- mean_otu_matrix[sig_REMISSwk6_wilcox_otu_adj_p_otus,]
+tax_mean_otu_REMISSwk6_matrix <- merge(tax, mean_otu_REMISSwk6_matrix, by.x = "OTU", by.y="row.names")
+sig_REMISSwk6_wilcox_otu_adj_p_otus <- rownames(mean_otu_REMISSwk6_matrix)[sig_REMISSwk6_wilcox_otu_adj_p]
+mean_signif_REMISSwk6_otu_matrix <- mean_otu_REMISSwk6_matrix[sig_REMISSwk6_wilcox_otu_adj_p_otus,]
 tax_mean_signif_REMISSwk6_otu_matrix <- merge(tax, mean_signif_REMISSwk6_otu_matrix, by.x = "OTU", by.y="row.names")
 tax_mean_signif_REMISSwk6_otu_matrix$diff <- tax_mean_signif_REMISSwk6_otu_matrix$No-tax_mean_signif_REMISSwk6_otu_matrix$Yes
 tax_mean_signif_REMISSwk6_otu_matrix <-data.frame(tax_mean_signif_REMISSwk6_otu_matrix[tax_mean_signif_REMISSwk6_otu_matrix$diff!=0,])
@@ -34,7 +36,7 @@ Labund_mean_signif_REMISSwk6_otu_matrix <- data.frame(Labund_mean_signif_REMISSw
 
 #significant
 sig_REMISSwk6_wilcox_otu_adj_p_otus <- rownames(abund_mean_signif_REMISSwk6_otu_matrix)
-#mean_signif_REMISSwk6_otu_matrix <- mean_otu_matrix[sig_REMISSwk6_wilcox_otu_adj_p_otus,]
+#mean_signif_REMISSwk6_otu_matrix <- mean_otu_REMISSwk6_matrix[sig_REMISSwk6_wilcox_otu_adj_p_otus,]
 
 labs <- sapply(strsplit(as.character(row.names(labeled_mean_signif_REMISSwk6_otu_matrix)), " "), 
 							 function(x) {
@@ -44,7 +46,7 @@ labs <- sapply(strsplit(as.character(row.names(labeled_mean_signif_REMISSwk6_otu
 
 
 cbind(data.frame(labeled_mean_signif_REMISSwk6_otu_matrix, otu = row.names(labeled_mean_signif_REMISSwk6_otu_matrix))) %>%
-	gather(response, relabund, -otu) %>% ggplot(aes(x=response, y=relabund, fill=otu)) +
+	gather(Remission, relabund, -otu) %>% ggplot(aes(x=Remission, y=relabund, fill=otu)) +
 	geom_bar(position = "dodge",stat="identity") + scale_fill_discrete(labels=labs, breaks = levels(tax_mean_signif_REMISSwk6_otu_matrix$Label)) +
 	ylab("Relative Abundance (%)") + xlab("Week 6 Remission")
 
@@ -53,14 +55,14 @@ cbind(data.frame(labeled_mean_signif_REMISSwk6_otu_matrix, otu = row.names(label
 
 
 cbind(data.frame(Vabund_mean_signif_REMISSwk6_otu_matrix, otu = row.names(Vabund_mean_signif_REMISSwk6_otu_matrix))) %>%
-	gather(response, relabund, -otu) %>% ggplot(aes(x=response, y=relabund, fill=otu)) +
+	gather(Remission, relabund, -otu) %>% ggplot(aes(x=Remission, y=relabund, fill=otu)) +
 	geom_bar(position = "dodge",stat="identity") + 
 	scale_fill_discrete(labels=labs, breaks = levels(tax_mean_signif_REMISSwk6_otu_matrix$Label)) +
 	ylab("Relative Abundance (%)") + xlab("Week 6 Remission")
 
 
 cbind(data.frame(Mabund_mean_signif_REMISSwk6_otu_matrix, otu = row.names(Mabund_mean_signif_REMISSwk6_otu_matrix))) %>%
-	gather(response, relabund, -otu) %>% ggplot(aes(x=response, y=relabund, fill=otu)) +
+	gather(Remission, relabund, -otu) %>% ggplot(aes(x=Remission, y=relabund, fill=otu)) +
 	geom_bar(position = "dodge",stat="identity") + 
 	scale_fill_discrete(labels=labs, breaks = levels(tax_mean_signif_REMISSwk6_otu_matrix$Label)) +
 	ylab("Relative Abundance (%)") + xlab("Week 6 Remission")
@@ -68,7 +70,7 @@ cbind(data.frame(Mabund_mean_signif_REMISSwk6_otu_matrix, otu = row.names(Mabund
 
 
 cbind(data.frame(Labund_mean_signif_REMISSwk6_otu_matrix, otu = row.names(Labund_mean_signif_REMISSwk6_otu_matrix))) %>%
-	gather(response, relabund, -otu) %>% ggplot(aes(x=response, y=relabund, fill=otu)) +
+	gather(Remission, relabund, -otu) %>% ggplot(aes(x=Remission, y=relabund, fill=otu)) +
 	geom_bar(position = "dodge",stat="identity") + 
 	scale_fill_discrete(labels=labs, breaks = levels(tax_mean_signif_REMISSwk6_otu_matrix$Label)) +
 	ylab("Relative Abundance (%)") + xlab("Week 6 Remission")
@@ -77,7 +79,7 @@ cbind(data.frame(Labund_mean_signif_REMISSwk6_otu_matrix, otu = row.names(Labund
 
 c1c2 <- otu_relab_REMISSwk6[,c(1:2)]
 restC <- otu_relab_REMISSwk6[,-c(1:2)]
-colnames(restC) <- tax_mean_otu_matrix$Label
+colnames(restC) <- tax_mean_otu_REMISSwk6_matrix$Label
 labeled_otu_relab_REMISSwk6 <- cbind(c1c2, restC)
 otuRabREMISSwk6_ggplot <- gather(labeled_otu_relab_REMISSwk6, otu, relabund, one_of(rownames(labeled_mean_signif_REMISSwk6_otu_matrix)))
 
@@ -147,7 +149,7 @@ formatted <- lapply(1:nrow(oturf_tax), function(i) bquote(paste(italic(.(oturf_n
 
 axis(2, at=seq(1,index-2,2), labels=do.call(expression, formatted), font =3, las=1, line=0, tick=F, cex.axis=0.8)
 axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1), label=c("0", "0.01", "0.1", "1", "10"))
-legend('topright', legend=c("Response Week 6 No", "Response Week 6 Yes"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=0.7)
+legend('topright', legend=c("Remission Week 6 No", "Remission Week 6 Yes"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=0.7)
 #mtext('B', at=1e-8, side=3, line=0.1, font=2, cex=2)
 #dev.off()
 
