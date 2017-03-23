@@ -4,23 +4,25 @@ title: The fecal microbiome as a tool for monitoring and predicting response out
 csl: mbio.csl
 fontsize: 11pt
 output:
-  pdf_document: 
+  html_document: default
+  md_document: default
+  pdf_document:
     keep_tex: yes
     latex_engine: xelatex
-  md_document: default
-  html_document: default
 header-includes:
 - \usepackage{setspace}
 - \doublespacing
 - \usepackage{lineno}
 - \linenumbers
 - \renewcommand{\familydefault}{\sfdefault}
+- \usepackage{graphicx}
 geometry: margin=1.0in
 bibliography: My_Library_copy.bib
 ---
 
 ```{r knitr_settings, cache=FALSE, include=FALSE}
 source('../code/knitr_settings.R')
+knitr::opts_chunk$set("cache" = T)
 source('../code/R_packages_setup.R')
 ```
 
@@ -113,6 +115,11 @@ summary(nao.screen_data[,c("TRTGR")])
 summary(screen_data[,c("TRTGR")])
 ```
 
+```{r phylmum_otu}
+source("../code/phylum.figures.R")
+source("../code/REMISSwk6.sig.otu.figure.R")
+```
+
 ```{r cdai.cor.test,  include=F}
 set.seed(32016)
 cdai.cor.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, cdail_wk0)))
@@ -159,7 +166,7 @@ CDAI_Spear<-gsub(",", "", CDAI_Spear)
 #CDAI_AMOVA_p<-gsub(" ", "", CDAI_AMOVA_p)
 #CDAI_AMOVA<-toString(c(CDAI_AMOVA_p))
 #CDAI_AMOVA<-gsub(",", "", CDAI_AMOVA)
-CDAI<- matrix(c('CDAI', CDAI_sum, CDAI_Spear, cdaiwk0.adonis.pval), ncol = 4)
+CDAI<- matrix(c('CDAI', CDAI_Spear_rho, cor.cdai$p.value, as.numeric(na.omit(cdaiwk0.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
 ```
 
 ```{r stoolfreq adiv, include=F}
@@ -203,7 +210,7 @@ Stool_Spear_Prho<-c(Stool_Spear_rho, Stool_Spear_P)
 Stool_Spear<-toString(c(Stool_Spear_Prho))
 Stool_Spear<-gsub(",", "", Stool_Spear)
 
-Stool<- matrix(c('Loose Stool Frequency (per week)', Stool_sum, Stool_Spear, stool.adonis.pval), ncol = 4)
+Stool<- matrix(c('Loose Stool Frequency (per week)', Stool_Spear_rho, cor.stool$p.value, as.numeric(na.omit(stool.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
 ```
 
 
@@ -248,7 +255,7 @@ CRP_Spear_Prho<-c(CRP_Spear_rho, CRP_Spear_P)
 CRP_Spear<-toString(c(CRP_Spear_Prho))
 CRP_Spear<-gsub(",", "", CRP_Spear)
 
-CRP<- matrix(c('C-Reactive Protein (mg/L serum)', CRP_sum, CRP_Spear, BL_CRP.adonis.pval), ncol = 4)
+CRP<- matrix(c('C-Reactive Protein (mg/L serum)', CRP_Spear_rho, cor.CRP$p.value, as.numeric(na.omit(BL_CRP.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
 ```
 
 ```{r FCALP.cor.test, include=F}
@@ -296,7 +303,7 @@ FCALP_AMOVA_p<-gsub(",", "", FCALP_AMOVA_p)
 FCALP_AMOVA_p<-gsub(" ", "", FCALP_AMOVA_p)
 FCALP_AMOVA<-toString(c(FCALP_AMOVA_p))
 FCALP_AMOVA<-gsub(",", "", FCALP_AMOVA)
-FCALP<- matrix(c('Fecal Calprotectin (µg/g)', FCALP_sum, FCALP_Spear, BL_FCALP.adonis.pval), ncol = 4)
+FCALP<- matrix(c('Fecal Calprotectin (µg/g)', FCALP_Spear_rho, cor.FCALP$p.value, as.numeric(na.omit(BL_FCALP.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
 ```
 
 ```{r FLACT.cor.test, include=F}
@@ -344,7 +351,7 @@ FLACT_AMOVA_p<-gsub(",", "", FLACT_AMOVA_p)
 FLACT_AMOVA_p<-gsub(" ", "", FLACT_AMOVA_p)
 FLACT_AMOVA<-toString(c(FLACT_AMOVA_p))
 FLACT_AMOVA<-gsub(",", "", FLACT_AMOVA)
-FLACT<- matrix(c('Fecal Lactoferrin (µg/g)', FLACT_sum, FLACT_Spear, BL_FLACT.adonis.pval), ncol = 4)
+FLACT<- matrix(c('Fecal Lactoferrin (µg/g)', FLACT_Spear_rho, cor.FLACT$p.value, as.numeric(na.omit(BL_FLACT.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
 ```
 
 ```{r BMI.cortest, include=F}
@@ -392,7 +399,7 @@ BMI_AMOVA_p<-gsub(",", "", BMI_AMOVA_p)
 BMI_AMOVA_p<-gsub(" ", "", BMI_AMOVA_p)
 BMI_AMOVA<-toString(c(BMI_AMOVA_p))
 BMI_AMOVA<-gsub(",", "", BMI_AMOVA)
-BMI<- matrix(c('BMI', BMI_sum, BMI_Spear, BL_BMI.adonis.pval), ncol = 4)
+BMI<- matrix(c('BMI', BMI_Spear_rho, cor.BMI$p.value, as.numeric(na.omit(BL_BMI.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
 ```
 
 ```{r weightcor, include=F}
@@ -440,7 +447,7 @@ weight_AMOVA_p<-gsub(",", "", weight_AMOVA_p)
 weight_AMOVA_p<-gsub(" ", "", weight_AMOVA_p)
 weight_AMOVA<-toString(c(weight_AMOVA_p))
 weight_AMOVA<-gsub(",", "", weight_AMOVA)
-weight<- matrix(c('Weight (kg)', weight_sum, weight_Spear, CDWEIGHM_Screening.adonis.pval), ncol = 4)
+weight<- matrix(c('Weight (kg)', weight_Spear_rho, cor.weight$p.value, as.numeric(na.omit(CDWEIGHM_Screening.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
 ```
 
 ```{r AGE.cor.test, include=F}
@@ -503,7 +510,7 @@ AGE_AMOVA_p<-gsub(",", "", AGE_AMOVA_p)
 AGE_AMOVA_p<-gsub(" ", "", AGE_AMOVA_p)
 AGE_AMOVA<-toString(c(AGE_AMOVA_p))
 AGE_AMOVA<-gsub(",", "", AGE_AMOVA)
-AGE<- matrix(c('Age (years)', AGE_sum, AGE_Spear, AGE.adonis.pval), ncol = 4)
+AGE<- matrix(c('Age (years)', AGE_Spear_rho, cor.AGE$p.value, as.numeric(na.omit(AGE.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
 ```
 
 ```{r SEX-wilcox, include=F}
@@ -535,7 +542,7 @@ SEX_sum<-toString(c(FSEX, "/", MSEX))
 SEX_sum<-gsub(",", "", SEX_sum)
 SEX_sum<-gsub(" ", "", SEX_sum)
 
-SEX<- matrix(c('Sex (F/M)', SEX_sum, wilcox.SEX.pval, SEX.adonis.pval), ncol = 4)
+SEX<- matrix(c('Sex (F/M)', "-", wilcox.SEX$p.value, as.numeric(na.omit(SEX.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
 
 ```
 
@@ -574,7 +581,7 @@ BCORT_sum<-toString(c(YesBCORT, "/", NoBCORT))
 BCORT_sum<-gsub(",", "", BCORT_sum)
 BCORT_sum<-gsub(" ", "", BCORT_sum)
 
-BCORT<- matrix(c('Corticosteroid Use (Y/N)', BCORT_sum, wilcox.BCORT.pval, BCORT.adonis.pval), ncol = 4)
+BCORT<- matrix(c('Corticosteroid Use (Y/N)', "-", wilcox.BCORT$p.value, as.numeric(na.omit(BCORT.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
 ```
 
 ```{r DDUR.cortest, include=F}
@@ -622,7 +629,7 @@ DDUR_Spear_Prho<-c(DDUR_Spear_rho, DDUR_Spear_P)
 DDUR_Spear_Prho<-toString(c(DDUR_Spear_Prho))
 DDUR_Spear_Prho<-gsub(",", "", DDUR_Spear_Prho)
 
-DDUR<- matrix(c('Disease Duration (years)', DDUR_sum, DDUR_Spear_Prho, DDUR.adonis.pval), ncol = 4)
+DDUR<- matrix(c('Disease Duration (years)', DDUR_Spear_rho, cor.DDUR$p.value, as.numeric(na.omit(DDUR.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
 ```
 
 ```{r kwtissinvol, include=F}
@@ -675,7 +682,7 @@ Ileum<-gsub(" ", "", Ileum)
 
 tissinvol_sum<-toString(c(Colon, ColIle, Ileum))
 
-tissinvol<- matrix(c('Tissue Involvement', tissinvol_sum, kw.tissinvol.pval, tissinvol.adonis.pval), ncol = 4)
+tissinvol<- matrix(c('Tissue Involvement', "-", kw.tissinvol$p.value, as.numeric(na.omit(tissinvol.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
 ```
 
 ```{r BOWSTRICT-wilcox, include=F}
@@ -710,30 +717,36 @@ NoBOWSTRICT<-gsub(" ", "", NoBOWSTRICT)
 BOWSTRICT_sum<-toString(c(NoBOWSTRICT, YesBOWSTRICT))
 
 	
-BOWSTRICT<-matrix(c('Bowel Stricture', BOWSTRICT_sum, wilcox.BOWSTRICT.pval, BOWSTRICT.adonis.pval), ncol = 4)
+BOWSTRICT<-matrix(c('Bowel Stricture', "-", wilcox.BOWSTRICT$p.value, as.numeric(na.omit(BOWSTRICT.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
 ```
 
 ```{r cohort description, include=F, cache=F}
+N.cohort.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR)))
+N_trtd <- nrow(N.cohort.data[N.cohort.data$TRTGR=="Treated",])
+N_plac <- nrow(N.cohort.data[N.cohort.data$TRTGR=="Placebo",])
+N_total <- nrow(N.cohort.data)
+N.cohort<- matrix(c('', paste("n =", N_trtd), paste("n =", N_plac), paste("n =",N_total)), ncol = 4)
+
 set.seed(32016)
 AGE.total.mean<-signif(mean(AGE.cor.test.data$AGE), digits = 2)
 AGE.total.sd<-signif(sd(AGE.cor.test.data$AGE), digits = 2)
-AGE_total<-toString(c(AGE.total.mean, "(", AGE.total.sd, ")"))
+AGE_total<-toString(c(AGE.total.mean, "±", AGE.total.sd))
 AGE_total<-gsub(",", "", AGE_total)
-AGE_total<-gsub(" ", "", AGE_total)
+#AGE_total<-gsub(" ", "", AGE_total)
 
 AGE.trtd<-AGE.cor.test.data[AGE.cor.test.data$TRTGR=="Treated",]
 AGE.trtd.mean<-signif(mean(AGE.trtd$AGE), digits = 2)
 AGE.trtd.sd<-signif(sd(AGE.trtd$AGE), digits = 2)
-AGE_trtd<-toString(c(AGE.trtd.mean, "(", AGE.trtd.sd, ")"))
+AGE_trtd<-toString(c(AGE.trtd.mean, " ± ", AGE.trtd.sd))
 AGE_trtd<-gsub(",", "", AGE_trtd)
-AGE_trtd<-gsub(" ", "", AGE_trtd)
+#AGE_trtd<-gsub(" ", "", AGE_trtd)
 
 AGE.plac<-AGE.cor.test.data[AGE.cor.test.data$TRTGR=="Placebo",]
 AGE.plac.mean<-signif(mean(AGE.plac$AGE), digits = 2)
 AGE.plac.sd<-signif(sd(AGE.plac$AGE), digits = 2)
-AGE_plac<-toString(c(AGE.plac.mean, "(", AGE.plac.sd, ")"))
+AGE_plac<-toString(c(AGE.plac.mean, " ± ", AGE.plac.sd))
 AGE_plac<-gsub(",", "", AGE_plac)
-AGE_plac<-gsub(" ", "", AGE_plac)
+#AGE_plac<-gsub(" ", "", AGE_plac)
 
 AGE.cohort<- matrix(c('Age (years)', AGE_trtd, AGE_plac, AGE_total), ncol = 4)
 
@@ -743,18 +756,18 @@ n.MSEX.total
 n.FSEX.total<-nrow(SEX.cohort.data[SEX.cohort.data$SEX=="F",])
 n.FSEX.total
 
-SEX_total<-toString(c(n.MSEX.total, "(", n.FSEX.total, ")"))
+SEX_total<-toString(c(signif(n.MSEX.total/(n.FSEX.total+n.MSEX.total)*100, 3)))
 SEX_total<-gsub(",", "", SEX_total)
-SEX_total<-gsub(" ", "", SEX_total)
+#SEX_total<-gsub(" ", "", SEX_total)
 
 SEX.trtd<-SEX.cohort.data[SEX.cohort.data$TRTGR=="Treated",]
 n.MSEX.trtd<-nrow(SEX.trtd[SEX.trtd$SEX=="M",])
 n.MSEX.trtd
 n.FSEX.trtd<-nrow(SEX.trtd[SEX.trtd$SEX=="F",])
 n.FSEX.trtd
-SEX_trtd<-toString(c(n.MSEX.trtd, "(", n.FSEX.trtd, ")"))
+SEX_trtd<-toString(c(signif(n.MSEX.trtd/(n.FSEX.trtd + n.MSEX.trtd)*100, 3)))
 SEX_trtd<-gsub(",", "", SEX_trtd)
-SEX_trtd<-gsub(" ", "", SEX_trtd)
+#SEX_trtd<-gsub(" ", "", SEX_trtd)
 
 
 SEX.plac<-SEX.cohort.data[SEX.cohort.data$TRTGR=="Placebo",]
@@ -762,11 +775,11 @@ n.MSEX.plac<-nrow(SEX.plac[SEX.plac$SEX=="M",])
 n.MSEX.plac
 n.FSEX.plac<-nrow(SEX.plac[SEX.plac$SEX=="F",])
 n.FSEX.plac
-SEX_plac<-toString(c(n.MSEX.plac, "(", n.FSEX.plac, ")"))
+SEX_plac<-toString(c(signif(n.MSEX.plac/(n.FSEX.plac +n.MSEX.plac)*100, 3)))
 SEX_plac<-gsub(",", "", SEX_plac)
-SEX_plac<-gsub(" ", "", SEX_plac)
+#SEX_plac<-gsub(" ", "", SEX_plac)
 
-SEX.cohort<- matrix(c('Sex Male(Female)', SEX_trtd, SEX_plac, SEX_total), ncol = 4)
+SEX.cohort<- matrix(c('Sex (% Male)', SEX_trtd, SEX_plac, SEX_total), ncol = 4)
 
 RACE.cohort.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR, RACE)))
 n.CRACE.total<-nrow(RACE.cohort.data[RACE.cohort.data$RACE=="Caucasian",])
@@ -774,18 +787,18 @@ n.CRACE.total
 n.ORACE.total<-nrow(RACE.cohort.data[RACE.cohort.data$RACE!="Caucasian",])
 n.ORACE.total
 
-RACE_total<-toString(c(n.CRACE.total, "(", n.ORACE.total, ")"))
+RACE_total<-toString(c(signif(n.CRACE.total/(n.CRACE.total+n.ORACE.total)*100, 3)))
 RACE_total<-gsub(",", "", RACE_total)
-RACE_total<-gsub(" ", "", RACE_total)
+#RACE_total<-gsub(" ", "", RACE_total)
 
 RACE.trtd<-RACE.cohort.data[RACE.cohort.data$TRTGR=="Treated",]
 n.CRACE.trtd<-nrow(RACE.trtd[RACE.trtd$RACE=="Caucasian",])
 n.CRACE.trtd
 n.ORACE.trtd<-nrow(RACE.trtd[RACE.trtd$RACE!="Caucasian",])
 n.ORACE.trtd
-RACE_trtd<-toString(c(n.CRACE.trtd, "(", n.ORACE.trtd, ")"))
+RACE_trtd<-toString(c(signif(n.CRACE.trtd/(n.CRACE.trtd+n.ORACE.trtd)*100, 3)))
 RACE_trtd<-gsub(",", "", RACE_trtd)
-RACE_trtd<-gsub(" ", "", RACE_trtd)
+#RACE_trtd<-gsub(" ", "", RACE_trtd)
 
 
 RACE.plac<-RACE.cohort.data[RACE.cohort.data$TRTGR=="Placebo",]
@@ -793,11 +806,11 @@ n.CRACE.plac<-nrow(RACE.plac[RACE.plac$RACE=="Caucasian",])
 n.CRACE.plac
 n.ORACE.plac<-nrow(RACE.plac[RACE.plac$RACE!="Caucasian",])
 n.ORACE.plac
-RACE_plac<-toString(c(n.CRACE.plac, "(", n.ORACE.plac, ")"))
+RACE_plac<-toString(c(signif(n.CRACE.plac/(n.CRACE.plac+n.ORACE.plac)*100, 3)))
 RACE_plac<-gsub(",", "", RACE_plac)
-RACE_plac<-gsub(" ", "", RACE_plac)
+#RACE_plac<-gsub(" ", "", RACE_plac)
 
-RACE.cohort<- matrix(c('Race Caucasian(Other)', RACE_trtd, RACE_plac, RACE_total), ncol = 4)
+RACE.cohort<- matrix(c('Race (% Caucasian)', RACE_trtd, RACE_plac, RACE_total), ncol = 4)
 
 BCORT.cohort.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR, BCORT)))
 n.YesBCORT.total<-nrow(BCORT.cohort.data[BCORT.cohort.data$BCORT=="Yes",])
@@ -805,7 +818,7 @@ n.YesBCORT.total
 n.NoBCORT.total<-nrow(BCORT.cohort.data[BCORT.cohort.data$BCORT!="Yes",])
 n.NoBCORT.total
 
-BCORT_total<-toString(c(n.YesBCORT.total, "(", n.NoBCORT.total, ")"))
+BCORT_total<-toString(c(signif(n.YesBCORT.total/(n.YesBCORT.total+n.NoBCORT.total)*100, 3)))
 BCORT_total<-gsub(",", "", BCORT_total)
 BCORT_total<-gsub(" ", "", BCORT_total)
 
@@ -814,7 +827,7 @@ n.YesBCORT.trtd<-nrow(BCORT.trtd[BCORT.trtd$BCORT=="Yes",])
 n.YesBCORT.trtd
 n.NoBCORT.trtd<-nrow(BCORT.trtd[BCORT.trtd$BCORT!="Yes",])
 n.NoBCORT.trtd
-BCORT_trtd<-toString(c(n.YesBCORT.trtd, "(", n.NoBCORT.trtd, ")"))
+BCORT_trtd<-toString(c(signif(n.YesBCORT.trtd/(n.YesBCORT.trtd+n.NoBCORT.trtd)*100, 3)))
 BCORT_trtd<-gsub(",", "", BCORT_trtd)
 BCORT_trtd<-gsub(" ", "", BCORT_trtd)
 
@@ -824,81 +837,81 @@ n.YesBCORT.plac<-nrow(BCORT.plac[BCORT.plac$BCORT=="Yes",])
 n.YesBCORT.plac
 n.NoBCORT.plac<-nrow(BCORT.plac[BCORT.plac$BCORT!="Yes",])
 n.NoBCORT.plac
-BCORT_plac<-toString(c(n.YesBCORT.plac, "(", n.NoBCORT.plac, ")"))
+BCORT_plac<-toString(c(signif(n.YesBCORT.plac/(n.YesBCORT.plac+n.NoBCORT.plac)*100, 3)))
 BCORT_plac<-gsub(",", "", BCORT_plac)
 BCORT_plac<-gsub(" ", "", BCORT_plac)
 
-BCORT.cohort<- matrix(c('Cortico Steroid Use Yes(No)', BCORT_trtd, BCORT_plac, BCORT_total), ncol = 4)
+BCORT.cohort<- matrix(c('Corticosteroid Use (%)', BCORT_trtd, BCORT_plac, BCORT_total), ncol = 4)
 
 BL_BMI.cohort.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR, BL_BMI)))
 BL_BMI.total.mean<-signif(mean(BL_BMI.cohort.data$BL_BMI), digits = 2)
 BL_BMI.total.sd<-signif(sd(BL_BMI.cohort.data$BL_BMI), digits = 2)
-BL_BMI_total<-toString(c(BL_BMI.total.mean, "(", BL_BMI.total.sd, ")"))
+BL_BMI_total<-toString(c(BL_BMI.total.mean, " ± ", BL_BMI.total.sd))
 BL_BMI_total<-gsub(",", "", BL_BMI_total)
-BL_BMI_total<-gsub(" ", "", BL_BMI_total)
+#BL_BMI_total<-gsub(" ", "", BL_BMI_total)
 
 BL_BMI.trtd<-BL_BMI.cohort.data[BL_BMI.cohort.data$TRTGR=="Treated",]
 BL_BMI.trtd.mean<-signif(mean(BL_BMI.trtd$BL_BMI), digits = 2)
 BL_BMI.trtd.sd<-signif(sd(BL_BMI.trtd$BL_BMI), digits = 2)
-BL_BMI_trtd<-toString(c(BL_BMI.trtd.mean, "(", BL_BMI.trtd.sd, ")"))
+BL_BMI_trtd<-toString(c(BL_BMI.trtd.mean, " ± ", BL_BMI.trtd.sd))
 BL_BMI_trtd<-gsub(",", "", BL_BMI_trtd)
-BL_BMI_trtd<-gsub(" ", "", BL_BMI_trtd)
+#BL_BMI_trtd<-gsub(" ", "", BL_BMI_trtd)
 
 BL_BMI.plac<-BL_BMI.cohort.data[BL_BMI.cohort.data$TRTGR=="Placebo",]
 BL_BMI.plac.mean<-signif(mean(BL_BMI.plac$BL_BMI), digits = 2)
 BL_BMI.plac.sd<-signif(sd(BL_BMI.plac$BL_BMI), digits = 2)
-BL_BMI_plac<-toString(c(BL_BMI.plac.mean, "(", BL_BMI.plac.sd, ")"))
+BL_BMI_plac<-toString(c(BL_BMI.plac.mean, " ± ", BL_BMI.plac.sd))
 BL_BMI_plac<-gsub(",", "", BL_BMI_plac)
-BL_BMI_plac<-gsub(" ", "", BL_BMI_plac)
+#BL_BMI_plac<-gsub(" ", "", BL_BMI_plac)
 
-BL_BMI.cohort<- matrix(c('BMI', BL_BMI_trtd, BL_BMI_plac, BL_BMI_total), ncol = 4)
+BL_BMI.cohort<- matrix(c('BMI (kg/m^2)', BL_BMI_trtd, BL_BMI_plac, BL_BMI_total), ncol = 4)
 
 
 DDUR.cohort.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR, DDUR)))
 DDUR.total.mean<-signif(mean(DDUR.cohort.data$DDUR), digits = 2)
 DDUR.total.sd<-signif(sd(DDUR.cohort.data$DDUR), digits = 2)
-DDUR_total<-toString(c(DDUR.total.mean, "(", DDUR.total.sd, ")"))
+DDUR_total<-toString(c(DDUR.total.mean, " ± ", DDUR.total.sd))
 DDUR_total<-gsub(",", "", DDUR_total)
-DDUR_total<-gsub(" ", "", DDUR_total)
+#DDUR_total<-gsub(" ", "", DDUR_total)
 
 DDUR.trtd<-DDUR.cohort.data[DDUR.cohort.data$TRTGR=="Treated",]
 DDUR.trtd.mean<-signif(mean(DDUR.trtd$DDUR), digits = 2)
 DDUR.trtd.sd<-signif(sd(DDUR.trtd$DDUR), digits = 2)
-DDUR_trtd<-toString(c(DDUR.trtd.mean, "(", DDUR.trtd.sd, ")"))
+DDUR_trtd<-toString(c(DDUR.trtd.mean, " ± ", DDUR.trtd.sd))
 DDUR_trtd<-gsub(",", "", DDUR_trtd)
-DDUR_trtd<-gsub(" ", "", DDUR_trtd)
+#DDUR_trtd<-gsub(" ", "", DDUR_trtd)
 
 DDUR.plac<-DDUR.cohort.data[DDUR.cohort.data$TRTGR=="Placebo",]
 DDUR.plac.mean<-signif(mean(DDUR.plac$DDUR), digits = 2)
 DDUR.plac.sd<-signif(sd(DDUR.plac$DDUR), digits = 2)
-DDUR_plac<-toString(c(DDUR.plac.mean, "(", DDUR.plac.sd, ")"))
+DDUR_plac<-toString(c(DDUR.plac.mean, " ± ", DDUR.plac.sd))
 DDUR_plac<-gsub(",", "", DDUR_plac)
-DDUR_plac<-gsub(" ", "", DDUR_plac)
+#DDUR_plac<-gsub(" ", "", DDUR_plac)
 
 DDUR.cohort<- matrix(c('Disease Duration (years)', DDUR_trtd, DDUR_plac, DDUR_total), ncol = 4)
 
 cdail_wk0.cohort.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR, cdail_wk0)))
 cdail_wk0.total.mean<-signif(mean(cdail_wk0.cohort.data$cdail_wk0), digits = 2)
 cdail_wk0.total.sd<-signif(sd(cdail_wk0.cohort.data$cdail_wk0), digits = 2)
-cdail_wk0_total<-toString(c(cdail_wk0.total.mean, "(", cdail_wk0.total.sd, ")"))
+cdail_wk0_total<-toString(c(cdail_wk0.total.mean, " ± ", cdail_wk0.total.sd))
 cdail_wk0_total<-gsub(",", "", cdail_wk0_total)
-cdail_wk0_total<-gsub(" ", "", cdail_wk0_total)
+#cdail_wk0_total<-gsub(" ", "", cdail_wk0_total)
 
 cdail_wk0.trtd<-cdail_wk0.cohort.data[cdail_wk0.cohort.data$TRTGR=="Treated",]
 cdail_wk0.trtd.mean<-signif(mean(cdail_wk0.trtd$cdail_wk0), digits = 2)
 cdail_wk0.trtd.sd<-signif(sd(cdail_wk0.trtd$cdail_wk0), digits = 2)
-cdail_wk0_trtd<-toString(c(cdail_wk0.trtd.mean, "(", cdail_wk0.trtd.sd, ")"))
+cdail_wk0_trtd<-toString(c(cdail_wk0.trtd.mean, " ± ", cdail_wk0.trtd.sd))
 cdail_wk0_trtd<-gsub(",", "", cdail_wk0_trtd)
-cdail_wk0_trtd<-gsub(" ", "", cdail_wk0_trtd)
+#cdail_wk0_trtd<-gsub(" ", "", cdail_wk0_trtd)
 
 cdail_wk0.plac<-cdail_wk0.cohort.data[cdail_wk0.cohort.data$TRTGR=="Placebo",]
 cdail_wk0.plac.mean<-signif(mean(cdail_wk0.plac$cdail_wk0), digits = 2)
 cdail_wk0.plac.sd<-signif(sd(cdail_wk0.plac$cdail_wk0), digits = 2)
-cdail_wk0_plac<-toString(c(cdail_wk0.plac.mean, "(", cdail_wk0.plac.sd, ")"))
+cdail_wk0_plac<-toString(c(cdail_wk0.plac.mean, " ± ", cdail_wk0.plac.sd))
 cdail_wk0_plac<-gsub(",", "", cdail_wk0_plac)
-cdail_wk0_plac<-gsub(" ", "", cdail_wk0_plac)
+#cdail_wk0_plac<-gsub(" ", "", cdail_wk0_plac)
 
-cdail_wk0.cohort<- matrix(c('CDAI mean(sd)', cdail_wk0_trtd, cdail_wk0_plac, cdail_wk0_total), ncol = 4)
+cdail_wk0.cohort<- matrix(c('CDAI', cdail_wk0_trtd, cdail_wk0_plac, cdail_wk0_total), ncol = 4)
 
 BOWSTRICT.cohort.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR, BOWSTRICT)))
 n.YesBOWSTRICT.total<-nrow(BOWSTRICT.cohort.data[BOWSTRICT.cohort.data$BOWSTRICT=="Strict_stenosis",])
@@ -906,7 +919,7 @@ n.YesBOWSTRICT.total
 n.NoBOWSTRICT.total<-nrow(BOWSTRICT.cohort.data[BOWSTRICT.cohort.data$BOWSTRICT=="Other",])
 n.NoBOWSTRICT.total
 
-BOWSTRICT_total<-toString(c(n.YesBOWSTRICT.total, "(", n.NoBOWSTRICT.total, ")"))
+BOWSTRICT_total<-toString(c(signif(n.YesBOWSTRICT.total/(n.YesBOWSTRICT.total+n.NoBOWSTRICT.total)*100, 3)))
 BOWSTRICT_total<-gsub(",", "", BOWSTRICT_total)
 BOWSTRICT_total<-gsub(" ", "", BOWSTRICT_total)
 
@@ -915,7 +928,7 @@ n.YesBOWSTRICT.trtd<-nrow(BOWSTRICT.trtd[BOWSTRICT.trtd$BOWSTRICT=="Strict_steno
 n.YesBOWSTRICT.trtd
 n.NoBOWSTRICT.trtd<-nrow(BOWSTRICT.trtd[BOWSTRICT.trtd$BOWSTRICT=="Other",])
 n.NoBOWSTRICT.trtd
-BOWSTRICT_trtd<-toString(c(n.YesBOWSTRICT.trtd, "(", n.NoBOWSTRICT.trtd, ")"))
+BOWSTRICT_trtd<-toString(c(signif(n.YesBOWSTRICT.trtd/(n.YesBOWSTRICT.trtd+n.NoBOWSTRICT.trtd)*100, 3)))
 BOWSTRICT_trtd<-gsub(",", "", BOWSTRICT_trtd)
 BOWSTRICT_trtd<-gsub(" ", "", BOWSTRICT_trtd)
 
@@ -925,19 +938,19 @@ n.YesBOWSTRICT.plac<-nrow(BOWSTRICT.plac[BOWSTRICT.plac$BOWSTRICT=="Strict_steno
 n.YesBOWSTRICT.plac
 n.NoBOWSTRICT.plac<-nrow(BOWSTRICT.plac[BOWSTRICT.plac$BOWSTRICT=="Other",])
 n.NoBOWSTRICT.plac
-BOWSTRICT_plac<-toString(c(n.YesBOWSTRICT.plac, "(", n.NoBOWSTRICT.plac, ")"))
+BOWSTRICT_plac<-toString(c(signif(n.YesBOWSTRICT.plac/(n.YesBOWSTRICT.plac+n.NoBOWSTRICT.plac)*100, 3)))
 BOWSTRICT_plac<-gsub(",", "", BOWSTRICT_plac)
 BOWSTRICT_plac<-gsub(" ", "", BOWSTRICT_plac)
 
-BOWSTRICT.cohort<- matrix(c('Bowel Stricture Yes(No)', BOWSTRICT_trtd, BOWSTRICT_plac, BOWSTRICT_total), ncol = 4)
+BOWSTRICT.cohort<- matrix(c('Bowel Stricture (%)', BOWSTRICT_trtd, BOWSTRICT_plac, BOWSTRICT_total), ncol = 4)
 
 tissinvol.cohort.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR, tissinvol)))
 n.Colon.total<-nrow(tissinvol.cohort.data[tissinvol.cohort.data$tissinvol=="Colon",])
-n.Colon.total
+n.Colon.total <- signif(n.Colon.total/N_total*100, 3)
 n.Colon_Ileum.total<-nrow(tissinvol.cohort.data[tissinvol.cohort.data$tissinvol=="Colon_Ileum",])
-n.Colon_Ileum.total
+n.Colon_Ileum.total <- signif(n.Colon_Ileum.total/N_total*100, 3)
 n.Ileum.total<-nrow(tissinvol.cohort.data[tissinvol.cohort.data$tissinvol=="Ileum",])
-n.Ileum.total
+n.Ileum.total <- signif(n.Ileum.total/N_total*100,3)
 
 
 tissinvol_total<-toString(c(n.Colon.total, "/", n.Colon_Ileum.total, "/", n.Ileum.total))
@@ -946,11 +959,11 @@ tissinvol_total<-gsub(" ", "", tissinvol_total)
 
 tissinvol.trtd<-tissinvol.cohort.data[tissinvol.cohort.data$TRTGR=="Treated",]
 n.Colon.trtd<-nrow(tissinvol.trtd[tissinvol.trtd$tissinvol=="Colon",])
-n.Colon.trtd
+n.Colon.trtd <- signif(n.Colon.trtd/N_trtd*100, 3)
 n.Colon_Ileum.trtd<-nrow(tissinvol.trtd[tissinvol.trtd$tissinvol=="Colon_Ileum",])
-n.Colon_Ileum.trtd
+n.Colon_Ileum.trtd <- signif(n.Colon_Ileum.trtd/N_trtd*100, 3)
 n.Ileum.trtd<-nrow(tissinvol.trtd[tissinvol.trtd$tissinvol=="Ileum",])
-n.Ileum.trtd
+n.Ileum.trtd <- signif(n.Ileum.trtd/N_trtd*100, 3)
 
 tissinvol_trtd<-toString(c(n.Colon.trtd, "/", n.Colon_Ileum.trtd, "/", n.Ileum.trtd))
 tissinvol_trtd<-gsub(",", "", tissinvol_trtd)
@@ -958,145 +971,36 @@ tissinvol_trtd<-gsub(" ", "", tissinvol_trtd)
 
 tissinvol.plac<-tissinvol.cohort.data[tissinvol.cohort.data$TRTGR=="Placebo",]
 n.Colon.plac<-nrow(tissinvol.plac[tissinvol.plac$tissinvol=="Colon",])
-n.Colon.plac
+n.Colon.plac <- signif(n.Colon.plac/N_plac*100, 3)
 n.Colon_Ileum.plac<-nrow(tissinvol.plac[tissinvol.plac$tissinvol=="Colon_Ileum",])
-n.Colon_Ileum.plac
+n.Colon_Ileum.plac <- signif(n.Colon_Ileum.plac/N_plac*100, 3)
 n.Ileum.plac<-nrow(tissinvol.plac[tissinvol.plac$tissinvol=="Ileum",])
-n.Ileum.plac
+n.Ileum.plac <- signif(n.Ileum.plac/N_plac*100, 3)
 
 
 tissinvol_plac<-toString(c(n.Colon.plac, "/", n.Colon_Ileum.plac, "/", n.Ileum.plac))
 tissinvol_plac<-gsub(",", "", tissinvol_plac)
 tissinvol_plac<-gsub(" ", "", tissinvol_plac)
 
-tissinvol.cohort<- matrix(c('Tissue Involvement \nColon/Ileocolic/Ileal', tissinvol_trtd, tissinvol_plac, tissinvol_total), ncol = 4)
+tissinvol.cohort<- matrix(c('Tissue Involvement (%) \nColon/Ileocolic/Ileal', tissinvol_trtd, tissinvol_plac, tissinvol_total), ncol = 4)
 ```
 
 
 ```{r wk6-diversity, include=F}
-set.seed(32016)
-all.RESPONSEwk6.wilcox.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, RESPONSEwk6)))
-all.n.YesRESPONSEwk6.wilcoxtest<-nrow(all.RESPONSEwk6.wilcox.test.data[all.RESPONSEwk6.wilcox.test.data$RESPONSEwk6=="Yes",])
-all.n.YesRESPONSEwk6.wilcoxtest
-all.n.NoRESPONSEwk6.wilcoxtest<-nrow(all.RESPONSEwk6.wilcox.test.data[all.RESPONSEwk6.wilcox.test.data$RESPONSEwk6=="No",])
-all.n.NoRESPONSEwk6.wilcoxtest
-all.wilcox.RESPONSEwk6<-wilcox.test(invsimpson ~ RESPONSEwk6, all.RESPONSEwk6.wilcox.test.data)
-all.wilcox.RESPONSEwk6
-all.wilcox.RESPONSEwk6.pval<-signif(all.wilcox.RESPONSEwk6$p.value, digits = 2)
-all.wilcox.RESPONSEwk6.pval
-
-set.seed(32016)
-all.RESPONSEwk6.adonis<-adonis(nao.screen.all.dist ~ RESPONSEwk6, nao.screen_data)
-all.RESPONSEwk6.adonis
-all.RESPONSEwk6.adonis.pval<-signif(as.numeric(na.omit(all.RESPONSEwk6.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
-all.YesRESPONSEwk6<-toString(c(all.n.YesRESPONSEwk6.wilcoxtest))
-all.YesRESPONSEwk6<-gsub(",", "", all.YesRESPONSEwk6)
-all.YesRESPONSEwk6<-gsub(" ", "", all.YesRESPONSEwk6)
-all.NoRESPONSEwk6<-toString(c(all.n.NoRESPONSEwk6.wilcoxtest))
-all.NoRESPONSEwk6<-gsub(",", "", all.NoRESPONSEwk6)
-all.NoRESPONSEwk6<-gsub(" ", "", all.NoRESPONSEwk6)
-
-all.RESPONSEwk6_sum<-toString(c(all.NoRESPONSEwk6, all.YesRESPONSEwk6))
-all.RESPONSEwk6_wilcox_P<-toString(c(all.wilcox.RESPONSEwk6.pval))
-all.RESPONSEwk6_wilcox_P<-gsub(",", "", all.RESPONSEwk6_wilcox_P)
-all.RESPONSEwk6_wilcox_P<-gsub(" ", "", all.RESPONSEwk6_wilcox_P)
-
-
-all.RESPONSEwk6_AMOVA_p<-toString(c(all.RESPONSEwk6.adonis.pval))
-all.RESPONSEwk6_AMOVA_p<-gsub(",", "", all.RESPONSEwk6_AMOVA_p)
-all.RESPONSEwk6_AMOVA_p<-gsub(" ", "", all.RESPONSEwk6_AMOVA_p)
-all.RESPONSEwk6_AMOVA<-toString(c(all.RESPONSEwk6_AMOVA_p))
-all.RESPONSEwk6_AMOVA<-gsub(",", "", all.RESPONSEwk6_AMOVA)
-all.RESPONSEwk6<-matrix(c('RESPONSEwk6', all.RESPONSEwk6_sum, all.RESPONSEwk6_wilcox_P, all.RESPONSEwk6_AMOVA), ncol = 4)
-
-set.seed(32016)
-trtd.RESPONSEwk6.wilcox.test.data<-na.omit(subset(nao.screen.trtd, select= c(group, invsimpson, RESPONSEwk6)))
-trtd.n.YesRESPONSEwk6.wilcoxtest<-nrow(trtd.RESPONSEwk6.wilcox.test.data[trtd.RESPONSEwk6.wilcox.test.data$RESPONSEwk6=="Yes",])
-trtd.n.YesRESPONSEwk6.wilcoxtest
-trtd.n.NoRESPONSEwk6.wilcoxtest<-nrow(trtd.RESPONSEwk6.wilcox.test.data[trtd.RESPONSEwk6.wilcox.test.data$RESPONSEwk6=="No",])
-trtd.n.NoRESPONSEwk6.wilcoxtest
-trtd.wilcox.RESPONSEwk6<-wilcox.test(invsimpson ~ RESPONSEwk6, trtd.RESPONSEwk6.wilcox.test.data)
-trtd.wilcox.RESPONSEwk6
-trtd.wilcox.RESPONSEwk6.pval<-signif(trtd.wilcox.RESPONSEwk6$p.value, digits = 2)
-trtd.wilcox.RESPONSEwk6.pval
-
-set.seed(32016)
-trtd.RESPONSEwk6.adonis<-adonis(nao.screen.trtd.dist ~ RESPONSEwk6, nao.screen.trtd)
-trtd.RESPONSEwk6.adonis
-trtd.RESPONSEwk6.adonis.pval<-signif(as.numeric(na.omit(trtd.RESPONSEwk6.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
-trtd.YesRESPONSEwk6<-toString(c(trtd.n.YesRESPONSEwk6.wilcoxtest))
-trtd.YesRESPONSEwk6<-gsub(",", "", trtd.YesRESPONSEwk6)
-trtd.YesRESPONSEwk6<-gsub(" ", "", trtd.YesRESPONSEwk6)
-trtd.NoRESPONSEwk6<-toString(c(trtd.n.NoRESPONSEwk6.wilcoxtest))
-trtd.NoRESPONSEwk6<-gsub(",", "", trtd.NoRESPONSEwk6)
-trtd.NoRESPONSEwk6<-gsub(" ", "", trtd.NoRESPONSEwk6)
-
-trtd.RESPONSEwk6_sum<-toString(c(trtd.NoRESPONSEwk6, trtd.YesRESPONSEwk6))
-trtd.RESPONSEwk6_wilcox_P<-toString(c(trtd.wilcox.RESPONSEwk6.pval))
-trtd.RESPONSEwk6_wilcox_P<-gsub(",", "", trtd.RESPONSEwk6_wilcox_P)
-trtd.RESPONSEwk6_wilcox_P<-gsub(" ", "", trtd.RESPONSEwk6_wilcox_P)
-
-
-trtd.RESPONSEwk6_AMOVA_p<-toString(c(trtd.RESPONSEwk6.adonis.pval))
-trtd.RESPONSEwk6_AMOVA_p<-gsub(",", "", trtd.RESPONSEwk6_AMOVA_p)
-trtd.RESPONSEwk6_AMOVA_p<-gsub(" ", "", trtd.RESPONSEwk6_AMOVA_p)
-trtd.RESPONSEwk6_AMOVA<-toString(c(trtd.RESPONSEwk6_AMOVA_p))
-trtd.RESPONSEwk6_AMOVA<-gsub(",", "", trtd.RESPONSEwk6_AMOVA)
-trtd.RESPONSEwk6<-matrix(c('Treated', trtd.RESPONSEwk6_sum, trtd.RESPONSEwk6_wilcox_P, trtd.RESPONSEwk6_AMOVA), ncol = 4)
-
-set.seed(32016)
-plac.RESPONSEwk6.wilcox.test.data<-na.omit(subset(nao.screen.plac, select= c(group, invsimpson, RESPONSEwk6)))
-plac.n.YesRESPONSEwk6.wilcoxtest<-nrow(plac.RESPONSEwk6.wilcox.test.data[plac.RESPONSEwk6.wilcox.test.data$RESPONSEwk6=="Yes",])
-plac.n.YesRESPONSEwk6.wilcoxtest
-plac.n.NoRESPONSEwk6.wilcoxtest<-nrow(plac.RESPONSEwk6.wilcox.test.data[plac.RESPONSEwk6.wilcox.test.data$RESPONSEwk6=="No",])
-plac.n.NoRESPONSEwk6.wilcoxtest
-plac.wilcox.RESPONSEwk6<-wilcox.test(invsimpson ~ RESPONSEwk6, plac.RESPONSEwk6.wilcox.test.data)
-plac.wilcox.RESPONSEwk6
-plac.wilcox.RESPONSEwk6.pval<-signif(plac.wilcox.RESPONSEwk6$p.value, digits = 2)
-plac.wilcox.RESPONSEwk6.pval
-
-set.seed(32016)
-plac.RESPONSEwk6.adonis<-adonis(nao.screen.plac.dist ~ RESPONSEwk6, nao.screen.plac)
-plac.RESPONSEwk6.adonis
-plac.RESPONSEwk6.adonis.pval<-signif(as.numeric(na.omit(plac.RESPONSEwk6.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
-plac.YesRESPONSEwk6<-toString(c(plac.n.YesRESPONSEwk6.wilcoxtest))
-plac.YesRESPONSEwk6<-gsub(",", "", plac.YesRESPONSEwk6)
-plac.YesRESPONSEwk6<-gsub(" ", "", plac.YesRESPONSEwk6)
-plac.NoRESPONSEwk6<-toString(c(plac.n.NoRESPONSEwk6.wilcoxtest))
-plac.NoRESPONSEwk6<-gsub(",", "", plac.NoRESPONSEwk6)
-plac.NoRESPONSEwk6<-gsub(" ", "", plac.NoRESPONSEwk6)
-
-plac.RESPONSEwk6_sum<-toString(c(plac.NoRESPONSEwk6, plac.YesRESPONSEwk6))
-plac.RESPONSEwk6_wilcox_P<-toString(c(plac.wilcox.RESPONSEwk6.pval))
-plac.RESPONSEwk6_wilcox_P<-gsub(",", "", plac.RESPONSEwk6_wilcox_P)
-plac.RESPONSEwk6_wilcox_P<-gsub(" ", "", plac.RESPONSEwk6_wilcox_P)
-
-
-plac.RESPONSEwk6_AMOVA_p<-toString(c(plac.RESPONSEwk6.adonis.pval))
-plac.RESPONSEwk6_AMOVA_p<-gsub(",", "", plac.RESPONSEwk6_AMOVA_p)
-plac.RESPONSEwk6_AMOVA_p<-gsub(" ", "", plac.RESPONSEwk6_AMOVA_p)
-plac.RESPONSEwk6_AMOVA<-toString(c(plac.RESPONSEwk6_AMOVA_p))
-plac.RESPONSEwk6_AMOVA<-gsub(",", "", plac.RESPONSEwk6_AMOVA)
-plac.RESPONSEwk6<-matrix(c('Placebo', plac.RESPONSEwk6_sum, plac.RESPONSEwk6_wilcox_P, plac.RESPONSEwk6_AMOVA), ncol = 4)
-
-
-
 set.seed(32016)
 all.RelRSPwk6.wilcox.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, RelRSPwk6)))
 all.n.YesRelRSPwk6.wilcoxtest<-nrow(all.RelRSPwk6.wilcox.test.data[all.RelRSPwk6.wilcox.test.data$RelRSPwk6=="Yes",])
 all.n.YesRelRSPwk6.wilcoxtest
 all.n.NoRelRSPwk6.wilcoxtest<-nrow(all.RelRSPwk6.wilcox.test.data[all.RelRSPwk6.wilcox.test.data$RelRSPwk6=="No",])
 all.n.NoRelRSPwk6.wilcoxtest
-all.wilcox.RelRSPwk6<-wilcox.test(invsimpson ~ RelRSPwk6, all.RelRSPwk6.wilcox.test.data)
-all.wilcox.RelRSPwk6
-all.wilcox.RelRSPwk6.pval<-signif(all.wilcox.RelRSPwk6$p.value, digits = 2)
-all.wilcox.RelRSPwk6.pval
+
+all.RelRSPwk6.kw.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, RelRSPwk6, TRTGR)))
+all.RelRSPwk6.kw.test.data$rRSPwk6TRTGR <- as.factor(paste(all.RelRSPwk6.kw.test.data$RelRSPwk6, all.RelRSPwk6.kw.test.data$TRTGR, sep = "_"))
+all.RelRSPwk6.kw.test <- kruskal.test(all.RelRSPwk6.kw.test.data$invsimpson ~ all.RelRSPwk6.kw.test.data$rRSPwk6TRTGR, all.RelRSPwk6.kw.test.data)
+all.RelRSPwk6.kw.test.pval <- all.RelRSPwk6.kw.test$p.value
 
 set.seed(32016)
-all.RelRSPwk6.adonis<-adonis(nao.screen.all.dist ~ RelRSPwk6, nao.screen_data)
+all.RelRSPwk6.adonis<-adonis(nao.screen.all.dist ~ RelRSPwk6, nao.screen_data, strata=nao.screen_data$TRTGR)
 all.RelRSPwk6.adonis
 all.RelRSPwk6.adonis.pval<-signif(as.numeric(na.omit(all.RelRSPwk6.adonis$aov.tab$`Pr(>F)`)), digits = 2)
 
@@ -1108,33 +1012,12 @@ all.NoRelRSPwk6<-gsub(",", "", all.NoRelRSPwk6)
 all.NoRelRSPwk6<-gsub(" ", "", all.NoRelRSPwk6)
 
 all.RelRSPwk6_sum<-toString(c(all.NoRelRSPwk6, all.YesRelRSPwk6))
-all.RelRSPwk6_wilcox_P<-toString(c(all.wilcox.RelRSPwk6.pval))
-all.RelRSPwk6_wilcox_P<-gsub(",", "", all.RelRSPwk6_wilcox_P)
-all.RelRSPwk6_wilcox_P<-gsub(" ", "", all.RelRSPwk6_wilcox_P)
 
-
-all.RelRSPwk6_AMOVA_p<-toString(c(all.RelRSPwk6.adonis.pval))
-all.RelRSPwk6_AMOVA_p<-gsub(",", "", all.RelRSPwk6_AMOVA_p)
-all.RelRSPwk6_AMOVA_p<-gsub(" ", "", all.RelRSPwk6_AMOVA_p)
-all.RelRSPwk6_AMOVA<-toString(c(all.RelRSPwk6_AMOVA_p))
-all.RelRSPwk6_AMOVA<-gsub(",", "", all.RelRSPwk6_AMOVA)
-all.RelRSPwk6<-matrix(c('Week 6 Response (Yes, No)', all.RelRSPwk6_sum, all.RelRSPwk6_wilcox_P, all.RelRSPwk6_AMOVA), ncol = 4)
-
-set.seed(32016)
 trtd.RelRSPwk6.wilcox.test.data<-na.omit(subset(nao.screen.trtd, select= c(group, invsimpson, RelRSPwk6)))
 trtd.n.YesRelRSPwk6.wilcoxtest<-nrow(trtd.RelRSPwk6.wilcox.test.data[trtd.RelRSPwk6.wilcox.test.data$RelRSPwk6=="Yes",])
 trtd.n.YesRelRSPwk6.wilcoxtest
 trtd.n.NoRelRSPwk6.wilcoxtest<-nrow(trtd.RelRSPwk6.wilcox.test.data[trtd.RelRSPwk6.wilcox.test.data$RelRSPwk6=="No",])
 trtd.n.NoRelRSPwk6.wilcoxtest
-trtd.wilcox.RelRSPwk6<-wilcox.test(invsimpson ~ RelRSPwk6, trtd.RelRSPwk6.wilcox.test.data)
-trtd.wilcox.RelRSPwk6
-trtd.wilcox.RelRSPwk6.pval<-signif(trtd.wilcox.RelRSPwk6$p.value, digits = 2)
-trtd.wilcox.RelRSPwk6.pval
-
-set.seed(32016)
-trtd.RelRSPwk6.adonis<-adonis(nao.screen.trtd.dist ~ RelRSPwk6, nao.screen.trtd)
-trtd.RelRSPwk6.adonis
-trtd.RelRSPwk6.adonis.pval<-signif(as.numeric(na.omit(trtd.RelRSPwk6.adonis$aov.tab$`Pr(>F)`)), digits = 2)
 
 trtd.YesRelRSPwk6<-toString(c(trtd.n.YesRelRSPwk6.wilcoxtest))
 trtd.YesRelRSPwk6<-gsub(",", "", trtd.YesRelRSPwk6)
@@ -1144,33 +1027,12 @@ trtd.NoRelRSPwk6<-gsub(",", "", trtd.NoRelRSPwk6)
 trtd.NoRelRSPwk6<-gsub(" ", "", trtd.NoRelRSPwk6)
 
 trtd.RelRSPwk6_sum<-toString(c(trtd.NoRelRSPwk6, trtd.YesRelRSPwk6))
-trtd.RelRSPwk6_wilcox_P<-toString(c(trtd.wilcox.RelRSPwk6.pval))
-trtd.RelRSPwk6_wilcox_P<-gsub(",", "", trtd.RelRSPwk6_wilcox_P)
-trtd.RelRSPwk6_wilcox_P<-gsub(" ", "", trtd.RelRSPwk6_wilcox_P)
 
-
-trtd.RelRSPwk6_AMOVA_p<-toString(c(trtd.RelRSPwk6.adonis.pval))
-trtd.RelRSPwk6_AMOVA_p<-gsub(",", "", trtd.RelRSPwk6_AMOVA_p)
-trtd.RelRSPwk6_AMOVA_p<-gsub(" ", "", trtd.RelRSPwk6_AMOVA_p)
-trtd.RelRSPwk6_AMOVA<-toString(c(trtd.RelRSPwk6_AMOVA_p))
-trtd.RelRSPwk6_AMOVA<-gsub(",", "", trtd.RelRSPwk6_AMOVA)
-trtd.RelRSPwk6<-matrix(c('Treated', trtd.RelRSPwk6_sum, trtd.RelRSPwk6_wilcox_P, trtd.RelRSPwk6_AMOVA), ncol = 4)
-
-set.seed(32016)
 plac.RelRSPwk6.wilcox.test.data<-na.omit(subset(nao.screen.plac, select= c(group, invsimpson, RelRSPwk6)))
 plac.n.YesRelRSPwk6.wilcoxtest<-nrow(plac.RelRSPwk6.wilcox.test.data[plac.RelRSPwk6.wilcox.test.data$RelRSPwk6=="Yes",])
 plac.n.YesRelRSPwk6.wilcoxtest
 plac.n.NoRelRSPwk6.wilcoxtest<-nrow(plac.RelRSPwk6.wilcox.test.data[plac.RelRSPwk6.wilcox.test.data$RelRSPwk6=="No",])
 plac.n.NoRelRSPwk6.wilcoxtest
-plac.wilcox.RelRSPwk6<-wilcox.test(invsimpson ~ RelRSPwk6, plac.RelRSPwk6.wilcox.test.data)
-plac.wilcox.RelRSPwk6
-plac.wilcox.RelRSPwk6.pval<-signif(plac.wilcox.RelRSPwk6$p.value, digits = 2)
-plac.wilcox.RelRSPwk6.pval
-
-set.seed(32016)
-plac.RelRSPwk6.adonis<-adonis(nao.screen.plac.dist ~ RelRSPwk6, nao.screen.plac)
-plac.RelRSPwk6.adonis
-plac.RelRSPwk6.adonis.pval<-signif(as.numeric(na.omit(plac.RelRSPwk6.adonis$aov.tab$`Pr(>F)`)), digits = 2)
 
 plac.YesRelRSPwk6<-toString(c(plac.n.YesRelRSPwk6.wilcoxtest))
 plac.YesRelRSPwk6<-gsub(",", "", plac.YesRelRSPwk6)
@@ -1180,22 +1042,25 @@ plac.NoRelRSPwk6<-gsub(",", "", plac.NoRelRSPwk6)
 plac.NoRelRSPwk6<-gsub(" ", "", plac.NoRelRSPwk6)
 
 plac.RelRSPwk6_sum<-toString(c(plac.NoRelRSPwk6, plac.YesRelRSPwk6))
-plac.RelRSPwk6_wilcox_P<-toString(c(plac.wilcox.RelRSPwk6.pval))
-plac.RelRSPwk6_wilcox_P<-gsub(",", "", plac.RelRSPwk6_wilcox_P)
-plac.RelRSPwk6_wilcox_P<-gsub(" ", "", plac.RelRSPwk6_wilcox_P)
 
-
-plac.RelRSPwk6_AMOVA_p<-toString(c(plac.RelRSPwk6.adonis.pval))
-plac.RelRSPwk6_AMOVA_p<-gsub(",", "", plac.RelRSPwk6_AMOVA_p)
-plac.RelRSPwk6_AMOVA_p<-gsub(" ", "", plac.RelRSPwk6_AMOVA_p)
-plac.RelRSPwk6_AMOVA<-toString(c(plac.RelRSPwk6_AMOVA_p))
-plac.RelRSPwk6_AMOVA<-gsub(",", "", plac.RelRSPwk6_AMOVA)
-plac.RelRSPwk6<-matrix(c('Placebo', plac.RelRSPwk6_sum, plac.RelRSPwk6_wilcox_P, plac.RelRSPwk6_AMOVA), ncol = 4)
-
-
+all.RelRSPwk6_AMOVA_p<-toString(c(all.RelRSPwk6.adonis.pval))
+all.RelRSPwk6_AMOVA_p<-gsub(",", "", all.RelRSPwk6_AMOVA_p)
+all.RelRSPwk6_AMOVA_p<-gsub(" ", "", all.RelRSPwk6_AMOVA_p)
+all.RelRSPwk6_AMOVA<-toString(c(all.RelRSPwk6_AMOVA_p))
+all.RelRSPwk6_AMOVA<-gsub(",", "", all.RelRSPwk6_AMOVA)
+all.RelRSPwk6<-matrix(c('Week 6 Response (No, Yes)', trtd.RelRSPwk6_sum, plac.RelRSPwk6_sum, all.RelRSPwk6.kw.test.pval, all.RelRSPwk6_AMOVA), ncol = 5)
 
 set.seed(32016)
 all.REMISSwk6.wilcox.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, REMISSwk6)))
+
+all.REMISSwk6.kw.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, REMISSwk6, TRTGR)))
+all.REMISSwk6.kw.test.data$REMwk6TRTGR <- as.factor(paste(all.REMISSwk6.kw.test.data$REMISSwk6, all.REMISSwk6.kw.test.data$TRTGR, sep = "_"))
+all.REMISSwk6.kw.test <- kruskal.test(all.REMISSwk6.kw.test.data$invsimpson ~ all.REMISSwk6.kw.test.data$REMwk6TRTGR, all.REMISSwk6.kw.test.data)
+all.REMISSwk6.kw.test
+all.REMISSwk6.kw.test.pval <- all.REMISSwk6.kw.test$p.value
+all.REMISSwk6.kwmc.test <- kruskalmc(all.REMISSwk6.kw.test.data$invsimpson ~ all.REMISSwk6.kw.test.data$REMwk6TRTGR, all.REMISSwk6.kw.test.data)
+all.REMISSwk6.kwmc.test
+
 all.n.YesREMISSwk6.wilcoxtest<-nrow(all.REMISSwk6.wilcox.test.data[all.REMISSwk6.wilcox.test.data$REMISSwk6=="Yes",])
 all.n.YesREMISSwk6.wilcoxtest
 all.n.NoREMISSwk6.wilcoxtest<-nrow(all.REMISSwk6.wilcox.test.data[all.REMISSwk6.wilcox.test.data$REMISSwk6=="No",])
@@ -1206,7 +1071,7 @@ all.wilcox.REMISSwk6.pval<-signif(all.wilcox.REMISSwk6$p.value, digits = 2)
 all.wilcox.REMISSwk6.pval
 
 set.seed(32016)
-all.REMISSwk6.adonis<-adonis(nao.screen.all.dist ~ REMISSwk6, nao.screen_data)
+all.REMISSwk6.adonis<-adonis(nao.screen.all.dist ~ REMISSwk6, nao.screen_data, strata=nao.screen_data$TRTGR)
 all.REMISSwk6.adonis
 all.REMISSwk6.adonis.pval<-signif(as.numeric(na.omit(all.REMISSwk6.adonis$aov.tab$`Pr(>F)`)), digits = 2)
 
@@ -1218,34 +1083,12 @@ all.NoREMISSwk6<-gsub(",", "", all.NoREMISSwk6)
 all.NoREMISSwk6<-gsub(" ", "", all.NoREMISSwk6)
 
 all.REMISSwk6_sum<-toString(c(all.NoREMISSwk6, all.YesREMISSwk6))
-all.REMISSwk6_wilcox_P<-toString(c(all.wilcox.REMISSwk6.pval))
-all.REMISSwk6_wilcox_P<-gsub(",", "", all.REMISSwk6_wilcox_P)
-all.REMISSwk6_wilcox_P<-gsub(" ", "", all.REMISSwk6_wilcox_P)
 
-
-all.REMISSwk6_AMOVA_p<-toString(c(all.REMISSwk6.adonis.pval))
-all.REMISSwk6_AMOVA_p<-gsub(",", "", all.REMISSwk6_AMOVA_p)
-all.REMISSwk6_AMOVA_p<-gsub(" ", "", all.REMISSwk6_AMOVA_p)
-all.REMISSwk6_AMOVA<-toString(c(all.REMISSwk6_AMOVA_p))
-all.REMISSwk6_AMOVA<-gsub(",", "", all.REMISSwk6_AMOVA)
-all.REMISSwk6<-matrix(c('Week 6 Remission (Yes, No)', all.REMISSwk6_sum, all.REMISSwk6_wilcox_P, all.REMISSwk6_AMOVA), ncol = 4)
-
-set.seed(32016)
 trtd.REMISSwk6.wilcox.test.data<-na.omit(subset(nao.screen.trtd, select= c(group, invsimpson, REMISSwk6)))
 trtd.n.YesREMISSwk6.wilcoxtest<-nrow(trtd.REMISSwk6.wilcox.test.data[trtd.REMISSwk6.wilcox.test.data$REMISSwk6=="Yes",])
 trtd.n.YesREMISSwk6.wilcoxtest
 trtd.n.NoREMISSwk6.wilcoxtest<-nrow(trtd.REMISSwk6.wilcox.test.data[trtd.REMISSwk6.wilcox.test.data$REMISSwk6=="No",])
 trtd.n.NoREMISSwk6.wilcoxtest
-trtd.wilcox.REMISSwk6<-wilcox.test(invsimpson ~ REMISSwk6, trtd.REMISSwk6.wilcox.test.data)
-trtd.wilcox.REMISSwk6
-trtd.wilcox.REMISSwk6.pval<-signif(trtd.wilcox.REMISSwk6$p.value, digits = 2)
-trtd.wilcox.REMISSwk6.pval
-
-set.seed(32016)
-trtd.REMISSwk6.adonis<-adonis(nao.screen.trtd.dist ~ REMISSwk6, nao.screen.trtd)
-trtd.REMISSwk6.adonis
-trtd.REMISSwk6.adonis.pval<-signif(as.numeric(na.omit(trtd.REMISSwk6.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
 trtd.YesREMISSwk6<-toString(c(trtd.n.YesREMISSwk6.wilcoxtest))
 trtd.YesREMISSwk6<-gsub(",", "", trtd.YesREMISSwk6)
 trtd.YesREMISSwk6<-gsub(" ", "", trtd.YesREMISSwk6)
@@ -1254,34 +1097,12 @@ trtd.NoREMISSwk6<-gsub(",", "", trtd.NoREMISSwk6)
 trtd.NoREMISSwk6<-gsub(" ", "", trtd.NoREMISSwk6)
 
 trtd.REMISSwk6_sum<-toString(c(trtd.NoREMISSwk6, trtd.YesREMISSwk6))
-trtd.REMISSwk6_wilcox_P<-toString(c(trtd.wilcox.REMISSwk6.pval))
-trtd.REMISSwk6_wilcox_P<-gsub(",", "", trtd.REMISSwk6_wilcox_P)
-trtd.REMISSwk6_wilcox_P<-gsub(" ", "", trtd.REMISSwk6_wilcox_P)
 
-
-trtd.REMISSwk6_AMOVA_p<-toString(c(trtd.REMISSwk6.adonis.pval))
-trtd.REMISSwk6_AMOVA_p<-gsub(",", "", trtd.REMISSwk6_AMOVA_p)
-trtd.REMISSwk6_AMOVA_p<-gsub(" ", "", trtd.REMISSwk6_AMOVA_p)
-trtd.REMISSwk6_AMOVA<-toString(c(trtd.REMISSwk6_AMOVA_p))
-trtd.REMISSwk6_AMOVA<-gsub(",", "", trtd.REMISSwk6_AMOVA)
-trtd.REMISSwk6<-matrix(c('Treated', trtd.REMISSwk6_sum, trtd.REMISSwk6_wilcox_P, trtd.REMISSwk6_AMOVA), ncol = 4)
-
-set.seed(32016)
 plac.REMISSwk6.wilcox.test.data<-na.omit(subset(nao.screen.plac, select= c(group, invsimpson, REMISSwk6)))
 plac.n.YesREMISSwk6.wilcoxtest<-nrow(plac.REMISSwk6.wilcox.test.data[plac.REMISSwk6.wilcox.test.data$REMISSwk6=="Yes",])
 plac.n.YesREMISSwk6.wilcoxtest
 plac.n.NoREMISSwk6.wilcoxtest<-nrow(plac.REMISSwk6.wilcox.test.data[plac.REMISSwk6.wilcox.test.data$REMISSwk6=="No",])
 plac.n.NoREMISSwk6.wilcoxtest
-plac.wilcox.REMISSwk6<-wilcox.test(invsimpson ~ REMISSwk6, plac.REMISSwk6.wilcox.test.data)
-plac.wilcox.REMISSwk6
-plac.wilcox.REMISSwk6.pval<-signif(plac.wilcox.REMISSwk6$p.value, digits = 2)
-plac.wilcox.REMISSwk6.pval
-
-set.seed(32016)
-plac.REMISSwk6.adonis<-adonis(nao.screen.plac.dist ~ REMISSwk6, nao.screen.plac)
-plac.REMISSwk6.adonis
-plac.REMISSwk6.adonis.pval<-signif(as.numeric(na.omit(plac.REMISSwk6.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
 plac.YesREMISSwk6<-toString(c(plac.n.YesREMISSwk6.wilcoxtest))
 plac.YesREMISSwk6<-gsub(",", "", plac.YesREMISSwk6)
 plac.YesREMISSwk6<-gsub(" ", "", plac.YesREMISSwk6)
@@ -1290,143 +1111,28 @@ plac.NoREMISSwk6<-gsub(",", "", plac.NoREMISSwk6)
 plac.NoREMISSwk6<-gsub(" ", "", plac.NoREMISSwk6)
 
 plac.REMISSwk6_sum<-toString(c(plac.NoREMISSwk6, plac.YesREMISSwk6))
-plac.REMISSwk6_wilcox_P<-toString(c(plac.wilcox.REMISSwk6.pval))
-plac.REMISSwk6_wilcox_P<-gsub(",", "", plac.REMISSwk6_wilcox_P)
-plac.REMISSwk6_wilcox_P<-gsub(" ", "", plac.REMISSwk6_wilcox_P)
 
 
-plac.REMISSwk6_AMOVA_p<-toString(c(plac.REMISSwk6.adonis.pval))
-plac.REMISSwk6_AMOVA_p<-gsub(",", "", plac.REMISSwk6_AMOVA_p)
-plac.REMISSwk6_AMOVA_p<-gsub(" ", "", plac.REMISSwk6_AMOVA_p)
-plac.REMISSwk6_AMOVA<-toString(c(plac.REMISSwk6_AMOVA_p))
-plac.REMISSwk6_AMOVA<-gsub(",", "", plac.REMISSwk6_AMOVA)
-plac.REMISSwk6<-matrix(c('Placebo', plac.REMISSwk6_sum, plac.REMISSwk6_wilcox_P, plac.REMISSwk6_AMOVA), ncol = 4)
 
 
-all.RESPONSEwk6
-trtd.RESPONSEwk6
-plac.RESPONSEwk6
-all.RelRSPwk6
-trtd.RelRSPwk6
-plac.RelRSPwk6
-all.REMISSwk6
-trtd.REMISSwk6
-plac.REMISSwk6
+all.REMISSwk6_AMOVA_p<-toString(c(all.REMISSwk6.adonis.pval))
+all.REMISSwk6_AMOVA_p<-gsub(",", "", all.REMISSwk6_AMOVA_p)
+all.REMISSwk6_AMOVA_p<-gsub(" ", "", all.REMISSwk6_AMOVA_p)
+all.REMISSwk6_AMOVA<-toString(c(all.REMISSwk6_AMOVA_p))
+all.REMISSwk6_AMOVA<-gsub(",", "", all.REMISSwk6_AMOVA)
+all.REMISSwk6<-matrix(c('Week 6 Remission (No, Yes)', trtd.REMISSwk6_sum, plac.REMISSwk6_sum, all.REMISSwk6.kw.test.pval, all.REMISSwk6_AMOVA), ncol = 5)
 ```
 
 ```{r wk22-diversity, include=F}
 set.seed(32016)
-all.RESPONSEwk22.wilcox.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, RESPONSEwk22)))
-all.n.YesRESPONSEwk22.wilcoxtest<-nrow(all.RESPONSEwk22.wilcox.test.data[all.RESPONSEwk22.wilcox.test.data$RESPONSEwk22=="Yes",])
-all.n.YesRESPONSEwk22.wilcoxtest
-all.n.NoRESPONSEwk22.wilcoxtest<-nrow(all.RESPONSEwk22.wilcox.test.data[all.RESPONSEwk22.wilcox.test.data$RESPONSEwk22=="No",])
-all.n.NoRESPONSEwk22.wilcoxtest
-all.wilcox.RESPONSEwk22<-wilcox.test(invsimpson ~ RESPONSEwk22, all.RESPONSEwk22.wilcox.test.data)
-all.wilcox.RESPONSEwk22
-all.wilcox.RESPONSEwk22.pval<-signif(all.wilcox.RESPONSEwk22$p.value, digits = 2)
-all.wilcox.RESPONSEwk22.pval
-
-set.seed(32016)
-all.RESPONSEwk22.adonis<-adonis(nao.screen.all.dist ~ RESPONSEwk22, nao.screen_data)
-all.RESPONSEwk22.adonis
-all.RESPONSEwk22.adonis.pval<-signif(as.numeric(na.omit(all.RESPONSEwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
-all.YesRESPONSEwk22<-toString(c(all.n.YesRESPONSEwk22.wilcoxtest))
-all.YesRESPONSEwk22<-gsub(",", "", all.YesRESPONSEwk22)
-all.YesRESPONSEwk22<-gsub(" ", "", all.YesRESPONSEwk22)
-all.NoRESPONSEwk22<-toString(c(all.n.NoRESPONSEwk22.wilcoxtest))
-all.NoRESPONSEwk22<-gsub(",", "", all.NoRESPONSEwk22)
-all.NoRESPONSEwk22<-gsub(" ", "", all.NoRESPONSEwk22)
-
-all.RESPONSEwk22_sum<-toString(c(all.NoRESPONSEwk22, all.YesRESPONSEwk22))
-all.RESPONSEwk22_wilcox_P<-toString(c(all.wilcox.RESPONSEwk22.pval))
-all.RESPONSEwk22_wilcox_P<-gsub(",", "", all.RESPONSEwk22_wilcox_P)
-all.RESPONSEwk22_wilcox_P<-gsub(" ", "", all.RESPONSEwk22_wilcox_P)
-
-
-all.RESPONSEwk22_AMOVA_p<-toString(c(all.RESPONSEwk22.adonis.pval))
-all.RESPONSEwk22_AMOVA_p<-gsub(",", "", all.RESPONSEwk22_AMOVA_p)
-all.RESPONSEwk22_AMOVA_p<-gsub(" ", "", all.RESPONSEwk22_AMOVA_p)
-all.RESPONSEwk22_AMOVA<-toString(c(all.RESPONSEwk22_AMOVA_p))
-all.RESPONSEwk22_AMOVA<-gsub(",", "", all.RESPONSEwk22_AMOVA)
-all.RESPONSEwk22<-matrix(c('RESPONSEwk22', all.RESPONSEwk22_sum, all.RESPONSEwk22_wilcox_P, all.RESPONSEwk22_AMOVA), ncol = 4)
-
-set.seed(32016)
-trtd.RESPONSEwk22.wilcox.test.data<-na.omit(subset(nao.screen.trtd, select= c(group, invsimpson, RESPONSEwk22)))
-trtd.n.YesRESPONSEwk22.wilcoxtest<-nrow(trtd.RESPONSEwk22.wilcox.test.data[trtd.RESPONSEwk22.wilcox.test.data$RESPONSEwk22=="Yes",])
-trtd.n.YesRESPONSEwk22.wilcoxtest
-trtd.n.NoRESPONSEwk22.wilcoxtest<-nrow(trtd.RESPONSEwk22.wilcox.test.data[trtd.RESPONSEwk22.wilcox.test.data$RESPONSEwk22=="No",])
-trtd.n.NoRESPONSEwk22.wilcoxtest
-trtd.wilcox.RESPONSEwk22<-wilcox.test(invsimpson ~ RESPONSEwk22, trtd.RESPONSEwk22.wilcox.test.data)
-trtd.wilcox.RESPONSEwk22
-trtd.wilcox.RESPONSEwk22.pval<-signif(trtd.wilcox.RESPONSEwk22$p.value, digits = 2)
-trtd.wilcox.RESPONSEwk22.pval
-
-set.seed(32016)
-trtd.RESPONSEwk22.adonis<-adonis(nao.screen.trtd.dist ~ RESPONSEwk22, nao.screen.trtd)
-trtd.RESPONSEwk22.adonis
-trtd.RESPONSEwk22.adonis.pval<-signif(as.numeric(na.omit(trtd.RESPONSEwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
-trtd.YesRESPONSEwk22<-toString(c(trtd.n.YesRESPONSEwk22.wilcoxtest))
-trtd.YesRESPONSEwk22<-gsub(",", "", trtd.YesRESPONSEwk22)
-trtd.YesRESPONSEwk22<-gsub(" ", "", trtd.YesRESPONSEwk22)
-trtd.NoRESPONSEwk22<-toString(c(trtd.n.NoRESPONSEwk22.wilcoxtest))
-trtd.NoRESPONSEwk22<-gsub(",", "", trtd.NoRESPONSEwk22)
-trtd.NoRESPONSEwk22<-gsub(" ", "", trtd.NoRESPONSEwk22)
-
-trtd.RESPONSEwk22_sum<-toString(c(trtd.NoRESPONSEwk22, trtd.YesRESPONSEwk22))
-trtd.RESPONSEwk22_wilcox_P<-toString(c(trtd.wilcox.RESPONSEwk22.pval))
-trtd.RESPONSEwk22_wilcox_P<-gsub(",", "", trtd.RESPONSEwk22_wilcox_P)
-trtd.RESPONSEwk22_wilcox_P<-gsub(" ", "", trtd.RESPONSEwk22_wilcox_P)
-
-
-trtd.RESPONSEwk22_AMOVA_p<-toString(c(trtd.RESPONSEwk22.adonis.pval))
-trtd.RESPONSEwk22_AMOVA_p<-gsub(",", "", trtd.RESPONSEwk22_AMOVA_p)
-trtd.RESPONSEwk22_AMOVA_p<-gsub(" ", "", trtd.RESPONSEwk22_AMOVA_p)
-trtd.RESPONSEwk22_AMOVA<-toString(c(trtd.RESPONSEwk22_AMOVA_p))
-trtd.RESPONSEwk22_AMOVA<-gsub(",", "", trtd.RESPONSEwk22_AMOVA)
-trtd.RESPONSEwk22<-matrix(c('Treated', trtd.RESPONSEwk22_sum, trtd.RESPONSEwk22_wilcox_P, trtd.RESPONSEwk22_AMOVA), ncol = 4)
-
-set.seed(32016)
-plac.RESPONSEwk22.wilcox.test.data<-na.omit(subset(nao.screen.plac, select= c(group, invsimpson, RESPONSEwk22)))
-plac.n.YesRESPONSEwk22.wilcoxtest<-nrow(plac.RESPONSEwk22.wilcox.test.data[plac.RESPONSEwk22.wilcox.test.data$RESPONSEwk22=="Yes",])
-plac.n.YesRESPONSEwk22.wilcoxtest
-plac.n.NoRESPONSEwk22.wilcoxtest<-nrow(plac.RESPONSEwk22.wilcox.test.data[plac.RESPONSEwk22.wilcox.test.data$RESPONSEwk22=="No",])
-plac.n.NoRESPONSEwk22.wilcoxtest
-plac.wilcox.RESPONSEwk22<-wilcox.test(invsimpson ~ RESPONSEwk22, plac.RESPONSEwk22.wilcox.test.data)
-plac.wilcox.RESPONSEwk22
-plac.wilcox.RESPONSEwk22.pval<-signif(plac.wilcox.RESPONSEwk22$p.value, digits = 2)
-plac.wilcox.RESPONSEwk22.pval
-
-set.seed(32016)
-plac.RESPONSEwk22.adonis<-adonis(nao.screen.plac.dist ~ RESPONSEwk22, nao.screen.plac)
-plac.RESPONSEwk22.adonis
-plac.RESPONSEwk22.adonis.pval<-signif(as.numeric(na.omit(plac.RESPONSEwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
-plac.YesRESPONSEwk22<-toString(c(plac.n.YesRESPONSEwk22.wilcoxtest))
-plac.YesRESPONSEwk22<-gsub(",", "", plac.YesRESPONSEwk22)
-plac.YesRESPONSEwk22<-gsub(" ", "", plac.YesRESPONSEwk22)
-plac.NoRESPONSEwk22<-toString(c(plac.n.NoRESPONSEwk22.wilcoxtest))
-plac.NoRESPONSEwk22<-gsub(",", "", plac.NoRESPONSEwk22)
-plac.NoRESPONSEwk22<-gsub(" ", "", plac.NoRESPONSEwk22)
-
-plac.RESPONSEwk22_sum<-toString(c(plac.NoRESPONSEwk22, plac.YesRESPONSEwk22))
-plac.RESPONSEwk22_wilcox_P<-toString(c(plac.wilcox.RESPONSEwk22.pval))
-plac.RESPONSEwk22_wilcox_P<-gsub(",", "", plac.RESPONSEwk22_wilcox_P)
-plac.RESPONSEwk22_wilcox_P<-gsub(" ", "", plac.RESPONSEwk22_wilcox_P)
-
-
-plac.RESPONSEwk22_AMOVA_p<-toString(c(plac.RESPONSEwk22.adonis.pval))
-plac.RESPONSEwk22_AMOVA_p<-gsub(",", "", plac.RESPONSEwk22_AMOVA_p)
-plac.RESPONSEwk22_AMOVA_p<-gsub(" ", "", plac.RESPONSEwk22_AMOVA_p)
-plac.RESPONSEwk22_AMOVA<-toString(c(plac.RESPONSEwk22_AMOVA_p))
-plac.RESPONSEwk22_AMOVA<-gsub(",", "", plac.RESPONSEwk22_AMOVA)
-plac.RESPONSEwk22<-matrix(c('Placebo', plac.RESPONSEwk22_sum, plac.RESPONSEwk22_wilcox_P, plac.RESPONSEwk22_AMOVA), ncol = 4)
-
-
-
-set.seed(32016)
 all.RelRSPwk22.wilcox.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, RelRSPwk22)))
+
+all.RelRSPwk22.kw.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, RelRSPwk22, TRTGRINDMAN)))
+all.RelRSPwk22.kw.test.data$rRSPwk22TRTGRINDMAN <- as.factor(paste(all.RelRSPwk22.kw.test.data$RelRSPwk22, all.RelRSPwk22.kw.test.data$TRTGRINDMAN, sep = "_"))
+all.RelRSPwk22.kw.test <- kruskal.test(all.RelRSPwk22.kw.test.data$invsimpson ~ all.RelRSPwk22.kw.test.data$rRSPwk22TRTGRINDMAN, all.RelRSPwk22.kw.test.data)
+all.RelRSPwk22.kw.test.pval <- all.RelRSPwk22.kw.test$p.value
+
+
 all.n.YesRelRSPwk22.wilcoxtest<-nrow(all.RelRSPwk22.wilcox.test.data[all.RelRSPwk22.wilcox.test.data$RelRSPwk22=="Yes",])
 all.n.YesRelRSPwk22.wilcoxtest
 all.n.NoRelRSPwk22.wilcoxtest<-nrow(all.RelRSPwk22.wilcox.test.data[all.RelRSPwk22.wilcox.test.data$RelRSPwk22=="No",])
@@ -1440,17 +1146,9 @@ set.seed(32016)
 kruskalmc(nao.screen_data$invsimpson, nao.screen_data$RelRSPwk22, data=nao.screen_data)
 
 set.seed(32016)
-all.RelRSPwk22.adonis<-adonis(nao.screen.all.dist ~ RelRSPwk22, nao.screen_data)
+all.RelRSPwk22.adonis<-adonis(nao.screen.all.dist ~ RelRSPwk22, nao.screen_data, strata=nao.screen_data$TRTGRINDMAN)
 all.RelRSPwk22.adonis
 all.RelRSPwk22.adonis.pval<-signif(as.numeric(na.omit(all.RelRSPwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
-set.seed(32016)
-all.RelRSPwk22.adonis<-adonis(nao.screen.all.dist ~ RelRSPwk22, nao.screen_data, strata = nao.screen_data$TRTGRINDMAN)
-all.RelRSPwk22.adonis
-
-set.seed(32016)
-all.RelRSPwk22.adonis<-adonis(nao.screen.all.dist ~ RelRSPwk22*TRTGRINDMAN, nao.screen_data)
-all.RelRSPwk22.adonis
 
 all.YesRelRSPwk22<-toString(c(all.n.YesRelRSPwk22.wilcoxtest))
 all.YesRelRSPwk22<-gsub(",", "", all.YesRelRSPwk22)
@@ -1460,36 +1158,13 @@ all.NoRelRSPwk22<-gsub(",", "", all.NoRelRSPwk22)
 all.NoRelRSPwk22<-gsub(" ", "", all.NoRelRSPwk22)
 
 all.RelRSPwk22_sum<-toString(c(all.NoRelRSPwk22, all.YesRelRSPwk22))
-all.RelRSPwk22_wilcox_P<-toString(c(all.wilcox.RelRSPwk22.pval))
-all.RelRSPwk22_wilcox_P<-gsub(",", "", all.RelRSPwk22_wilcox_P)
-all.RelRSPwk22_wilcox_P<-gsub(" ", "", all.RelRSPwk22_wilcox_P)
 
-
-all.RelRSPwk22_AMOVA_p<-toString(c(all.RelRSPwk22.adonis.pval))
-all.RelRSPwk22_AMOVA_p<-gsub(",", "", all.RelRSPwk22_AMOVA_p)
-all.RelRSPwk22_AMOVA_p<-gsub(" ", "", all.RelRSPwk22_AMOVA_p)
-all.RelRSPwk22_AMOVA<-toString(c(all.RelRSPwk22_AMOVA_p))
-all.RelRSPwk22_AMOVA<-gsub(",", "", all.RelRSPwk22_AMOVA)
-all.RelRSPwk22<-matrix(c('Week 22 Response (Yes, No)', all.RelRSPwk22_sum, all.RelRSPwk22_wilcox_P, all.RelRSPwk22_AMOVA), ncol = 4)
-
-set.seed(32016)
-trtd.RelRSPwk22.wilcox.test.data<-na.omit(subset(nao.screen.trtd, select= c(group, invsimpson, RelRSPwk22)))
+trtd.RelRSPwk22.wilcox.test.data<-na.omit(subset(nao.screen.trtd, select= c(group, invsimpson, RelRSPwk22, TRTGRINDMAN)))
+trtd.RelRSPwk22.wilcox.test.data<-trtd.RelRSPwk22.wilcox.test.data[trtd.RelRSPwk22.wilcox.test.data$TRTGRINDMAN=="Treated_Treated",]
 trtd.n.YesRelRSPwk22.wilcoxtest<-nrow(trtd.RelRSPwk22.wilcox.test.data[trtd.RelRSPwk22.wilcox.test.data$RelRSPwk22=="Yes",])
 trtd.n.YesRelRSPwk22.wilcoxtest
 trtd.n.NoRelRSPwk22.wilcoxtest<-nrow(trtd.RelRSPwk22.wilcox.test.data[trtd.RelRSPwk22.wilcox.test.data$RelRSPwk22=="No",])
 trtd.n.NoRelRSPwk22.wilcoxtest
-trtd.wilcox.RelRSPwk22<-wilcox.test(invsimpson ~ RelRSPwk22, trtd.RelRSPwk22.wilcox.test.data)
-trtd.wilcox.RelRSPwk22
-trtd.wilcox.RelRSPwk22.pval<-signif(trtd.wilcox.RelRSPwk22$p.value, digits = 2)
-trtd.wilcox.RelRSPwk22.pval
-
-kruskalmc(nao.screen.trtd$invsimpson, nao.screen.trtd$RelRSPwk22, data=nao.screen.trtd)
-
-set.seed(32016)
-trtd.RelRSPwk22.adonis<-adonis(nao.screen.trtd.dist ~ RelRSPwk22, nao.screen.trtd)
-trtd.RelRSPwk22.adonis
-trtd.RelRSPwk22.adonis.pval<-signif(as.numeric(na.omit(trtd.RelRSPwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
 trtd.YesRelRSPwk22<-toString(c(trtd.n.YesRelRSPwk22.wilcoxtest))
 trtd.YesRelRSPwk22<-gsub(",", "", trtd.YesRelRSPwk22)
 trtd.YesRelRSPwk22<-gsub(" ", "", trtd.YesRelRSPwk22)
@@ -1498,34 +1173,13 @@ trtd.NoRelRSPwk22<-gsub(",", "", trtd.NoRelRSPwk22)
 trtd.NoRelRSPwk22<-gsub(" ", "", trtd.NoRelRSPwk22)
 
 trtd.RelRSPwk22_sum<-toString(c(trtd.NoRelRSPwk22, trtd.YesRelRSPwk22))
-trtd.RelRSPwk22_wilcox_P<-toString(c(trtd.wilcox.RelRSPwk22.pval))
-trtd.RelRSPwk22_wilcox_P<-gsub(",", "", trtd.RelRSPwk22_wilcox_P)
-trtd.RelRSPwk22_wilcox_P<-gsub(" ", "", trtd.RelRSPwk22_wilcox_P)
 
-
-trtd.RelRSPwk22_AMOVA_p<-toString(c(trtd.RelRSPwk22.adonis.pval))
-trtd.RelRSPwk22_AMOVA_p<-gsub(",", "", trtd.RelRSPwk22_AMOVA_p)
-trtd.RelRSPwk22_AMOVA_p<-gsub(" ", "", trtd.RelRSPwk22_AMOVA_p)
-trtd.RelRSPwk22_AMOVA<-toString(c(trtd.RelRSPwk22_AMOVA_p))
-trtd.RelRSPwk22_AMOVA<-gsub(",", "", trtd.RelRSPwk22_AMOVA)
-trtd.RelRSPwk22<-matrix(c('Treated', trtd.RelRSPwk22_sum, trtd.RelRSPwk22_wilcox_P, trtd.RelRSPwk22_AMOVA), ncol = 4)
-
-set.seed(32016)
-plac.RelRSPwk22.wilcox.test.data<-na.omit(subset(nao.screen.plac, select= c(group, invsimpson, RelRSPwk22)))
+plac.RelRSPwk22.wilcox.test.data<-na.omit(subset(nao.screen.plac, select= c(group, invsimpson, RelRSPwk22, TRTGRINDMAN)))
+plac.RelRSPwk22.wilcox.test.data<-plac.RelRSPwk22.wilcox.test.data[plac.RelRSPwk22.wilcox.test.data$TRTGRINDMAN=="Placebo_Placebo",]
 plac.n.YesRelRSPwk22.wilcoxtest<-nrow(plac.RelRSPwk22.wilcox.test.data[plac.RelRSPwk22.wilcox.test.data$RelRSPwk22=="Yes",])
 plac.n.YesRelRSPwk22.wilcoxtest
 plac.n.NoRelRSPwk22.wilcoxtest<-nrow(plac.RelRSPwk22.wilcox.test.data[plac.RelRSPwk22.wilcox.test.data$RelRSPwk22=="No",])
 plac.n.NoRelRSPwk22.wilcoxtest
-plac.wilcox.RelRSPwk22<-wilcox.test(invsimpson ~ RelRSPwk22, plac.RelRSPwk22.wilcox.test.data)
-plac.wilcox.RelRSPwk22
-plac.wilcox.RelRSPwk22.pval<-signif(plac.wilcox.RelRSPwk22$p.value, digits = 2)
-plac.wilcox.RelRSPwk22.pval
-
-set.seed(32016)
-plac.RelRSPwk22.adonis<-adonis(nao.screen.plac.dist ~ RelRSPwk22, nao.screen.plac)
-plac.RelRSPwk22.adonis
-plac.RelRSPwk22.adonis.pval<-signif(as.numeric(na.omit(plac.RelRSPwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
 plac.YesRelRSPwk22<-toString(c(plac.n.YesRelRSPwk22.wilcoxtest))
 plac.YesRelRSPwk22<-gsub(",", "", plac.YesRelRSPwk22)
 plac.YesRelRSPwk22<-gsub(" ", "", plac.YesRelRSPwk22)
@@ -1534,22 +1188,24 @@ plac.NoRelRSPwk22<-gsub(",", "", plac.NoRelRSPwk22)
 plac.NoRelRSPwk22<-gsub(" ", "", plac.NoRelRSPwk22)
 
 plac.RelRSPwk22_sum<-toString(c(plac.NoRelRSPwk22, plac.YesRelRSPwk22))
-plac.RelRSPwk22_wilcox_P<-toString(c(plac.wilcox.RelRSPwk22.pval))
-plac.RelRSPwk22_wilcox_P<-gsub(",", "", plac.RelRSPwk22_wilcox_P)
-plac.RelRSPwk22_wilcox_P<-gsub(" ", "", plac.RelRSPwk22_wilcox_P)
 
 
-plac.RelRSPwk22_AMOVA_p<-toString(c(plac.RelRSPwk22.adonis.pval))
-plac.RelRSPwk22_AMOVA_p<-gsub(",", "", plac.RelRSPwk22_AMOVA_p)
-plac.RelRSPwk22_AMOVA_p<-gsub(" ", "", plac.RelRSPwk22_AMOVA_p)
-plac.RelRSPwk22_AMOVA<-toString(c(plac.RelRSPwk22_AMOVA_p))
-plac.RelRSPwk22_AMOVA<-gsub(",", "", plac.RelRSPwk22_AMOVA)
-plac.RelRSPwk22<-matrix(c('Placebo', plac.RelRSPwk22_sum, plac.RelRSPwk22_wilcox_P, plac.RelRSPwk22_AMOVA), ncol = 4)
-
-
+all.RelRSPwk22_AMOVA_p<-toString(c(all.RelRSPwk22.adonis.pval))
+all.RelRSPwk22_AMOVA_p<-gsub(",", "", all.RelRSPwk22_AMOVA_p)
+all.RelRSPwk22_AMOVA_p<-gsub(" ", "", all.RelRSPwk22_AMOVA_p)
+all.RelRSPwk22_AMOVA<-toString(c(all.RelRSPwk22_AMOVA_p))
+all.RelRSPwk22_AMOVA<-gsub(",", "", all.RelRSPwk22_AMOVA)
+all.RelRSPwk22<-matrix(c('Week 22 Response (No, Yes)', trtd.RelRSPwk22_sum, plac.RelRSPwk22_sum, all.RelRSPwk22.kw.test.pval, all.RelRSPwk22_AMOVA), ncol = 5)
 
 set.seed(32016)
 all.REMISSwk22.wilcox.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, REMISSwk22)))
+all.REMISSwk22.kw.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, REMISSwk22, TRTGRINDMAN)))
+
+all.REMISSwk22.kw.test.data$REMwk6TRTGRINDMAN <-
+	as.factor(paste(all.REMISSwk22.kw.test.data$REMISSwk22, all.REMISSwk22.kw.test.data$TRTGRINDMAN, sep = "_"))
+all.REMISSwk22.kw.test <- kruskal.test(all.REMISSwk22.kw.test.data$invsimpson ~ all.REMISSwk22.kw.test.data$REMwk6TRTGRINDMAN, all.REMISSwk22.kw.test.data)
+all.REMISSwk22.kw.test.pval <- all.REMISSwk22.kw.test$p.value
+
 all.n.YesREMISSwk22.wilcoxtest<-nrow(all.REMISSwk22.wilcox.test.data[all.REMISSwk22.wilcox.test.data$REMISSwk22=="Yes",])
 all.n.YesREMISSwk22.wilcoxtest
 all.n.NoREMISSwk22.wilcoxtest<-nrow(all.REMISSwk22.wilcox.test.data[all.REMISSwk22.wilcox.test.data$REMISSwk22=="No",])
@@ -1560,7 +1216,7 @@ all.wilcox.REMISSwk22.pval<-signif(all.wilcox.REMISSwk22$p.value, digits = 2)
 all.wilcox.REMISSwk22.pval
 
 set.seed(32016)
-all.REMISSwk22.adonis<-adonis(nao.screen.all.dist ~ REMISSwk22, nao.screen_data)
+all.REMISSwk22.adonis<-adonis(nao.screen.all.dist ~ REMISSwk22, nao.screen_data, strata=nao.screen_data$TRTGRINDMAN)
 all.REMISSwk22.adonis
 all.REMISSwk22.adonis.pval<-signif(as.numeric(na.omit(all.REMISSwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
 
@@ -1574,34 +1230,13 @@ all.NoREMISSwk22<-gsub(",", "", all.NoREMISSwk22)
 all.NoREMISSwk22<-gsub(" ", "", all.NoREMISSwk22)
 
 all.REMISSwk22_sum<-toString(c(all.NoREMISSwk22, all.YesREMISSwk22))
-all.REMISSwk22_wilcox_P<-toString(c(all.wilcox.REMISSwk22.pval))
-all.REMISSwk22_wilcox_P<-gsub(",", "", all.REMISSwk22_wilcox_P)
-all.REMISSwk22_wilcox_P<-gsub(" ", "", all.REMISSwk22_wilcox_P)
 
-
-all.REMISSwk22_AMOVA_p<-toString(c(all.REMISSwk22.adonis.pval))
-all.REMISSwk22_AMOVA_p<-gsub(",", "", all.REMISSwk22_AMOVA_p)
-all.REMISSwk22_AMOVA_p<-gsub(" ", "", all.REMISSwk22_AMOVA_p)
-all.REMISSwk22_AMOVA<-toString(c(all.REMISSwk22_AMOVA_p))
-all.REMISSwk22_AMOVA<-gsub(",", "", all.REMISSwk22_AMOVA)
-all.REMISSwk22<-matrix(c('Week 22 Remission (Yes, No)', all.REMISSwk22_sum, all.REMISSwk22_wilcox_P, all.REMISSwk22_AMOVA), ncol = 4)
-
-set.seed(32016)
-trtd.REMISSwk22.wilcox.test.data<-na.omit(subset(nao.screen.trtd, select= c(group, invsimpson, REMISSwk22)))
+trtd.REMISSwk22.wilcox.test.data<-na.omit(subset(nao.screen.trtd, select= c(group, invsimpson, REMISSwk22, TRTGRINDMAN)))
+trtd.REMISSwk22.wilcox.test.data<-trtd.REMISSwk22.wilcox.test.data[trtd.REMISSwk22.wilcox.test.data$TRTGRINDMAN=="Treated_Treated",]
 trtd.n.YesREMISSwk22.wilcoxtest<-nrow(trtd.REMISSwk22.wilcox.test.data[trtd.REMISSwk22.wilcox.test.data$REMISSwk22=="Yes",])
 trtd.n.YesREMISSwk22.wilcoxtest
 trtd.n.NoREMISSwk22.wilcoxtest<-nrow(trtd.REMISSwk22.wilcox.test.data[trtd.REMISSwk22.wilcox.test.data$REMISSwk22=="No",])
 trtd.n.NoREMISSwk22.wilcoxtest
-trtd.wilcox.REMISSwk22<-wilcox.test(invsimpson ~ REMISSwk22, trtd.REMISSwk22.wilcox.test.data)
-trtd.wilcox.REMISSwk22
-trtd.wilcox.REMISSwk22.pval<-signif(trtd.wilcox.REMISSwk22$p.value, digits = 2)
-trtd.wilcox.REMISSwk22.pval
-
-set.seed(32016)
-trtd.REMISSwk22.adonis<-adonis(nao.screen.trtd.dist ~ REMISSwk22, nao.screen.trtd)
-trtd.REMISSwk22.adonis
-trtd.REMISSwk22.adonis.pval<-signif(as.numeric(na.omit(trtd.REMISSwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
 trtd.YesREMISSwk22<-toString(c(trtd.n.YesREMISSwk22.wilcoxtest))
 trtd.YesREMISSwk22<-gsub(",", "", trtd.YesREMISSwk22)
 trtd.YesREMISSwk22<-gsub(" ", "", trtd.YesREMISSwk22)
@@ -1610,34 +1245,13 @@ trtd.NoREMISSwk22<-gsub(",", "", trtd.NoREMISSwk22)
 trtd.NoREMISSwk22<-gsub(" ", "", trtd.NoREMISSwk22)
 
 trtd.REMISSwk22_sum<-toString(c(trtd.NoREMISSwk22, trtd.YesREMISSwk22))
-trtd.REMISSwk22_wilcox_P<-toString(c(trtd.wilcox.REMISSwk22.pval))
-trtd.REMISSwk22_wilcox_P<-gsub(",", "", trtd.REMISSwk22_wilcox_P)
-trtd.REMISSwk22_wilcox_P<-gsub(" ", "", trtd.REMISSwk22_wilcox_P)
 
-
-trtd.REMISSwk22_AMOVA_p<-toString(c(trtd.REMISSwk22.adonis.pval))
-trtd.REMISSwk22_AMOVA_p<-gsub(",", "", trtd.REMISSwk22_AMOVA_p)
-trtd.REMISSwk22_AMOVA_p<-gsub(" ", "", trtd.REMISSwk22_AMOVA_p)
-trtd.REMISSwk22_AMOVA<-toString(c(trtd.REMISSwk22_AMOVA_p))
-trtd.REMISSwk22_AMOVA<-gsub(",", "", trtd.REMISSwk22_AMOVA)
-trtd.REMISSwk22<-matrix(c('Treated', trtd.REMISSwk22_sum, trtd.REMISSwk22_wilcox_P, trtd.REMISSwk22_AMOVA), ncol = 4)
-
-set.seed(32016)
-plac.REMISSwk22.wilcox.test.data<-na.omit(subset(nao.screen.plac, select= c(group, invsimpson, REMISSwk22)))
+plac.REMISSwk22.wilcox.test.data<-na.omit(subset(nao.screen.plac, select= c(group, invsimpson, REMISSwk22, TRTGRINDMAN)))
+plac.REMISSwk22.wilcox.test.data<-plac.REMISSwk22.wilcox.test.data[plac.REMISSwk22.wilcox.test.data$TRTGRINDMAN=="Placebo_Placebo",]
 plac.n.YesREMISSwk22.wilcoxtest<-nrow(plac.REMISSwk22.wilcox.test.data[plac.REMISSwk22.wilcox.test.data$REMISSwk22=="Yes",])
 plac.n.YesREMISSwk22.wilcoxtest
 plac.n.NoREMISSwk22.wilcoxtest<-nrow(plac.REMISSwk22.wilcox.test.data[plac.REMISSwk22.wilcox.test.data$REMISSwk22=="No",])
 plac.n.NoREMISSwk22.wilcoxtest
-plac.wilcox.REMISSwk22<-wilcox.test(invsimpson ~ REMISSwk22, plac.REMISSwk22.wilcox.test.data)
-plac.wilcox.REMISSwk22
-plac.wilcox.REMISSwk22.pval<-signif(plac.wilcox.REMISSwk22$p.value, digits = 2)
-plac.wilcox.REMISSwk22.pval
-
-set.seed(32016)
-plac.REMISSwk22.adonis<-adonis(nao.screen.plac.dist ~ REMISSwk22, nao.screen.plac)
-plac.REMISSwk22.adonis
-plac.REMISSwk22.adonis.pval<-signif(as.numeric(na.omit(plac.REMISSwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
 plac.YesREMISSwk22<-toString(c(plac.n.YesREMISSwk22.wilcoxtest))
 plac.YesREMISSwk22<-gsub(",", "", plac.YesREMISSwk22)
 plac.YesREMISSwk22<-gsub(" ", "", plac.YesREMISSwk22)
@@ -1646,354 +1260,15 @@ plac.NoREMISSwk22<-gsub(",", "", plac.NoREMISSwk22)
 plac.NoREMISSwk22<-gsub(" ", "", plac.NoREMISSwk22)
 
 plac.REMISSwk22_sum<-toString(c(plac.NoREMISSwk22, plac.YesREMISSwk22))
-plac.REMISSwk22_wilcox_P<-toString(c(plac.wilcox.REMISSwk22.pval))
-plac.REMISSwk22_wilcox_P<-gsub(",", "", plac.REMISSwk22_wilcox_P)
-plac.REMISSwk22_wilcox_P<-gsub(" ", "", plac.REMISSwk22_wilcox_P)
 
 
-plac.REMISSwk22_AMOVA_p<-toString(c(plac.REMISSwk22.adonis.pval))
-plac.REMISSwk22_AMOVA_p<-gsub(",", "", plac.REMISSwk22_AMOVA_p)
-plac.REMISSwk22_AMOVA_p<-gsub(" ", "", plac.REMISSwk22_AMOVA_p)
-plac.REMISSwk22_AMOVA<-toString(c(plac.REMISSwk22_AMOVA_p))
-plac.REMISSwk22_AMOVA<-gsub(",", "", plac.REMISSwk22_AMOVA)
-plac.REMISSwk22<-matrix(c('Placebo', plac.REMISSwk22_sum, plac.REMISSwk22_wilcox_P, plac.REMISSwk22_AMOVA), ncol = 4)
+all.REMISSwk22_AMOVA_p<-toString(c(all.REMISSwk22.adonis.pval))
+all.REMISSwk22_AMOVA_p<-gsub(",", "", all.REMISSwk22_AMOVA_p)
+all.REMISSwk22_AMOVA_p<-gsub(" ", "", all.REMISSwk22_AMOVA_p)
+all.REMISSwk22_AMOVA<-toString(c(all.REMISSwk22_AMOVA_p))
+all.REMISSwk22_AMOVA<-gsub(",", "", all.REMISSwk22_AMOVA)
+all.REMISSwk22<-matrix(c('Week 22 Remission (No, Yes)', trtd.REMISSwk22_sum, plac.REMISSwk22_sum, all.REMISSwk22.kw.test.pval, all.REMISSwk22_AMOVA), ncol = 5)
 
-
-all.RESPONSEwk22
-trtd.RESPONSEwk22
-plac.RESPONSEwk22
-all.RelRSPwk22
-trtd.RelRSPwk22
-plac.RelRSPwk22
-all.REMISSwk22
-trtd.REMISSwk22
-plac.REMISSwk22
-
-
-set.seed(32016)
-trtd_trtd.data<-nao.screen.trtd[nao.screen.trtd$TRTGRINDMAN=="Treated_Treated",]
-trtd_trtd.RelRSPwk22.wilcox.test.data<-na.omit(subset(trtd_trtd.data, select= c(group, invsimpson, RelRSPwk22)))
-trtd_trtd.n.YesRelRSPwk22.wilcoxtest<-nrow(trtd_trtd.RelRSPwk22.wilcox.test.data[trtd_trtd.RelRSPwk22.wilcox.test.data$RelRSPwk22=="Yes",])
-trtd_trtd.n.YesRelRSPwk22.wilcoxtest
-trtd_trtd.n.NoRelRSPwk22.wilcoxtest<-nrow(trtd_trtd.RelRSPwk22.wilcox.test.data[trtd_trtd.RelRSPwk22.wilcox.test.data$RelRSPwk22=="No",])
-trtd_trtd.n.NoRelRSPwk22.wilcoxtest
-trtd_trtd.wilcox.RelRSPwk22<-wilcox.test(invsimpson ~ RelRSPwk22, trtd_trtd.RelRSPwk22.wilcox.test.data)
-trtd_trtd.wilcox.RelRSPwk22
-trtd_trtd.wilcox.RelRSPwk22.pval<-signif(trtd_trtd.wilcox.RelRSPwk22$p.value, digits = 2)
-trtd_trtd.wilcox.RelRSPwk22.pval
-
-set.seed(32016)
-trtd_trtd.RelRSPwk22.adonis<-adonis(trtd_trtd.data.dist ~ RelRSPwk22, trtd_trtd.data)
-trtd_trtd.RelRSPwk22.adonis
-trtd_trtd.RelRSPwk22.adonis.pval<-signif(as.numeric(na.omit(trtd_trtd.RelRSPwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
-trtd_trtd.YesRelRSPwk22<-toString(c(trtd_trtd.n.YesRelRSPwk22.wilcoxtest))
-trtd_trtd.YesRelRSPwk22<-gsub(",", "", trtd_trtd.YesRelRSPwk22)
-trtd_trtd.YesRelRSPwk22<-gsub(" ", "", trtd_trtd.YesRelRSPwk22)
-trtd_trtd.NoRelRSPwk22<-toString(c(trtd_trtd.n.NoRelRSPwk22.wilcoxtest))
-trtd_trtd.NoRelRSPwk22<-gsub(",", "", trtd_trtd.NoRelRSPwk22)
-trtd_trtd.NoRelRSPwk22<-gsub(" ", "", trtd_trtd.NoRelRSPwk22)
-
-trtd_trtd.RelRSPwk22_sum<-toString(c(trtd_trtd.NoRelRSPwk22, trtd_trtd.YesRelRSPwk22))
-trtd_trtd.RelRSPwk22_wilcox_P<-toString(c(trtd_trtd.wilcox.RelRSPwk22.pval))
-trtd_trtd.RelRSPwk22_wilcox_P<-gsub(",", "", trtd_trtd.RelRSPwk22_wilcox_P)
-trtd_trtd.RelRSPwk22_wilcox_P<-gsub(" ", "", trtd_trtd.RelRSPwk22_wilcox_P)
-
-
-trtd_trtd.RelRSPwk22_AMOVA_p<-toString(c(trtd_trtd.RelRSPwk22.adonis.pval))
-trtd_trtd.RelRSPwk22_AMOVA_p<-gsub(",", "", trtd_trtd.RelRSPwk22_AMOVA_p)
-trtd_trtd.RelRSPwk22_AMOVA_p<-gsub(" ", "", trtd_trtd.RelRSPwk22_AMOVA_p)
-trtd_trtd.RelRSPwk22_AMOVA<-toString(c(trtd_trtd.RelRSPwk22_AMOVA_p))
-trtd_trtd.RelRSPwk22_AMOVA<-gsub(",", "", trtd_trtd.RelRSPwk22_AMOVA)
-trtd_trtd.RelRSPwk22<-matrix(c('Treated_Treated', trtd_trtd.RelRSPwk22_sum, trtd_trtd.RelRSPwk22_wilcox_P, trtd_trtd.RelRSPwk22_AMOVA), ncol = 4)
-
-set.seed(32016)
-plac_plac.data<-nao.screen.plac[nao.screen.plac$TRTGRINDMAN=="Placebo_Placebo",]
-plac_plac.RelRSPwk22.wilcox.test.data<-na.omit(subset(plac_plac.data, select= c(group, invsimpson, RelRSPwk22)))
-plac_plac.n.YesRelRSPwk22.wilcoxtest<-nrow(plac_plac.RelRSPwk22.wilcox.test.data[plac_plac.RelRSPwk22.wilcox.test.data$RelRSPwk22=="Yes",])
-plac_plac.n.YesRelRSPwk22.wilcoxtest
-plac_plac.n.NoRelRSPwk22.wilcoxtest<-nrow(plac_plac.RelRSPwk22.wilcox.test.data[plac_plac.RelRSPwk22.wilcox.test.data$RelRSPwk22=="No",])
-plac_plac.n.NoRelRSPwk22.wilcoxtest
-plac_plac.wilcox.RelRSPwk22<-wilcox.test(invsimpson ~ RelRSPwk22, plac_plac.RelRSPwk22.wilcox.test.data)
-plac_plac.wilcox.RelRSPwk22
-plac_plac.wilcox.RelRSPwk22.pval<-signif(plac_plac.wilcox.RelRSPwk22$p.value, digits = 2)
-plac_plac.wilcox.RelRSPwk22.pval
-
-set.seed(32016)
-plac_plac.RelRSPwk22.adonis<-adonis(plac_plac.data.dist ~ RelRSPwk22, plac_plac.data)
-plac_plac.RelRSPwk22.adonis
-plac_plac.RelRSPwk22.adonis.pval<-signif(as.numeric(na.omit(plac_plac.RelRSPwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
-plac_plac.YesRelRSPwk22<-toString(c(plac_plac.n.YesRelRSPwk22.wilcoxtest))
-plac_plac.YesRelRSPwk22<-gsub(",", "", plac_plac.YesRelRSPwk22)
-plac_plac.YesRelRSPwk22<-gsub(" ", "", plac_plac.YesRelRSPwk22)
-plac_plac.NoRelRSPwk22<-toString(c(plac_plac.n.NoRelRSPwk22.wilcoxtest))
-plac_plac.NoRelRSPwk22<-gsub(",", "", plac_plac.NoRelRSPwk22)
-plac_plac.NoRelRSPwk22<-gsub(" ", "", plac_plac.NoRelRSPwk22)
-
-plac_plac.RelRSPwk22_sum<-toString(c(plac_plac.NoRelRSPwk22, plac_plac.YesRelRSPwk22))
-plac_plac.RelRSPwk22_wilcox_P<-toString(c(plac_plac.wilcox.RelRSPwk22.pval))
-plac_plac.RelRSPwk22_wilcox_P<-gsub(",", "", plac_plac.RelRSPwk22_wilcox_P)
-plac_plac.RelRSPwk22_wilcox_P<-gsub(" ", "", plac_plac.RelRSPwk22_wilcox_P)
-
-
-plac_plac.RelRSPwk22_AMOVA_p<-toString(c(plac_plac.RelRSPwk22.adonis.pval))
-plac_plac.RelRSPwk22_AMOVA_p<-gsub(",", "", plac_plac.RelRSPwk22_AMOVA_p)
-plac_plac.RelRSPwk22_AMOVA_p<-gsub(" ", "", plac_plac.RelRSPwk22_AMOVA_p)
-plac_plac.RelRSPwk22_AMOVA<-toString(c(plac_plac.RelRSPwk22_AMOVA_p))
-plac_plac.RelRSPwk22_AMOVA<-gsub(",", "", plac_plac.RelRSPwk22_AMOVA)
-plac_plac.RelRSPwk22<-matrix(c('Placebo_Placebo', plac_plac.RelRSPwk22_sum, plac_plac.RelRSPwk22_wilcox_P, plac_plac.RelRSPwk22_AMOVA), ncol = 4)
-
-
-set.seed(32016)
-all.REMISSwk22.adonis<-adonis(nao.screen.all.dist ~ REMISSwk22, nao.screen_data, strata=nao.screen_data$TRTGRINDMAN)
-
-set.seed(32016)
-trtd_trtd.REMISSwk22.wilcox.test.data<-na.omit(subset(trtd_trtd.data, select= c(group, invsimpson, REMISSwk22)))
-trtd_trtd.n.YesREMISSwk22.wilcoxtest<-nrow(trtd_trtd.REMISSwk22.wilcox.test.data[trtd_trtd.REMISSwk22.wilcox.test.data$REMISSwk22=="Yes",])
-trtd_trtd.n.YesREMISSwk22.wilcoxtest
-trtd_trtd.n.NoREMISSwk22.wilcoxtest<-nrow(trtd_trtd.REMISSwk22.wilcox.test.data[trtd_trtd.REMISSwk22.wilcox.test.data$REMISSwk22=="No",])
-trtd_trtd.n.NoREMISSwk22.wilcoxtest
-trtd_trtd.wilcox.REMISSwk22<-wilcox.test(invsimpson ~ REMISSwk22, trtd_trtd.REMISSwk22.wilcox.test.data)
-trtd_trtd.wilcox.REMISSwk22
-trtd_trtd.wilcox.REMISSwk22.pval<-signif(trtd_trtd.wilcox.REMISSwk22$p.value, digits = 2)
-trtd_trtd.wilcox.REMISSwk22.pval
-
-set.seed(32016)
-trtd_trtd.REMISSwk22.adonis<-adonis(trtd_trtd.data.dist ~ REMISSwk22, trtd_trtd.data)
-trtd_trtd.REMISSwk22.adonis
-trtd_trtd.REMISSwk22.adonis.pval<-signif(as.numeric(na.omit(trtd_trtd.REMISSwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
-trtd_trtd.YesREMISSwk22<-toString(c(trtd_trtd.n.YesREMISSwk22.wilcoxtest))
-trtd_trtd.YesREMISSwk22<-gsub(",", "", trtd_trtd.YesREMISSwk22)
-trtd_trtd.YesREMISSwk22<-gsub(" ", "", trtd_trtd.YesREMISSwk22)
-trtd_trtd.NoREMISSwk22<-toString(c(trtd_trtd.n.NoREMISSwk22.wilcoxtest))
-trtd_trtd.NoREMISSwk22<-gsub(",", "", trtd_trtd.NoREMISSwk22)
-trtd_trtd.NoREMISSwk22<-gsub(" ", "", trtd_trtd.NoREMISSwk22)
-
-trtd_trtd.REMISSwk22_sum<-toString(c(trtd_trtd.NoREMISSwk22, trtd_trtd.YesREMISSwk22))
-trtd_trtd.REMISSwk22_wilcox_P<-toString(c(trtd_trtd.wilcox.REMISSwk22.pval))
-trtd_trtd.REMISSwk22_wilcox_P<-gsub(",", "", trtd_trtd.REMISSwk22_wilcox_P)
-trtd_trtd.REMISSwk22_wilcox_P<-gsub(" ", "", trtd_trtd.REMISSwk22_wilcox_P)
-
-
-trtd_trtd.REMISSwk22_AMOVA_p<-toString(c(trtd_trtd.REMISSwk22.adonis.pval))
-trtd_trtd.REMISSwk22_AMOVA_p<-gsub(",", "", trtd_trtd.REMISSwk22_AMOVA_p)
-trtd_trtd.REMISSwk22_AMOVA_p<-gsub(" ", "", trtd_trtd.REMISSwk22_AMOVA_p)
-trtd_trtd.REMISSwk22_AMOVA<-toString(c(trtd_trtd.REMISSwk22_AMOVA_p))
-trtd_trtd.REMISSwk22_AMOVA<-gsub(",", "", trtd_trtd.REMISSwk22_AMOVA)
-trtd_trtd.REMISSwk22<-matrix(c('Treated_Treated', trtd_trtd.REMISSwk22_sum, trtd_trtd.REMISSwk22_wilcox_P, trtd_trtd.REMISSwk22_AMOVA), ncol = 4)
-
-set.seed(32016)
-plac_plac.REMISSwk22.wilcox.test.data<-na.omit(subset(plac_plac.data, select= c(group, invsimpson, REMISSwk22)))
-plac_plac.n.YesREMISSwk22.wilcoxtest<-nrow(plac_plac.REMISSwk22.wilcox.test.data[plac_plac.REMISSwk22.wilcox.test.data$REMISSwk22=="Yes",])
-plac_plac.n.YesREMISSwk22.wilcoxtest
-plac_plac.n.NoREMISSwk22.wilcoxtest<-nrow(plac_plac.REMISSwk22.wilcox.test.data[plac_plac.REMISSwk22.wilcox.test.data$REMISSwk22=="No",])
-plac_plac.n.NoREMISSwk22.wilcoxtest
-plac_plac.wilcox.REMISSwk22<-wilcox.test(invsimpson ~ REMISSwk22, plac_plac.REMISSwk22.wilcox.test.data)
-plac_plac.wilcox.REMISSwk22
-plac_plac.wilcox.REMISSwk22.pval<-signif(plac_plac.wilcox.REMISSwk22$p.value, digits = 2)
-plac_plac.wilcox.REMISSwk22.pval
-
-set.seed(32016)
-plac_plac.REMISSwk22.adonis<-adonis(plac_plac.data.dist ~ REMISSwk22, plac_plac.data)
-plac_plac.REMISSwk22.adonis
-plac_plac.REMISSwk22.adonis.pval<-signif(as.numeric(na.omit(plac_plac.REMISSwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
-plac_plac.YesREMISSwk22<-toString(c(plac_plac.n.YesREMISSwk22.wilcoxtest))
-plac_plac.YesREMISSwk22<-gsub(",", "", plac_plac.YesREMISSwk22)
-plac_plac.YesREMISSwk22<-gsub(" ", "", plac_plac.YesREMISSwk22)
-plac_plac.NoREMISSwk22<-toString(c(plac_plac.n.NoREMISSwk22.wilcoxtest))
-plac_plac.NoREMISSwk22<-gsub(",", "", plac_plac.NoREMISSwk22)
-plac_plac.NoREMISSwk22<-gsub(" ", "", plac_plac.NoREMISSwk22)
-
-plac_plac.REMISSwk22_sum<-toString(c(plac_plac.NoREMISSwk22, plac_plac.YesREMISSwk22))
-plac_plac.REMISSwk22_wilcox_P<-toString(c(plac_plac.wilcox.REMISSwk22.pval))
-plac_plac.REMISSwk22_wilcox_P<-gsub(",", "", plac_plac.REMISSwk22_wilcox_P)
-plac_plac.REMISSwk22_wilcox_P<-gsub(" ", "", plac_plac.REMISSwk22_wilcox_P)
-
-
-plac_plac.REMISSwk22_AMOVA_p<-toString(c(plac_plac.REMISSwk22.adonis.pval))
-plac_plac.REMISSwk22_AMOVA_p<-gsub(",", "", plac_plac.REMISSwk22_AMOVA_p)
-plac_plac.REMISSwk22_AMOVA_p<-gsub(" ", "", plac_plac.REMISSwk22_AMOVA_p)
-plac_plac.REMISSwk22_AMOVA<-toString(c(plac_plac.REMISSwk22_AMOVA_p))
-plac_plac.REMISSwk22_AMOVA<-gsub(",", "", plac_plac.REMISSwk22_AMOVA)
-plac_plac.REMISSwk22<-matrix(c('Placebo_Placebo', plac_plac.REMISSwk22_sum, plac_plac.REMISSwk22_wilcox_P, plac_plac.REMISSwk22_AMOVA), ncol = 4)
-
-
-
-set.seed(32016)
-trtd_plac.data<-nao.screen.trtd[nao.screen.trtd$TRTGRINDMAN=="Treated_Placebo",]
-trtd_plac.RelRSPwk22.wilcox.test.data<-na.omit(subset(trtd_plac.data, select= c(group, invsimpson, RelRSPwk22)))
-trtd_plac.n.YesRelRSPwk22.wilcoxtest<-nrow(trtd_plac.RelRSPwk22.wilcox.test.data[trtd_plac.RelRSPwk22.wilcox.test.data$RelRSPwk22=="Yes",])
-trtd_plac.n.YesRelRSPwk22.wilcoxtest
-trtd_plac.n.NoRelRSPwk22.wilcoxtest<-nrow(trtd_plac.RelRSPwk22.wilcox.test.data[trtd_plac.RelRSPwk22.wilcox.test.data$RelRSPwk22=="No",])
-trtd_plac.n.NoRelRSPwk22.wilcoxtest
-trtd_plac.wilcox.RelRSPwk22<-wilcox.test(invsimpson ~ RelRSPwk22, trtd_plac.RelRSPwk22.wilcox.test.data)
-trtd_plac.wilcox.RelRSPwk22
-trtd_plac.wilcox.RelRSPwk22.pval<-signif(trtd_plac.wilcox.RelRSPwk22$p.value, digits = 2)
-trtd_plac.wilcox.RelRSPwk22.pval
-
-set.seed(32016)
-trtd_plac.RelRSPwk22.adonis<-adonis(trtd_plac.data.dist ~ RelRSPwk22, trtd_plac.data)
-trtd_plac.RelRSPwk22.adonis
-trtd_plac.RelRSPwk22.adonis.pval<-signif(as.numeric(na.omit(trtd_plac.RelRSPwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
-trtd_plac.YesRelRSPwk22<-toString(c(trtd_plac.n.YesRelRSPwk22.wilcoxtest))
-trtd_plac.YesRelRSPwk22<-gsub(",", "", trtd_plac.YesRelRSPwk22)
-trtd_plac.YesRelRSPwk22<-gsub(" ", "", trtd_plac.YesRelRSPwk22)
-trtd_plac.NoRelRSPwk22<-toString(c(trtd_plac.n.NoRelRSPwk22.wilcoxtest))
-trtd_plac.NoRelRSPwk22<-gsub(",", "", trtd_plac.NoRelRSPwk22)
-trtd_plac.NoRelRSPwk22<-gsub(" ", "", trtd_plac.NoRelRSPwk22)
-
-trtd_plac.RelRSPwk22_sum<-toString(c(trtd_plac.NoRelRSPwk22, trtd_plac.YesRelRSPwk22))
-trtd_plac.RelRSPwk22_wilcox_P<-toString(c(trtd_plac.wilcox.RelRSPwk22.pval))
-trtd_plac.RelRSPwk22_wilcox_P<-gsub(",", "", trtd_plac.RelRSPwk22_wilcox_P)
-trtd_plac.RelRSPwk22_wilcox_P<-gsub(" ", "", trtd_plac.RelRSPwk22_wilcox_P)
-
-
-trtd_plac.RelRSPwk22_AMOVA_p<-toString(c(trtd_plac.RelRSPwk22.adonis.pval))
-trtd_plac.RelRSPwk22_AMOVA_p<-gsub(",", "", trtd_plac.RelRSPwk22_AMOVA_p)
-trtd_plac.RelRSPwk22_AMOVA_p<-gsub(" ", "", trtd_plac.RelRSPwk22_AMOVA_p)
-trtd_plac.RelRSPwk22_AMOVA<-toString(c(trtd_plac.RelRSPwk22_AMOVA_p))
-trtd_plac.RelRSPwk22_AMOVA<-gsub(",", "", trtd_plac.RelRSPwk22_AMOVA)
-trtd_plac.RelRSPwk22<-matrix(c('Treated_Placebo', trtd_plac.RelRSPwk22_sum, trtd_plac.RelRSPwk22_wilcox_P, trtd_plac.RelRSPwk22_AMOVA), ncol = 4)
-
-set.seed(32016)
-plac_trtd.data<-nao.screen.plac[nao.screen.plac$TRTGRINDMAN=="Placebo_Treated",]
-plac_trtd.RelRSPwk22.wilcox.test.data<-na.omit(subset(plac_trtd.data, select= c(group, invsimpson, RelRSPwk22)))
-plac_trtd.n.YesRelRSPwk22.wilcoxtest<-nrow(plac_trtd.RelRSPwk22.wilcox.test.data[plac_trtd.RelRSPwk22.wilcox.test.data$RelRSPwk22=="Yes",])
-plac_trtd.n.YesRelRSPwk22.wilcoxtest
-plac_trtd.n.NoRelRSPwk22.wilcoxtest<-nrow(plac_trtd.RelRSPwk22.wilcox.test.data[plac_trtd.RelRSPwk22.wilcox.test.data$RelRSPwk22=="No",])
-plac_trtd.n.NoRelRSPwk22.wilcoxtest
-plac_trtd.wilcox.RelRSPwk22<-wilcox.test(invsimpson ~ RelRSPwk22, plac_trtd.RelRSPwk22.wilcox.test.data)
-plac_trtd.wilcox.RelRSPwk22
-plac_trtd.wilcox.RelRSPwk22.pval<-signif(plac_trtd.wilcox.RelRSPwk22$p.value, digits = 2)
-plac_trtd.wilcox.RelRSPwk22.pval
-
-set.seed(32016)
-plac_trtd.RelRSPwk22.adonis<-adonis(plac_trtd.data.dist ~ RelRSPwk22, plac_trtd.data)
-plac_trtd.RelRSPwk22.adonis
-plac_trtd.RelRSPwk22.adonis.pval<-signif(as.numeric(na.omit(plac_trtd.RelRSPwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
-plac_trtd.YesRelRSPwk22<-toString(c(plac_trtd.n.YesRelRSPwk22.wilcoxtest))
-plac_trtd.YesRelRSPwk22<-gsub(",", "", plac_trtd.YesRelRSPwk22)
-plac_trtd.YesRelRSPwk22<-gsub(" ", "", plac_trtd.YesRelRSPwk22)
-plac_trtd.NoRelRSPwk22<-toString(c(plac_trtd.n.NoRelRSPwk22.wilcoxtest))
-plac_trtd.NoRelRSPwk22<-gsub(",", "", plac_trtd.NoRelRSPwk22)
-plac_trtd.NoRelRSPwk22<-gsub(" ", "", plac_trtd.NoRelRSPwk22)
-
-plac_trtd.RelRSPwk22_sum<-toString(c(plac_trtd.NoRelRSPwk22, plac_trtd.YesRelRSPwk22))
-plac_trtd.RelRSPwk22_wilcox_P<-toString(c(plac_trtd.wilcox.RelRSPwk22.pval))
-plac_trtd.RelRSPwk22_wilcox_P<-gsub(",", "", plac_trtd.RelRSPwk22_wilcox_P)
-plac_trtd.RelRSPwk22_wilcox_P<-gsub(" ", "", plac_trtd.RelRSPwk22_wilcox_P)
-
-
-plac_trtd.RelRSPwk22_AMOVA_p<-toString(c(plac_trtd.RelRSPwk22.adonis.pval))
-plac_trtd.RelRSPwk22_AMOVA_p<-gsub(",", "", plac_trtd.RelRSPwk22_AMOVA_p)
-plac_trtd.RelRSPwk22_AMOVA_p<-gsub(" ", "", plac_trtd.RelRSPwk22_AMOVA_p)
-plac_trtd.RelRSPwk22_AMOVA<-toString(c(plac_trtd.RelRSPwk22_AMOVA_p))
-plac_trtd.RelRSPwk22_AMOVA<-gsub(",", "", plac_trtd.RelRSPwk22_AMOVA)
-plac_trtd.RelRSPwk22<-matrix(c('Placebo_Treated', plac_trtd.RelRSPwk22_sum, plac_trtd.RelRSPwk22_wilcox_P, plac_trtd.RelRSPwk22_AMOVA), ncol = 4)
-
-
-set.seed(32016)
-all.REMISSwk22.adonis<-adonis(nao.screen.all.dist ~ REMISSwk22, nao.screen_data, strata=nao.screen_data$TRTGRINDMAN)
-all.REMISSwk22.adonis
-
-set.seed(32016)
-all.REMISSwk22.adonis<-adonis(nao.screen.all.dist ~ REMISSwk22*TRTGRINDMAN, nao.screen_data)
-all.REMISSwk22.adonis
-
-set.seed(32016)
-all.REMISSwk22.adonis<-adonis(nao.screen.all.dist ~ REMISSwk22*TRTGRINDMAN, nao.screen_data, strata=nao.screen_data$TRTGRINDMAN)
-all.REMISSwk22.adonis
-
-set.seed(32016)
-trtd_plac.REMISSwk22.wilcox.test.data<-na.omit(subset(trtd_plac.data, select= c(group, invsimpson, REMISSwk22)))
-trtd_plac.n.YesREMISSwk22.wilcoxtest<-nrow(trtd_plac.REMISSwk22.wilcox.test.data[trtd_plac.REMISSwk22.wilcox.test.data$REMISSwk22=="Yes",])
-trtd_plac.n.YesREMISSwk22.wilcoxtest
-trtd_plac.n.NoREMISSwk22.wilcoxtest<-nrow(trtd_plac.REMISSwk22.wilcox.test.data[trtd_plac.REMISSwk22.wilcox.test.data$REMISSwk22=="No",])
-trtd_plac.n.NoREMISSwk22.wilcoxtest
-trtd_plac.wilcox.REMISSwk22<-wilcox.test(invsimpson ~ REMISSwk22, trtd_plac.REMISSwk22.wilcox.test.data)
-trtd_plac.wilcox.REMISSwk22
-trtd_plac.wilcox.REMISSwk22.pval<-signif(trtd_plac.wilcox.REMISSwk22$p.value, digits = 2)
-trtd_plac.wilcox.REMISSwk22.pval
-
-set.seed(32016)
-trtd_plac.REMISSwk22.adonis<-adonis(trtd_plac.data.dist ~ REMISSwk22, trtd_plac.data)
-trtd_plac.REMISSwk22.adonis
-trtd_plac.REMISSwk22.adonis.pval<-signif(as.numeric(na.omit(trtd_plac.REMISSwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
-trtd_plac.YesREMISSwk22<-toString(c(trtd_plac.n.YesREMISSwk22.wilcoxtest))
-trtd_plac.YesREMISSwk22<-gsub(",", "", trtd_plac.YesREMISSwk22)
-trtd_plac.YesREMISSwk22<-gsub(" ", "", trtd_plac.YesREMISSwk22)
-trtd_plac.NoREMISSwk22<-toString(c(trtd_plac.n.NoREMISSwk22.wilcoxtest))
-trtd_plac.NoREMISSwk22<-gsub(",", "", trtd_plac.NoREMISSwk22)
-trtd_plac.NoREMISSwk22<-gsub(" ", "", trtd_plac.NoREMISSwk22)
-
-trtd_plac.REMISSwk22_sum<-toString(c(trtd_plac.NoREMISSwk22, trtd_plac.YesREMISSwk22))
-trtd_plac.REMISSwk22_wilcox_P<-toString(c(trtd_plac.wilcox.REMISSwk22.pval))
-trtd_plac.REMISSwk22_wilcox_P<-gsub(",", "", trtd_plac.REMISSwk22_wilcox_P)
-trtd_plac.REMISSwk22_wilcox_P<-gsub(" ", "", trtd_plac.REMISSwk22_wilcox_P)
-
-
-trtd_plac.REMISSwk22_AMOVA_p<-toString(c(trtd_plac.REMISSwk22.adonis.pval))
-trtd_plac.REMISSwk22_AMOVA_p<-gsub(",", "", trtd_plac.REMISSwk22_AMOVA_p)
-trtd_plac.REMISSwk22_AMOVA_p<-gsub(" ", "", trtd_plac.REMISSwk22_AMOVA_p)
-trtd_plac.REMISSwk22_AMOVA<-toString(c(trtd_plac.REMISSwk22_AMOVA_p))
-trtd_plac.REMISSwk22_AMOVA<-gsub(",", "", trtd_plac.REMISSwk22_AMOVA)
-trtd_plac.REMISSwk22<-matrix(c('Treated_Placebo', trtd_plac.REMISSwk22_sum, trtd_plac.REMISSwk22_wilcox_P, trtd_plac.REMISSwk22_AMOVA), ncol = 4)
-
-set.seed(32016)
-plac_trtd.REMISSwk22.wilcox.test.data<-na.omit(subset(plac_trtd.data, select= c(group, invsimpson, REMISSwk22)))
-plac_trtd.n.YesREMISSwk22.wilcoxtest<-nrow(plac_trtd.REMISSwk22.wilcox.test.data[plac_trtd.REMISSwk22.wilcox.test.data$REMISSwk22=="Yes",])
-plac_trtd.n.YesREMISSwk22.wilcoxtest
-plac_trtd.n.NoREMISSwk22.wilcoxtest<-nrow(plac_trtd.REMISSwk22.wilcox.test.data[plac_trtd.REMISSwk22.wilcox.test.data$REMISSwk22=="No",])
-plac_trtd.n.NoREMISSwk22.wilcoxtest
-plac_trtd.wilcox.REMISSwk22<-wilcox.test(invsimpson ~ REMISSwk22, plac_trtd.REMISSwk22.wilcox.test.data)
-plac_trtd.wilcox.REMISSwk22
-plac_trtd.wilcox.REMISSwk22.pval<-signif(plac_trtd.wilcox.REMISSwk22$p.value, digits = 2)
-plac_trtd.wilcox.REMISSwk22.pval
-
-set.seed(32016)
-plac_trtd.REMISSwk22.adonis<-adonis(plac_trtd.data.dist ~ REMISSwk22, plac_trtd.data)
-plac_trtd.REMISSwk22.adonis
-plac_trtd.REMISSwk22.adonis.pval<-signif(as.numeric(na.omit(plac_trtd.REMISSwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
-
-plac_trtd.YesREMISSwk22<-toString(c(plac_trtd.n.YesREMISSwk22.wilcoxtest))
-plac_trtd.YesREMISSwk22<-gsub(",", "", plac_trtd.YesREMISSwk22)
-plac_trtd.YesREMISSwk22<-gsub(" ", "", plac_trtd.YesREMISSwk22)
-plac_trtd.NoREMISSwk22<-toString(c(plac_trtd.n.NoREMISSwk22.wilcoxtest))
-plac_trtd.NoREMISSwk22<-gsub(",", "", plac_trtd.NoREMISSwk22)
-plac_trtd.NoREMISSwk22<-gsub(" ", "", plac_trtd.NoREMISSwk22)
-
-plac_trtd.REMISSwk22_sum<-toString(c(plac_trtd.NoREMISSwk22, plac_trtd.YesREMISSwk22))
-plac_trtd.REMISSwk22_wilcox_P<-toString(c(plac_trtd.wilcox.REMISSwk22.pval))
-plac_trtd.REMISSwk22_wilcox_P<-gsub(",", "", plac_trtd.REMISSwk22_wilcox_P)
-plac_trtd.REMISSwk22_wilcox_P<-gsub(" ", "", plac_trtd.REMISSwk22_wilcox_P)
-
-
-plac_trtd.REMISSwk22_AMOVA_p<-toString(c(plac_trtd.REMISSwk22.adonis.pval))
-plac_trtd.REMISSwk22_AMOVA_p<-gsub(",", "", plac_trtd.REMISSwk22_AMOVA_p)
-plac_trtd.REMISSwk22_AMOVA_p<-gsub(" ", "", plac_trtd.REMISSwk22_AMOVA_p)
-plac_trtd.REMISSwk22_AMOVA<-toString(c(plac_trtd.REMISSwk22_AMOVA_p))
-plac_trtd.REMISSwk22_AMOVA<-gsub(",", "", plac_trtd.REMISSwk22_AMOVA)
-plac_trtd.REMISSwk22<-matrix(c('Placebo_Treated', plac_trtd.REMISSwk22_sum, plac_trtd.REMISSwk22_wilcox_P, plac_trtd.REMISSwk22_AMOVA), ncol = 4)
-
-
-
-trtd_plac.RelRSPwk22
-plac_trtd.RelRSPwk22
-
-trtd_plac.REMISSwk22
-plac_trtd.REMISSwk22
-
-trtd_trtd.RelRSPwk22
-plac_plac.RelRSPwk22
-
-trtd_trtd.REMISSwk22
-plac_plac.REMISSwk22
 ```
 
 ```{r timereaddata, include=FALSE}
@@ -2190,9 +1465,33 @@ alltp.placplac.RESPy<-alltp.placplac[alltp.placplac$RelRSPwk22=="Yes",]
 #adonis(alltp_dist ~ TRTGR*RelRSPwk22, alltime_data, strata = alltime_data$visit)
 ```
 
-```{r, eval=FALSE, include=FALSE}
+```{r, eval=T, include=FALSE}
 print("Summary of all subjects over weeks 0 4 and 6")
 summary(subset(wk046_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk6, RelRSPwk6, REMISSwk6, RESPONSEwk22, RelRSPwk22, REMISSwk22)))
+
+n.wk046 <- nrow(wk046_data[wk046_data$visit=="Week 6",])
+n.wk046.trtd <- nrow(wk046.ust[wk046.ust$visit=="Week 6",])
+n.wk046.plac <- nrow(wk046.plac[wk046.plac$visit=="Week 6",])
+wk046.trtd.6 <- wk046.ust[wk046.ust$visit=="Week 6",]
+wk046.plac.6 <- wk046.plac[wk046.plac$visit=="Week 6",]
+
+n.wk046.trtd.respWK22Y <- nrow(wk046.trtd.6[wk046.trtd.6$RelRSPwk22 == "Yes",])
+n.wk046.trtd.respWK22N <- nrow(wk046.trtd.6[wk046.trtd.6$RelRSPwk22 == "No",])
+n.wk046.plac.respWK22Y <- nrow(wk046.plac.6[wk046.plac.6$RelRSPwk22 == "Yes",])
+n.wk046.plac.respWK22N <- nrow(wk046.plac.6[wk046.plac.6$RelRSPwk22 == "No",])
+
+all.wk046<-matrix(c('Week 22 Response (No, Yes)', trtd.RelRSPwk6_sum, plac.RelRSPwk6_sum, all.RelRSPwk6.kw.test.pval, all.RelRSPwk6_AMOVA), ncol = 5)
+
+wk046.trtd_sum<-toString(c(n.wk046.trtd.respWK22N, n.wk046.trtd.respWK22Y))
+wk046.plac_sum<-toString(c(n.wk046.plac.respWK22N, n.wk046.plac.respWK22Y))
+
+wk046 <- matrix(c("Week 22 Response (No, Yes)", wk046.trtd_sum, wk046.plac_sum, n.wk046), ncol=4)
+colnames(wk046) <- c("Samples at Week 0, 4, and 6", 'Treated (n)', "Placebo (n)", "Total (n)")
+
+
+pdf("tables/wk046.sum.pdf", height=2, width=6)
+grid.table(wk046)
+dev.off()
 ```
 
 ```{r , include=F}
@@ -2204,8 +1503,11 @@ adonis(wk046_dist ~ visit*TRTGR*RelRSPwk6, wk046_data, strata = wk046_data$USUBJ
 ```{r , include=F}
 print("All subjects over weeks 0 4 and 6 by induction and relative response at week 22")
 set.seed(32016)
-adonis(wk046_dist ~ visit*TRTGR*RelRSPwk22, wk046_data, strata = wk046_data$USUBJID, permutations = 2000)
+wk046visXtrtgrXwk22.adonis <- adonis(wk046_dist ~ visit*TRTGR*RelRSPwk22, wk046_data, strata = wk046_data$USUBJID, permutations = 2000)
 
+pdf("tables/SF2adonis.pdf", width = 8, height = 4)
+grid.table(signif(wk046visXtrtgrXwk22.adonis$aov.tab, 2))
+dev.off()
 #print("All subjects over weeks 0 4 and 6 by induction and response at week 22")
 #set.seed(32016)
 #adonis(wk046_dist ~ visit*TRTGR*RESPONSEwk22, wk046_data, strata = wk046_data$USUBJID, permutations = 2000)
@@ -2237,6 +1539,10 @@ summary(subset(wk046.plac.relRSP22Y, select=c(group, USUBJID, visit, TRTGR, TRTG
 set.seed(32016)
 print("All placebo week 22 responders over weeks 0 4 and 6")
 adonis(wk046.plac.relRSP22Y.dist ~ visit, wk046.plac.relRSP22Y, strata = wk046.plac.relRSP22Y$USUBJID, permutations = 2000)
+```
+
+```{r wk046adivXvis}
+source("../code/adivXvisit.facetTRTGR+RelRSPwk22.R")
 ```
 
 ```{r, include=F, }
@@ -2306,6 +1612,16 @@ adonis(alltp_placdist.respY ~ visit, alltp.placplac.RESPy, strata = alltp.placpl
 ```{r readdataAUCRF, include=FALSE}
 #Read in all data
 source('../code/APmd.setup.R')
+
+APmd_adiv<-merge(APmd, adiv, by.x="group", by.y="group")#nonmatch removed
+APmd_shared<-merge(APmd_adiv, ss3k_shared_U2s, by.x="group", by.y="Group")
+
+APmd_shared$TRTGR_REMISSwk6 <- as.factor(paste(APmd_shared$TRTGR, APmd_shared$REMISSwk6))
+APmd_shared$TRTGR_REMISSwk22 <- as.factor(paste(APmd_shared$TRTGR, APmd_shared$REMISSwk22))
+
+APmd_shared$TRTGR_RelRSPwk6 <- as.factor(paste(APmd_shared$TRTGR, APmd_shared$RelRSPwk6))
+APmd_shared$TRTGR_RelRSPwk22 <- as.factor(paste(APmd_shared$TRTGR, APmd_shared$RelRSPwk22))
+APmd_RSPwk22<-APmd_shared
 
 screen_RESPwk22<-APmd_RSPwk22[APmd_RSPwk22$visit=="Screening",] #removes any group with NA in RESPONSEwk22
 
@@ -2591,6 +1907,16 @@ mdotu_remWK6_rf <- AUCRF(REMISSwk6~., data=mdotu_remWK6, ranking='MDA', ntree=50
 #mdotu_remWK6_rf # prints list of optimal features
 mdotu_remWK6_probs <- predict(mdotu_remWK6_rf$RFopt, type='prob')[,2]
 mdotu_remWK6_roc <- roc(mdotu_remWK6$REMISSwk6~mdotu_remWK6_probs)
+
+set.seed(32016)
+otu_remWK6_rf_cv <- AUCRFcv(otu_remWK6_rf)
+set.seed(32016)
+mdotu_remWK6_rf_cv <- AUCRFcv(mdotu_remWK6_rf)
+```
+
+```{r}
+otu_remWK6_rf_cv
+mdotu_remWK6_rf_cv
 ```
 
 ```{r REMISSwk6AUCRFinline, fig.height=5, fig.width=10, include=FALSE}
@@ -2746,7 +2072,8 @@ print("RelRSPwk22 by AUC-RF \\nRelative respWK22onse defined as a decrease in CD
 set.seed(32016)
 
 levels(nao.screen.trtd$RelRSPwk22) <- c(0,1)
-mdotu_relrespWK22 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RelRSPwk22',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd))])]
+nao.screen.trtd.trtd <- nao.screen.trtd[nao.screen.trtd$TRTGRINDMAN == "Treated_Treated", ]
+mdotu_relrespWK22 <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening', c('RelRSPwk22',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd.trtd))])]
 #summary(mdotu_relrespWK22[,c("RelRSPwk22")])
 mdotu_relrespWK22<-na.omit(mdotu_relrespWK22)
 #summary(mdotu_relrespWK22[,c("RelRSPwk22")])
@@ -2761,7 +2088,7 @@ otu_relrespWK22_probs <- predict(otu_relrespWK22_rf$RFopt, type='prob')[,2]
 otu_relrespWK22_roc <- roc(otu_relrespWK22$RelRSPwk22~otu_relrespWK22_probs)
 
 
-md_relrespWK22 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RelRSPwk22','AGE', 'SEX', 'RACE', 'BAMINO', 'BANTIBIO', 'BCORT', 'BIMM', 'BL_BMI', 'DDUR', 'DDUR10', 'DDUR15', 'tissinvol', 'BL_FLACT', 'BL_FCALP', 'BL_CRP', 'BOWSTRICT')]
+md_relrespWK22 <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening', c('RelRSPwk22','AGE', 'SEX', 'RACE', 'BAMINO', 'BANTIBIO', 'BCORT', 'BIMM', 'BL_BMI', 'DDUR', 'DDUR10', 'DDUR15', 'tissinvol', 'BL_FLACT', 'BL_FCALP', 'BL_CRP', 'BOWSTRICT')]
 #summary(md_relrespWK22[,c("RelRSPwk22")])
 md_relrespWK22<-na.omit(md_relrespWK22)
 #summary(md_relrespWK22[,c("RelRSPwk22")])
@@ -2771,7 +2098,7 @@ md_relrespWK22_probs <- predict(md_relrespWK22_rf$RFopt, type='prob')[,2]
 md_relrespWK22_roc <- roc(md_relrespWK22$RelRSPwk22~md_relrespWK22_probs)
 
 
-mdotu_relrespWK22 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RelRSPwk22',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd))])]
+mdotu_relrespWK22 <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening', c('RelRSPwk22',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd.trtd))])]
 #summary(mdotu_relrespWK22[,c("RelRSPwk22")])
 mdotu_relrespWK22<-na.omit(mdotu_relrespWK22)
 #summary(mdotu_relrespWK22[,c("RelRSPwk22")])
@@ -2808,8 +2135,8 @@ mdotu_relrespWK22_rf # prints list of optimal features
 ```{r REMISSwk22-AUC-RF, include=F, fig.height=5, fig.width=10}
 print("REMISSwk22 by AUC-RF")
 set.seed(32016)
-levels(nao.screen.trtd$REMISSwk22) <- c(0,1)
-mdotu_remWK22 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('REMISSwk22',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd))])]
+levels(nao.screen.trtd.trtd$REMISSwk22) <- c(0,1)
+mdotu_remWK22 <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening', c('REMISSwk22',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd.trtd))])]
 #summary(mdotu_remWK22[,c("REMISSwk22")])
 mdotu_remWK22<-na.omit(mdotu_remWK22)
 #summary(mdotu_remWK22[,c("REMISSwk22")])
@@ -2824,7 +2151,7 @@ otu_remWK22_probs <- predict(otu_remWK22_rf$RFopt, type='prob')[,2]
 otu_remWK22_roc <- roc(otu_remWK22$REMISSwk22~otu_remWK22_probs)
 
 
-md_remWK22 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('REMISSwk22',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening")]
+md_remWK22 <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening', c('REMISSwk22',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening")]
 #summary(md_remWK22[,c("REMISSwk22")])
 md_remWK22<-na.omit(md_remWK22)
 #summary(md_remWK22[,c("REMISSwk22")])
@@ -2834,7 +2161,7 @@ md_remWK22_probs <- predict(md_remWK22_rf$RFopt, type='prob')[,2]
 md_remWK22_roc <- roc(md_remWK22$REMISSwk22~md_remWK22_probs)
 
 
-mdotu_remWK22 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('REMISSwk22', 'AGE', 'SEX', 'RACE', 'BAMINO', 'BANTIBIO', 'BCORT', 'BIMM', 'BL_BMI', 'DDUR', 'DDUR10', 'DDUR15', 'tissinvol', 'BL_FLACT', 'BL_FCALP', 'BL_CRP', 'BOWSTRICT', 'invsimpson', colnames(nao.screen.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd))])]
+mdotu_remWK22 <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening', c('REMISSwk22', 'AGE', 'SEX', 'RACE', 'BAMINO', 'BANTIBIO', 'BCORT', 'BIMM', 'BL_BMI', 'DDUR', 'DDUR10', 'DDUR15', 'tissinvol', 'BL_FLACT', 'BL_FCALP', 'BL_CRP', 'BOWSTRICT', 'invsimpson', colnames(nao.screen.trtd.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd.trtd))])]
 #summary(mdotu_remWK22[,c("REMISSwk22")])
 mdotu_remWK22<-na.omit(mdotu_remWK22)
 #summary(mdotu_remWK22[,c("REMISSwk22")])
@@ -2863,6 +2190,16 @@ axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
 cutoff <- coords(roc=mdotu_remWK22_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
 
 mdotu_remWK22_rf # prints list of optimal features
+
+set.seed(32016)
+otu_remWK22_rf_cv <- AUCRFcv(otu_remWK22_rf)
+set.seed(32016)
+mdotu_remWK22_rf_cv <- AUCRFcv(mdotu_remWK22_rf)
+```
+
+```{r}
+otu_remWK22_rf_cv
+mdotu_remWK22_rf_cv
 ```
 
 ```{r , include=F}
@@ -2933,7 +2270,7 @@ APmd.wk6$visit<-factor(APmd.wk6$visit, levels = c("Screening", "Week 4", "Week 6
 adiv<-read.table(file="../data/Jan400.all.na.omit.cmd.groups.summary", sep="\t", header=T)
 ss3k_shared<-read.table(file="../data/Jan400.all.na.omit.cmd.0.03.subsample.shared", sep="\t", header=T)#Jan400 subsampled to 3K visit=Week.6
 APmd.wk6_adiv<-merge(APmd.wk6, adiv, by.x="group", by.y="group")#nonmatch removed
-APmd.wk6_shared<-merge(APmd.wk6_adiv, ss3k_shared, by.x="group", by.y="Group")
+APmd.wk6_shared<-merge(APmd.wk6_adiv, ss3k_shared_U2s, by.x="group", by.y="Group")
 summary(APmd.wk6_shared[,1:20])
 APmd.wk6_shared<-APmd.wk6_shared[APmd.wk6_shared$USUBJID!='C0743T26030100002',]
 APmd.wk6_shared<-APmd.wk6_shared[APmd.wk6_shared$group!='E4859941-5',]
@@ -2977,13 +2314,46 @@ plac.zero6subs_data<-plac.zero6subs_data[plac.zero6subs_data$TRTGRINDMAN!="Treat
 summary(subset(trtd.zero6subs_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
 summary(subset(plac.zero6subs_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
 
+week6.N.all <- nrow(zero6subs_data[zero6subs_data$visit=='Week 6',])
+week6.trtd <- trtd.zero6subs_data[trtd.zero6subs_data$visit=='Week 6',]
+week6.N.trtd <- nrow(trtd.zero6subs_data[trtd.zero6subs_data$visit=='Week 6',])
+week6.N.trtd.respY <- nrow(week6.trtd[week6.trtd$RelRSPwk6=='Yes',])
+week6.N.trtd.respN <- nrow(week6.trtd[week6.trtd$RelRSPwk6=='No',])
+week6.plac <- plac.zero6subs_data[plac.zero6subs_data$visit=='Week 6',]
+week6.N.plac <- nrow(plac.zero6subs_data[plac.zero6subs_data$visit=='Week 6',])
+week6.N.plac.respY <- nrow(week6.plac[week6.plac$RelRSPwk6=='Yes',])
+week6.N.plac.respN <- nrow(week6.plac[week6.plac$RelRSPwk6=='No',])
+week6.N.trtd.REMY <- nrow(week6.trtd[week6.trtd$REMISSwk6=='Yes',])
+week6.N.trtd.REMN <- nrow(week6.trtd[week6.trtd$REMISSwk6=='No',])
+week6.N.plac.REMY <- nrow(week6.plac[week6.plac$REMISSwk6=='Yes',])
+week6.N.plac.REMN <- nrow(week6.plac[week6.plac$REMISSwk6=='No',])
 
+all.RelRSPwk6<-matrix(c('Week 6 Response (No, Yes)', trtd.RelRSPwk6_sum, plac.RelRSPwk6_sum, all.RelRSPwk6.kw.test.pval, all.RelRSPwk6_AMOVA), ncol = 5)
+
+week6.N.resp.trtd_sum<-toString(c(week6.N.trtd.respN, week6.N.trtd.respY))
+week6.N.resp.plac_sum<-toString(c(week6.N.plac.respN, week6.N.plac.respY))
+
+week6.N.REM.trtd_sum<-toString(c(week6.N.trtd.REMN, week6.N.trtd.REMY))
+week6.N.REM.plac_sum<-toString(c(week6.N.plac.REMN, week6.N.plac.REMY))
+
+wk6.RelRSPwk6 <- matrix(c("Week 6", "Response Week 6 (No, Yes)", week6.N.resp.trtd_sum, week6.N.resp.plac_sum, week6.N.all), ncol=5)
+colnames(wk6.RelRSPwk6) <- c("Stool Week", 'Status Week', 'Treated (n)', "Placebo (n)", "Total (n)")
+wk6.REMISSwk6 <- matrix(c("Week 6", "Remission Week 6 (No, Yes)", week6.N.REM.trtd_sum, week6.N.REM.plac_sum, week6.N.all), ncol=5)
+colnames(wk6.REMISSwk6) <- c("Stool Week", 'Status Week', 'Treated (n)', "Placebo (n)", "Total (n)")
+
+wk6_wk6 <- rbind(wk6.RelRSPwk6, wk6.REMISSwk6)
+wk6_wk6 <- wk6_wk6[,-5]
+
+pdf("tables/wk6_wk6.sum.pdf", height=2, width=6)
+grid.table(wk6_wk6)
+dev.off()
 ```
 
 ```{r RelRSPwk6Xwk6-AUC-RF, include=F, fig.height=5, fig.width=10}
 print("RelRSPwk6 by AUC-RF \\nRelative response defined as a decrease in CDAI from Week.6 greater than 29.5%.")
 set.seed(32016)
 levels(trtd.wk6_data$RelRSPwk6) <- c(0,1)
+
 mdotu_relrespWK6xWK6 <- trtd.wk6_data[trtd.wk6_data$visit=='Week 6', c('RelRSPwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Week.6", "CDPAINM_Week.6", "CDWELBEM_Week.6", "CDARTRTM_Week.6", "CDARALGM_Week.6", "CDIRITM_Week.6", "CDUVEITM_Week.6", "CDERYTHM_Week.6", "CDPYODEM_Week.6", "CDSTOMAM_Week.6", "CDFISURM_Week.6", "CDFISTUM_Week.6", "CDABSCEM_Week.6", "CDOTFISM_Week.6", "CDFEVERM_Week.6", "CDDRGM_Week.6", "CDAMASSM_Week.6", "CDHCTM_Week.6", "CDWEIGHM_Week.6", "invsimpson", colnames(trtd.wk6_data)[grep('Otu[0123456789]', colnames(trtd.wk6_data))])]
 #summary(mdotu_relrespWK6xWK6[,c("RelRSPwk6")])
 mdotu_relrespWK6xWK6<-na.omit(mdotu_relrespWK6xWK6)
@@ -3157,6 +2527,7 @@ otu_remWK6xWK6 <- mdotu_remWK6xWK6[, c('REMISSwk6', colnames(mdotu_remWK6xWK6)[g
 #summary(otu_remWK6xWK6[,c("REMISSwk6")])
 #summary(otu_remWK6xWK6[,c("REMISSwk6")])
 otu_remWK6xWK6<-na.omit(otu_remWK6xWK6)
+
 #summary(otu_remWK6xWK6[,c("REMISSwk6")])
 set.seed(32016)
 otu_remWK6xWK6_rf <- AUCRF(REMISSwk6~., data=otu_remWK6xWK6, ranking='MDA', ntree=500, pdel=0.2)
@@ -3164,6 +2535,8 @@ otu_remWK6xWK6_rf <- AUCRF(REMISSwk6~., data=otu_remWK6xWK6, ranking='MDA', ntre
 otu_remWK6xWK6_probs <- predict(otu_remWK6xWK6_rf$RFopt, type='prob')[,2]
 otu_remWK6xWK6_roc <- roc(otu_remWK6xWK6$REMISSwk6~otu_remWK6xWK6_probs)
 
+set.seed(32016)
+otu_remWK6xWK6_rf_cv <- AUCRFcv(otu_remWK6xWK6_rf)
 
 md_remWK6xWK6 <- trtd.wk6_data[trtd.wk6_data$visit=='Week 6', c('REMISSwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Week.6", "CDPAINM_Week.6", "CDWELBEM_Week.6", "CDARTRTM_Week.6", "CDARALGM_Week.6", "CDIRITM_Week.6", "CDUVEITM_Week.6", "CDERYTHM_Week.6", "CDPYODEM_Week.6", "CDSTOMAM_Week.6", "CDFISURM_Week.6", "CDFISTUM_Week.6", "CDABSCEM_Week.6", "CDOTFISM_Week.6", "CDFEVERM_Week.6", "CDDRGM_Week.6", "CDAMASSM_Week.6", "CDHCTM_Week.6", "CDWEIGHM_Week.6")]
 #summary(md_remWK6xWK6[,c("REMISSwk6")])
@@ -3256,6 +2629,14 @@ mdotu_remWK6xWK6_rf # prints list of optimal features
 otu_remWK6xWK6_rf
 md_remWK6xWK6_rf
 ```
+
+```{r}
+otu_remWK6xWK6_rf_cv
+```
+
+```{r}
+```
+
 
 \vspace{35mm}
 	
@@ -3385,7 +2766,7 @@ Mothur as well as the R software package were used for our data analysis. Alpha 
 
 source('../code/SupTable1_baseline_metadata.R')
 ```
-\includegraphics{tables/SupTable1_baseline_metadata.pdf}
+includegraphics{tables/SupTable1_baseline_metadata.pdf
 
 \newpage
 
@@ -3394,7 +2775,7 @@ source('../code/SupTable1_baseline_metadata.R')
 ```{r table1}
 source("../code/table1.cohortdiv.R")
 ```
-\includegraphics{tables/table1_cohortdiversity.pdf}
+includegraphics{tables/table1_cohortdiversity.pdf
 
 \newpage
 
@@ -3405,69 +2786,60 @@ source("../code/table1.cohortdiv.R")
 source('../code/table2diversity.R')
 ```
 
-\includegraphics{tables/table2diversity.pdf}
+includegraphics{tables/table2diversity.pdf
 
 \newpage
 
-**Supplemental Table 2: Table of taxa that appear frequently in predictive models at different response weeks, use baseline and post-treat time points, also pooled**
 
-```{r Kopt table, cache=F, include=T, fig.height=10, fig.width=5}
+**ST2: adonis summary table showing difference by visit/TRTGR/wk22resp**
+includegraphics{tables/SF2adonis.pdf
 
-source('../code/ST2_freqOTUsTable.R')
-
-```
-
-\includegraphics{tables/ST2_freqOTUs.pdf}
 
 \newpage
 
 ## Figures
 
+**Figure 1: Phyla by response/remisison week 6 and OTU abundance week 6 remission**
+![Fig1](figures/ggplot.phylum.figure.byRelRSPwk6.pdf)
+![Fig1](figures/ggplot.phylum.figure.byREMISSwk6.pdf)
 
-**Figure 1: Prediction of RESPONSE/REMISSION in treated subjects using all clinical metadata, baseline microbiome alone, and combined**
+\newpage
+**SF 1: Phyla by response/remission week 22**
+![SF1](figures/ggplot.phylum.figure.byRelRSPwk22.pdf)
+![SF1](figures/ggplot.phylum.figure.byREMISSwk22.pdf)
+\newpage
+
+**Figure 2: Change in alpha diversity over time**
+![Figure 2](figures/wk046.adivXvisitXindtrtXrelRSPwk22.pdf)
+
+
+
+\newpage
+**Figure 3: Determine week 6 status by week 6 stool and impt OTUs and abunds**
+![Figure 3](figures/Figure3.pdf)
+
+\newpage
+**Figure 4: Prediction of RESPONSE/REMISSION in treated subjects using all clinical metadata, baseline microbiome alone, and combined**
 A. Response ROCs B. Response Model Performance vs. reality C. Top predictive taxa and abundance based on response	D. REMISSION ROCs E. REMISSION Model Performance vs. reality F. Top predictive taxa and abundance based on remission
+
+
 
 ```{r RelRSPwk6Fig}
 source('../code/Figure1prediction.R')
 ```
 
-![Prediction of RESPONSE/REMISSION in treated subjects using all clinical metadata, baseline microbiome alone, and combined. A. Response ROCs. B. Response Model Performance vs. reality. C. Top predictive taxa and abundance based on response. D. REMISSION ROCs. E. REMISSION Model Performance vs. reality. F. Top predictive taxa and abundance based on remission](figures/Figure1.tiff)
+![Prediction of RESPONSE/REMISSION in treated subjects using all clinical metadata, baseline microbiome alone, and combined. A. Response ROCs. B. Response Model Performance vs. reality. C. Top predictive taxa and abundance based on response. D. REMISSION ROCs. E. REMISSION Model Performance vs. reality. F. Top predictive taxa and abundance based on remission](figures/Figure4.pdf)
 
 \newpage
 
-**Figure 2: Lefse data supporting the abundance/importance data in the predictive models**
-Abundance strip charts of differential taxa based on A) response and B) remission.
-
-```{r TRTGR_RelRSPwk6.trtdYN.lefse, header=T, na.strings=c("NA", "NULL"),}
-
-source('../code/LEfSe_figure.R')
-
-```
-
-![Figure 2: Lefse data supporting the abundance/importance data in the predictive models. Abundance strip charts of differential taxa based on A) response and B) remission.](figures/Figure2LEfSe.tiff)
-
-\newpage
-
-**Figure 3:  Abundance of frequently predictive OTUs in responders and remitters**
-
-
-```{r , include=T,  cache=F, fig.height=5, fig.width=10}
-
-source('../code/Figure3FreqOTUabund.R')
-```
-
-![Abundance of frequently predictive OTUs in responders and remitters](figures/Figure3FreqOTUabund.tiff)
-
-\newpage
-
-**Supplemental Figure 1: Determining Week 6 disease status using Week 6 samples**
+**Supplemental Figure 3: Predicting Week 22 disease status using Week 0 samples**
 
 ```{r, include=T}
 
-source('../code/SF1_responseREMwk6Xwk6.R')
+source('../code/predictionWeek22figures.R')
 ```
 
-![Supplemental Figure 1: Determining Week 6 disease status using Week 6 samples](figures/RSPwk6aucrf.tiff)
+![SF3](figures/SF3.pdf)
 
 \newpage
 # References
