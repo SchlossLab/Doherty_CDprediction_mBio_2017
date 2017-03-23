@@ -4,8 +4,8 @@ title: The fecal microbiome as a tool for monitoring and predicting response out
 csl: mbio.csl
 fontsize: 11pt
 output:
-  html_document: default
   md_document: default
+  html_document: default
   pdf_document:
     keep_tex: yes
     latex_engine: xelatex
@@ -1672,6 +1672,7 @@ otu_respWK6 <- mdotu_respWK6[, c('RESPONSEwk6', colnames(mdotu_respWK6)[grep('Ot
 #summary(otu_respWK6[,c("RESPONSEwk6")])
 otu_respWK6<-na.omit(otu_respWK6)
 #summary(otu_respWK6[,c("RESPONSEwk6")])
+set.seed(32016)
 otu_respWK6_rf <- AUCRF(RESPONSEwk6~., data=otu_respWK6, ranking='MDA', ntree=500, pdel=0.2)
 #otu_respWK6_rf # prints list of optimal OTUs
 otu_respWK6_probs <- predict(otu_respWK6_rf$RFopt, type='prob')[,2]
@@ -1682,6 +1683,7 @@ md_respWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSEwk6
 #summary(md_respWK6[,c("RESPONSEwk6")])
 md_respWK6<-na.omit(md_respWK6)
 #summary(md_respWK6[,c("RESPONSEwk6")])
+set.seed(32016)
 md_respWK6_rf <- AUCRF(RESPONSEwk6~., data=md_respWK6, ranking='MDA', ntree=500, pdel=0.3)
 #md_respWK6_rf # prints list of optimal features
 md_respWK6_probs <- predict(md_respWK6_rf$RFopt, type='prob')[,2]
@@ -1692,6 +1694,7 @@ mdotu_respWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSE
 #summary(mdotu_respWK6[,c("RESPONSEwk6")])
 mdotu_respWK6<-na.omit(mdotu_respWK6)
 #summary(mdotu_respWK6[,c("RESPONSEwk6")])
+set.seed(32016)
 mdotu_respWK6_rf <- AUCRF(RESPONSEwk6~., data=mdotu_respWK6, ranking='MDA', ntree=500, pdel=0.2)
 #mdotu_respWK6_rf # prints list of optimal features
 mdotu_respWK6_probs <- predict(mdotu_respWK6_rf$RFopt, type='prob')[,2]
@@ -1759,6 +1762,7 @@ otu_relrespWK6 <- mdotu_relrespWK6[, c('RelRSPwk6', colnames(mdotu_relrespWK6)[g
 #summary(otu_relrespWK6[,c("RelRSPwk6")])
 otu_relrespWK6<-na.omit(otu_relrespWK6)
 #summary(otu_relrespWK6[,c("RelRSPwk6")])
+set.seed(32016)
 otu_relrespWK6_rf <- AUCRF(RelRSPwk6~., data=otu_relrespWK6, ranking='MDA', ntree=500, pdel=0.2)
 ##otu_relrespWK6_rf # prints list of optimal OTUs
 otu_relrespWK6_probs <- predict(otu_relrespWK6_rf$RFopt, type='prob')[,2]
@@ -1769,6 +1773,7 @@ md_relrespWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RelRSPwk
 #summary(md_relrespWK6[,c("RelRSPwk6")])
 md_relrespWK6<-na.omit(md_relrespWK6)
 #summary(md_relrespWK6[,c("RelRSPwk6")])
+set.seed(32016)
 md_relrespWK6_rf <- AUCRF(RelRSPwk6~., data=md_relrespWK6, ranking='MDA', ntree=500, pdel=0.3)
 ##md_relrespWK6_rf # prints list of optimal features
 md_relrespWK6_probs <- predict(md_relrespWK6_rf$RFopt, type='prob')[,2]
@@ -1779,6 +1784,7 @@ mdotu_relrespWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RelRS
 #summary(mdotu_relrespWK6[,c("RelRSPwk6")])
 mdotu_relrespWK6<-na.omit(mdotu_relrespWK6)
 #summary(mdotu_relrespWK6[,c("RelRSPwk6")])
+set.seed(32016)
 mdotu_relrespWK6_rf <- AUCRF(RelRSPwk6~., data=mdotu_relrespWK6, ranking='MDA', ntree=500, pdel=0.2)
 #mdotu_relrespWK6_rf # prints list of optimal features
 mdotu_relrespWK6_probs <- predict(mdotu_relrespWK6_rf$RFopt, type='prob')[,2]
@@ -1883,6 +1889,7 @@ otu_remWK6 <- mdotu_remWK6[, c('REMISSwk6', colnames(mdotu_remWK6)[grep('Otu[012
 #summary(otu_remWK6[,c("REMISSwk6")])
 otu_remWK6<-na.omit(otu_remWK6)
 #summary(otu_remWK6[,c("REMISSwk6")])
+set.seed(32016)
 otu_remWK6_rf <- AUCRF(REMISSwk6~., data=otu_remWK6, ranking='MDA', ntree=500, pdel=0.2)
 #otu_remWK6_rf # prints list of optimal OTUs
 otu_remWK6_probs <- predict(otu_remWK6_rf$RFopt, type='prob')[,2]
@@ -1893,6 +1900,7 @@ md_remWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('REMISSwk6',"
 #summary(md_remWK6[,c("REMISSwk6")])
 md_remWK6<-na.omit(md_remWK6)
 #summary(md_remWK6[,c("REMISSwk6")])
+set.seed(32016)
 md_remWK6_rf <- AUCRF(REMISSwk6~., data=md_remWK6, ranking='MDA', ntree=500, pdel=0.3)
 #md_remWK6_rf # prints list of optimal features
 md_remWK6_probs <- predict(md_remWK6_rf$RFopt, type='prob')[,2]
@@ -1903,6 +1911,7 @@ mdotu_remWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('REMISSwk6
 #summary(mdotu_remWK6[,c("REMISSwk6")])
 mdotu_remWK6<-na.omit(mdotu_remWK6)
 #summary(mdotu_remWK6[,c("REMISSwk6")])
+set.seed(32016)
 mdotu_remWK6_rf <- AUCRF(REMISSwk6~., data=mdotu_remWK6, ranking='MDA', ntree=500, pdel=0.2)
 #mdotu_remWK6_rf # prints list of optimal features
 mdotu_remWK6_probs <- predict(mdotu_remWK6_rf$RFopt, type='prob')[,2]
@@ -2016,6 +2025,7 @@ otu_respWK22 <- mdotu_respWK22[, c('RESPONSEwk22', colnames(mdotu_respWK22)[grep
 #summary(otu_respWK22[,c("RESPONSEwk22")])
 otu_respWK22<-na.omit(otu_respWK22)
 #summary(otu_respWK22[,c("RESPONSEwk22")])
+set.seed(32016)
 otu_respWK22_rf <- AUCRF(RESPONSEwk22~., data=otu_respWK22, ranking='MDA', ntree=500, pdel=0.2)
 #otu_respWK22_rf # prints list of optimal OTUs
 otu_respWK22_probs <- predict(otu_respWK22_rf$RFopt, type='prob')[,2]
@@ -2026,6 +2036,7 @@ md_respWK22 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSEwk
 #summary(md_respWK22[,c("RESPONSEwk22")])
 md_respWK22<-na.omit(md_respWK22)
 #summary(md_respWK22[,c("RESPONSEwk22")])
+set.seed(32016)
 md_respWK22_rf <- AUCRF(RESPONSEwk22~., data=md_respWK22, ranking='MDA', ntree=500, pdel=0.3)
 #md_respWK22_rf # prints list of optimal features
 md_respWK22_probs <- predict(md_respWK22_rf$RFopt, type='prob')[,2]
@@ -2036,6 +2047,7 @@ mdotu_respWK22 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONS
 #summary(mdotu_respWK22[,c("RESPONSEwk22")])
 mdotu_respWK22<-na.omit(mdotu_respWK22)
 #summary(mdotu_respWK22[,c("RESPONSEwk22")])
+set.seed(32016)
 mdotu_respWK22_rf <- AUCRF(RESPONSEwk22~., data=mdotu_respWK22, ranking='MDA', ntree=500, pdel=0.2)
 #mdotu_respWK22_rf # prints list of optimal features
 mdotu_respWK22_probs <- predict(mdotu_respWK22_rf$RFopt, type='prob')[,2]
@@ -2082,6 +2094,7 @@ otu_relrespWK22 <- mdotu_relrespWK22[, c('RelRSPwk22', colnames(mdotu_relrespWK2
 #summary(otu_relrespWK22[,c("RelRSPwk22")])
 otu_relrespWK22<-na.omit(otu_relrespWK22)
 #summary(otu_relrespWK22[,c("RelRSPwk22")])
+set.seed(32016)
 otu_relrespWK22_rf <- AUCRF(RelRSPwk22~., data=otu_relrespWK22, ranking='MDA', ntree=500, pdel=0.2)
 ##otu_relrespWK22_rf # prints list of optimal OTUs
 otu_relrespWK22_probs <- predict(otu_relrespWK22_rf$RFopt, type='prob')[,2]
@@ -2092,6 +2105,7 @@ md_relrespWK22 <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening', 
 #summary(md_relrespWK22[,c("RelRSPwk22")])
 md_relrespWK22<-na.omit(md_relrespWK22)
 #summary(md_relrespWK22[,c("RelRSPwk22")])
+set.seed(32016)
 md_relrespWK22_rf <- AUCRF(RelRSPwk22~., data=md_relrespWK22, ranking='MDA', ntree=500, pdel=0.3)
 ##md_relrespWK22_rf # prints list of optimal features
 md_relrespWK22_probs <- predict(md_relrespWK22_rf$RFopt, type='prob')[,2]
@@ -2102,6 +2116,7 @@ mdotu_relrespWK22 <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening
 #summary(mdotu_relrespWK22[,c("RelRSPwk22")])
 mdotu_relrespWK22<-na.omit(mdotu_relrespWK22)
 #summary(mdotu_relrespWK22[,c("RelRSPwk22")])
+set.seed(32016)
 mdotu_relrespWK22_rf <- AUCRF(RelRSPwk22~., data=mdotu_relrespWK22, ranking='MDA', ntree=500, pdel=0.2)
 #mdotu_relrespWK22_rf # prints list of optimal features
 mdotu_relrespWK22_probs <- predict(mdotu_relrespWK22_rf$RFopt, type='prob')[,2]
@@ -2145,6 +2160,7 @@ otu_remWK22 <- mdotu_remWK22[, c('REMISSwk22', colnames(mdotu_remWK22)[grep('Otu
 #summary(otu_remWK22[,c("REMISSwk22")])
 otu_remWK22<-na.omit(otu_remWK22)
 #summary(otu_remWK22[,c("REMISSwk22")])
+set.seed(32016)
 otu_remWK22_rf <- AUCRF(REMISSwk22~., data=otu_remWK22, ranking='MDA', ntree=500, pdel=0.2)
 #otu_remWK22_rf # prints list of optimal OTUs
 otu_remWK22_probs <- predict(otu_remWK22_rf$RFopt, type='prob')[,2]
@@ -2155,6 +2171,7 @@ md_remWK22 <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening', c('R
 #summary(md_remWK22[,c("REMISSwk22")])
 md_remWK22<-na.omit(md_remWK22)
 #summary(md_remWK22[,c("REMISSwk22")])
+set.seed(32016)
 md_remWK22_rf <- AUCRF(REMISSwk22~., data=md_remWK22, ranking='MDA', ntree=500, pdel=0.3)
 #md_remWK22_rf # prints list of optimal features
 md_remWK22_probs <- predict(md_remWK22_rf$RFopt, type='prob')[,2]
@@ -2165,6 +2182,7 @@ mdotu_remWK22 <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening', c
 #summary(mdotu_remWK22[,c("REMISSwk22")])
 mdotu_remWK22<-na.omit(mdotu_remWK22)
 #summary(mdotu_remWK22[,c("REMISSwk22")])
+set.seed(32016)
 mdotu_remWK22_rf <- AUCRF(REMISSwk22~., data=mdotu_remWK22, ranking='MDA', ntree=500, pdel=0.2)
 #mdotu_remWK22_rf # prints list of optimal features
 mdotu_remWK22_probs <- predict(mdotu_remWK22_rf$RFopt, type='prob')[,2]
