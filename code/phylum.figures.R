@@ -8,19 +8,26 @@ phyRabRelRSPwk6_figure <- ggplot(phyRabRelRSPwk6_ggplot, aes(x=RelRSPwk6, y=rela
 	theme(legend.text = element_text(face = "italic")) + ylab("Relative Abundance (%)") + xlab("Week 6 Responder")
 
 set.seed(32016)
+ann_text <- data.frame(RelRSPwk6 = c("No", "Yes") , relabund = 95,
+											 phylum = "Bacteroidetes")
 phyRabRelRSPwk6_figure2 <- ggplot(phyRabRelRSPwk6_ggplot, aes(x=RelRSPwk6, y=relabund, fill=RelRSPwk6)) +
 	#stat_summary(fun.y=median, geom="point", aes(fill = phylum), position = position_dodge(1)) +
 	#stat_summary(fun.data = 'median_hilow', fun.args = (conf.int=0.5), position = position_dodge(1), geom='errorbar', aes(color = phylum))+
 	geom_boxplot(position=position_dodge(width = 1), alpha = .4) +facet_grid(. ~ phylum) +
-	ylab("Relative Abundance (%)") + xlab("Week 6 Responder") + theme(legend.position="none") + theme(strip.text = element_text(face = "italic"))
+	ylab("Relative Abundance (%)") + xlab("Week 6 Responder") + theme(legend.position="none") + theme(strip.text = element_text(face = "italic")) +
+	geom_text(data = ann_text, label = "*", size=10)
 
-tiff('figures/ggplot.phylum.figure.byRelRSPwk6.tiff')
+#tiff('figures/ggplot.phylum.figure.byRelRSPwk6.tiff', height = 8, width = 12, units = "in", res = 300)
+pdf('figures/ggplot.phylum.figure.byRelRSPwk6.pdf', height = 8, width = 12)
 phyRabRelRSPwk6_figure
 dev.off()
 
-tiff('figures/ggplot.phylum.figure.facetbyotu.tiff')
+#tiff('figures/ggplot.phylum.figure.facetbyotuRelRSPwk6.tiff', height = 8, width = 12, units = "in", res = 300)
+pdf('figures/ggplot.phylum.figure.facetbyotuRelRSPwk6.pdf', height = 8, width = 12)
 phyRabRelRSPwk6_figure2
 dev.off()
+
+
 
 set.seed(32016)
 phyRabREMISSwk6_figure <- ggplot(phyRabREMISSwk6_ggplot, aes(x=REMISSwk6, y=relabund, fill=phylum)) +
@@ -36,11 +43,13 @@ phyRabREMISSwk6_figure2 <- ggplot(phyRabREMISSwk6_ggplot, aes(x=REMISSwk6, y=rel
 	geom_boxplot(position=position_dodge(width = 1), alpha = .4) +facet_grid(. ~ phylum) +
 	ylab("Relative Abundance (%)") + xlab("Week 6 Remitter") + theme(legend.position="none") + theme(strip.text = element_text(face = "italic"))
 
-tiff('figures/ggplot.phylum.figure.byREMISSwk6.tiff')
+#tiff('figures/ggplot.phylum.figure.byREMISSwk6.tiff', height = 8, width = 12, units = "in", res = 300)
+pdf('figures/ggplot.phylum.figure.byREMISSwk6.pdf', height = 8, width = 12)
 phyRabREMISSwk6_figure
 dev.off()
 
-tiff('figures/ggplot.phylum.figure.facetbyotu.tiff')
+#tiff('figures/ggplot.phylum.figure.facetbyotuREMISSwk6.tiff', height = 8, width = 12, units = "in", res = 300)
+pdf('figures/ggplot.phylum.figure.facetbyotuREMISSwk6.pdf', height = 8, width = 12)
 phyRabREMISSwk6_figure2
 dev.off()
 
@@ -58,11 +67,13 @@ phyRabRelRSPwk22_figure2 <- ggplot(phyRabRelRSPwk22_ggplot, aes(x=RelRSPwk22, y=
 	geom_boxplot(position=position_dodge(width = 1), alpha = .4) +facet_grid(. ~ phylum) +
 	ylab("Relative Abundance (%)") + xlab("Week 22 Responder") + theme(legend.position="none") + theme(strip.text = element_text(face = "italic"))
 
-tiff('figures/ggplot.phylum.figure.byRelRSPwk22.tiff')
-phyRabRelRSPwk22_figure
-dev.off()
+#tiff('figures/ggplot.phylum.figure.byRelRSPwk22.tiff', height = 8, width = 12, units = "in", res = 300)
+#pdf('figures/ggplot.phylum.figure.byRelRSPwk22.pdf', height = 8, width = 12)
+#phyRabRelRSPwk22_figure
+#dev.off()
 
-tiff('figures/ggplot.phylum.figure.facetbyotu.tiff')
+#tiff('figures/ggplot.phylum.figure.facetbyotuRelRSPwk22.tiff', height = 8, width = 12, units = "in", res = 300)
+#pdf('figures/ggplot.phylum.figure.facetbyotuRelRSPwk22.pdf', height = 8, width = 12)
 phyRabRelRSPwk22_figure2
 dev.off()
 
@@ -80,20 +91,29 @@ phyRabREMISSwk22_figure2 <- ggplot(phyRabREMISSwk22_ggplot, aes(x=REMISSwk22, y=
 	geom_boxplot(position=position_dodge(width = 1), alpha = .4) +facet_grid(. ~ phylum) +
 	ylab("Relative Abundance (%)") + xlab("Week 22 Remitter") + theme(legend.position="none") + theme(strip.text = element_text(face = "italic"))
 
-tiff('figures/ggplot.phylum.figure.byREMISSwk22.tiff')
+#tiff('figures/ggplot.phylum.figure.byREMISSwk22.tiff', height = 8, width = 12, units = "in", res = 300)
+pdf('figures/ggplot.phylum.figure.byREMISSwk22.pdf', height = 8, width = 12)
 phyRabREMISSwk22_figure
 dev.off()
 
-tiff('figures/ggplot.phylum.figure.facetbyotu.tiff')
+#tiff('figures/ggplot.phylum.figure.facetbyotuREMISSwk22.tiff', height = 8, width = 12, units = "in", res = 300)
+pdf('figures/ggplot.phylum.figure.facetbyotuREMISSwk22.pdf', height = 8, width = 12)
 phyRabREMISSwk22_figure2
 dev.off()
 #ummary(phyRabREMISSwk6_ggplot$phylum)
 
+pdf("figures/Figure1.pdf", height = 10, width = 12)
+plot_grid(phyRabRelRSPwk6_figure2, phyRabREMISSwk6_figure2, labels = c("A", "B"), align = "v", nrow=2)
+dev.off()
 
+pdf("figures/SF1.pdf", height = 10, width = 12)
+plot_grid(phyRabRelRSPwk22_figure2, phyRabREMISSwk22_figure2, labels = c("A", "B"), align = "v", nrow=2)
+dev.off()
 #str(phyRabREMISSwk6_ggplot$phylum)
 
 #stripcharts
-tiff('figures/phylum.stripchart.tiff', height = 8, width = 12, units = "in", res = 300)
+#tiff('figures/phylum.stripchart.tiff', height = 8, width = 12, units = "in", res = 300)
+pdf('figures/phylum.stripchart.pdf', height = 8, width = 12)
 ab_relabund <- phylum_rel_abund[,abundant]
 layout(1)
 plot(NA, ylim = c(0,100), xlim=c(1,30), ylab = "Relative Abundance (%)", xlab = "", axes = F)

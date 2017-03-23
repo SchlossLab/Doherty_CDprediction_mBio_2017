@@ -3,7 +3,6 @@
 
 colnames(CDAI) <- c('Clinical Variable', 'Summary', 'Species Richness (Alpha-diversity)', 'Community Structure (beta-diversity)')
 tbl1<-rbind(CDAI, Stool)
-colnames(tbl1) <- c('Clinical Variable', 'Summary', 'Species Richness\n(alpha-diversity)', 'Community Structure\n(beta-diversity)')
 
 cohortdiv<-c("CRP", "FCALP", "FLACT", "BMI", "weight", "AGE", "SEX", "BCORT", "DDUR", "tissinvol")
 
@@ -11,10 +10,26 @@ for (i in cohortdiv){
 	tbl1<-rbind(tbl1, get(i))
 }
 
-tiff("tables/table1_cohortdiversity.tiff", width = 11, height = 4, units='in', res=300)
+tbl1 <- data.frame(tbl1)
+adiv_p <- as.numeric(as.character(tbl1$Species.Richness..Alpha.diversity.))
+
+tbl1_adiv_adj_p <- p.adjust(adiv_p, method="BH")
+tbl1$Species.Richness..Alpha.diversity.<-as.factor(round(tbl1_adiv_adj_p, 3))
+
+bdiv_p <- as.numeric(as.character(tbl1$Community.Structure..beta.diversity.))
+
+tbl1_bdiv_adj_p <- p.adjust(bdiv_p, method="BH")
+tbl1$Community.Structure..beta.diversity.<-as.factor(round(tbl1_bdiv_adj_p, 3))
+
+colnames(tbl1) <- c('Clinical Variable', 'Correlation', 'Species Diveristy\n(p-value)', 'Community Structure\n(p-value)')
+#tbl1 <- tbl1[,-2]
+tbl1 <- as.matrix(tbl1)
+
+tiff("tables/table1_cohortdiversity.tiff", width = 7, height = 4, units='in', res=300)
 grid.table(tbl1)
 dev.off()
 
-pdf("tables/table1_cohortdiversity.pdf", width = 11, height = 4)
+pdf("tables/table1_cohortdiversity.pdf", width = 8, height = 6)
 grid.table(tbl1)
 dev.off()
+

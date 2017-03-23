@@ -10,10 +10,10 @@
 
 #tiff(RelRSPwk6Fig )
 
-tiff('figures/Figure1.tiff', height=12, width=10, units='in', res=300)
-
+#tiff('figures/Figure1.tiff', height=12, width=10, units='in', res=300)
+pdf("figures/Week6response.AUC.pdf", height=12, width=10)
 layout(matrix(c(1,2,3,4), 2, 2, byrow = TRUE))
-#pdf("figures/Week6response.AUC.pdf")
+
 par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
 plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
 plot(otu_relrespWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
@@ -92,7 +92,7 @@ oturf_tax<-oturf_tax[match(rf_tax$OTU, oturf_tax$OTU),]
 oturf_tax<-oturf_tax$Label
 oturf_tax <- gsub("_", " ", oturf_tax)
 axis(2, at=seq(1,index-2,2), labels=oturf_tax, font =3, las=1, line=0, tick=F, cex.axis=0.8)
-axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1), label=c("0", "0.01", "0.1", "1", "10"))
+axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0), label=c("0", "0.01", "0.1", "1", "10", "100"))
 legend('topright', legend=c("Week 6 Nonresponder", "Week 6 Responder"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=0.7)
 mtext('B', at=1e-8, side=3, line=0.1, font=2, cex=2)
 
@@ -174,7 +174,7 @@ oturf_tax<-oturf_tax[match(rf_tax$OTU, oturf_tax$OTU),]
 oturf_tax<-oturf_tax$Label
 oturf_tax <- gsub("_", " ", oturf_tax)
 axis(2, at=seq(1,index-2,2), labels=oturf_tax, font = 3, las=1, line=0, tick=F, cex.axis=0.8)
-axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1), label=c("0", "0.01", "0.1", "1", "10"))
+axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0), label=c("0", "0.01", "0.1", "1", "10", "100"))
 legend('topright', legend=c("Week 6 Nonremitter", "Week 6 Remitter"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=0.7)
 mtext('D', at=1e-8, side=3, line=0.1, font=2, cex=2)
 

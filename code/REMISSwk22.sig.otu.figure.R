@@ -1,38 +1,40 @@
 source('../code/otu.analysis.R')
 
 #significant otus
-tax_mean_otu_REMISSwk22_matrix <- merge(tax, mean_otu_REMISSwk22_matrix, by.x = "OTU", by.y="row.names")
-sig_REMISSwk22_wilcox_otu_adj_p_otus <- rownames(mean_otu_REMISSwk22_matrix)[sig_REMISSwk22_wilcox_otu_adj_p]
-mean_signif_REMISSwk22_otu_matrix <- mean_otu_REMISSwk22_matrix[sig_REMISSwk22_wilcox_otu_adj_p_otus,]
-tax_mean_signif_REMISSwk22_otu_matrix <- merge(tax, mean_signif_REMISSwk22_otu_matrix, by.x = "OTU", by.y="row.names")
-tax_mean_signif_REMISSwk22_otu_matrix$diff <- tax_mean_signif_REMISSwk22_otu_matrix$No-tax_mean_signif_REMISSwk22_otu_matrix$Yes
-tax_mean_signif_REMISSwk22_otu_matrix <-data.frame(tax_mean_signif_REMISSwk22_otu_matrix[tax_mean_signif_REMISSwk22_otu_matrix$diff!=0,])
-tax_mean_signif_REMISSwk22_otu_matrix <-tax_mean_signif_REMISSwk22_otu_matrix[abs(tax_mean_signif_REMISSwk22_otu_matrix$diff) >= 0.013,]
-tax_mean_signif_REMISSwk22_otu_matrix$Label <- factor(tax_mean_signif_REMISSwk22_otu_matrix$Label, levels = as.character(tax_mean_signif_REMISSwk22_otu_matrix$Label), labels= as.character(tax_mean_signif_REMISSwk22_otu_matrix$Label))
-tax_mean_signif_REMISSwk22_otu_matrix$OTU <- factor(tax_mean_signif_REMISSwk22_otu_matrix$OTU, levels = as.character(tax_mean_signif_REMISSwk22_otu_matrix$OTU), labels= as.character(tax_mean_signif_REMISSwk22_otu_matrix$OTU))
+median_otu_REMISSwk22_matrix <- data.frame(median_otu_REMISSwk22_matrix)
+tax_median_otu_REMISSwk22_matrix <- merge(tax, median_otu_REMISSwk22_matrix, by.x = "OTU", by.y="row.names")
+sig_REMISSwk22_wilcox_otu_adj_p_otus <- rownames(median_otu_REMISSwk22_matrix)[sig_REMISSwk22_wilcox_otu_adj_p]
+median_signif_REMISSwk22_otu_matrix <- median_otu_REMISSwk22_matrix[sig_REMISSwk22_wilcox_otu_adj_p_otus,]
+
+tax_median_signif_REMISSwk22_otu_matrix <- merge(tax, median_signif_REMISSwk22_otu_matrix, by.x = "OTU", by.y="row.names")
+tax_median_signif_REMISSwk22_otu_matrix$diff <- tax_median_signif_REMISSwk22_otu_matrix$No-tax_median_signif_REMISSwk22_otu_matrix$Yes
+tax_median_signif_REMISSwk22_otu_matrix <-data.frame(tax_median_signif_REMISSwk22_otu_matrix[tax_median_signif_REMISSwk22_otu_matrix$diff!=0,])
+tax_median_signif_REMISSwk22_otu_matrix <-tax_median_signif_REMISSwk22_otu_matrix[abs(tax_median_signif_REMISSwk22_otu_matrix$diff) >= 0.013,]
+tax_median_signif_REMISSwk22_otu_matrix$Label <- factor(tax_median_signif_REMISSwk22_otu_matrix$Label, levels = as.character(tax_median_signif_REMISSwk22_otu_matrix$Label), labels= as.character(tax_median_signif_REMISSwk22_otu_matrix$Label))
+tax_median_signif_REMISSwk22_otu_matrix$OTU <- factor(tax_median_signif_REMISSwk22_otu_matrix$OTU, levels = as.character(tax_median_signif_REMISSwk22_otu_matrix$OTU), labels= as.character(tax_median_signif_REMISSwk22_otu_matrix$OTU))
 
 
-labeled_mean_signif_REMISSwk22_otu_matrix <- subset(tax_mean_signif_REMISSwk22_otu_matrix, select=c("diff", "Label", "No", "Yes"))
-OTU_mean_signif_REMISSwk22_otu_matrix <- subset(tax_mean_signif_REMISSwk22_otu_matrix, select=c("diff", "OTU", "No", "Yes"))
-rownames(labeled_mean_signif_REMISSwk22_otu_matrix) <- labeled_mean_signif_REMISSwk22_otu_matrix$Label
-labeled_mean_signif_REMISSwk22_otu_matrix <-labeled_mean_signif_REMISSwk22_otu_matrix[abs(labeled_mean_signif_REMISSwk22_otu_matrix$diff) >= 0.013,]
-labeled_mean_signif_REMISSwk22_otu_matrix <- labeled_mean_signif_REMISSwk22_otu_matrix[,-c(1:2)]	
-rownames(OTU_mean_signif_REMISSwk22_otu_matrix) <- OTU_mean_signif_REMISSwk22_otu_matrix$OTU
-OTU_mean_signif_REMISSwk22_otu_matrix <-OTU_mean_signif_REMISSwk22_otu_matrix[abs(OTU_mean_signif_REMISSwk22_otu_matrix$diff) >= 0.013,]
-OTU_mean_signif_REMISSwk22_otu_matrix <- OTU_mean_signif_REMISSwk22_otu_matrix[,-c(1:2)]	
+labeled_median_signif_REMISSwk22_otu_matrix <- subset(tax_median_signif_REMISSwk22_otu_matrix, select=c("diff", "Label", "No", "Yes"))
+OTU_median_signif_REMISSwk22_otu_matrix <- subset(tax_median_signif_REMISSwk22_otu_matrix, select=c("diff", "OTU", "No", "Yes"))
+rownames(labeled_median_signif_REMISSwk22_otu_matrix) <- labeled_median_signif_REMISSwk22_otu_matrix$Label
+labeled_median_signif_REMISSwk22_otu_matrix <-labeled_median_signif_REMISSwk22_otu_matrix[abs(labeled_median_signif_REMISSwk22_otu_matrix$diff) >= 0.013,]
+labeled_median_signif_REMISSwk22_otu_matrix <- labeled_median_signif_REMISSwk22_otu_matrix[,-c(1:2)]	
+rownames(OTU_median_signif_REMISSwk22_otu_matrix) <- OTU_median_signif_REMISSwk22_otu_matrix$OTU
+OTU_median_signif_REMISSwk22_otu_matrix <-OTU_median_signif_REMISSwk22_otu_matrix[abs(OTU_median_signif_REMISSwk22_otu_matrix$diff) >= 0.013,]
+OTU_median_signif_REMISSwk22_otu_matrix <- OTU_median_signif_REMISSwk22_otu_matrix[,-c(1:2)]	
 
-#decreasing_order <- order(total_mean_otu_rel_abund, decreasing=T)
+#decreasing_order <- order(total_median_otu_rel_abund, decreasing=T)
 #otu_rel_abund <- otu_rel_abund[,decreasing_order]
 
-abund_mean_signif_REMISSwk22_otu_matrix <- data.frame(labeled_mean_signif_REMISSwk22_otu_matrix[labeled_mean_signif_REMISSwk22_otu_matrix$Yes  > 0.001,])
+abund_median_signif_REMISSwk22_otu_matrix <- data.frame(labeled_median_signif_REMISSwk22_otu_matrix[labeled_median_signif_REMISSwk22_otu_matrix$Yes  > 0.001,])
 
-Vabund_mean_signif_REMISSwk22_otu_matrix <- data.frame(labeled_mean_signif_REMISSwk22_otu_matrix[labeled_mean_signif_REMISSwk22_otu_matrix$Yes > 1,])
+Vabund_median_signif_REMISSwk22_otu_matrix <- data.frame(labeled_median_signif_REMISSwk22_otu_matrix[labeled_median_signif_REMISSwk22_otu_matrix$Yes > 1,])
 
-Mabund_mean_signif_REMISSwk22_otu_matrix <- data.frame(labeled_mean_signif_REMISSwk22_otu_matrix[labeled_mean_signif_REMISSwk22_otu_matrix$Yes  > 0.1,])
-Mabund_mean_signif_REMISSwk22_otu_matrix <- data.frame(Mabund_mean_signif_REMISSwk22_otu_matrix[Mabund_mean_signif_REMISSwk22_otu_matrix$Yes < 1,])
+Mabund_median_signif_REMISSwk22_otu_matrix <- data.frame(labeled_median_signif_REMISSwk22_otu_matrix[labeled_median_signif_REMISSwk22_otu_matrix$Yes  > 0.1,])
+Mabund_median_signif_REMISSwk22_otu_matrix <- data.frame(Mabund_median_signif_REMISSwk22_otu_matrix[Mabund_median_signif_REMISSwk22_otu_matrix$Yes < 1,])
 
-Labund_mean_signif_REMISSwk22_otu_matrix <- data.frame(labeled_mean_signif_REMISSwk22_otu_matrix[labeled_mean_signif_REMISSwk22_otu_matrix$Yes > 0.001,])
-Labund_mean_signif_REMISSwk22_otu_matrix <- data.frame(Labund_mean_signif_REMISSwk22_otu_matrix[Labund_mean_signif_REMISSwk22_otu_matrix$Yes < 0.1,])
+Labund_median_signif_REMISSwk22_otu_matrix <- data.frame(labeled_median_signif_REMISSwk22_otu_matrix[labeled_median_signif_REMISSwk22_otu_matrix$Yes > 0.001,])
+Labund_median_signif_REMISSwk22_otu_matrix <- data.frame(Labund_median_signif_REMISSwk22_otu_matrix[Labund_median_signif_REMISSwk22_otu_matrix$Yes < 0.1,])
 
 #significant
 sig_REMISSwk22_wilcox_otu_adj_p_otus <- rownames(abund_mean_signif_REMISSwk22_otu_matrix)
@@ -114,24 +116,21 @@ tax<-read.table("../data/Jan400.simple.taxonomy.txt", header=T, sep='\t')
 oturf_otus  <- as.character(ordered(tax_mean_signif_REMISSwk22_otu_matrix$OTU))
 #oturf_otus <- oturf_otus[1:10]
 #oturf_otus
-no_abunds <- screen_data[screen_data$REMISSwk22=='No', oturf_otus]/10000 + 1e-5
+no_abunds <- screen_data[screen_data$REMISSwk22=='No', "Otu00203"]/10000 + 1e-5
 no_abunds <-na.omit(no_abunds)
 yes_abunds <- screen_data[screen_data$REMISSwk22=='Yes', oturf_otus]/10000 + 1e-5
 yes_abunds<- na.omit(yes_abunds)
 
 #tiff('figures/basesigOTUabund.tiff')
-#layout(1)
+layout(1)
 par(mar=c(4, 12, 2, 1))
 plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Relative Abundance (%)", xaxt="n", yaxt="n")
 #title('Abundance of Top OTUs from Microbiome Model')
 set.seed(32016)
-index <- 1
-for(i in oturf_otus){
-	stripchart(at=index-0.35, jitter(yes_abunds[,i], amount=1e-6), pch=21, bg=alpha("royalblue1", alpha=0.25), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
+	stripchart(at=index-0.35, jitter(yes_abunds[,get(oturf_otus)], amount=1e-6), pch=21, bg=alpha("royalblue1", alpha=0.25), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
 	stripchart(at=index+0.35, jitter(no_abunds[,i], amount=1e-6), pch=21, bg=alpha("orange", alpha=0.25), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
 	segments(median(yes_abunds[,i]),index-0.7,median(yes_abunds[,i]),index, lwd=3)
 	segments(median(no_abunds[,i]),index+0.7,median(no_abunds[,i]),index, lwd=3)
-	index <- index + 2
 }
 #oturf_otus
 rf_tax<-data.frame(oturf_otus)

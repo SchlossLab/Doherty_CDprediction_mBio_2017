@@ -89,7 +89,7 @@ otuRabRelRSPwk6_ggplot$otu <- factor(otuRabRelRSPwk6_ggplot$otu, levels = rank, 
 otuRabRelRSPwk6_ggplot <- otuRabRelRSPwk6_ggplot[order(otuRabRelRSPwk6_ggplot$otu),]
 tail(colnames(otuRabRelRSPwk6_ggplot))
 
-tiff('figures/RelRSPwk6byotu.tiff')
+tiff('figures/RelRSPwk6byotu.tiff', height = 8, width = 12, units = "in", res = 300)
 ggplot(otuRabRelRSPwk6_ggplot, aes(x=RelRSPwk6, y=relabund, fill=otu)) +
 	stat_summary(fun.y=median, geom="point", aes(fill = otu), position = position_dodge(1)) +
 	#stat_summary(fun.data = 'median_hilow', fun.args = (conf.int=0.5), position = position_dodge(1), geom='errorbar', aes(color = otu))+

@@ -10,18 +10,23 @@
 
 #tiff(RelRSPwk6Fig )
 
-tiff('figures/Figure1.tiff', height=12, width=10, units='in', res=300)
+#tiff('figures/Figure1.tiff', height=12, width=10, units='in', res=300)
 
+pdf("figures/Figure4.pdf", height = 10, width = 12)
 layout(matrix(c(1,2,3,4), 2, 2, byrow = TRUE))
+
 #pdf("figures/Week6response.AUC.pdf")
+#tiff('figures/RelRSPwk6AUCRF.tiff', height=6, width=12, units='in', res=300)
+#pdf('figures/RelRSPwk6AUCRF.pdf', height=6, width=12)
+#layout(matrix(c(1, 2), 1, 2))
 par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
 plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
 plot(otu_relrespWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
 plot(md_relrespWK6_roc, add=T, lwd=2, col='grey5', lty=1)
 plot(mdotu_relrespWK6_roc, add=T, lwd=2, col='red', lty=1)
-title("Predicting Week 6 Response")
+#title("Predicting Week 6 Response")
 legend('bottomright', c(sprintf('Week 0 OTUs : AUC=%.3f',otu_relrespWK6_roc$auc), sprintf('Week 0 Clinical Data: AUC=%.3f',md_relrespWK6_roc$auc), sprintf('Combined: AUC=%.3f',mdotu_relrespWK6_roc$auc)), lwd=2, col=c('royalblue', 'grey5', 'red'), bty='n', lty=1)
-#mtext('A', at=1, side=3, line=0.1, font=2, cex=2)
+mtext('A', at=1, side=3, line=0.1, font=2, cex=2)
 #legend('bottomright', c(sprintf('Week 0 OTUs : AUC=%.3f',otu_relrespWK6_roc$auc), sprintf('Combined: AUC=%.3f',mdotu_relrespWK6_roc$auc)), lwd=2, col=c('royalblue', 'red'), bty='n', lty=1)
 
 cutoff <- coords(roc=mdotu_relrespWK6_roc, x='best', best.method='y', ret=c('threshold'))
@@ -47,15 +52,17 @@ points(coords(md_relrespWK6_roc, x=cutoff, input='threshold', ret='specificity')
 #pdf('data/figures/RSPwk6abunds.#pdf', height=6, width=8)
 #plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='Response Week 6', xaxt='n', cex.axis=1.2)
 #title('Response Status Compared to Combined Model')
-#set.seed(32016)
-#stripchart(at=1, mdotu_relrespWK6_probs[mdotu_relrespWK6$'RelRSPwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
-#stripchart(at=2, mdotu_relrespWK6_probs[mdotu_relrespWK6$'RelRSPwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
-#mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
-#axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
-#cutoff <- coords(roc=mdotu_relrespWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
-#abline(h=cutoff, lty=2)
-#legend("top", lty=2, sprintf('Model Threshold'))
+# set.seed(32016)
+# stripchart(at=1, mdotu_relrespWK6_probs[mdotu_relrespWK6$'RelRSPwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
+# stripchart(at=2, mdotu_relrespWK6_probs[mdotu_relrespWK6$'RelRSPwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
+# mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
+# axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
+# cutoff <- coords(roc=mdotu_relrespWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
+# abline(h=cutoff, lty=2)
+# legend("top", lty=2, sprintf('Model Threshold'))
+
 #mtext('B', at=0.5, side=3, line=0.1, font=2, cex=2)
+#dev.off()
 
 tax<-read.table("../data/Jan400.simple.taxonomy.txt", header=T, sep='\t')
 
@@ -69,7 +76,7 @@ no_abunds <-na.omit(no_abunds)
 yes_abunds <- otu_relrespWK6[otu_relrespWK6$RelRSPwk6=='1', oturf_otus]/10000 + 1e-5
 yes_abunds<- na.omit(yes_abunds)
 
-#pdf('figures/oturelRSPwk6abunds.pdf', height=6, width=8)
+#pdf('figures/oturelRSPwk6AUCRFabunds.pdf', height=6, width=12)
 #layout(1)
 par(mar=c(4, 12, 2, 1))
 plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Relative Abundance (%)", xaxt="n", yaxt="n")
@@ -88,23 +95,34 @@ rf_tax<-data.frame(oturf_otus)
 colnames(rf_tax) <- c('OTU')
 
 oturf_tax<-merge(rf_tax, tax, by='OTU')
-oturf_tax<-oturf_tax[match(rf_tax$OTU, oturf_tax$OTU),]
-oturf_tax<-oturf_tax$Label
-oturf_tax <- gsub("_", " ", oturf_tax)
-axis(2, at=seq(1,index-2,2), labels=oturf_tax, font =3, las=1, line=0, tick=F, cex.axis=0.8)
-axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1), label=c("0", "0.01", "0.1", "1", "10"))
-legend('topright', legend=c("Week 6 Nonresponder", "Week 6 Responder"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=0.7)
-mtext('B', at=1e-8, side=3, line=0.1, font=2, cex=2)
 
+lab <- levels(oturf_tax$tax)
+oturf_tax$Classification <- gsub("(OTU\\d+)", "(\\1)", oturf_tax$Classification)
+
+oturf_tax<-oturf_tax[match(rf_tax$OTU, oturf_tax$OTU),]
+oturf_name<-as.character(oturf_tax$tax)
+oturf_numb<-oturf_tax$Classification
+
+oturf_name <- gsub("_", " ", oturf_name)
+formatted <- lapply(1:nrow(oturf_tax), function(i) bquote(paste(italic(.(oturf_name[i])), " ", .(oturf_numb[i]), sep=" ")))
+
+
+axis(2, at=seq(1,index-2,2), labels=do.call(expression, formatted), las=1, line=0, tick=F, cex.axis=1)
+axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0), label=c("0", "0.01", "0.1", "1", "10", "100"))
+legend('topright', legend=c("Week 6 Nonresponder", "Week 6 Responder"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
+mtext('B', at=1e-8, side=3, line=0.1, font=2, cex=2)
+#dev.off()
 
 #Remission
+#pdf('figures/REMISSwk6AUCRF.pdf', height=6, width=12)
+#layout(matrix(c(1, 2), 1, 2))
 par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
 plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
 plot(otu_remWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
 plot(md_remWK6_roc, add=T, lwd=2, col='grey5', lty=1)
 plot(mdotu_remWK6_roc, add=T, lwd=2, col='red', lty=1)
 #title("Predicting Week 6 Remission")
-legend('bottomright', c(sprintf('Week 0 OTUs : AUC=%.3f', otu_remWK6_roc$auc),sprintf('Combined: AUC=%.3f',mdotu_remWK6_roc$auc), sprintf('Week 0 Clinical Data: AUC=%.3f',md_remWK6_roc$auc)), lwd=2, col=c('royalblue', 'red', "grey5"), bty='n', lty=1)
+legend('bottomright', c(sprintf('Week 0 OTUs : AUC=%.3f', otu_remWK6_roc$auc), sprintf('Week 0 Clinical Data: AUC=%.3f',md_remWK6_roc$auc),sprintf('Combined: AUC=%.3f',mdotu_remWK6_roc$auc)), lwd=2, col=c('royalblue', "grey5", 'red'), bty='n', lty=1)
 mtext('C', at=1, side=3, line=0.1, font=2, cex=2)
 
 cutoff <- coords(roc=mdotu_remWK6_roc, x='best', best.method='y', ret=c('threshold'))
@@ -129,17 +147,18 @@ points(coords(md_remWK6_roc, x=cutoff, input='threshold', ret='specificity'),coo
 #dev.off()
 
 #compared to model
-#plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='Remission Week 6', xaxt='n', cex.axis=1.2)
-#title('Remission Status Compared to Combined Model')
-#set.seed(32016)
-#stripchart(at=1, mdotu_remWK6_probs[mdotu_remWK6$REMISSwk6=='0'], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
-#stripchart(at=2, mdotu_remWK6_probs[mdotu_remWK6$REMISSwk6=='1'], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
-#mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
-#axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
-#cutoff <- coords(roc=mdotu_remWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
-#abline(h=cutoff, lty=2)
-#legend("top", lty=2, sprintf('Model Threshold'))
+# plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='Remission Week 6', xaxt='n', cex.axis=1.2)
+# title('Remission Status Compared to Combined Model')
+# set.seed(32016)
+# stripchart(at=1, mdotu_remWK6_probs[mdotu_remWK6$REMISSwk6=='0'], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
+# stripchart(at=2, mdotu_remWK6_probs[mdotu_remWK6$REMISSwk6=='1'], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
+# mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
+# axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
+# cutoff <- coords(roc=mdotu_remWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
+# abline(h=cutoff, lty=2)
+# legend("top", lty=2, sprintf('Model Threshold'))
 #mtext('E', at=0.5, side=3, line=0.1, font=2, cex=2)
+#dev.off()
 
 #Abundance stripchart or most predictive otus
 tax<-read.table("../data/Jan400.simple.taxonomy.txt", header=T, sep='\t')
@@ -151,7 +170,7 @@ no_abunds <-na.omit(no_abunds)
 yes_abunds <- otu_remWK6[otu_remWK6$REMISSwk6=='1', oturf_otus]/10000 + 1e-5
 yes_abunds<- na.omit(yes_abunds)
 
-#pdf('figures/otuREMwk6abunds.pdf', height=6, width=8)
+#pdf('figures/otuREMwk6AUCRFabunds.pdf', height=6, width=12)
 #layout(1)
 par(mar=c(4, 12, 2, 1))
 plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Relative Abundance (%)", xaxt="n", yaxt="n")
@@ -170,12 +189,20 @@ rf_tax<-data.frame(oturf_otus)
 colnames(rf_tax) <- c('OTU')
 
 oturf_tax<-merge(rf_tax, tax, by='OTU')
+
+lab <- levels(oturf_tax$tax)
+oturf_tax$Classification <- gsub("(OTU\\d+)", "(\\1)", oturf_tax$Classification)
+
 oturf_tax<-oturf_tax[match(rf_tax$OTU, oturf_tax$OTU),]
-oturf_tax<-oturf_tax$Label
-oturf_tax <- gsub("_", " ", oturf_tax)
-axis(2, at=seq(1,index-2,2), labels=oturf_tax, font = 3, las=1, line=0, tick=F, cex.axis=0.8)
-axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1), label=c("0", "0.01", "0.1", "1", "10"))
-legend('topright', legend=c("Week 6 Nonremitter", "Week 6 Remitter"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=0.7)
+oturf_name<-as.character(oturf_tax$tax)
+oturf_numb<-oturf_tax$Classification
+
+oturf_name <- gsub("_", " ", oturf_name)
+formatted <- lapply(1:nrow(oturf_tax), function(i) bquote(paste(italic(.(oturf_name[i])), " ", .(oturf_numb[i]), sep=" ")))
+
+axis(2, at=seq(1,index-2,2), labels=do.call(expression, formatted), las=1, line=0, tick=F, cex.axis=1)
+axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0), label=c("0", "0.01", "0.1", "1", "10", "100"))
+legend('topright', legend=c("Week 6 Nonremitter", "Week 6 Remitter"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
 mtext('D', at=1e-8, side=3, line=0.1, font=2, cex=2)
 
 dev.off()

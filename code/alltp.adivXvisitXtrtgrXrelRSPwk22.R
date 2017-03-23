@@ -1,22 +1,24 @@
-alltime_data
+alltime_data <- alltime_data[alltime_data$TRTGRINDMAN != "Treated_Placebo",]
+
+summary(alltime_data[, c("USUBJID", "visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RelRSPwk22")])
 
 #change in adiv over time?
-wk0.all.adiv <- alltime_data[alltime_data$visit=="Screening", c("USUBJID", "visit", "invsimpson", "INDTRTGR", "RelRSPwk22")]
+wk0.all.adiv <- alltime_data[alltime_data$visit=="Screening", c("USUBJID", "visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RelRSPwk22")]
 wk0.adiv <- wk0.all.adiv
 colnames(wk0.all.adiv)[3] <- "Week0adiv"
 wk0.all.adiv <- subset(wk0.all.adiv, select=-c(visit))
 
-wk4.all.adiv <- alltime_data[alltime_data$visit=="Week 4", c("USUBJID","visit", "invsimpson", "INDTRTGR", "RelRSPwk22")]
+wk4.all.adiv <- alltime_data[alltime_data$visit=="Week 4", c("USUBJID","visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RelRSPwk22")]
 wk4.adiv <- wk4.all.adiv
 colnames(wk4.all.adiv)[3] <- "Week4adiv"
 wk4.all.adiv <- subset(wk4.all.adiv, select=-c(visit))
 
-wk6.all.adiv <- alltime_data[alltime_data$visit=="Week 6", c("USUBJID","visit", "invsimpson", "INDTRTGR", "RelRSPwk22")]
+wk6.all.adiv <- alltime_data[alltime_data$visit=="Week 6", c("USUBJID","visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RelRSPwk22")]
 wk6.adiv <- wk6.all.adiv
 colnames(wk6.all.adiv)[3] <- "Week6adiv"
 wk6.all.adiv <- subset(wk6.all.adiv, select=-c(visit))
 
-wk22.all.adiv <- alltime_data[alltime_data$visit=="Week 22", c("USUBJID","visit", "invsimpson", "INDTRTGR", "RelRSPwk22")]
+wk22.all.adiv <- alltime_data[alltime_data$visit=="Week 22", c("USUBJID","visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RelRSPwk22")]
 wk22.adiv <- wk22.all.adiv
 colnames(wk22.all.adiv)[3] <- "Week22adiv"
 wk22.all.adiv <- subset(wk22.all.adiv, select=-c(visit))
@@ -34,13 +36,13 @@ treatedrespN <- treatedresp[treatedresp$RelRSPwk22=="No",]
 alltp.treatedrespY <- adiv.alltp[adiv.alltp$USUBJID %in% treatedrespY$USUBJID,]
 #alltp.treatedrespY <- alltp.treatedrespY[, -c(4:5)]
 rownames(alltp.treatedrespY) <- alltp.treatedrespY$USUBJID
-alltp.treatedrespY <- as.matrix(alltp.treatedrespY[,-c(1:3)])
+alltp.treatedrespY <- as.matrix(subset(alltp.treatedrespY,select = -c(USUBJID, INDTRTGR, RelRSPwk22, TRTGRINDMAN)))
 mean.adiv.byvis <- apply(alltp.treatedrespY, 2, mean)
 
 alltp.treatedrespN <- adiv.alltp[adiv.alltp$USUBJID %in% treatedrespN$USUBJID,]
 #alltp.treatedrespN <- alltp.treatedrespN[, -c(4:5)]
 rownames(alltp.treatedrespN) <- alltp.treatedrespN$USUBJID
-alltp.treatedrespN <- as.matrix(alltp.treatedrespN[,-c(1:3)])
+alltp.treatedrespN <- as.matrix(subset(alltp.treatedrespN,select = -c(USUBJID, INDTRTGR, RelRSPwk22, TRTGRINDMAN)))
 mean.adiv.byvis <- apply(alltp.treatedrespN, 2, mean)
 
 ggplot.wk04.adiv<-rbind(wk0.adiv, wk4.adiv)
@@ -50,23 +52,23 @@ treatedresp <- ggplot.alltp.adiv[ggplot.alltp.adiv$INDTRTGR=="Treated",]
 treatedresp <- treatedresp[treatedresp$visit=="Screening",]
 treatedrespY <- treatedresp[treatedresp$RelRSPwk22=="Yes",]
 ggplot.alltp.treatedrespY <- ggplot.alltp.adiv[ggplot.alltp.adiv$USUBJID %in% treatedrespY$USUBJID,]
-ggplot.alltp.treatedrespY <- ggplot.alltp.treatedrespY[, -c(4:5)]
+ggplot.alltp.treatedrespY <- ggplot.alltp.treatedrespY[, -c(4:6)]
 
 
 treatedrespN <- treatedresp[treatedresp$RelRSPwk22=="No",]
 ggplot.alltp.treatedrespN <- ggplot.alltp.adiv[ggplot.alltp.adiv$USUBJID %in% treatedrespN$USUBJID,]
-ggplot.alltp.treatedrespN <- ggplot.alltp.treatedrespN[, -c(4:5)]
+ggplot.alltp.treatedrespN <- ggplot.alltp.treatedrespN[, -c(4:6)]
 
 
-kruskal.test(ggplot.alltp.treatedrespY$invsimpson~ggplot.alltp.adiv$visit)
-kruskalmc(ggplot.alltp.adiv$invsimpson~ggplot.alltp.adiv$visit)
+kruskal.test(ggplot.alltp.treatedrespY$invsimpson~ggplot.alltp.treatedrespY$visit)
+kruskalmc(ggplot.alltp.treatedrespY$invsimpson~ggplot.alltp.treatedrespY$visit)
 friedman.test(alltp.treatedrespY)
 friedmc <- friedmanmc(alltp.treatedrespY)
 friedmc
 pairwise.wilcox.test(ggplot.alltp.treatedrespY$invsimpson, ggplot.alltp.treatedrespY$visit, p.adj="BH", exact=F, paired=T)
 
-kruskal.test(ggplot.alltp.treatedrespN$invsimpson~ggplot.alltp.adiv$visit)
-kruskalmc(ggplot.alltp.adiv$invsimpson~ggplot.alltp.adiv$visit)
+kruskal.test(ggplot.alltp.treatedrespN$invsimpson~ggplot.alltp.treatedrespN$visit)
+kruskalmc(ggplot.alltp.treatedrespN$invsimpson~ggplot.alltp.treatedrespN$visit)
 friedman.test(alltp.treatedrespN)
 friedmc <- friedmanmc(alltp.treatedrespN)
 friedmc

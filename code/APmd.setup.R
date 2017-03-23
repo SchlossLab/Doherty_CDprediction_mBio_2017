@@ -89,6 +89,18 @@ APmd<-APmd[APmd$TRTGRINDMAN!="Treated_Not",]
 #ss3k_shared<-read.table(file="../data/Jan400.screen.all.subsample.shared", sep="\t", header=T)#Jan400 subsampled to 3K visit=Screening
 adiv<-read.table(file="../data/Jan400.all.na.omit.cmd.groups.summary", sep="\t", header=T)
 ss3k_shared<-read.table(file="../data/Jan400.all.na.omit.cmd.0.03.subsample.shared", sep="\t", header=T)#Jan400 subsampled to 3K visit=Screening
+
+ss3k_c1_3 <- ss3k_shared[,c(1:3)]
+ss3k_shared_otus <- ss3k_shared[,-c(1:3)]
+ss3k_shared_sums <- apply(ss3k_shared_otus, 2, sum)
+summary(ss3k_shared_sums)
+ss3k_shared_no1s <- ss3k_shared_sums > 1
+ss3k_no1s <- ss3k_shared_otus[,ss3k_shared_no1s]
+ss3k_shared_no1s <- cbind(ss3k_c1_3, ss3k_no1s)
+ss3k_shared_U2s <- ss3k_shared_sums > 2
+ss3k_U2s <- ss3k_shared_otus[,ss3k_shared_U2s]
+ss3k_shared_U2s <- cbind(ss3k_c1_3, ss3k_U2s)
+
 APmd_adiv<-merge(APmd, adiv, by.x="group", by.y="group")#nonmatch removed
 APmd_shared<-merge(APmd_adiv, ss3k_shared, by.x="group", by.y="Group")
 

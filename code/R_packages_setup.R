@@ -1,5 +1,5 @@
 #r setup, include=F, echo=FALSE, cache=FALSE}
-deps = c("AUCRF","pROC", "vegan", "dplyr", 'knitr', "gridExtra", "grid", "devtools", "pgirmess", "knitcitations", "scales", "tidyr", "ggplot2", "Hmisc");
+deps = c("AUCRF","pROC", "vegan", "dplyr", 'knitr', "gridExtra", "grid", "devtools", "pgirmess", "knitcitations", "scales", "tidyr", "ggplot2", "Hmisc", "cowplot");
 for (dep in deps){
 	if (dep %in% installed.packages()[,"Package"] == FALSE){
 		install.packages(as.character(dep), quiet=TRUE);

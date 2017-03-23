@@ -290,52 +290,72 @@ ggplot.alltp.placeborespN <- ggplot.alltp.placeborespN[, -c(4:5)]
 
 ###Compare adiv of **treated** week 22 **responders** over each visit
 
-```{r treatedrespY, echo=TRUE}
+```{r treatedrespY}
 summary(alltp.treatedrespY)
+```
+
+####Summary showing 42 treated subjects who Responded at week 22 and alpha diversity measured by inverse Simpson at week 0, 4, 6, and 22.
+
+```{r}
 friedman.test(alltp.treatedrespY.mat)
+```
+
+####Freidman.test result showing significant difference in alpha diversity based on time for treated Week 22 responders.
+
+```{r}
 friedmc <- friedmanmc(alltp.treatedrespY.mat)
 friedmc
+```
+
+####Freidman multiple comparisons (friedmc) test result showing significant difference comparing weeks.
+
+```{r, echo=TRUE}
 pairwise.wilcox.test(ggplot.alltp.treatedrespY$invsimpson, ggplot.alltp.treatedrespY$visit, p.adj="BH", exact=F, paired=T)
 ```
+
+####An alternative multiple comparison test based on pairwise.wilcox.test using the "BH" p value adjustment showing significant differences between week 0 and wee 4 and 22 (but not week 6)
 
 ###Compare adiv of **treated** week 22 **NON**responders over each visit
 
 ```{r treatedrespN, echo=TRUE}
 summary(alltp.treatedrespN)
-
-friedman.test(alltp.treatedrespN.mat)
-friedmc <- friedmanmc(alltp.treatedrespN.mat)
-friedmc
-pairwise.wilcox.test(ggplot.alltp.treatedrespN$invsimpson, ggplot.alltp.treatedrespN$visit, p.adj="BH", exact=F, paired=T)
-
-
 ```
+
+####Summary showing 59 treated subjects who did not responded at week 22 and alpha diversity measured by inverse Simpson at week 0, 4, 6, and 22.
+
+```{r}
+friedman.test(alltp.treatedrespN.mat)
+```
+
+####Freidman.test result showing no significant difference in alpha diversity based on time in treated Week 22 nonresponders.
 
 ###Compare adiv of **placebo** week 22 **responders** over each visit
 
 ```{r placrespY, echo=TRUE}
 summary(alltp.placeborespY)
-
-friedman.test(alltp.placeborespY.mat)
-friedmc <- friedmanmc(alltp.placeborespY.mat)
-friedmc
-pairwise.wilcox.test(ggplot.alltp.placeborespY$invsimpson, ggplot.alltp.placeborespY$visit, p.adj="BH", exact=F, paired=T)
-
-
 ```
+
+####Summary showing 10 placebo subjects who responded at week 22 and alpha diversity measured by inverse Simpson at week 0, 4, 6, and 22.
+
+```{r}
+friedman.test(alltp.placeborespY.mat)
+```
+
+####No significant difference by Friedman test.
 
 ###Compare adiv of **placebo** week 22 **NON**responders over each visit
 
 ```{r placrespN, echo=TRUE}
 summary(alltp.placeborespN)
-
-friedman.test(alltp.placeborespN.mat)
-friedmc <- friedmanmc(alltp.placeborespN.mat)
-friedmc
-pairwise.wilcox.test(ggplot.alltp.placeborespN$invsimpson, ggplot.alltp.placeborespN$visit, p.adj="BH", exact=F, paired=T)
-
-
 ```
+
+####Summary showing 4 placebo subjects who did not responded at week 22 and alpha diversity measured by inverse Simpson at week 0, 4, 6, and 22.
+
+```{r}
+friedman.test(alltp.placeborespN.mat)
+```
+
+####No significant difference by Friedman test.
 
 ```{r figure, fig.height=6, fig.width=10}
 ann_text <- data.frame(visit = 2:4, invsimpson = 31,
@@ -354,3 +374,5 @@ alltp.adivXvisXindtrtXrelRSPwk22.plot
 ```
 
 ###\* = significantly different from week 0 by freidmc test
+
+####Figure showing differences in alpha diversity over time by treatment group and response.
