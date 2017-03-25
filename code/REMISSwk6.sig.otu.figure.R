@@ -120,7 +120,7 @@ yes_abunds <- screen_data[screen_data$REMISSwk6=='Yes', oturf_otus]/10000 + 1e-5
 yes_abunds<- na.omit(yes_abunds)
 
 #tiff('figures/basesigOTUabund.REMISSwk6.tiff', height = 8, width = 12, units = "in", res = 300)
-pdf('figures/basesigOTUabund.REMISSwk6.pdf', height = 8, width = 12)
+pdf('figures/basesigOTUabund.REMISSwk6.pdf', height = 6, width = 8)
 layout(1)
 par(mar=c(4, 12, 2, 1))
 plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Relative Abundance (%)", xaxt="n", yaxt="n")

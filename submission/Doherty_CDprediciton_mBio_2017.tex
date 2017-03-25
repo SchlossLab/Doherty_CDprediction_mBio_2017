@@ -93,6 +93,21 @@ Disease patients.}
 \maketitle
 
 \begin{verbatim}
+## pdf 
+##   3
+\end{verbatim}
+
+\begin{verbatim}
+## pdf 
+##   3
+\end{verbatim}
+
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+
+\begin{verbatim}
 ## 
 ## Number of selected variables: Kopt= 16 
 ## AUC of selected variables: OOB-AUCopt= 0.838148 
@@ -121,28 +136,28 @@ Disease patients.}
 \begin{verbatim}
 ## 
 ## Number of selected variables: Kopt= 17 
-## AUC of selected variables: OOB-AUCopt= 0.8244263 
+## AUC of selected variables: OOB-AUCopt= 0.8442465 
 ## AUC from cross validation: 0.6429265 
 ## Importance Measure: MDA 
 ## 
 ##    Selected.Variables   Importance Prob.Select
-## 1            Otu00330 0.0020440151        0.87
-## 2            Otu00007 0.0013891462        0.94
-## 3            Otu00265 0.0012265706        0.74
-## 4            Otu00001 0.0011944571        0.55
-## 5            Otu00491 0.0010294392        0.60
-## 6            Otu00035 0.0009488290        0.35
-## 7            Otu00155 0.0008142554        0.49
-## 8            Otu00108 0.0007405366        0.32
-## 9            Otu00085 0.0006494931        0.15
-## 10           Otu00222 0.0006027025        0.38
-## 11           Otu00189 0.0006016933        0.67
-## 12           Otu00397 0.0005926151        0.50
-## 13           Otu00162 0.0005873496        0.61
-## 14           Otu00117 0.0005574939        0.42
-## 15           Otu00024 0.0005384343        0.12
-## 16           Otu00065 0.0005281717        0.10
-## 17           Otu00008 0.0004963119        0.08
+## 1            Otu00007 0.0029665411        0.94
+## 2            Otu00330 0.0018534588        0.87
+## 3            Otu00491 0.0012031710        0.60
+## 4            Otu00189 0.0011403999        0.67
+## 5          invsimpson 0.0009336290        0.42
+## 6            Otu00117 0.0008250018        0.42
+## 7            Otu00265 0.0007878709        0.74
+## 8            Otu00162 0.0007702814        0.61
+## 9            Otu00001 0.0007100716        0.55
+## 10           Otu00542 0.0006978964        0.57
+## 11           Otu00141 0.0006563032        0.32
+## 12           Otu00037 0.0005597429        0.45
+## 13           Otu00596 0.0005459447        0.22
+## 14           Otu00205 0.0005398986        0.21
+## 15           Otu00028 0.0005175165        0.22
+## 16           Otu00136 0.0004813937        0.03
+## 17           Otu00274 0.0004803323        0.21
 \end{verbatim}
 
 \begin{verbatim}
@@ -178,39 +193,17 @@ Disease patients.}
 
 \begin{verbatim}
 ## 
-## Number of selected variables: Kopt= 27 
-## AUC of selected variables: OOB-AUCopt= 0.8530816 
+## Number of selected variables: Kopt= 5 
+## AUC of selected variables: OOB-AUCopt= 0.8580729 
 ## AUC from cross validation: 0.5939562 
 ## Importance Measure: MDA 
 ## 
-##    Selected.Variables   Importance Prob.Select
-## 1            Otu00051 0.0023898112        0.88
-## 2            Otu00007 0.0017983906        0.62
-## 3            Otu00203 0.0016930285        0.79
-## 4            Otu00153 0.0016022333        0.69
-## 5            Otu00090 0.0013977738        0.62
-## 6              DDUR10 0.0013482662        0.22
-## 7            Otu00092 0.0012398159        0.54
-## 8            Otu00117 0.0011798518        0.28
-## 9            Otu00232 0.0010933402        0.63
-## 10           Otu00130 0.0009899458        0.76
-## 11           Otu00108 0.0009321826        0.43
-## 12           Otu00140 0.0008788320        0.33
-## 13           Otu00324 0.0008639187        0.23
-## 14           Otu00151 0.0008524008        0.20
-## 15           Otu00104 0.0008481433        0.21
-## 16             BL_BMI 0.0008417439        0.06
-## 17           Otu00041 0.0008257700        0.35
-## 18           Otu00353 0.0007896517        0.13
-## 19         invsimpson 0.0007782257        0.27
-## 20           Otu00095 0.0007356034        0.02
-## 21           Otu00079 0.0007212451        0.36
-## 22           Otu00339 0.0007009694        0.41
-## 23           Otu00060 0.0006887950        0.40
-## 24           Otu00003 0.0006863465        0.13
-## 25           Otu00043 0.0006795474        0.27
-## 26           Otu00161 0.0006773303        0.03
-## 27             BL_CRP 0.0006742888        0.34
+##   Selected.Variables  Importance Prob.Select
+## 1           Otu00090 0.002452566        0.62
+## 2           Otu00203 0.002355119        0.79
+## 3           Otu00051 0.001873073        0.88
+## 4           Otu00153 0.001799643        0.69
+## 5           Otu00232 0.001748473        0.63
 \end{verbatim}
 
 \begin{verbatim}
@@ -510,18 +503,18 @@ metadata, and combined microbiome and clinical data (22, 23). We ran
 these models for response and remission at Week 4, 6, 8, and 22 of the
 study. The optimal models for response and remission at the primary
 endpoint (Week 6) are shown in Figure 1. Using only clinical metadata to
-predict response, the model predicted response with an AUC of 0.691 with
-a specificity of 0.727 and a sensitivity of 0.634. Using only microbiome
+predict response, the model predicted response with an AUC of 0.693 with
+a specificity of 0.76 and a sensitivity of 0.598. Using only microbiome
 data, the model predicted response with an AUC of 0.737 with a
 specificity of 0.807 and a sensitivity of 0.585. When combining clinical
 metadata with the microbiome, the model predicted response with an AUC
-of 0.755 with a specificity of 0.6 and a sensitivity of 0.829. With
+of 0.745 with a specificity of 0.727 and a sensitivity of 0.744. With
 respect to Week 6 remission, using solely clinical metadata we achieved
-AUC of 0.619 with a specificity of 0.488 and a sensitivity of 0.742.
+AUC of 0.616 with a specificity of 0.801 and a sensitivity of 0.452.
 Using only fecal microbiome data we achieved an AUC of 0.838 with a
 specificity of 0.766 and a sensitivity of 0.806. When combining clinical
-metadata with the microbiome AUC of 0.824 with a specificity of 0.677
-and a sensitivity of 0.903.
+metadata with the microbiome AUC of 0.844 with a specificity of 0.831
+and a sensitivity of 0.774.
 
 Across all weeks and responses, prediction with clinical metadata alone
 did not perform as well as models using the fecal microbiome at
@@ -763,29 +756,29 @@ and response groups (46).
 
 \subsection{Tables}\label{tables}
 
-\textbf{Supplemental Table 1: Summary of clinical metadata of chort at
-baseline}
+\textbf{Table 1: Summary of clinical metadata of chort at baseline}
 
-includegraphics\{tables/SupTable1\_baseline\_metadata.pdf
+\includegraphics{tables/SupTable1_baseline_metadata.pdf}
 
 \newpage
 
-\textbf{Table 1: Diversity differences based on clinical metadata of
-chort at baseline}
+\textbf{Supplemental\_Table 1: Diversity differences based on clinical
+metadata of chort at baseline}
 
-includegraphics\{tables/table1\_cohortdiversity.pdf
+\includegraphics{tables/table1_cohortdiversity.pdf}
 
 \newpage
 
 \textbf{Table 2: Diversity differenced bases on Response/Remission in
 treated subjects.}
 
-includegraphics\{tables/table2diversity.pdf
+\includegraphics{tables/table2diversity.pdf}
 
 \newpage
 
-\textbf{ST2: adonis summary table showing difference by
-visit/TRTGR/wk22resp} includegraphics\{tables/SF2adonis.pdf
+\textbf{Supplemental Table 2: adonis}
+
+\includegraphics{tables/SF2adonis.pdf}
 
 \newpage
 
@@ -793,56 +786,49 @@ visit/TRTGR/wk22resp} includegraphics\{tables/SF2adonis.pdf
 
 \textbf{Figure 1: Phyla by response/remisison week 6 and OTU abundance
 week 6 remission}
-\includegraphics{figures/ggplot.phylum.figure.byRelRSPwk6.pdf}
-\includegraphics{figures/ggplot.phylum.figure.byREMISSwk6.pdf}
+
+\includegraphics{figures/Figure1_wk6phyla.pdf}
 
 \newpage
-*
 
-*SF 1: Phyla by response/remission week 22**
-\includegraphics{figures/ggplot.phylum.figure.byRelRSPwk22.pdf}
-\includegraphics{figures/ggplot.phylum.figure.byREMISSwk22.pdf} \newpage
+\textbf{SF 1: Phyla by response/remission week 22}
 
-\textbf{Figure 2: Change in alpha diversity over time}
+\includegraphics{figures/SF1.pdf}
+
+\newpage
+
+\textbf{Figure 2: OTUS at screening}
+
+\includegraphics{figures/basesigOTUabund.REMISSwk6.pdf}
+
+\newpage
+
+\textbf{Figure 3: Change in alpha diversity over time}
+
 \includegraphics{figures/wk046.adivXvisitXindtrtXrelRSPwk22.pdf}
 
 \newpage
-*
 
-*Figure 3: Determine week 6 status by week 6 stool and impt OTUs and
-abunds** \includegraphics{figures/Figure3.pdf}
+\textbf{Figure 4: Determine week 6 status by week 6 stool and impt OTUs
+and abunds} \includegraphics{figures/Figure3.pdf}
 
 \newpage
-*
 
-*Figure 4: Prediction of RESPONSE/REMISSION in treated subjects using
-all clinical metadata, baseline microbiome alone, and combined** A.
+\textbf{Figure 5: Prediction of RESPONSE/REMISSION in treated subjects
+using all clinical metadata, baseline microbiome alone, and combined} A.
 Response ROCs B. Response Model Performance vs.~reality C. Top
 predictive taxa and abundance based on response D. REMISSION ROCs E.
 REMISSION Model Performance vs.~reality F. Top predictive taxa and
 abundance based on remission
 
-\begin{figure}
-\centering
 \includegraphics{figures/Figure4.pdf}
-\caption{Prediction of RESPONSE/REMISSION in treated subjects using all
-clinical metadata, baseline microbiome alone, and combined. A. Response
-ROCs. B. Response Model Performance vs.~reality. C. Top predictive taxa
-and abundance based on response. D. REMISSION ROCs. E. REMISSION Model
-Performance vs.~reality. F. Top predictive taxa and abundance based on
-remission}
-\end{figure}
 
 \newpage
 
-\textbf{Supplemental Figure 3: Predicting Week 22 disease status using
+\textbf{Supplemental Figure 2: Predicting Week 22 disease status using
 Week 0 samples}
 
-\begin{figure}
-\centering
 \includegraphics{figures/SF3.pdf}
-\caption{SF3}
-\end{figure}
 
 \newpage
 

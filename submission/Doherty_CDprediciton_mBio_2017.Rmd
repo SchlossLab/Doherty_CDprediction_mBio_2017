@@ -4,11 +4,11 @@ title: The fecal microbiome as a tool for monitoring and predicting response out
 csl: mbio.csl
 fontsize: 11pt
 output:
-  md_document: default
-  html_document: default
   pdf_document:
     keep_tex: yes
     latex_engine: xelatex
+  md_document: default
+  html_document: default
 header-includes:
 - \usepackage{setspace}
 - \doublespacing
@@ -115,8 +115,18 @@ summary(nao.screen_data[,c("TRTGR")])
 summary(screen_data[,c("TRTGR")])
 ```
 
-```{r phylmum_otu}
-source("../code/phylum.figures.R")
+```{r phylum_otu}
+source("../code/Figure1week6phyla.R")
+
+
+pdf("figures/Figure1_wk6phyla.pdf", height = 10, width = 12)
+plot_grid(phyRabRelRSPwk6_figure2, phyRabREMISSwk6_figure2, labels = c("A", "B"), align = "v", nrow=2)
+dev.off()
+
+pdf("figures/SF1.pdf", height = 10, width = 12)
+plot_grid(phyRabRelRSPwk22_figure2, phyRabREMISSwk22_figure2, labels = c("A", "B"), align = "v", nrow=2)
+dev.off()
+
 source("../code/REMISSwk6.sig.otu.figure.R")
 ```
 
@@ -1543,6 +1553,11 @@ adonis(wk046.plac.relRSP22Y.dist ~ visit, wk046.plac.relRSP22Y, strata = wk046.p
 
 ```{r wk046adivXvis}
 source("../code/adivXvisit.facetTRTGR+RelRSPwk22.R")
+
+pdf("figures/wk046.adivXvisitXindtrtXrelRSPwk22.pdf", height = 6, width = 10)
+wk046.adivXvisXindtrtXrelRSPwk22.plot
+dev.off()
+
 ```
 
 ```{r, include=F, }
@@ -2778,22 +2793,22 @@ Mothur as well as the R software package were used for our data analysis. Alpha 
 \newpage
 
 ## Tables
-**Supplemental Table 1: Summary of clinical metadata of chort at baseline**
+**Table 1: Summary of clinical metadata of chort at baseline**
 
 ```{r cohort.table, fig.height=5, fig.width=12, cache=F}
 
 source('../code/SupTable1_baseline_metadata.R')
 ```
-includegraphics{tables/SupTable1_baseline_metadata.pdf
+\includegraphics{tables/SupTable1_baseline_metadata.pdf}
 
 \newpage
 
-**Table 1: Diversity differences based on clinical metadata of chort at baseline**
+**Supplemental_Table 1: Diversity differences based on clinical metadata of chort at baseline**
 
 ```{r table1}
 source("../code/table1.cohortdiv.R")
 ```
-includegraphics{tables/table1_cohortdiversity.pdf
+\includegraphics{tables/table1_cohortdiversity.pdf}
 
 \newpage
 
@@ -2804,40 +2819,54 @@ includegraphics{tables/table1_cohortdiversity.pdf
 source('../code/table2diversity.R')
 ```
 
-includegraphics{tables/table2diversity.pdf
+\includegraphics{tables/table2diversity.pdf}
 
 \newpage
 
+**Supplemental Table 2: adonis**
 
-**ST2: adonis summary table showing difference by visit/TRTGR/wk22resp**
-includegraphics{tables/SF2adonis.pdf
-
+\includegraphics{tables/SF2adonis.pdf}
 
 \newpage
 
 ## Figures
 
-**Figure 1: Phyla by response/remisison week 6 and OTU abundance week 6 remission**
-![Fig1](figures/ggplot.phylum.figure.byRelRSPwk6.pdf)
-![Fig1](figures/ggplot.phylum.figure.byREMISSwk6.pdf)
+**Figure 1: Experimental design.**
+
+\includegraphics{figures/Figure1_expdesign.pdf}
+
+**Figure 2: Phyla by response/remisison week 6 and OTU abundance week 6 remission**
+
+\includegraphics{figures/Figure1_wk6phyla.pdf}
 
 \newpage
+
 **SF 1: Phyla by response/remission week 22**
-![SF1](figures/ggplot.phylum.figure.byRelRSPwk22.pdf)
-![SF1](figures/ggplot.phylum.figure.byREMISSwk22.pdf)
-\newpage
 
-**Figure 2: Change in alpha diversity over time**
-![Figure 2](figures/wk046.adivXvisitXindtrtXrelRSPwk22.pdf)
-
-
+\includegraphics{figures/SF1.pdf}
 
 \newpage
-**Figure 3: Determine week 6 status by week 6 stool and impt OTUs and abunds**
-![Figure 3](figures/Figure3.pdf)
+
+**Figure 3: OTUS at screening**
+
+\includegraphics{figures/basesigOTUabund.REMISSwk6.pdf}
 
 \newpage
-**Figure 4: Prediction of RESPONSE/REMISSION in treated subjects using all clinical metadata, baseline microbiome alone, and combined**
+
+**Figure 4: Change in alpha diversity over time**
+
+\includegraphics{figures/wk046.adivXvisitXindtrtXrelRSPwk22.pdf}
+
+
+
+\newpage
+
+**Figure 5: Determine week 6 status by week 6 stool and impt OTUs and abunds**
+\includegraphics{figures/Figure3.pdf}
+
+\newpage
+
+**Figure 6: Prediction of RESPONSE/REMISSION in treated subjects using all clinical metadata, baseline microbiome alone, and combined**
 A. Response ROCs B. Response Model Performance vs. reality C. Top predictive taxa and abundance based on response	D. REMISSION ROCs E. REMISSION Model Performance vs. reality F. Top predictive taxa and abundance based on remission
 
 
@@ -2846,18 +2875,19 @@ A. Response ROCs B. Response Model Performance vs. reality C. Top predictive tax
 source('../code/Figure1prediction.R')
 ```
 
-![Prediction of RESPONSE/REMISSION in treated subjects using all clinical metadata, baseline microbiome alone, and combined. A. Response ROCs. B. Response Model Performance vs. reality. C. Top predictive taxa and abundance based on response. D. REMISSION ROCs. E. REMISSION Model Performance vs. reality. F. Top predictive taxa and abundance based on remission](figures/Figure4.pdf)
+\includegraphics{figures/Figure4.pdf}
 
 \newpage
 
-**Supplemental Figure 3: Predicting Week 22 disease status using Week 0 samples**
+**Supplemental Figure 2: Predicting Week 22 disease status using Week 0 samples**
 
 ```{r, include=T}
 
 source('../code/predictionWeek22figures.R')
 ```
 
-![SF3](figures/SF3.pdf)
+\includegraphics{figures/SF3.pdf}
 
 \newpage
+
 # References
