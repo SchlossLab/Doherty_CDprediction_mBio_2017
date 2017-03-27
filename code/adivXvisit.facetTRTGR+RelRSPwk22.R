@@ -97,6 +97,7 @@ mean.wk046.placeborespN.adiv.byvis <- apply(wk046.placeborespN, 2, mean)
 
 ggplot.wk04.adiv<-rbind(wk0.adiv, wk4.adiv)
 ggplot.wk046.adiv<-rbind(ggplot.wk04.adiv, wk6.adiv)
+levels(ggplot.wk046.adiv$RelRSPwk22) <- c("Nonresponder", "Responder")
 placeboresp <- ggplot.wk046.adiv[ggplot.wk046.adiv$INDTRTGR=="Placebo",]
 placeboresp <- placeboresp[placeboresp$visit=="Screening",]
 placeborespY <- placeboresp[placeboresp$RelRSPwk22=="Yes",]
@@ -128,21 +129,36 @@ ggplot(ggplot.wk046.treatedrespY, aes(visit, invsimpson))+
 	geom_boxplot() + theme(legend.position="none")
 
 ann_text <- data.frame(visit = 2, invsimpson = 31,
-											 INDTRTGR = "Treated", RelRSPwk22 = "Yes")
+											 INDTRTGR = "Treated", RelRSPwk22 = "Responder")
 
 wk046.adivXvisXindtrtXrelRSPwk22.plot <- ggplot(ggplot.wk046.adiv, aes(x=visit, y=invsimpson, fill=INDTRTGR)) +
 	#stat_summary(fun.y=mean, geom="point", aes(fill = invsimpson), position = position_dodge(1)) +
 	#stat_summary(fun.data = 'median_hilow', fun.args = (conf.int=0.5), position = position_dodge(1), geom='errorbar', aes(color = otu))+
 	geom_boxplot(position=position_dodge(width = 1), alpha = .4) + guides(fill=FALSE) +
-	ylab("Inverse Simpson") + xlab("Visit") + theme(legend.position="none") + 
-	ggtitle("Change in Species Diversity over time \n by Induction Group and Week 22 Response") + 
+	ylab("Inverse Simpson") + xlab("Stool Sample") + theme(legend.position="none") + 
+	ggtitle("Change in Species Diversity over time by Induction Group and Week 22 Response") + 
+	facet_grid(.~INDTRTGR + RelRSPwk22, labeller = label_bquote((x) + nrow(x))) +
+	theme(plot.title = element_text(hjust = 0.5)) + geom_text(data = ann_text, label = "*", size=10)
+
+pdf("figures/DDW_wk046.adivXvisitXindtrtXrelRSPwk22.pdf", height = 6, width = 10)
+wk046.adivXvisXindtrtXrelRSPwk22.plot
+dev.off()
+
+wk046.adivXvisXindtrtXrelRSPwk22.plot <- ggplot(ggplot.wk046.adiv, aes(x=visit, y=invsimpson, fill=INDTRTGR)) +
+	#stat_summary(fun.y=mean, geom="point", aes(fill = invsimpson), position = position_dodge(1)) +
+	#stat_summary(fun.data = 'median_hilow', fun.args = (conf.int=0.5), position = position_dodge(1), geom='errorbar', aes(color = otu))+
+	geom_boxplot(position=position_dodge(width = 1), alpha = .4) + guides(fill=FALSE) +
+	ylab("Inverse Simpson") + xlab("Stool Sample") + theme(legend.position="none") + 
+	#ggtitle("Change in Species Diversity over time by Induction Group and Week 22 Response") + 
 	facet_grid(.~INDTRTGR + RelRSPwk22, labeller = label_bquote((x) + nrow(x))) +
 	theme(plot.title = element_text(hjust = 0.5)) + geom_text(data = ann_text, label = "*", size=10)
 
 #tiff("figures/wk046.adivXvisitXindtrtXrelRSPwk22.tiff", height = 6, width = 10, units = "in", res = 300)
-pdf("figures/wk046.adivXvisitXindtrtXrelRSPwk22.pdf", height = 6, width = 10)
+pdf("figures/Figure4_wk046.adivXvisitXindtrtXrelRSPwk22.pdf", height = 6, width = 10)
 wk046.adivXvisXindtrtXrelRSPwk22.plot
 dev.off()
+
+
 
 
 #adiv.vist.aov<- aov(ggplot.wk046.adiv$invsimpson~ggplot.wk046.adiv$visit + Error(ggplot.wk046.adiv$USUBJID/ggplot.wk046.adiv$visit))

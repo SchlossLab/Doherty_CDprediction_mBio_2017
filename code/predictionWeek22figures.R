@@ -11,7 +11,7 @@
 #tiff(RelRSPwk22Fig )
 
 #tiff('figures/Figure1.tiff', height=12, width=10, units='in', res=300)
-pdf("figures/SF3.pdf", height=10, width=12)
+pdf("figures/SF2-wk22predfig.pdf", height=10, width=12)
 layout(matrix(c(1,2,3,4), 2, 2, byrow = TRUE))
 
 #pdf("figures/Week6response.AUC.pdf")
@@ -77,8 +77,8 @@ yes_abunds<- na.omit(yes_abunds)
 
 #pdf('figures/oturelRSPWK22AUCRFabunds.pdf', height=6, width=12)
 #layout(1)
-par(mar=c(4, 12, 2, 1))
-plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Relative Abundance (%)", xaxt="n", yaxt="n")
+par(mar=c(4, 14, 2, 1))
+plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Week 0 Relative Abundance (%)", xaxt="n", yaxt="n")
 #title('Abundance of Top OTUs from Microbiome Model')
 set.seed(32016)
 index <- 1
@@ -108,7 +108,7 @@ formatted <- lapply(1:nrow(oturf_tax), function(i) bquote(paste(italic(.(oturf_n
 
 axis(2, at=seq(1,index-2,2), labels=do.call(expression, formatted), las=1, line=0, tick=F, cex.axis=1)
 axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0), label=c("0", "0.01", "0.1", "1", "10", "100"))
-legend('topright', legend=c("Week 22 Nonresponder", "Week 22 Responder"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
+legend('right', legend=c("Week 22 Nonresponder", "Week 22 Responder"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
 mtext('B', at=1e-8, side=3, line=0.1, font=2, cex=2)
 #dev.off()
 
@@ -171,8 +171,8 @@ yes_abunds<- na.omit(yes_abunds)
 
 #pdf('figures/otuREMWK22AUCRFabunds.pdf', height=6, width=12)
 #layout(1)
-par(mar=c(4, 12, 2, 1))
-plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Relative Abundance (%)", xaxt="n", yaxt="n")
+par(mar=c(4, 14, 2, 1))
+plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Week 0 Relative Abundance (%)", xaxt="n", yaxt="n")
 ##title('Abundance of Top OTUs from Microbiome Model')
 set.seed(32016)
 index <- 1
@@ -201,7 +201,7 @@ formatted <- lapply(1:nrow(oturf_tax), function(i) bquote(paste(italic(.(oturf_n
 
 axis(2, at=seq(1,index-2,2), labels=do.call(expression, formatted), las=1, line=0, tick=F, cex.axis=1)
 axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0), label=c("0", "0.01", "0.1", "1", "10", "100"))
-legend('topright', legend=c("Week 22 Nonremitter", "Week 22 Remitter"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
+legend('right', legend=c("Week 22 Nonremitter", "Week 22 Remitter"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
 mtext('D', at=1e-8, side=3, line=0.1, font=2, cex=2)
 
 dev.off()

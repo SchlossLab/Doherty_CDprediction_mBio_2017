@@ -15,7 +15,7 @@
 #pdf("figures/Figure4.pdf", height = 10, width = 12)
 #layout(matrix(c(1,2,3,4), 2, 2, byrow = TRUE))
 
-pdf("figures/Week6response.AUC.pdf", height=6, width=12)
+pdf("figures/Week6response.AUC.DDW.pdf", height=6, width=12)
 #tiff('figures/RelRSPwk6AUCRF.tiff', height=6, width=12, units='in', res=300)
 #pdf('figures/RelRSPwk6AUCRF.pdf', height=6, width=12)
 layout(matrix(c(1, 2), 1, 2))

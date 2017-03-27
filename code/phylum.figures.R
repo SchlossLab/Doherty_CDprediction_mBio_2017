@@ -12,7 +12,7 @@ phyRabRelRSPwk6_figure2 <- ggplot(phyRabRelRSPwk6_ggplot, aes(x=RelRSPwk6, y=rel
 	#stat_summary(fun.y=median, geom="point", aes(fill = phylum), position = position_dodge(1)) +
 	#stat_summary(fun.data = 'median_hilow', fun.args = (conf.int=0.5), position = position_dodge(1), geom='errorbar', aes(color = phylum))+
 	geom_boxplot(position=position_dodge(width = 1), alpha = .4) +facet_grid(. ~ phylum) +
-	ylab("Relative Abundance (%)") + xlab("Week 6 Responder") + theme(legend.position="none") + theme(strip.text = element_text(face = "italic")) +
+	ylab("Week 0 Relative Abundance (%)") + xlab("Week 6 Responder") + theme(legend.position="none") + theme(strip.text = element_text(face = "italic")) +
 	geom_text(data = ann_text, label = "*", size=10)
 
 #tiff('figures/ggplot.phylum.figure.byRelRSPwk6.tiff', height = 8, width = 12, units = "in", res = 300)
@@ -39,7 +39,7 @@ phyRabREMISSwk6_figure2 <- ggplot(phyRabREMISSwk6_ggplot, aes(x=REMISSwk6, y=rel
 	#stat_summary(fun.y=median, geom="point", aes(fill = phylum), position = position_dodge(1)) +
 	#stat_summary(fun.data = 'median_hilow', fun.args = (conf.int=0.5), position = position_dodge(1), geom='errorbar', aes(color = phylum))+
 	geom_boxplot(position=position_dodge(width = 1), alpha = .4) +facet_grid(. ~ phylum) +
-	ylab("Relative Abundance (%)") + xlab("Week 6 Remitter") + theme(legend.position="none") + theme(strip.text = element_text(face = "italic"))
+	ylab("Week 0 Relative Abundance (%)") + xlab("Week 6 Remitter") + theme(legend.position="none") + theme(strip.text = element_text(face = "italic"))
 
 #tiff('figures/ggplot.phylum.figure.byREMISSwk6.tiff', height = 8, width = 12, units = "in", res = 300)
 # pdf('figures/ggplot.phylum.figure.byREMISSwk6.pdf', height = 8, width = 12)
@@ -67,7 +67,7 @@ phyRabRelRSPwk22_figure2 <- ggplot(phyRabRelRSPwk22_ggplot, aes(x=RelRSPwk22, y=
 	#stat_summary(fun.y=median, geom="point", aes(fill = phylum), position = position_dodge(1)) +
 	#stat_summary(fun.data = 'median_hilow', fun.args = (conf.int=0.5), position = position_dodge(1), geom='errorbar', aes(color = phylum))+
 	geom_boxplot(position=position_dodge(width = 1), alpha = .4) +facet_grid(. ~ phylum) +
-	ylab("Relative Abundance (%)") + xlab("Week 22 Responder") + theme(legend.position="none") + theme(strip.text = element_text(face = "italic"))
+	ylab("Week 0 Relative Abundance (%)") + xlab("Week 22 Responder") + theme(legend.position="none") + theme(strip.text = element_text(face = "italic"))
 
 #tiff('figures/ggplot.phylum.figure.byRelRSPwk22.tiff', height = 8, width = 12, units = "in", res = 300)
 #pdf('figures/ggplot.phylum.figure.byRelRSPwk22.pdf', height = 8, width = 12)
@@ -91,7 +91,7 @@ phyRabREMISSwk22_figure2 <- ggplot(phyRabREMISSwk22_ggplot, aes(x=REMISSwk22, y=
 	#stat_summary(fun.y=median, geom="point", aes(fill = phylum), position = position_dodge(1)) +
 	#stat_summary(fun.data = 'median_hilow', fun.args = (conf.int=0.5), position = position_dodge(1), geom='errorbar', aes(color = phylum))+
 	geom_boxplot(position=position_dodge(width = 1), alpha = .4) +facet_grid(. ~ phylum) +
-	ylab("Relative Abundance (%)") + xlab("Week 22 Remitter") + theme(legend.position="none") + theme(strip.text = element_text(face = "italic"))
+	ylab("Week 0 Relative Abundance (%)") + xlab("Week 22 Remitter") + theme(legend.position="none") + theme(strip.text = element_text(face = "italic"))
 
 #tiff('figures/ggplot.phylum.figure.byREMISSwk22.tiff', height = 8, width = 12, units = "in", res = 300)
 # pdf('figures/ggplot.phylum.figure.byREMISSwk22.pdf', height = 8, width = 12)
@@ -108,7 +108,7 @@ phyRabREMISSwk22_figure2 <- ggplot(phyRabREMISSwk22_ggplot, aes(x=REMISSwk22, y=
 # plot_grid(phyRabRelRSPwk6_figure2, phyRabREMISSwk6_figure2, labels = c("A", "B"), align = "v", nrow=2)
 # dev.off()
 
-pdf("figures/SF1.pdf", height = 10, width = 12)
+pdf("figures/SF1_phylaWK22.pdf", height = 10, width = 12)
 plot_grid(phyRabRelRSPwk22_figure2, phyRabREMISSwk22_figure2, labels = c("A", "B"), align = "v", nrow=2)
 dev.off()
 #str(phyRabREMISSwk6_ggplot$phylum)

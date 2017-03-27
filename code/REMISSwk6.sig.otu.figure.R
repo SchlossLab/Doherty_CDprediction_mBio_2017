@@ -120,10 +120,10 @@ yes_abunds <- screen_data[screen_data$REMISSwk6=='Yes', oturf_otus]/10000 + 1e-5
 yes_abunds<- na.omit(yes_abunds)
 
 #tiff('figures/basesigOTUabund.REMISSwk6.tiff', height = 8, width = 12, units = "in", res = 300)
-pdf('figures/basesigOTUabund.REMISSwk6.pdf', height = 6, width = 8)
+pdf('figures/Figure3_basesigOTUabund.REMISSwk6.pdf', height = 6, width = 8)
 layout(1)
 par(mar=c(4, 12, 2, 1))
-plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Relative Abundance (%)", xaxt="n", yaxt="n")
+plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Week 0 Relative Abundance (%)", xaxt="n", yaxt="n")
 #title('Abundance of Top OTUs from Microbiome Model')
 set.seed(32016)
 index <- 1
@@ -150,7 +150,7 @@ formatted <- lapply(1:nrow(oturf_tax), function(i) bquote(paste(italic(.(oturf_n
 
 axis(2, at=seq(1,index-2,2), labels=do.call(expression, formatted), font =3, las=1, line=0, tick=F, cex.axis=1)
 axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0), label=c("0", "0.01", "0.1", "1", "10", "100"))
-legend('topright', legend=c("Remission Week 6 No", "Remission Week 6 Yes"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
+legend('topright', legend=c("Week 6 Nonremitter", "Week 6 Remitter"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
 #mtext('B', at=1e-8, side=3, line=0.1, font=2, cex=2)
 dev.off()
 

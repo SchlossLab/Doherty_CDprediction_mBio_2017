@@ -1,4 +1,4 @@
-pdf("figures/Figure3.pdf", height = 5, width = 6)
+pdf("figures/Figure5_wk6Xwk6.pdf", height = 10, width = 12)
 #figure layout
 #tiff(file='figures/RSPwk6aucrf.tiff', height=4, width=6.5, units='in', res=300)
 #pdf(file='figures/RSPwk6aucrf.pdf', height=4, width=6.5)
@@ -50,7 +50,7 @@ yes_abunds<- na.omit(yes_abunds)
 #pdf('figures/otuREMwk6Xwk6abunds.pdf', height=6, width=8)
 #layout(1)
 par(mar=c(4, 16, 2, 1))
-plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Relative Abundance (%)", xaxt="n", yaxt="n")
+plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Week 6 Relative Abundance (%)", xaxt="n", yaxt="n")
 #title('Abundance of Top OTUs from Microbiome Model')
 set.seed(32016)
 index <- 1
