@@ -79,8 +79,8 @@ index <- 1
 for(i in oturf_otus ){
 	stripchart(at=index-0.35, jitter(yes_abunds[,i], amount=1e-6), pch=21, bg=alpha("royalblue1", alpha=0.25), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
 	stripchart(at=index+0.35, jitter(no_abunds[,i], amount=1e-6), pch=21, bg=alpha("orange", alpha=0.25), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
-	segments(median(yes_abunds[,i]),index-0.7,median(yes_abunds[,i]),index, lwd=3)
-	segments(median(no_abunds[,i]),index+0.7,median(no_abunds[,i]),index, lwd=3)
+	segments(median(yes_abunds[,i]),index-0.9,median(yes_abunds[,i]),index, lwd=4)
+	segments(median(no_abunds[,i]),index+0.9,median(no_abunds[,i]),index, lwd=4)
 	index <- index + 2
 }
 #oturf_otus
@@ -91,9 +91,9 @@ oturf_tax<-merge(rf_tax, tax, by='OTU')
 oturf_tax<-oturf_tax[match(rf_tax$OTU, oturf_tax$OTU),]
 oturf_tax<-oturf_tax$Label
 oturf_tax <- gsub("_", " ", oturf_tax)
-axis(2, at=seq(1,index-2,2), labels=oturf_tax, font =3, las=1, line=0, tick=F, cex.axis=0.8)
+axis(2, at=seq(1,index-2,2), labels=oturf_tax, font =3, las=1, line=0, tick=F, cex.axis=1)
 axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0), label=c("0", "0.01", "0.1", "1", "10", "100"))
-legend('topright', legend=c("Week 6 Nonresponder", "Week 6 Responder"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=0.7)
+legend('topright', legend=c("Week 6 Nonresponder", "Week 6 Responder"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
 mtext('B', at=1e-8, side=3, line=0.1, font=2, cex=2)
 
 
@@ -153,16 +153,16 @@ yes_abunds<- na.omit(yes_abunds)
 
 #pdf('figures/otuREMwk6abunds.pdf', height=6, width=8)
 #layout(1)
-par(mar=c(4, 12, 2, 1))
-plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Relative Abundance (%)", xaxt="n", yaxt="n")
+par(mar=c(4, 14, 2, 1))
+plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Week 0 Relative Abundance (%)", xaxt="n", yaxt="n")
 #title('Abundance of Top OTUs from Microbiome Model')
 set.seed(32016)
 index <- 1
 for(i in oturf_otus ){
 	stripchart(at=index-0.35, jitter(yes_abunds[,i], amount=1e-6), pch=21, bg=alpha("royalblue1", alpha=0.25), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
 	stripchart(at=index+0.35, jitter(no_abunds[,i], amount=1e-6), pch=21, bg=alpha("orange", alpha=0.25), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
-	segments(median(yes_abunds[,i]),index-0.7,median(yes_abunds[,i]),index, lwd=3)
-	segments(median(no_abunds[,i]),index+0.7,median(no_abunds[,i]),index, lwd=3)
+	segments(median(yes_abunds[,i]),index-0.9,median(yes_abunds[,i]),index, lwd=4)
+	segments(median(no_abunds[,i]),index+0.9,median(no_abunds[,i]),index, lwd=4)
 	index <- index + 2
 }
 #oturf_otus
@@ -173,9 +173,9 @@ oturf_tax<-merge(rf_tax, tax, by='OTU')
 oturf_tax<-oturf_tax[match(rf_tax$OTU, oturf_tax$OTU),]
 oturf_tax<-oturf_tax$Label
 oturf_tax <- gsub("_", " ", oturf_tax)
-axis(2, at=seq(1,index-2,2), labels=oturf_tax, font = 3, las=1, line=0, tick=F, cex.axis=0.8)
+axis(2, at=seq(1,index-2,2), labels=oturf_tax, font = 3, las=1, line=0, tick=F, cex.axis=1)
 axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0), label=c("0", "0.01", "0.1", "1", "10", "100"))
-legend('topright', legend=c("Week 6 Nonremitter", "Week 6 Remitter"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=0.7)
+legend('topright', legend=c("Week 6 Nonremitter", "Week 6 Remitter"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
 mtext('D', at=1e-8, side=3, line=0.1, font=2, cex=2)
 
 dev.off()

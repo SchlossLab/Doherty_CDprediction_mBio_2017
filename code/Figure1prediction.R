@@ -86,8 +86,8 @@ index <- 1
 for(i in oturf_otus ){
 	stripchart(at=index-0.35, jitter(yes_abunds[,i], amount=1e-6), pch=21, bg=alpha("royalblue1", alpha=0.25), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
 	stripchart(at=index+0.35, jitter(no_abunds[,i], amount=1e-6), pch=21, bg=alpha("orange", alpha=0.25), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
-	segments(median(yes_abunds[,i]),index-0.7,median(yes_abunds[,i]),index, lwd=3)
-	segments(median(no_abunds[,i]),index+0.7,median(no_abunds[,i]),index, lwd=3)
+	segments(median(yes_abunds[,i]),index-0.8,median(yes_abunds[,i]),index, lwd=4)
+	segments(median(no_abunds[,i]),index+0.8,median(no_abunds[,i]),index, lwd=4)
 	index <- index + 2
 }
 #oturf_otus
@@ -180,8 +180,8 @@ index <- 1
 for(i in oturf_otus ){
 	stripchart(at=index-0.35, jitter(yes_abunds[,i], amount=1e-6), pch=21, bg=alpha("royalblue1", alpha=0.25), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
 	stripchart(at=index+0.35, jitter(no_abunds[,i], amount=1e-6), pch=21, bg=alpha("orange", alpha=0.25), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
-	segments(median(yes_abunds[,i]),index-0.7,median(yes_abunds[,i]),index, lwd=3)
-	segments(median(no_abunds[,i]),index+0.7,median(no_abunds[,i]),index, lwd=3)
+	segments(median(yes_abunds[,i]),index-0.8,median(yes_abunds[,i]),index, lwd=4)
+	segments(median(no_abunds[,i]),index+0.8,median(no_abunds[,i]),index, lwd=4)
 	index <- index + 2
 }
 #oturf_otus
