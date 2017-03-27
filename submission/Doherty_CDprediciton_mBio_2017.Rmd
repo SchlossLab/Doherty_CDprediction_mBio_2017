@@ -22,7 +22,7 @@ bibliography: My_Library_copy.bib
 
 ```{r knitr_settings, cache=FALSE, include=FALSE}
 source('../code/knitr_settings.R')
-knitr::opts_chunk$set("cache" = T)
+#knitr::opts_chunk$set("cache" = T)
 source('../code/R_packages_setup.R')
 ```
 
@@ -115,15 +115,14 @@ summary(nao.screen_data[,c("TRTGR")])
 summary(screen_data[,c("TRTGR")])
 ```
 
-```{r phylum_otu}
+```{r phylum_otu, include=FALSE}
 source("../code/Figure1week6phyla.R")
 
-
-pdf("figures/Figure1_wk6phyla.pdf", height = 10, width = 12)
+pdf("figures/Figure2_wk6phyla.pdf", height = 10, width = 12)
 plot_grid(phyRabRelRSPwk6_figure2, phyRabREMISSwk6_figure2, labels = c("A", "B"), align = "v", nrow=2)
 dev.off()
 
-pdf("figures/SF1.pdf", height = 10, width = 12)
+pdf("figures/SF1_phylaWK22.pdf", height = 10, width = 12)
 plot_grid(phyRabRelRSPwk22_figure2, phyRabREMISSwk22_figure2, labels = c("A", "B"), align = "v", nrow=2)
 dev.off()
 
@@ -1347,7 +1346,7 @@ levs
 subidsover3<-levs[levs$no_rows>=3,]
 summary(subidsover3)
 subidis4<-levs[levs$no_rows==4,]
-no22subs3times<-as.character(subidsover3$USUBJID, permutations = 2000)
+no22subs3times<-as.character(subidsover3$USUBJID)
 no22subs3times
 
 no22_3x_data <- no22data[no22data$USUBJID %in% no22subs3times,]
@@ -1507,7 +1506,7 @@ dev.off()
 ```{r , include=F}
 print("All subjects over weeks 0 4 and 6 by treatment and response at week 6")
 set.seed(32016)
-adonis(wk046_dist ~ visit*TRTGR*RelRSPwk6, wk046_data, strata = wk046_data$USUBJID, permutations = 2000)
+adonis(wk046_dist ~ visit*TRTGR*RelRSPwk6, wk046_data, strata = wk046_data$USUBJID)
 ```
 
 ```{r , include=F}
@@ -1520,7 +1519,7 @@ grid.table(signif(wk046visXtrtgrXwk22.adonis$aov.tab, 2))
 dev.off()
 #print("All subjects over weeks 0 4 and 6 by induction and response at week 22")
 #set.seed(32016)
-#adonis(wk046_dist ~ visit*TRTGR*RESPONSEwk22, wk046_data, strata = wk046_data$USUBJID, permutations = 2000)
+#adonis(wk046_dist ~ visit*TRTGR*RESPONSEwk22, wk046_data, strata = wk046_data$USUBJID)
 ```
 
 ```{r, include=F}
@@ -1530,7 +1529,7 @@ summary(subset(wk046_data.relRSP22Y, select=c(group, USUBJID, visit, TRTGR, TRTG
 
 print("Week 22 Relative Responders over weeks 0 4 and 6 by induction group and response at week 22")
 set.seed(32016)
-adonis(wk046_data.relRSP22Y.dist ~ visit*TRTGR, wk046_data.relRSP22Y, strata = wk046_data.relRSP22Y$USUBJID, permutations = 2000)
+adonis(wk046_data.relRSP22Y.dist ~ visit*TRTGR, wk046_data.relRSP22Y, strata = wk046_data.relRSP22Y$USUBJID)
 ```
 
 ```{r , include=F}
@@ -1539,7 +1538,7 @@ summary(subset(wk046.ust.relRSP22Y, select=c(group, USUBJID, visit, TRTGR, TRTGR
 
 set.seed(32016)
 print("All treated week 22 responders over weeks 0 4 and 6")
-adonis(wk046.ust.relRSP22Y.dist ~ visit, wk046.ust.relRSP22Y, strata = wk046.ust.relRSP22Y$USUBJID, permutations = 2000)
+adonis(wk046.ust.relRSP22Y.dist ~ visit, wk046.ust.relRSP22Y, strata = wk046.ust.relRSP22Y$USUBJID)
 ```
 
 ```{r , include=F}
@@ -1548,13 +1547,13 @@ summary(subset(wk046.plac.relRSP22Y, select=c(group, USUBJID, visit, TRTGR, TRTG
 
 set.seed(32016)
 print("All placebo week 22 responders over weeks 0 4 and 6")
-adonis(wk046.plac.relRSP22Y.dist ~ visit, wk046.plac.relRSP22Y, strata = wk046.plac.relRSP22Y$USUBJID, permutations = 2000)
+adonis(wk046.plac.relRSP22Y.dist ~ visit, wk046.plac.relRSP22Y, strata = wk046.plac.relRSP22Y$USUBJID)
 ```
 
-```{r wk046adivXvis}
+```{r wk046adivXvis, include=FALSE}
 source("../code/adivXvisit.facetTRTGR+RelRSPwk22.R")
 
-pdf("figures/wk046.adivXvisitXindtrtXrelRSPwk22.pdf", height = 6, width = 10)
+pdf("figures/Figure4_wk046.adivXvisitXindtrtXrelRSPwk22.pdf", height = 6, width = 10)
 wk046.adivXvisXindtrtXrelRSPwk22.plot
 dev.off()
 
@@ -1567,61 +1566,7 @@ set.seed(32016)
 
 
 #ALL with strata
-adonis(alltp_dist ~ visit*TRTGR*RelRSPwk22, alltime_data, strata = alltime_data$USUBJID)
-```
-
-```{r, include=F, }
-print("all time points placebo subjects")
-summary(subset(alltp.placplac, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk6, RelRSPwk6, REMISSwk6, RESPONSEwk22, RelRSPwk22, REMISSwk22)))
-
-print("all time points placebo subjects")
-#PLACEBO with strata
-adonis(alltp_placplacdist ~ visit*RelRSPwk22, alltp.placplac, strata = alltp.placplac$USUBJID, permutations = 2000)
-```
-
-```{r, include=F, }
-print("all time points treated subjects")
-summary(subset(alltp.ust, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk6, RelRSPwk6, REMISSwk6, RESPONSEwk22, RelRSPwk22, REMISSwk22)))
-
-print("all time points treated subjects")
-#UST with strata
-adonis(alltp_ustdist ~ visit*RelRSPwk22, alltp.ust, strata = alltp.ust$USUBJID, permutations = 2000)
-```
-
-```{r, include=F}
-#alltp.all.respY<-alltp.all.respY[alltp.all.respY$TRTGRINDMAN!="Placebo_Treated",]
-print("Summary of all week 22 responders")
-summary(subset(alltp.all.respY, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk6, RelRSPwk6, REMISSwk6, RESPONSEwk22, RelRSPwk22, REMISSwk22)))
-
-print("All week 22 responders by treatement group over all times")
-set.seed(32016)
-adonis(alltp_dist.respY ~ visit*TRTGR, alltp.all.respY, strata = alltp.all.respY$USUBJID, permutations = 2000)
-
-print("All week 22 NONresponders by treatement group over all times")
-set.seed(32016)
-adonis(alltp_dist.respN ~ visit*TRTGR, alltp.all.respN, strata = alltp.all.respN$USUBJID, permutations = 2000)
-```
-
-```{r, include=F}
-print("Summary of treated week 22 responders")
-summary(subset(alltp.ust.RESPy, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk6, RelRSPwk6, REMISSwk6, RESPONSEwk22, RelRSPwk22, REMISSwk22)))
-
-print("All treated week 22 responders over all times")
-set.seed(32016)
-adonis(alltp_ustdist.respY ~ visit, alltp.ust.RESPy, strata = alltp.ust.RESPy$USUBJID, permutations = 2000)
-```
-
-```{r visit all4tp, include=F}
-set.seed(32016)
-print("Summary of week 22 response")
-summary(alltp.plac$RelRSPwk22)
-
-print("Summary of placebo week 22 responders")
-summary(subset(alltp.placplac.RESPy, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk6, RelRSPwk6, REMISSwk6, RESPONSEwk22, RelRSPwk22, REMISSwk22)))
-
-print("All placebo week 22 responders alltimes")
-set.seed(32016)
-adonis(alltp_placdist.respY ~ visit, alltp.placplac.RESPy, strata = alltp.placplac.RESPy$USUBJID, permutations = 2000)
+adonis(alltp_dist ~ visit*TRTGRINDMAN*RelRSPwk22, alltime_data, strata = alltime_data$USUBJID)
 ```
 
 ```{r readdataAUCRF, include=FALSE}
@@ -1931,16 +1876,6 @@ mdotu_remWK6_rf <- AUCRF(REMISSwk6~., data=mdotu_remWK6, ranking='MDA', ntree=50
 #mdotu_remWK6_rf # prints list of optimal features
 mdotu_remWK6_probs <- predict(mdotu_remWK6_rf$RFopt, type='prob')[,2]
 mdotu_remWK6_roc <- roc(mdotu_remWK6$REMISSwk6~mdotu_remWK6_probs)
-
-set.seed(32016)
-otu_remWK6_rf_cv <- AUCRFcv(otu_remWK6_rf)
-set.seed(32016)
-mdotu_remWK6_rf_cv <- AUCRFcv(mdotu_remWK6_rf)
-```
-
-```{r}
-otu_remWK6_rf_cv
-mdotu_remWK6_rf_cv
 ```
 
 ```{r REMISSwk6AUCRFinline, fig.height=5, fig.width=10, include=FALSE}
@@ -2223,17 +2158,8 @@ axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
 cutoff <- coords(roc=mdotu_remWK22_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
 
 mdotu_remWK22_rf # prints list of optimal features
-
-set.seed(32016)
-otu_remWK22_rf_cv <- AUCRFcv(otu_remWK22_rf)
-set.seed(32016)
-mdotu_remWK22_rf_cv <- AUCRFcv(mdotu_remWK22_rf)
 ```
 
-```{r}
-otu_remWK22_rf_cv
-mdotu_remWK22_rf_cv
-```
 
 ```{r , include=F}
 
@@ -2568,8 +2494,6 @@ otu_remWK6xWK6_rf <- AUCRF(REMISSwk6~., data=otu_remWK6xWK6, ranking='MDA', ntre
 otu_remWK6xWK6_probs <- predict(otu_remWK6xWK6_rf$RFopt, type='prob')[,2]
 otu_remWK6xWK6_roc <- roc(otu_remWK6xWK6$REMISSwk6~otu_remWK6xWK6_probs)
 
-set.seed(32016)
-otu_remWK6xWK6_rf_cv <- AUCRFcv(otu_remWK6xWK6_rf)
 
 md_remWK6xWK6 <- trtd.wk6_data[trtd.wk6_data$visit=='Week 6', c('REMISSwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Week.6", "CDPAINM_Week.6", "CDWELBEM_Week.6", "CDARTRTM_Week.6", "CDARALGM_Week.6", "CDIRITM_Week.6", "CDUVEITM_Week.6", "CDERYTHM_Week.6", "CDPYODEM_Week.6", "CDSTOMAM_Week.6", "CDFISURM_Week.6", "CDFISTUM_Week.6", "CDABSCEM_Week.6", "CDOTFISM_Week.6", "CDFEVERM_Week.6", "CDDRGM_Week.6", "CDAMASSM_Week.6", "CDHCTM_Week.6", "CDWEIGHM_Week.6")]
 #summary(md_remWK6xWK6[,c("REMISSwk6")])
@@ -2663,13 +2587,44 @@ otu_remWK6xWK6_rf
 md_remWK6xWK6_rf
 ```
 
+
 ```{r}
+```
+
+
+```{r remwk6aucrfCV, cache=T, include=FALSE}
+set.seed(32016)
+otu_remWK6_rf_cv <- AUCRFcv(otu_remWK6_rf)
+set.seed(32016)
+mdotu_remWK6_rf_cv <- AUCRFcv(mdotu_remWK6_rf)
+
+print("OTU Week 6 rem  cross validation")
+otu_remWK6_rf_cv
+
+print("MDOTU Week 6 rem  cross validation")
+mdotu_remWK6_rf_cv
+```
+
+```{r remWK22aucrfCV, cache=T, include=FALSE}
+set.seed(32016)
+otu_remWK22_rf_cv <- AUCRFcv(otu_remWK22_rf)
+set.seed(32016)
+mdotu_remWK22_rf_cv <- AUCRFcv(mdotu_remWK22_rf)
+
+print("OTU Week 22 rem cross validation")
+otu_remWK22_rf_cv
+
+print("MDOTU Week 22 rem  cross validation")
+mdotu_remWK22_rf_cv
+```
+
+```{r wk6Xwk6aucrfCV, cache=T, include=FALSE}
+set.seed(32016)
+otu_remWK6xWK6_rf_cv <- AUCRFcv(otu_remWK6xWK6_rf)
+
+print("Week 6 by Week 6 cross validation")
 otu_remWK6xWK6_rf_cv
 ```
-
-```{r}
-```
-
 
 \vspace{35mm}
 	
@@ -2833,36 +2788,61 @@ source('../code/table2diversity.R')
 
 **Figure 1: Experimental design.**
 
+```{r exp design}
+```
+
 \includegraphics{figures/Figure1_expdesign.pdf}
+
+\newpage
 
 **Figure 2: Phyla by response/remisison week 6 and OTU abundance week 6 remission**
 
-\includegraphics{figures/Figure1_wk6phyla.pdf}
+```{r Figure2_wk6phyla}
+
+```
+
+
+\includegraphics{figures/Figure2_wk6phyla.pdf}
 
 \newpage
 
 **SF 1: Phyla by response/remission week 22**
 
-\includegraphics{figures/SF1.pdf}
+```{r SF1_phylaWK22}
+
+```
+
+\includegraphics{figures/SF1_phylaWK22.pdf}
 
 \newpage
 
 **Figure 3: OTUS at screening**
 
-\includegraphics{figures/basesigOTUabund.REMISSwk6.pdf}
+```{r Figure3_basesigOTUabund.REMISSwk6}
+```
+
+\includegraphics{figures/Figure3_basesigOTUabund.REMISSwk6.pdf}
 
 \newpage
 
 **Figure 4: Change in alpha diversity over time**
 
-\includegraphics{figures/wk046.adivXvisitXindtrtXrelRSPwk22.pdf}
+```{r  Figure4_wk046.adivXvisitXindtrtXrelRSPwk22}
+```
+
+\includegraphics{figures/Figure4_wk046.adivXvisitXindtrtXrelRSPwk22.pdf}
 
 
 
 \newpage
 
 **Figure 5: Determine week 6 status by week 6 stool and impt OTUs and abunds**
-\includegraphics{figures/Figure3.pdf}
+
+```{r Figure5_wk6Xwk6}
+source("../code/SF1_responseREMwk6Xwk6.R")
+```
+
+\includegraphics{figures/Figure5_wk6Xwk6.pdf}
 
 \newpage
 
@@ -2871,22 +2851,22 @@ A. Response ROCs B. Response Model Performance vs. reality C. Top predictive tax
 
 
 
-```{r RelRSPwk6Fig}
+```{r Figure6_wk0Xwk6pred}
 source('../code/Figure1prediction.R')
 ```
 
-\includegraphics{figures/Figure4.pdf}
+\includegraphics{figures/Figure6_wk0Xwk6pred.pdf}
 
 \newpage
 
 **Supplemental Figure 2: Predicting Week 22 disease status using Week 0 samples**
 
-```{r, include=T}
+```{r SF2-wk22predfig, include=T}
 
 source('../code/predictionWeek22figures.R')
 ```
 
-\includegraphics{figures/SF3.pdf}
+\includegraphics{figures/SF2-wk22predfig.pdf}
 
 \newpage
 
