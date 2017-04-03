@@ -63,7 +63,9 @@ ggplot.wk046.treatedrespN <- ggplot.wk046.treatedrespN[, -c(4:6)]
 
 #kruskal.test(ggplot.wk046.treatedrespY$invsimpson~ggplot.wk046.treatedrespY$visit)
 #kruskalmc(ggplot.wk046.treatedrespY$invsimpson~ggplot.wk046.treatedrespY$visit)
-friedman.test(wk046.treatedrespY)
+set.seed(32016)
+wk046.treatedrespY.fried <- friedman.test(wk046.treatedrespY)
+
 friedmc <- friedmanmc(wk046.treatedrespY)
 friedmc
 pairwise.wilcox.test(ggplot.wk046.treatedrespY$invsimpson, ggplot.wk046.treatedrespY$visit, p.adj="BH", exact=F, paired=T)
