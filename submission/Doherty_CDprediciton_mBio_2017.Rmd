@@ -22,7 +22,7 @@ bibliography: My_Library_copy.bib
 
 ```{r knitr_settings, cache=FALSE, include=FALSE}
 source('../code/knitr_settings.R')
-#knitr::opts_chunk$set("cache" = T)
+knitr::opts_chunk$set("cache" = T)
 source('../code/R_packages_setup.R')
 ```
 
@@ -1537,6 +1537,9 @@ adonis(wk046.plac.relRSP22Y.dist ~ visit, wk046.plac.relRSP22Y, strata = wk046.p
 ```{r wk046adivXvis, include=FALSE}
 source("../code/adivXvisit.facetTRTGR+RelRSPwk22.R")
 
+set.seed(32016)
+wk046.treatedrespY.fried <- friedman.test(wk046.treatedrespY)
+
 pdf("figures/Figure4_wk046.adivXvisitXindtrtXrelRSPwk22.pdf", height = 6, width = 10)
 wk046.adivXvisXindtrtXrelRSPwk22.plot
 dev.off()
@@ -2340,7 +2343,22 @@ md_remWK6xWK6_rf
 ```
 
 
-```{r}
+```{r, inline vars}
+
+
+stool.adonis.inline.pval <- signif(as.numeric(na.omit(stool.adonis$aov.tab$`Pr(>F)`)), digits = 3)
+BL_CRP.adonis.inline.pval <- signif(as.numeric(na.omit(BL_CRP.adonis$aov.tab$`Pr(>F)`)), digits = 3)
+
+BL_FCALP.adonis.inline.pval <- signif(as.numeric(na.omit(BL_FCALP.adonis$aov.tab$`Pr(>F)`)), digits = 3)
+BL_FLACT.adonis.inline.pval <-  signif(as.numeric(na.omit(BL_FLACT.adonis$aov.tab$`Pr(>F)`)), digits = 3)
+
+AGE.adonis.inline.pval <-  signif(as.numeric(na.omit(AGE.adonis$aov.tab$`Pr(>F)`)), digits = 3)
+
+tissinvol.adonis.inline.pval <-  signif(as.numeric(na.omit(tissinvol.adonis$aov.tab$`Pr(>F)`)), digits = 3)
+
+BCORT.adonis.inline.pval <-  signif(as.numeric(na.omit(BCORT.adonis$aov.tab$`Pr(>F)`)), digits = 3)
+
+DDUR.adonis.inline.pval <-  signif(as.numeric(na.omit(DDUR.adonis$aov.tab$`Pr(>F)`)), digits = 3)
 ```
 
 
@@ -2440,7 +2458,7 @@ _Question: disease severity and microboime at screening?_
 
 Following curation using the mothur software package, we obtained between 1 and 130,074 sequences per sample (median 13786) [@schloss_mothur_2009]. To limit effects of uneven sampling, we rarefied the dataset to 3,000 sequences per sample. Parallel sequencing of a mock community revealed an error rate of 0.017 %. Samples from subjects that completed the clinical trial and had complete clinical metadata were included in our analysis. Of these samples, 306 were provided prior to treatment as well as 258 provided at week 4, 289 at week 6, and 205 at week 22 post-treatment, for a total of 1058 samples. 
 
-To determine whether there are any significant associations between microbial diversity and clinical variables of interest, we compared the microbiome with clinical data at week 0 (Supplemental Table 1). We observed a weak, but significant correlation between CDAI and species diversity, with higher CDAI correlating to lower diversity (rho=`r signif(cor.cdai$estimate, digits = 3)`, p-value= `r signif(cor.cdai$p.value, digits = 3)`). The overall community structure was not different based on CDAI. When looking at CDAI subscores, we observed a weak, but significant association between species diversity and the frequency of loose stools per week (rho=`r signif(cor.stool$estimate, digits = 3)`, p-value= `r signif(cor.stool$p.value, digits = 3)`). The overall community structure was also significantly different based on weekly loose stool frequency `r signif(as.numeric(na.omit(stool.adonis$aov.tab$`Pr(>F)`)), digits = 3)`. No significant association was observed between CRP, fecal calprotectin, or fecal lactoferrin and species diversity, following multiple comparison correction. However, the overall community structure was significantly different based on CRP `r signif(as.numeric(na.omit(BL_CRP.adonis$aov.tab$`Pr(>F)`)), digits = 3)l`, fecal calprotectin `r signif(as.numeric(na.omit(BL_FCALP.adonis$aov.tab$`Pr(>F)`)), digits = 3)`, and fecal lactoferrin `r signif(as.numeric(na.omit(BL_FLACT.adonis$aov.tab$`Pr(>F)`)), digits = 3)`. No significant differences in the microbiome were observed for BMI, weight, or sex. Overall community structure was different based on age `r signif(as.numeric(na.omit(AGE.adonis$aov.tab$`Pr(>F)`)), digits = 3)`. The overall community structure was also different based on the tissue affected `r signif(as.numeric(na.omit(tissinvol.adonis$aov.tab$`Pr(>F)`)), digits = 3)`. Species diversity (p-value= `r signif(wilcox.BCORT$p.value, digits = 3)`)and the overall community structure (adonis p-value=`r signif(as.numeric(na.omit(BCORT.adonis$aov.tab$`Pr(>F)`)), digits = 3)`) were significantly different based on corticosteroid use. The community structure was significantly different (adonis p-value=`r signif(as.numeric(na.omit(DDUR.adonis$aov.tab$`Pr(>F)`)), digits = 3)`) based on disease duration and a weak, but significant correlation was seen between species diversity and disease duration (rho=`r signif(cor.DDUR$estimate, digits = 3)`, p-value= `r signif(cor.D$p.value, digits = 3)`), with lower diversity corresponding to longer disease.
+To determine whether there are any significant associations between microbial diversity and clinical variables of interest, we compared the microbiome with clinical data at week 0 (Supplemental Table 1). We observed a weak, but significant correlation between CDAI and species diversity, with higher CDAI correlating to lower diversity (rho=`r signif(cor.cdai$estimate, digits = 3)`, p-value= `r signif(cor.cdai$p.value, digits = 3)`). The overall community structure was not different based on CDAI. When looking at CDAI subscores, we observed a weak, but significant association between species diversity and the frequency of loose stools per week (rho=`r signif(cor.stool$estimate, digits = 3)`, p-value= `r signif(cor.stool$p.value, digits = 3)`). The overall community structure was also significantly different based on weekly loose stool frequency `r stool.adonis.inline.pval`. No significant association was observed between CRP, fecal calprotectin, or fecal lactoferrin and species diversity, following multiple comparison correction. However, the overall community structure was significantly different based on CRP `r BL_CRP.adonis.inline.pval`, fecal calprotectin `r BL_FCALP.adonis.inline.pval`, and fecal lactoferrin `r BL_FLACT.adonis.inline.pval`. No significant differences in the microbiome were observed for BMI, weight, or sex. Overall community structure was different based on age `r AGE.adonis.inline.pval`. The overall community structure was also different based on the tissue affected `r tissinvol.adonis.inline.pval `. Species diversity (p-value= `r signif(wilcox.BCORT$p.value, digits = 3)`)and the overall community structure (adonis p-value=`r BCORT.adonis.inline.pval`) were significantly different based on corticosteroid use. The community structure was significantly different (adonis p-value=`r DDUR.adonis.inline.pval`) based on disease duration and a weak, but significant correlation was seen between species diversity and disease duration (rho=`r signif(cor.DDUR$estimate, digits = 3)`, p-value= `r signif(cor.DDUR$p.value, digits = 3)`), with lower diversity corresponding to longer disease.
 
 **Comparison of clinical responders and non-responders**
 _Q: Are responder different from non responders at baseline independent of treatment group_
@@ -2461,7 +2479,7 @@ At the secondary endpoint, 22 weeks after IV-induction and 14 weeks after mainte
 
 **The microbiome by treatment and response over time**
 _Does microbiome change following treatemnt_
-The effects of biologic treatment of IBD on the microbiome are not yet well described. We tested whether treatment with UST affects the microbiome using subjects who provided samples at weeks 0, 4, and 6. This allowed for us to analyze `r n.treated.wk046` treated subjects and `r n.plac.wk046` placebo subjects at each time point. Using the adonis function in the vegan R package [@oksanen_vegan_2016], we performed a PERMANOVA stratified on each subject, as a proxy for a repeated measures ANOVA, to determine if the community structure of microbiome changed over time. We included induction treatment group, response at each clinical endpoint, and sample date as parameters. 
+The effects of biologic treatment of IBD on the microbiome are not yet well described. We tested whether treatment with UST affects the microbiome using subjects who provided samples at weeks 0, 4, and 6. This allowed for us to analyze `r n.wk046.trtd` treated subjects and `r n.wk046.plac` placebo subjects at each time point. Using the adonis function in the vegan R package [@oksanen_vegan_2016], we performed a PERMANOVA stratified on each subject, as a proxy for a repeated measures ANOVA, to determine if the community structure of microbiome changed over time. We included induction treatment group, response at each clinical endpoint, and sample date as parameters. 
 
 We found that treatment alone does not affect the microbiome over time. No significant difference was seen based on sample date when looking at all treatment groups and week 6 response status, but there was a significant interaction between week 22 response and sample date `r signif(wk046visXtrtgrXwk22.adonis.pval[5,], 2)`. There was also a significant interaction and between week 22 response, induction group, and sample date `r signif(wk046visXtrtgrXwk22.adonis.pval[7,], 2)` (Supplemental Table 2). 
 
@@ -2478,7 +2496,7 @@ When looking at treated vs. untreated responder groups,
 
 Digging deeper,  
 
-We also hypothesized that treatment may affect species diversity. We tested this by performing a freidman test comparing species diversity at each sample date within each induction treatment group based on their week 22 response status. As seen in Figure 4, we saw no significant difference in species diversity over time in subjects induced with placebo or treated-week 22 nonresponders. However, in treated-week 22 responders species diversity increased significantly from week 0 to week 4 (`r pvalue`) and remained higher than baseline at week 6. We hypothesize that this reflects decreased inflammation in the responding subjects.  
+We also hypothesized that treatment may affect species diversity. We tested this by performing a freidman test comparing species diversity at each sample date within each induction treatment group based on their week 22 response status. As seen in Figure 4, we saw no significant difference in species diversity over time in subjects induced with placebo or treated-week 22 nonresponders. However, in treated-week 22 responders species diversity increased significantly from week 0 to week 4 (`r signif(wk046.treatedrespY.fried$p.value, 2)`) and remained higher than baseline at week 6. We hypothesize that this reflects decreased inflammation in the responding subjects.  
 
 
 **The microbiome following treatment reflects disease status**
