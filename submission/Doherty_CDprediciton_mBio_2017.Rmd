@@ -39,34 +39,16 @@ screen_RESPwk22<-APmd_RSPwk22[APmd_RSPwk22$visit=="Screening",] #removes any gro
 screen_data<-screen_RESPwk22				#na.omit(screen_RESPwk22)
 summary(subset(screen_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
 
-#screen_data<-screen_data[screen_data$USUBJID!='C0743T26030100002',]
-#screen_data<-screen_data[screen_data$group!='E4859941-5',]
+summary(subset(screen_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
 
 summary(subset(screen_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
 
-#screen_data$CDSTOOLM_Screening[screen_data$CDSTOOLM_Screening=="."]<-"NA"
-#screen_data$CDSTOOLM_Screening <-as.integer(screen_data$CDSTOOLM_Screening)
-#screen_data$CDHCTM_Screening[screen_data$CDHCTM_Screening=="."]<-"NA"
-#screen_data$CDHCTM_Screening <-as.integer(screen_data$CDHCTM_Screening)
-summary(subset(screen_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
-
-#levs<-screen_data %>% group_by(USUBJID) %>% summarise(no_rows = length(USUBJID))
-#levs
-
-#dup.group<-screen_data[screen_data$USUBJID=="C0743T26045400006",]
-#subset(dup.group, select = c(group, USUBJID, visit, nseqs, coverage, sobs, invsimpson))
-
-#Remove "duplicate" sample with worse coverage and nseqs
-#screen_data<-screen_data[screen_data$group!='E4859941-5',] #data = cleaned up duplicate removed
-#summary(subset(screen_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
 
 screen_data<-screen_data[screen_data$TRTGRINDMAN!="Placebo_Not",]
 screen_data<-screen_data[screen_data$TRTGRINDMAN!="Treated_Not",]
-#screen_data<-screen_data[screen_data$TRTGRINDMAN!="Placebo_Not",]
 
-#pdf('data/figures/patientMD.#pdf', height=6, width=8)
 summary(screen_data[,c("TRTGR", "TRTGRINDMAN", "visit", "RESPONSEwk6", "RelRSPwk6", "REMISSwk6")])
-#dev.off()
+
 
 screen.trtd<-screen_data[screen_data$TRTGRINDMAN!="Placebo_Placebo",]
 screen.trtd<-screen.trtd[screen.trtd$TRTGRINDMAN!="Placebo_Treated",]
@@ -84,7 +66,7 @@ nao.screen.plac<-nao.screen_data[nao.screen_data$TRTGRINDMAN!="Treated_Placebo",
 nao.screen.plac<-nao.screen.plac[nao.screen.plac$TRTGRINDMAN!="Treated_Treated",]
 summary(nao.screen.plac[,1:6])
 
-#axes <- read.table('../data/Jan400.nao.screen_trtd.3107.subsample.thetayc.0.03.lt.ave.nmds.by3.axes', header=T)
+
 tax<- read.table('../data/Jan400.simple.taxonomy.txt', header=T, sep="\t")
 nao.screen.all.distmat<-read.table("../data/Jan400.screening.all.na.omit.cmd.thetayc.0.03.square.ave.dist")
 nao.screen.all.dist<-as.dist(nao.screen.all.distmat)
@@ -1514,6 +1496,8 @@ print("All subjects over weeks 0 4 and 6 by induction and relative response at w
 set.seed(32016)
 wk046visXtrtgrXwk22.adonis <- adonis(wk046_dist ~ visit*TRTGR*RelRSPwk22, wk046_data, strata = wk046_data$USUBJID, permutations = 2000)
 
+wk046visXtrtgrXwk22.adonis.pval <- subset(wk046visXtrtgrXwk22.adonis$aov.tab, select = `Pr(>F)`)
+
 pdf("tables/SF2adonis.pdf", width = 8, height = 4)
 grid.table(signif(wk046visXtrtgrXwk22.adonis$aov.tab, 2))
 dev.off()
@@ -1585,7 +1569,7 @@ APmd_RSPwk22<-APmd_shared
 
 screen_RESPwk22<-APmd_RSPwk22[APmd_RSPwk22$visit=="Screening",] #removes any group with NA in RESPONSEwk22
 
-screen_data<-screen_RESPwk22				#na.omit(screen_RESPwk22)
+screen_data<-screen_RESPwk22			
 
 screen.trtd<-screen_data[screen_data$TRTGRINDMAN!="Placebo_Placebo",]
 screen.trtd<-screen.trtd[screen.trtd$TRTGRINDMAN!="Placebo_Treated",]
@@ -1603,7 +1587,6 @@ nao.screen.plac<-nao.screen_data[nao.screen_data$TRTGRINDMAN!="Treated_Placebo",
 nao.screen.plac<-nao.screen.plac[nao.screen.plac$TRTGRINDMAN!="Treated_Treated",]
 summary(nao.screen.plac[,1:6])
 
-#axes <- read.table('../data/Jan400.nao.screen_trtd.3107.subsample.thetayc.0.03.lt.ave.nmds.by3.axes', header=T)
 tax<- read.table('../data/Jan400.simple.taxonomy.txt', header=T, sep="\t")
 nao.screen.all.distmat<-read.table("../data/Jan400.screening.all.na.omit.cmd.thetayc.0.03.square.ave.dist")
 nao.screen.all.dist<-as.dist(nao.screen.all.distmat)
@@ -1619,95 +1602,6 @@ screen.trtd.dist<-as.dist(screen.trtd.distmat)
 screen.plac.distmat<-read.table("../data/Jan400.screen.plac.thetayc.0.03.square.ave.dist")
 screen.plac.dist<-as.dist(screen.plac.distmat)
 ```	
-
-```{r RESPONSEwk6-AUC-RF, eval=FALSE, fig.height=5, fig.width=10, include=FALSE}
-print("RESPONSEwk6 by AUC-RF")
-set.seed(32016)
-levels(nao.screen.trtd$RESPONSEwk6) <- c(0,1)
-mdotu_respWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd))])]
-#summary(mdotu_respWK6[,c("RESPONSEwk6")])
-mdotu_respWK6<-na.omit(mdotu_respWK6)
-#summary(mdotu_respWK6[,c("RESPONSEwk6")])
-otu_respWK6 <- mdotu_respWK6[, c('RESPONSEwk6', colnames(mdotu_respWK6)[grep('Otu[0123456789]', colnames(mdotu_respWK6))])]
-#summary(otu_respWK6[,c("RESPONSEwk6")])
-otu_respWK6<-na.omit(otu_respWK6)
-#summary(otu_respWK6[,c("RESPONSEwk6")])
-set.seed(32016)
-otu_respWK6_rf <- AUCRF(RESPONSEwk6~., data=otu_respWK6, ranking='MDA', ntree=500, pdel=0.2)
-#otu_respWK6_rf # prints list of optimal OTUs
-otu_respWK6_probs <- predict(otu_respWK6_rf$RFopt, type='prob')[,2]
-otu_respWK6_roc <- roc(otu_respWK6$RESPONSEwk6~otu_respWK6_probs)
-
-
-md_respWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening")]
-#summary(md_respWK6[,c("RESPONSEwk6")])
-md_respWK6<-na.omit(md_respWK6)
-#summary(md_respWK6[,c("RESPONSEwk6")])
-set.seed(32016)
-md_respWK6_rf <- AUCRF(RESPONSEwk6~., data=md_respWK6, ranking='MDA', ntree=500, pdel=0.3)
-#md_respWK6_rf # prints list of optimal features
-md_respWK6_probs <- predict(md_respWK6_rf$RFopt, type='prob')[,2]
-md_respWK6_roc <- roc(md_respWK6$RESPONSEwk6~md_respWK6_probs)
-
-
-mdotu_respWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd))])]
-#summary(mdotu_respWK6[,c("RESPONSEwk6")])
-mdotu_respWK6<-na.omit(mdotu_respWK6)
-#summary(mdotu_respWK6[,c("RESPONSEwk6")])
-set.seed(32016)
-mdotu_respWK6_rf <- AUCRF(RESPONSEwk6~., data=mdotu_respWK6, ranking='MDA', ntree=500, pdel=0.2)
-#mdotu_respWK6_rf # prints list of optimal features
-mdotu_respWK6_probs <- predict(mdotu_respWK6_rf$RFopt, type='prob')[,2]
-mdotu_respWK6_roc <- roc(mdotu_respWK6$RESPONSEwk6~mdotu_respWK6_probs)
-
-#pdf('data/figures/RSPwk6aucrf.#pdf', height=6, width=8)
-### Plot ROC curves
-layout(matrix(c(1,2), nrow=1))
-par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
-plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
-#plot(otu_respWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
-plot(md_respWK6_roc, add=T, lwd=2, col='grey5', lty=1)
-#plot(mdotu_respWK6_roc, add=T, lwd=2, col='red', lty=1)
-title("Predicting Week 6 Response using Week 0 Clinical Data")
-legend('bottomright', sprintf('Clinical Data: AUC=%.3f',md_respWK6_roc$auc), lwd=2, col='grey5', bty='n', lty=1)
-#dev.off()
-
-#pdf('data/figures/RSPwk6abunds.#pdf', height=6, width=8)
-plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='', xaxt='n', cex.axis=1.2)
-stripchart(at=1, md_respWK6_probs[md_respWK6$'RESPONSEwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
-stripchart(at=2, md_respWK6_probs[md_respWK6$'RESPONSEwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
-mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
-axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
-cutoff <- coords(roc=md_respWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
-#dev.off()
-
-md_respWK6_rf # prints list of optimal features
-
-
-#pdf('data/figures/RSPwk6aucrf.#pdf', height=6, width=8)
-### Plot ROC curves
-layout(matrix(c(1,2), nrow=1))
-par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
-plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
-plot(otu_respWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
-#plot(md_respWK6_roc, add=T, lwd=2, col='grey5', lty=1)
-plot(mdotu_respWK6_roc, add=T, lwd=2, col='red', lty=1)
-title("RESPONSEwk6")
-legend('bottomright', c(sprintf('OTUs : AUC=%.3f',otu_respWK6_roc$auc),sprintf('Clinical Data: AUC=%.3f',md_respWK6_roc$auc),sprintf('Combined: AUC=%.3f',mdotu_respWK6_roc$auc)), lwd=2, col=c('royalblue','grey5', 'red'), bty='n', lty=1)
-#dev.off()
-
-#pdf('data/figures/RSPwk6abunds.#pdf', height=6, width=8)
-plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='', xaxt='n', cex.axis=1.2)
-stripchart(at=1, mdotu_respWK6_probs[mdotu_respWK6$'RESPONSEwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
-stripchart(at=2, mdotu_respWK6_probs[mdotu_respWK6$'RESPONSEwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
-mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
-axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
-cutoff <- coords(roc=mdotu_respWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
-#dev.off()
-
-mdotu_respWK6_rf # prints list of optimal features
-otu_respWK6_rf
-```
 
 ```{r RelRSPwk6-AUC-RF, include=F, fig.height=5, fig.width=10}
 print("RelRSPwk6 by AUC-RF \\nRelative response defined as a decrease in CDAI from Screening greater than 29.5%.")
@@ -1755,38 +1649,8 @@ md_relrespWK6_rf
 ```
 
 ```{r RelRSPwk6AUCRFinline, include=F, fig.height=5, fig.width=10}
-#pdf('figures/mdrelRSPwk6aucrfcomb0.pdf', height=6, width=8)
-### Plot ROC curves
-#layout(matrix(c(1,2), nrow=1))
-#par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
-#plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
-#plot(otu_relrespWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
-#plot(md_relrespWK6_roc, add=T, lwd=2, col='grey5', lty=1)
-#plot(md_relrespWK6_roc, add=T, lwd=2, col='red', lty=1)
-#title("Predicting Week 6 Response")
-#legend('bottomright', sprintf('Week 0 Clinical Data: AUC=%.3f',md_relrespWK6_roc$auc), lwd=2, col='grey5', bty='n', lty=1)
-#points(coords(md_relrespWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(md_relrespWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='grey5', cex=1.5, pch=10)
-
-#dev.off()
-#dev.off()
-
-
-#pdf('figures/RSPwk6abunds.pdf', height=6, width=8)
-#plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='Response Week 6', xaxt='n', cex.axis=1.2)
-#title('Response Status Compared to Clinical Model')
-#stripchart(at=1, md_relrespWK6_probs[md_relrespWK6$'RelRSPwk6'==0], vertical=T, method='jitter', #jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
-#stripchart(at=2, md_relrespWK6_probs[md_relrespWK6$'RelRSPwk6'==1], vertical=T, method='jitter', #jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
-#mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
-#axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
 cutoff <- coords(roc=md_relrespWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
-#abline(h=cutoff, lty=2)
-#legend("top", lty=2, sprintf('Model Threshold'))
-#dev.off()
 
-#md_relrespWK6_rf 
-
-# prints list of optimal features
-#pdf('figures/mdoturelRSPwk6aucrf.pdf', height=6, width=8)
 ### Plot ROC curves
 layout(matrix(c(1,2), nrow=1))
 par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
@@ -1796,7 +1660,6 @@ plot(md_relrespWK6_roc, add=T, lwd=2, col='grey5', lty=1)
 plot(mdotu_relrespWK6_roc, add=T, lwd=2, col='red', lty=1)
 title("Predicting Week 6 Response")
 legend('bottomright', c(sprintf('Week 0 OTUs : AUC=%.3f',otu_relrespWK6_roc$auc), sprintf('Week 0 Clinical Data: AUC=%.3f',md_relrespWK6_roc$auc), sprintf('Combined: AUC=%.3f',mdotu_relrespWK6_roc$auc)), lwd=2, col=c('royalblue', 'grey5', 'red'), bty='n', lty=1)
-#legend('bottomright', c(sprintf('Week 0 OTUs : AUC=%.3f',otu_relrespWK6_roc$auc), sprintf('Combined: AUC=%.3f',mdotu_relrespWK6_roc$auc)), lwd=2, col=c('royalblue', 'red'), bty='n', lty=1)
 
 cutoff <- coords(roc=mdotu_relrespWK6_roc, x='best', best.method='y', ret=c('threshold'))
 mdotu_relrespWK6_spec <- coords(mdotu_relrespWK6_roc, x=cutoff, input='thr', ret='spec')
@@ -1817,10 +1680,7 @@ md_relrespWK6_sens <- coords(md_relrespWK6_roc, x=md_relrespWK6_spec, input='spe
 md_relrespWK6_thr <- coords(md_relrespWK6_roc, x=md_relrespWK6_spec, input='spec', ret='thr')
 
 points(coords(md_relrespWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(md_relrespWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='black', cex=1.5, pch=10)
-#dev.off()
-#dev.off()
 
-#pdf('data/figures/RSPwk6abunds.#pdf', height=6, width=8)
 plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='Response Week 6', xaxt='n', cex.axis=1.2)
 title('Response Status Compared to Combined Model')
 stripchart(at=1, mdotu_relrespWK6_probs[mdotu_relrespWK6$'RelRSPwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
@@ -1830,7 +1690,6 @@ axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
 cutoff <- coords(roc=mdotu_relrespWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
 abline(h=cutoff, lty=2)
 legend("top", lty=2, sprintf('Model Threshold'))
-#dev.off()
 
 #mdotu_relrespWK6_rf # prints list of optimal features
 otu_relrespWK6_rf 
@@ -1841,14 +1700,13 @@ print("REMISSwk6 by AUC-RF")
 set.seed(32016)
 levels(nao.screen.trtd$REMISSwk6) <- c(0,1)
 mdotu_remWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('REMISSwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd))])]
-#summary(mdotu_remWK6[,c("REMISSwk6")])
+
 mdotu_remWK6<-na.omit(mdotu_remWK6)
-#summary(mdotu_remWK6[,c("REMISSwk6")])
+
 otu_remWK6 <- mdotu_remWK6[, c('REMISSwk6', colnames(mdotu_remWK6)[grep('Otu[0123456789]', colnames(mdotu_remWK6))])]
-#summary(otu_remWK6[,c("REMISSwk6")])
-#summary(otu_remWK6[,c("REMISSwk6")])
+
 otu_remWK6<-na.omit(otu_remWK6)
-#summary(otu_remWK6[,c("REMISSwk6")])
+
 set.seed(32016)
 otu_remWK6_rf <- AUCRF(REMISSwk6~., data=otu_remWK6, ranking='MDA', ntree=500, pdel=0.2)
 #otu_remWK6_rf # prints list of optimal OTUs
@@ -1879,41 +1737,6 @@ mdotu_remWK6_roc <- roc(mdotu_remWK6$REMISSwk6~mdotu_remWK6_probs)
 ```
 
 ```{r REMISSwk6AUCRFinline, fig.height=5, fig.width=10, include=FALSE}
-#pdf('figures/mdREMISSIwk6aucrfcomb0.pdf', height=6, width=8)
-### Plot ROC curves
-#layout(matrix(c(1,2), nrow=1))
-#par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
-#plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
-#plot(otu_remWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
-#plot(md_remWK6_roc, add=T, lwd=2, col='grey5', lty=1)
-#plot(md_remWK6_roc, add=T, lwd=2, col='red', lty=1)
-#title("Predicting Week 6 Remission")
-#legend('bottomright', sprintf('Week 0 Clinical Data: AUC=%.3f',md_remWK6_roc$auc), lwd=2, col='grey5', bty='n', lty=1)
-#cutoff <- coords(roc=md_remWK6_roc, x='best', best.method='y', ret=c('threshold'))
-#md_remWK6_spec <- coords(md_remWK6_roc, x=100, input='thr', ret='spec')
-#md_remWK6_sens <- coords(md_remWK6_roc, x=md_remWK6_spec, input='spec', ret='sens')
-#md_remWK6_thr <- coords(md_remWK6_roc, x=md_remWK6_spec, input='spec', ret='thr')
-#points(coords(md_remWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(md_remWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='grey5', cex=1.5, pch=10)
-#dev.off()
-
-#pdf('figures/RSPwk6abunds.pdf', height=6, width=8)
-#plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='Remission Week 6', xaxt='n', cex.axis=1.2)
-#title('Remission Status Compared to Clinical Model')
-
-#stripchart(at=1, md_remWK6_probs[md_remWK6$REMISSwk6=='0'], vertical=T, method='jitter', jitter=0.4, #pch=21, bg='orange', add=T, cex=1.5)
-#stripchart(at=2, md_remWK6_probs[md_remWK6$REMISSwk6=='1'], vertical=T, method='jitter', jitter=0.4, #pch=21, bg='royalblue', add=T, cex=1.5)
-#mtext(side=2, text='Probability of Remission', line=2.2, cex=0.8)
-#axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
-#cutoff <- coords(roc=md_remWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
-#abline(h=cutoff, lty=2)
-#legend("top", lty=2, sprintf('Model Threshold'))
-#dev.off()
-
-#md_remWK6_rf 
-
-# prints list of optimal features
-#pdf('figures/mdotuREMISSIwk6aucrf.pdf', height=6, width=8)
-### Plot ROC curves
 layout(matrix(c(1,2), nrow=1))
 par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
 plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
@@ -1942,9 +1765,7 @@ md_remWK6_sens <- coords(md_remWK6_roc, x=md_remWK6_spec, input='spec', ret='sen
 md_remWK6_thr <- coords(md_remWK6_roc, x=md_remWK6_spec, input='spec', ret='thr')
 
 points(coords(md_remWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(md_remWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='black', cex=1.5, pch=10)
-#dev.off()
 
-#pdf('data/figures/RSPwk6abunds.#pdf', height=6, width=8)
 plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='Remission Week 6', xaxt='n', cex.axis=1.2)
 title('Remission Status Compared to Combined Model')
 stripchart(at=1, mdotu_remWK6_probs[mdotu_remWK6$REMISSwk6=='0'], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
@@ -1954,79 +1775,10 @@ axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
 cutoff <- coords(roc=mdotu_remWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
 abline(h=cutoff, lty=2)
 legend("top", lty=2, sprintf('Model Threshold'))
-#dev.off()
+
 
 #mdotu_remWK6_rf # prints list of optimal features
 otu_remWK6_rf 
-```
-
-
-```{r RESPONSEwk22-AUC-RF, eval=FALSE, fig.height=5, fig.width=10, include=FALSE}
-print("RESPONSEwk22 by AUC-RF")
-set.seed(32016)
-levels(nao.screen.trtd$RESPONSEwk22) <- c(0,1)
-#nao.screen.trtd<-nao.screen.trtd[nao.screen.trtd$TRTGRINDMAN=="Treated_Treated", ]
-
-mdotu_respWK22 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSEwk22',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd))])]
-#summary(mdotu_respWK22[,c("RESPONSEwk22")])
-mdotu_respWK22<-na.omit(mdotu_respWK22)
-#summary(mdotu_respWK22[,c("RESPONSEwk22")])
-otu_respWK22 <- mdotu_respWK22[, c('RESPONSEwk22', colnames(mdotu_respWK22)[grep('Otu[0123456789]', colnames(mdotu_respWK22))])]
-#summary(otu_respWK22[,c("RESPONSEwk22")])
-otu_respWK22<-na.omit(otu_respWK22)
-#summary(otu_respWK22[,c("RESPONSEwk22")])
-set.seed(32016)
-otu_respWK22_rf <- AUCRF(RESPONSEwk22~., data=otu_respWK22, ranking='MDA', ntree=500, pdel=0.2)
-#otu_respWK22_rf # prints list of optimal OTUs
-otu_respWK22_probs <- predict(otu_respWK22_rf$RFopt, type='prob')[,2]
-otu_respWK22_roc <- roc(otu_respWK22$RESPONSEwk22~otu_respWK22_probs)
-
-
-md_respWK22 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSEwk22',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening")]
-#summary(md_respWK22[,c("RESPONSEwk22")])
-md_respWK22<-na.omit(md_respWK22)
-#summary(md_respWK22[,c("RESPONSEwk22")])
-set.seed(32016)
-md_respWK22_rf <- AUCRF(RESPONSEwk22~., data=md_respWK22, ranking='MDA', ntree=500, pdel=0.3)
-#md_respWK22_rf # prints list of optimal features
-md_respWK22_probs <- predict(md_respWK22_rf$RFopt, type='prob')[,2]
-md_respWK22_roc <- roc(md_respWK22$RESPONSEwk22~md_respWK22_probs)
-
-
-mdotu_respWK22 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSEwk22',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd))])]
-#summary(mdotu_respWK22[,c("RESPONSEwk22")])
-mdotu_respWK22<-na.omit(mdotu_respWK22)
-#summary(mdotu_respWK22[,c("RESPONSEwk22")])
-set.seed(32016)
-mdotu_respWK22_rf <- AUCRF(RESPONSEwk22~., data=mdotu_respWK22, ranking='MDA', ntree=500, pdel=0.2)
-#mdotu_respWK22_rf # prints list of optimal features
-mdotu_respWK22_probs <- predict(mdotu_respWK22_rf$RFopt, type='prob')[,2]
-mdotu_respWK22_roc <- roc(mdotu_respWK22$RESPONSEwk22~mdotu_respWK22_probs)
-
-
-#pdf('data/figures/RSPwk22aucrf.#pdf', height=6, width=8)
-### Plot ROC curves
-layout(matrix(c(1,2), nrow=1))
-par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
-plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
-plot(otu_respWK22_roc, add=T, lwd=2, col='royalblue', lty=1)
-#plot(md_respWK22_roc, add=T, lwd=2, col='grey5', lty=1)
-plot(mdotu_respWK22_roc, add=T, lwd=2, col='red', lty=1)
-title("RESPONSEwk22")
-legend('bottomright', c(sprintf('OTUs : AUC=%.3f',otu_respWK22_roc$auc),sprintf('Clinical Data: AUC=%.3f',md_respWK22_roc$auc),sprintf('Combined: AUC=%.3f',mdotu_respWK22_roc$auc)), lwd=2, col=c('royalblue','grey5', 'red'), bty='n', lty=1)
-#dev.off()
-
-#pdf('data/figures/RSPwk22abunds.#pdf', height=6, width=8)
-plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='', xaxt='n', cex.axis=1.2)
-stripchart(at=1, mdotu_respWK22_probs[mdotu_respWK22$'RESPONSEwk22'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
-stripchart(at=2, mdotu_respWK22_probs[mdotu_respWK22$'RESPONSEwk22'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
-mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
-axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
-cutoff <- coords(roc=mdotu_respWK22_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
-#dev.off()
-
-mdotu_respWK22_rf # prints list of optimal features
-
 ```
 
 ```{r RelRSPwk22-AUC-RF, include=F, fig.height=5, fig.width=10}
@@ -2681,31 +2433,68 @@ Our lab was approached to analyze the gut microbiomes of individuals who partici
 ## Results
 
 **Characteristics of Study Population**
-We studied the fecal microbiota in a subset of TNF-${\alpha}$ refractory CD patients who took park in the CERTIFI clinical trial described in @sandborn_ust_2012. Briefly, patients with a history of moderate to severe CD were randomly assigned to a treatment group in the induction phase of the study. Subjects provided a stool sample at screening (Week 0), Week 4 and Week 6. At Week 8 patients were re-randomized into maintenance therapy groups. A final stool sample was provided at Week 22. Response to therapy was evaluated at week 4, 6, 8, and 22 based on change in CDAI. Samples from subjects that completed the clinical trial and had complete clinical metadata were included in our analysis. We used 16s rRNA gene sequencing to analyze the microbiome from 306 fecal samples provided prior to treatment as well as 258 Week 4, 289 Week 6, and 205 Week 22 post-treatment fecal samples, for a total of 1058 samples. Demographic and baseline disease characteristics are summarized in supplemental table 1.
+Using 16s rRNA gene sequencing, we studied the fecal microbiota in a subset of TNF-${\alpha}$ refractory CD patients who took park in the CERTIFI clinical trial [@sandborn_ust_2012]. Demographic and baseline disease characteristics of this subset are summarized in Table 1. Patients with a history of moderate to severe CD were randomly assigned to a treatment group in the induction phase of the study (Figure 1A). At Week 8 patients were re-randomized into maintenance therapy groups. Both patients and clinicians were blinded to their induction and maintenance treatment groups. Subjects provided a stool sample and were evaluated for response to therapy at screening (week 0), week 4, week 6, and week 22 post induction (Figure 1B). Response was evaluated based on the change in CDAI. For this study, "response" was defined as a decrease in CDAI of 30% from baseline and "remission" was defined as a CDAI below 150. 
 
 **Comparison of microbiome at screening based on clinical variables**
-To determine if there were any significant associations between microbial diversity and clinical variables of interest, we compared the microbiome with clinical data at Week 0. We determined species richness (${\alpha}$-diversity) using the inverse Simpson metric and assessed associations between species richness and clinical data using Spearman’s rank correlation, Wilcoxon rank-sum, or Kruskal-Wallis rank-sum tests. Associations between the overall community structure (ß-diversity) and clinical data were determined using the thetaYC distance metric as input to the adonis PERMANOVA function within the vegan R package [@oksanen_vegan_2016]. As seen in table 1, we observed a correlation between CDAI and species richness, with higher CDAI correlating to lower richness. The overall community structure was not different based on CDAI. When looking at CDAI subscores, we observed a significant association between species richness and the frequency of loose stools per week. The overall community structure was also significantly different based on weekly loose stool frequency. No significant association was observed between CRP and fecal calprotectin and species richness, while higher fecal lactoferrin weakly correlates with higher richness. The overall community structure was significantly different based on CRP, fecal calprotectin, and fecal lactoferrin. No significant differences in the microbiome were observed for BMI, weight, or sex. Overall community structure was different based on age. The overall community structure was also different based on the tissue affected. Species richness and the overall community structure were significantly different based on corticosteroid use. The community structure was significantly different based on disease duration and a significant correlation was seen between species richness and disease duration, with lower richness corresponding to longer disease.
+_Question: disease severity and microboime at screening?_
 
-*consider including LEfSe data for quick look at discriminate OTU based on sig dif clinical variables like in Gevers and Zackular papers?*
+Following curation using the mothur software package, we obtained between 1 and 130,074 sequences per sample (median 13786) [@schloss_mothur_2009]. To limit effects of uneven sampling, we rarefied the dataset to 3,000 sequences per sample. Parallel sequencing of a mock community revealed an error rate of 0.017 %. Samples from subjects that completed the clinical trial and had complete clinical metadata were included in our analysis. Of these samples, 306 were provided prior to treatment as well as 258 provided at week 4, 289 at week 6, and 205 at week 22 post-treatment, for a total of 1058 samples. 
+
+To determine whether there are any significant associations between microbial diversity and clinical variables of interest, we compared the microbiome with clinical data at week 0 (Supplemental Table 1). We observed a weak, but significant correlation between CDAI and species diversity, with higher CDAI correlating to lower diversity (rho=`r signif(cor.cdai$estimate, digits = 3)`, p-value= `r signif(cor.cdai$p.value, digits = 3)`). The overall community structure was not different based on CDAI. When looking at CDAI subscores, we observed a weak, but significant association between species diversity and the frequency of loose stools per week (rho=`r signif(cor.stool$estimate, digits = 3)`, p-value= `r signif(cor.stool$p.value, digits = 3)`). The overall community structure was also significantly different based on weekly loose stool frequency `r signif(as.numeric(na.omit(stool.adonis$aov.tab$`Pr(>F)`)), digits = 3)`. No significant association was observed between CRP, fecal calprotectin, or fecal lactoferrin and species diversity, following multiple comparison correction. However, the overall community structure was significantly different based on CRP `r signif(as.numeric(na.omit(BL_CRP.adonis$aov.tab$`Pr(>F)`)), digits = 3)l`, fecal calprotectin `r signif(as.numeric(na.omit(BL_FCALP.adonis$aov.tab$`Pr(>F)`)), digits = 3)`, and fecal lactoferrin `r signif(as.numeric(na.omit(BL_FLACT.adonis$aov.tab$`Pr(>F)`)), digits = 3)`. No significant differences in the microbiome were observed for BMI, weight, or sex. Overall community structure was different based on age `r signif(as.numeric(na.omit(AGE.adonis$aov.tab$`Pr(>F)`)), digits = 3)`. The overall community structure was also different based on the tissue affected `r signif(as.numeric(na.omit(tissinvol.adonis$aov.tab$`Pr(>F)`)), digits = 3)`. Species diversity (p-value= `r signif(wilcox.BCORT$p.value, digits = 3)`)and the overall community structure (adonis p-value=`r signif(as.numeric(na.omit(BCORT.adonis$aov.tab$`Pr(>F)`)), digits = 3)`) were significantly different based on corticosteroid use. The community structure was significantly different (adonis p-value=`r signif(as.numeric(na.omit(DDUR.adonis$aov.tab$`Pr(>F)`)), digits = 3)`) based on disease duration and a weak, but significant correlation was seen between species diversity and disease duration (rho=`r signif(cor.DDUR$estimate, digits = 3)`, p-value= `r signif(cor.D$p.value, digits = 3)`), with lower diversity corresponding to longer disease.
 
 **Comparison of clinical responders and non-responders**
-Next, We wanted to see if there were associations between the microbiome at baseline and response to treatment. For this study, response was defined as a 30% decrease from CDAI at baseline and remission defined as a CDAI below 150. Of the 306 screening samples analyzed, 232 were from subjects receiving UST and 74 from subjects receiving placebo. Baseline fecal microbiome community structures and species diversity were different among responders and non-responders to UST treatment. Based on response at the primary endpoint of the study, 6 weeks after IV induction, there was no difference in species richness between response groups, but there was a significant difference in the overall community structure of the entire cohort. This difference in community structure was not significant in treatment vs. placebo groups. Week 6 remitters were significantly different from non-remitters in both species richness (`r all.wilcox.REMISSwk6.pval`) and overall community structure (`r all.REMISSwk6.adonis.pval`). When looking at treated vs. untreated Week 6 remitters, the treated group had significant differences in both species richness and community structure while untreated remitters we not different from untreated non-remitters. At the secondary endpoint, 22 weeks after IV-induction and 14 weeks after maintenance dosing, there was no difference in species richness between response groups, but there was a significant difference in the overall community structure of the entire cohort. Week 22 remitters were significantly different from non-remitters in both species richness (`r all.wilcox.RelRSPwk22.pval`) and overall community structure (`r all.RelRSPwk22.adonis.pval`). However, these differences were not seen when the cohort was broken down by induction group. This could be due to changes in maintenance treatment.
+_Q: Are responder different from non responders at baseline independent of treatment group_
+CHECK THIS ANALYSIS AGAIN...
+
+Next, we hypothesized that there are associations between the microbiome at baseline and response to treatment. to test this hypothesis we compared the week 0 microbiomes of subjects who repsonded or remitted to subjects who did not at week 6 and week 22.
+
+Baseline fecal microbiome community structures and species diversity were different based on response/remission. Based on response at the primary endpoint of the study, 6 weeks after IV induction, there was no difference in species diversity between response groups, but there was a significant difference in the overall community structure of the entire cohort.
+
+Week 6 remitters were significantly different from non-remitters in both species diversity (`r all.wilcox.REMISSwk6.pval`) and overall community structure (`r all.REMISSwk6.adonis.pval`). 
+
+
+When looking at treated vs. untreated Week 6 remitters, the treated group had significant differences in both species diversity and community structure while untreated remitters we not different from untreated non-remitters. 
+
+At the secondary endpoint, 22 weeks after IV-induction and 14 weeks after maintenance dosing, there was no difference in species diversity between response groups, but there was a significant difference in the overall community structure of the entire cohort. Week 22 remitters were significantly different from non-remitters in both species diversity (`r all.wilcox.RelRSPwk22.pval`) and overall community structure (`r all.RelRSPwk22.adonis.pval`). 
+
+
 
 **The microbiome by treatment and response over time**
-One major question with regards to biologic treatment of IBD and the microbiome is whether treatment has an effect on the microbiome. We explored this question 2 different ways. We included subjects that had stool samples at all 4 time points and another analysis using subjects who provided samples at weeks 0, 4, and 6. We used PERMANOVA stratified on each subject, as a proxy for a repeated measures ANOVA, to determine if the microbiome changed over time. We found that taken together treatment does not affect the microbiome. No significant difference was seen based on visit when looking at all groups and response status at week 4, 6, or 8 over the first 3 time points, but there was a significant interaction between response at week 22 and visit (p=0.001) and between relative response, induction group, and visit (p=0.0445). 
+_Does microbiome change following treatemnt_
+The effects of biologic treatment of IBD on the microbiome are not yet well described. We tested whether treatment with UST affects the microbiome using subjects who provided samples at weeks 0, 4, and 6. This allowed for us to analyze `r n.treated.wk046` treated subjects and `r n.plac.wk046` placebo subjects at each time point. Using the adonis function in the vegan R package [@oksanen_vegan_2016], we performed a PERMANOVA stratified on each subject, as a proxy for a repeated measures ANOVA, to determine if the community structure of microbiome changed over time. We included induction treatment group, response at each clinical endpoint, and sample date as parameters. 
 
-This led us to examining just the week 22 responders vs. non-responders across visit. No significant difference over time was observed in non-responders. When we segregated week 22 responders, we saw a significant change in community structure over time. There was also a significant difference based on treatment group, but no significant interaction. When looking at treated vs. untreated responder groups, we observed a significant difference based on visit in the treated, Week 22 responder and in untreated responders across the first 3 visits prior to maintenance phase.
+We found that treatment alone does not affect the microbiome over time. No significant difference was seen based on sample date when looking at all treatment groups and week 6 response status, but there was a significant interaction between week 22 response and sample date `r signif(wk046visXtrtgrXwk22.adonis.pval[5,], 2)`. There was also a significant interaction and between week 22 response, induction group, and sample date `r signif(wk046visXtrtgrXwk22.adonis.pval[7,], 2)` (Supplemental Table 2). 
 
-When looking at time in all subjects across all 4 time points we observed a significant interaction between visit and response, however no interaction between visit, treatment group, and response. In all subjects there was a significant difference in community structure based on response at Week 22. In treated subjects, we observed a significant interaction between response and visit, as well as a significant difference in community structure based on response at Week 22. No significant difference was observed in untreated responders across all 4 time points.
+This led us to further examining the microbial community structures in week 22 responders and nonresponders across sample date. No significant difference was observed in Week 22 non-responders over time. In week 22 responders, we saw a significant change in community structure over time. 
+
+we observed a significant difference based on visit in the treated-week 22 responders and in untreated responders across the first 3 visits prior to maintenance phase.
+
+we found that treated-week 22 responders had significantly differnt community structures over time.
+
+WTF this mean?
+There was also a significant difference based on treatment group, but no significant interaction. 
+
+When looking at treated vs. untreated responder groups, 
+
+Digging deeper,  
+
+We also hypothesized that treatment may affect species diversity. We tested this by performing a freidman test comparing species diversity at each sample date within each induction treatment group based on their week 22 response status. As seen in Figure 4, we saw no significant difference in species diversity over time in subjects induced with placebo or treated-week 22 nonresponders. However, in treated-week 22 responders species diversity increased significantly from week 0 to week 4 (`r pvalue`) and remained higher than baseline at week 6. We hypothesize that this reflects decreased inflammation in the responding subjects.  
+
+
+**The microbiome following treatment reflects disease status**
+_Does microbiome relfect disease status at wk 6_
+
+A paper recently published by @tedjo_CDactivity_2016 demonstrated a link between the microbiome and disease severity, where specific microbes were associated with being in remission capared to active CD. We hypothesized that the microbiome could be used to monitor response to therapy in a similar manner. We used AUC-RF in order to determine if the fecal microbiome at Week 6 could be used to determine if a study participant responded to therapy or was in remission at Week 6. As seen in Figure 4, using the microbiome alone we achieved an AUC of `r otu_relrespWK6xWK6_roc$auc` for response with a sensitivity of `r otu_relrespWK6xWK6_sens` and a specificity of `r otu_relrespWK6xWK6_spec`. For remission we had an AUC of `r otu_remWK6xWK6_roc$auc` with a sensitivity of `r otu_remWK6xWK6_sens` and specificity of `r otu_remWK6xWK6_spec`. We were better able to distinguish remitters from non-remitters than responders from non-responders.
+
+The top microbes that were indicitive of disease status in this model included blanks at enriched in remitters and blanks enriched in nonremitters.
+
+
 
 **Prediction of response based on the microbiome at screening**
-
-Another major question in IBD and the microbiome is if response can be predicted using the microbiome. To address this we used AUCRF to develop a random forest classification model to differentiate responders from non-responders, as well as remitters from non-remitters, based on the relative abundance of fecal microbiome community members, clinical metadata, and combined microbiome and clinical data [@baxter_FIT_2016; @calle_aucrf_2011]. We ran these models for response and remission at Week 4, 6, 8, and 22 of the study. The optimal models for response and remission at the primary endpoint (Week 6) are shown in Figure 1. Using only clinical metadata to predict response, the model predicted response with an AUC of `r md_relrespWK6_roc$auc` with a specificity of `r md_relrespWK6_spec` and a sensitivity of `r md_relrespWK6_sens`. Using only microbiome data, the model predicted response with an AUC of `r otu_relrespWK6_roc$auc` with a specificity of `r otu_relrespWK6_spec` and a sensitivity of `r otu_relrespWK6_sens`. When combining clinical metadata with the microbiome, the model predicted response with an AUC of `r mdotu_relrespWK6_roc$auc` with a specificity of `r mdotu_relrespWK6_spec` and a sensitivity of `r mdotu_relrespWK6_sens`. With respect to Week 6 remission, using solely clinical metadata we achieved AUC of `r md_remWK6_roc$auc` with a specificity of `r md_remWK6_spec` and a sensitivity of `r md_remWK6_sens`. Using only fecal microbiome data we achieved an AUC of `r otu_remWK6_roc$auc` with a specificity of `r otu_remWK6_spec` and a sensitivity of `r otu_remWK6_sens`. When combining clinical metadata with the microbiome AUC of `r mdotu_remWK6_roc$auc` with a specificity of `r mdotu_remWK6_spec` and a sensitivity of `r mdotu_remWK6_sens`.
+_can differences at baseline predict later response to treatment_
+Given the observed differencces in the fecal microbiome at baseline and week 6 in responders/remitters compared to nonresponders/nonremitters, we hypothesized that the fecal microbiome could predict response to therapy. To test this hypothesis, we used AUCRF to develop a random forest classification model to differentiate responders from non-responders, as well as remitters from non-remitters, based on the relative abundance of fecal microbiome community members, clinical metadata, and the combination of microbiome and clinical data [@baxter_FIT_2016; @calle_aucrf_2011]. We ran these models for response and remission at Week 6 and 22 of the study. The optimal models for response and remission at the primary endpoint (Week 6) are shown in Figure 1. Using only clinical metadata to predict response, the model predicted response with an AUC of `r md_relrespWK6_roc$auc` with a specificity of `r md_relrespWK6_spec` and a sensitivity of `r md_relrespWK6_sens`. Using only microbiome data, the model predicted response with an AUC of `r otu_relrespWK6_roc$auc` with a specificity of `r otu_relrespWK6_spec` and a sensitivity of `r otu_relrespWK6_sens`. When combining clinical metadata with the microbiome, the model predicted response with an AUC of `r mdotu_relrespWK6_roc$auc` with a specificity of `r mdotu_relrespWK6_spec` and a sensitivity of `r mdotu_relrespWK6_sens`. With respect to Week 6 remission, using solely clinical metadata we achieved AUC of `r md_remWK6_roc$auc` with a specificity of `r md_remWK6_spec` and a sensitivity of `r md_remWK6_sens`. Using only fecal microbiome data we achieved an AUC of `r otu_remWK6_roc$auc` with a specificity of `r otu_remWK6_spec` and a sensitivity of `r otu_remWK6_sens`. When combining clinical metadata with the microbiome AUC of `r mdotu_remWK6_roc$auc` with a specificity of `r mdotu_remWK6_spec` and a sensitivity of `r mdotu_remWK6_sens`.
 
 Across all weeks and responses, prediction with clinical metadata alone did not perform as well as models using the fecal microbiome at screening. Also, combining microbiome data with clinical metadata did not consistently improve prediction compared to microbiome data alone. Additionally we found several OTUs occurred frequently across models including Faecalibacterium, among other taxa that were significantly more abundant in responders/remitters. Their abundances can be seen in figure 4.
-
-In addition to predicting future response, we wanted to determine if the microbiome could be used to monitor response to therapy. Again we used AUC-RF in order to determine if the fecal microbiome at Week 6 could be used to determine response or remission at Week 6. As seen in Supplemental Figure 1, using the microbiome alone we achieved an AUC of `r otu_relrespWK6xWK6_roc$auc` for response with a sensitivity of `r otu_relrespWK6xWK6_sens` and a specificity of `r otu_relrespWK6xWK6_spec`. For remission we had an AUC of `r otu_remWK6xWK6_roc$auc` with a sensitivity of `r otu_remWK6xWK6_sens` and specificity of `r otu_remWK6xWK6_spec`. Again we were better able to distinguish remitters from non-remitters than responders/non-responders. The clinical data were more reliable for determining disease activity at Week 6.
-
 
 ## Discussion
 
@@ -2735,11 +2524,14 @@ Janssen Research and Development conducted a phase II clinical study of approxim
 
 ####DNA extraction and 16S rRNA gene sequencing 
 
-Microbial genomic DNA was extracted using the PowerSoil-htp 96 Well Soil DNA Isolation Kit (MoBio Laboratories) using an EPMotion 5075 pipetting system, as previously described [@baxter_FIT_2016; @zackular_CRC_2014]. The V4 region of the 16S rRNA gene from each sample was amplified and sequenced using the Illumina MiSeq Personal Sequencing platform as described elsewhere [@chang_monitoring_2015]. Sequences were curated as described previously using the mothur software package [@schloss_PCRartifacts_2011]. Briefly, we reduced sequencing and PCR errors, aligned the resulting sequences to the SILVA 16S rRNA sequence database, and removed any chimeric sequences flagged by UCHIME [@edgar_uchime_2011]. After curation, we obtained between 1 and 130,074 sequences per sample (median 13786), with a median length of 253 bp. To limit effects of uneven sampling, we rarefied the dataset to 3,000 sequences per sample. Parallel sequencing of a mock community revealed an error rate of 0.017 %. Sequences were clustered into operational taxonomic units (OTU), as previously described [@schloss_OTUanalysis_2011]. Briefly, OTUs were clustered at a 97% similarity cutoff and the relative abundance was calculated for OTUs in each sample. All sequences were classified using a naive Bayesian classifier trained against the RDP training set (version 11) and OTUs were assigned a classification based on which taxonomy had the majority consensus of sequences within a given OTU [@wang_taxonomy_2007].  All fastq files and the MIMARKS spreadsheet with de-identified clinical metadata are available at TBD. 
+Microbial genomic DNA was extracted using the PowerSoil-htp 96 Well Soil DNA Isolation Kit (MoBio Laboratories) using an EPMotion 5075 pipetting system, as previously described [@baxter_FIT_2016; @zackular_CRC_2014]. The V4 region of the 16S rRNA gene from each sample was amplified and sequenced using the Illumina MiSeq Personal Sequencing platform as described elsewhere [@chang_monitoring_2015]. Sequences were curated as described previously using the mothur software package [@schloss_PCRartifacts_2011]. Briefly, we reduced sequencing and PCR errors, aligned the resulting sequences to the SILVA 16S rRNA sequence database, and removed any chimeric sequences flagged by UCHIME [@edgar_uchime_2011]. Sequences were clustered into operational taxonomic units (OTU), as previously described [@schloss_OTUanalysis_2011]. Briefly, OTUs were clustered at a 97% similarity cutoff and the relative abundance was calculated for OTUs in each sample. All sequences were classified using a naive Bayesian classifier trained against the RDP training set (version 11) and OTUs were assigned a classification based on which taxonomy had the majority consensus of sequences within a given OTU [@wang_taxonomy_2007].  All fastq files and the MIMARKS spreadsheet with de-identified clinical metadata are available at TBD. 
 
 ####Gut microbiome biomarker discovery analysis 
 
 Mothur as well as the R software package were used for our data analysis. Alpha diversity metrics (e.g. Shannon, Inverse Simpson) were calculated for each sample in the dataset, and compared using non-parametric statistical tests (i.e Kruskal-Wallace and Wilcox Test) [@sokal_biometrystats_1995; @magurran_measuring_2004]. Beta diversity was calculated the distance between samples using the theta YC metric, which takes into account the types of bacteria and their abundance to calculate the differences between the communities [@yue_thetaYC_2005]. These distance matrices were visualized by generating non-metric dimensional scaling (NMDS) plots of the distances. Overlap between sets of communities was assessed using the non-parametric analysis of molecular variance (AMOVA) and homogeneity of variance (HOMOVA) tests [@schloss_commstruct_2008; @oksanen_vegan_2016]. Differentially abundant OTUs were selected using the biomarker discovery algorithm, LEfSe [linear discriminant analysis (LDA) effect size] for each pairwise comparison of clinical groups [@segata_biomarker_2011]. In short, This method uses the Wilcox non-parametric test to identify OTUs where there is a P-value less than 0.05 and then applies a LDA step to identify the effect sizes that are the most meaningful (i.e. greater than 2.0). We also used the relative abundance of each OTU across the samples and clinical metadata as input to the AUC-Random forest package available to identify phylotypes/clinical variables that would allow us to distinguish between various treatment and response groups [@breiman_rf_2001]. 
+
+####Statistical analysis
+
 
 
 
