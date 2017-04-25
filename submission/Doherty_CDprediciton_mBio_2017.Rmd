@@ -22,7 +22,7 @@ bibliography: My_Library_copy.bib
 
 ```{r knitr_settings, cache=FALSE, include=FALSE}
 source('../code/knitr_settings.R')
-knitr::opts_chunk$set("cache" = T)
+#knitr::opts_chunk$set("cache" = T)
 source('../code/R_packages_setup.R')
 ```
 
@@ -98,6 +98,8 @@ summary(screen_data[,c("TRTGR")])
 ```
 
 ```{r phylum_otu, include=FALSE}
+
+#screen_data <- screen_data[screen_data$TRTGR=="Treated",]
 source("../code/Figure1week6phyla.R")
 
 pdf("figures/Figure2_wk6phyla.pdf", height = 10, width = 12)
@@ -108,7 +110,12 @@ pdf("figures/SF1_phylaWK22.pdf", height = 10, width = 12)
 plot_grid(phyRabRelRSPwk22_figure2, phyRabREMISSwk22_figure2, labels = c("A", "B"), align = "v", nrow=2)
 dev.off()
 
+
+
+#trtd.screen_data <- screen_data
+#screen_data <- trtd.screen_data[trtd.screen_data$TRTGR=="Treated",]
 source("../code/REMISSwk6.sig.otu.figure.R")
+#screen_data <- trtd.screen_data 
 ```
 
 ```{r cdai.cor.test,  include=F}
@@ -1262,6 +1269,15 @@ all.REMISSwk22<-matrix(c('Week 22 Remission (No, Yes)', trtd.REMISSwk22_sum, pla
 
 ```
 
+```{r table2diversity, fig.height=5, fig.width=10}
+
+source('../code/table2diversity.R')
+
+pdf(file='tables/table2diversity.pdf', height=4, width=6)
+grid.table(table2div)
+dev.off()
+```
+
 ```{r timereaddata, include=FALSE}
 #Read in all data
 #metadata
@@ -1456,7 +1472,7 @@ alltp.placplac.RESPy<-alltp.placplac[alltp.placplac$RelRSPwk22=="Yes",]
 #adonis(alltp_dist ~ TRTGR*RelRSPwk22, alltime_data, strata = alltime_data$visit)
 ```
 
-```{r, eval=T, include=FALSE}
+```{r wk046 cohort, eval=T, include=FALSE}
 print("Summary of all subjects over weeks 0 4 and 6")
 summary(subset(wk046_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk6, RelRSPwk6, REMISSwk6, RESPONSEwk22, RelRSPwk22, REMISSwk22)))
 
@@ -1485,13 +1501,13 @@ grid.table(wk046)
 dev.off()
 ```
 
-```{r , include=F}
+```{r wk046byRSPwk6, include=F}
 print("All subjects over weeks 0 4 and 6 by treatment and response at week 6")
 set.seed(32016)
 adonis(wk046_dist ~ visit*TRTGR*RelRSPwk6, wk046_data, strata = wk046_data$USUBJID)
 ```
 
-```{r , include=F}
+```{r wk046byRSPwk22, include=F}
 print("All subjects over weeks 0 4 and 6 by induction and relative response at week 22")
 set.seed(32016)
 wk046visXtrtgrXwk22.adonis <- adonis(wk046_dist ~ visit*TRTGR*RelRSPwk22, wk046_data, strata = wk046_data$USUBJID, permutations = 2000)
@@ -1504,9 +1520,24 @@ dev.off()
 #print("All subjects over weeks 0 4 and 6 by induction and response at week 22")
 #set.seed(32016)
 #adonis(wk046_dist ~ visit*TRTGR*RESPONSEwk22, wk046_data, strata = wk046_data$USUBJID)
+
+wk046Bdiv <- data.frame(wk046visXtrtgrXwk22.adonis$aov.tab) #turns this into a data frame
+wk046Bdiv$Parameter <- rownames(wk046Bdiv) #make the row names a column
+wk046Bdiv <- subset(wk046Bdiv, select = c("Parameter", "Pr..F.")) #subsets the table to just the parameter and the pvalue
+rownames(wk046Bdiv) <- c() #removes row names
+wk046BdivVTR <- wk046Bdiv[7,] #slects the row of interest visit:TRTGR:RelRSPwk22
+wk046BdivVTR <- signif(wk046BdivVTR$Pr..F., 2) #changes to only 2 sig figs
+
+wk046BdivXvtr <- matrix(c("Community Structure", "All by Week, Treatment,\nand Response", wk046BdivVTR), ncol = 3) # for use in table for DDW
+colnames(wk046BdivXvtr) <- c("", "Variables", "p-value")
+
+
+pdf("tables/wk046Bdiv.pdf")
+grid.table(wk046BdivXvtr)
+dev.off()
 ```
 
-```{r, include=F}
+```{r wk046wk22RSPy, include=F}
 print("Summary of all week 22 relative responders over weeks 0 4 and 6")
 summary(subset(wk046_data.relRSP22Y, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk6, RelRSPwk6, REMISSwk6, RESPONSEwk22, RelRSPwk22, REMISSwk22)))
 
@@ -1514,9 +1545,10 @@ summary(subset(wk046_data.relRSP22Y, select=c(group, USUBJID, visit, TRTGR, TRTG
 print("Week 22 Relative Responders over weeks 0 4 and 6 by induction group and response at week 22")
 set.seed(32016)
 adonis(wk046_data.relRSP22Y.dist ~ visit*TRTGR, wk046_data.relRSP22Y, strata = wk046_data.relRSP22Y$USUBJID)
+
 ```
 
-```{r , include=F}
+```{r wk046trtdWk22RSPy, include=F}
 print("Summary of all treated week 22 relative responders over weeks 0 4 and 6")
 summary(subset(wk046.ust.relRSP22Y, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk6, RelRSPwk6, REMISSwk6, RESPONSEwk22, RelRSPwk22, REMISSwk22)))
 
@@ -1525,7 +1557,7 @@ print("All treated week 22 responders over weeks 0 4 and 6")
 adonis(wk046.ust.relRSP22Y.dist ~ visit, wk046.ust.relRSP22Y, strata = wk046.ust.relRSP22Y$USUBJID)
 ```
 
-```{r , include=F}
+```{r wk046placWk22RSPy, include=F}
 print("Summary of all placebo week 22 relative responders over weeks 0 4 and 6")
 summary(subset(wk046.plac.relRSP22Y, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk6, RelRSPwk6, REMISSwk6, RESPONSEwk22, RelRSPwk22, REMISSwk22)))
 
@@ -1537,16 +1569,43 @@ adonis(wk046.plac.relRSP22Y.dist ~ visit, wk046.plac.relRSP22Y, strata = wk046.p
 ```{r wk046adivXvis, include=FALSE}
 source("../code/adivXvisit.facetTRTGR+RelRSPwk22.R")
 
+mean.wk046.trtdRSPwk22Y.adiv <- data.frame(mean.wk046.treatedrespY.adiv.byvis)
+
+# rownames(mean.wk046.trtdRSPwk22Y.adiv) <- c("Week 0", "Week 4", "Week 6")
+# colnames(mean.wk046.trtdRSPwk22Y.adiv) <- c("Species Diversity \n(Inverse Simpson)")
+# mean.wk046.trtdRSPwk22Y.adiv <- t(mean.wk046.trtdRSPwk22Y.adiv)
+mean.wk046.trtdRSPwk22Y.adiv <- signif(mean.wk046.trtdRSPwk22Y.adiv, 3)
+
 set.seed(32016)
 wk046.treatedrespY.fried <- friedman.test(wk046.treatedrespY)
+
+p.value <- signif(wk046.treatedrespY.fried$p.value, 2)
 
 pdf("figures/Figure4_wk046.adivXvisitXindtrtXrelRSPwk22.pdf", height = 6, width = 10)
 wk046.adivXvisXindtrtXrelRSPwk22.plot
 dev.off()
 
+mean.wk046.trtdRSPwk22Y.adiv <- rbind(mean.wk046.trtdRSPwk22Y.adiv, p.value)
+rownames(mean.wk046.trtdRSPwk22Y.adiv) <- c("Week 0", "Week 4", "Week 6", "p-value  ")
+colnames(mean.wk046.trtdRSPwk22Y.adiv) <- c("Species Diversity \n(Inverse Simpson)")
+mean.wk046.trtdRSPwk22Y.adiv <- data.frame(t(mean.wk046.trtdRSPwk22Y.adiv))
+mean.wk046.trtdRSPwk22Y.adiv <- tibble::rownames_to_column(mean.wk046.trtdRSPwk22Y.adiv)
+colnames(mean.wk046.trtdRSPwk22Y.adiv) <- c("Treated Responders", "Week 0", "Week 4", "Week 6", "p-value")
+mean.wk046.trtdRSPwk22Y.adiv <- as.matrix(mean.wk046.trtdRSPwk22Y.adiv)
+
+
+
+
+wk046table <- matrix(c("Species Diversity \n(Inverse Simpson)", "Treated Responders", p.value), ncol = 3)
+colnames(wk046table) <- c("Measure", "Subjects", "    p-value    ")
+wk046table <- rbind(wk046table, wk046BdivXvtr)
+
+pdf("tables/wk046adivDDWtable.pdf", height = 2, width = 6)
+grid.table(wk046table)
+dev.off()
 ```
 
-```{r, include=F, }
+```{r alltpByWk22RSP, include=F, }
 summary(subset(alltime_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk6, RelRSPwk6, REMISSwk6, RESPONSEwk22, RelRSPwk22, REMISSwk22)))
 
 set.seed(32016)
@@ -1953,6 +2012,11 @@ APmd.wk6<-subset(md, select=c(group, USUBJID, Site, visit, TRTGR, TRTGRINDMAN:CO
 levels(APmd.wk6$TRTGR)<-c("Placebo", "Treated")
 levels(APmd.wk6$TRTGRINDMAN)<-c("Placebo_Not", "Placebo_Placebo", "Placebo_Treated", "Treated_Not", "Treated_Placebo", "Treated_Treated")
 
+APmd.wk6$TRTGR_REMISSwk6 <- as.factor(paste(APmd.wk6$TRTGR, APmd.wk6$REMISSwk6))
+APmd.wk6$TRTGR_REMISSwk22 <- as.factor(paste(APmd.wk6$TRTGR, APmd.wk6$REMISSwk22))
+
+APmd.wk6$TRTGR_RelRSPwk6 <- as.factor(paste(APmd.wk6$TRTGR, APmd.wk6$RelRSPwk6))
+APmd.wk6$TRTGR_RelRSPwk22 <- as.factor(paste(APmd.wk6$TRTGR, APmd.wk6$RelRSPwk22))
 
 APmd.wk6$CDSTOOLM_Week.6[APmd.wk6$CDSTOOLM_Week.6=="."]<-"NA"
 APmd.wk6$CDSTOOLM_Week.6 <-as.integer(APmd.wk6$CDSTOOLM_Week.6)
@@ -2061,6 +2125,17 @@ wk6_wk6 <- wk6_wk6[,-5]
 pdf("tables/wk6_wk6.sum.pdf", height=2, width=6)
 grid.table(wk6_wk6)
 dev.off()
+```
+
+```{r wk6Xwk6_phylum_otu, include=FALSE}
+screen_data <- allwk6_data
+source("../code/FigureDUNNO_wk6Xwk6phyla.R")
+
+pdf("figures/FigureDUNNO_wk6Xwk6phyla.pdf", height = 10, width = 12)
+plot_grid(phyRabRelRSPwk6_figure2, phyRabREMISSwk6_figure2, labels = c("A", "B"), align = "v", nrow=2)
+dev.off()
+
+source("../code/REMISSwk6Xwk6.sig.otu.figure.R")
 ```
 
 ```{r RelRSPwk6Xwk6-AUC-RF, include=F, fig.height=5, fig.width=10}
@@ -2359,6 +2434,12 @@ tissinvol.adonis.inline.pval <-  signif(as.numeric(na.omit(tissinvol.adonis$aov.
 BCORT.adonis.inline.pval <-  signif(as.numeric(na.omit(BCORT.adonis$aov.tab$`Pr(>F)`)), digits = 3)
 
 DDUR.adonis.inline.pval <-  signif(as.numeric(na.omit(DDUR.adonis$aov.tab$`Pr(>F)`)), digits = 3)
+
+wk6remadivpval <- table2_df[2,4]
+wk6RSPbdivpval <- table2_df[1,5]
+wk6REMbdivpval <- table2_df[2,5]
+wk22RSPbdivpval <- table2_df[3,5]
+wk22REMbdivpval <- table2_df[4,5]
 ```
 
 
@@ -2394,6 +2475,9 @@ otu_remWK6xWK6_rf_cv <- AUCRFcv(otu_remWK6xWK6_rf)
 
 print("Week 6 by Week 6 cross validation")
 otu_remWK6xWK6_rf_cv
+```
+
+```{r}
 ```
 
 \vspace{35mm}
@@ -2442,9 +2526,9 @@ The ability to predict and monitor response to treatment using the microbiome wi
 ###Introduction
 Crohn’s disease (CD), an incurable inflammatory bowel disease (IBD), is a global health issue with increasing incidence. CD affects approximately 3 million people worldwide, causing large economic and healthcare utilization impacts on society [@ananthakrishnan_epidemiology_2015; @floyd_economicburden_2015; @molodecky_increasingIBD_2012]. CD is characterized by patches of ulceration and inflammation affecting the entire bowel wall along the gastrointestinal tract, most commonly in the ileum and colon. Individuals with CD experience frequent diarrhea, abdominal pain, fatigue, and weight loss resulting in significant health care costs, lower quality of life, and economic impacts due to loss of productivity [@floyd_economicburden_2015; @mantzaris_clinical_2015; @randall_CDbiologics_2015]. Current treatments for CD include antibiotics, anti-inflammatory drugs, immunomodulators, surgery, and biologic agents targeting tumor necrosis factor alpha (TNF-${\alpha}$), such as Infliximab (Remicade). Within 10 years of diagnosis, approximately half of individuals with CD will require surgery and the majority will experience escalating immunosuppressive treatment [@boyapati_pathCD_2015]. Currently, individuals with CD are treated based on disease location and risk of complications using escalating immunosuppressive treatment and/or surgery with the goal of achieving and sustaining remission [@randall_CDbiologics_2015; @wils_ust_2015]. Faster induction of remission following diagnosis reduces the risk of irreversible intestinal damage and disability [@wils_ust_2015; @colombel_deepremission_2015; @baert_mucosalhealing_2010] (7-9). Anti-TNF-${\alpha}$ therapy in combination with thiopurines has emerged as the preferred treatment for CD, but up to half of individuals with CD fail to respond or lose response to anti-TNF-${\alpha}$ therapy [@boyapati_pathCD_2015; @wils_ust_2015]. Ustekinumab (UST), a monoclonal antibody directed against the shared p40 subunit of IL-12 and IL-23, has been proposed as an alternative therapy for these patients [@sandborn_ust_2012]. While clinical trials have demonstrated that UST is a viable option for the treatment of CD [@wils_ust_2015; @sandborn_ust_2012; @sandborn_ust_2008; @kopylov_ust_2014] (7, 10-12), some patients within these trials were non-responsive to UST, which may be explained by differences in the patients’ gut microbiomes.
 
-The precise etiology of CD remains unknown, but host genetics, environmental exposure, and the gut microbiome appear involved [@ananthakrishnan_epidemiology_2015; @sartor_IBDpath_2006].  Genome-wide association studies of individuals with CD identified several susceptibility genes including NOD2, a receptor involved in bacterial killing and innate immunity. Defects in NOD2 function affects microbial sensing, the regulation of IL-23 driven Th17 responses, and indirect modulation of the gut microbiome [@randall_CDbiologics_2015; @wright_CDmicrobiome_2015]. The gut microbiome has also been shown to play a key role in inflammation, immunity, and IBD [@haag_CDpath_2015]. Individuals with CD have reduced microbial diversity in their guts, compared to healthy individuals, with a lower relative abundance of Firmicutes and an increased relative abundance of Enterobacteraciae and Bacteroides, at the phylum level [@wright_CDmicrobiome_2015; @manichanh_diversityCD_2006; @hansen_pedsIBD_2012; @haberman_pedsCD_2014; @gevers_pedsCD_2014] . Additionally, previous studies have shown that the gut microbiome can be predictive of disease severity in new-onset, pediatric CD patients [@gevers_pedsCD_2014; @wang_pedsCD_2016]. It remains to be determined, however, whether the microbiome can predict response to therapy in CD [@wright_CDmicrobiome_2015]. Additionally, the effect of biologic treatment on the gut microbiome is not well understood. If the fecal microbiome can be used as a theraprognostic tool to non-invasively determine and monitor disease severity as well as predict response to specific treatment modalities, then more targeted treatment could result in reduced adverse effects of less effective therapies and faster achievement of remission. 
+The precise etiology of CD remains unknown, but host genetics, environmental exposure, and the gut microbiome appear involved [@ananthakrishnan_epidemiology_2015; @sartor_IBDpath_2006].  Genome-wide association studies of individuals with CD identified several susceptibility genes including NOD2, a receptor involved in bacterial killing and innate immunity. Defects in NOD2 function affects microbial sensing, the regulation of IL-23 driven Th17 responses, and indirect modulation of the gut microbiome [@randall_CDbiologics_2015; @wright_CDmicrobiome_2015]. The gut microbiome has also been shown to play a key role in inflammation, immunity, and IBD [@haag_CDpath_2015]. Individuals with CD have reduced microbial diversity in their guts, compared to healthy individuals, with a lower relative abundance of Firmicutes and an increased relative abundance of Enterobacteraciae and Bacteroides, at the phylum level [@wright_CDmicrobiome_2015; @manichanh_diversityCD_2006; @hansen_pedsIBD_2012; @haberman_pedsCD_2014; @gevers_pedsCD_2014] . Additionally, previous studies have shown that the gut microbiome can be predictive of disease severity in new-onset, pediatric CD patients [@gevers_pedsCD_2014; @wang_pedsCD_2016]. It remains to be determined, however, whether the microbiome can predict response to therapy in CD [@wright_CDmicrobiome_2015]. Additionally, the effect of biologic treatment on the gut microbiome is not well understood [@wright_CDmicrobiome_2015]. If the fecal microbiome can be used as a theraprognostic tool to non-invasively determine and monitor disease severity as well as predict response to specific treatment modalities, then more targeted treatment could result in reduced adverse effects of less effective therapies and faster achievement of remission. 
 
-Our lab was approached to analyze the gut microbiomes of individuals who participated in a Phase II clinical trial to determine the efficacy of UST in treating CD [@sandborn_ust_2012]. Using stool samples taken prior to the start of the study, 16S rRNA gene sequence data from these patients will allow us to determine associations between clinical metadata, disease severity, and the fecal microbiome and whether clinical responders have a microbiome that is distinct from non-responders at baseline. Preliminary results generated with fecal samples from a subset of study participants and sequenced using the Roche 454 platform suggest that the fecal microbiota of moderate to severe CD patients refractory to anti-TNF-${\alpha}$ may differentiate individuals who will respond to treatment with UST; however, large interpersonal variation limited the power of our findings. This study attempts to overcome many of the limitations in our preliminary analysis by increasing our sample size to the full patient cohort and using the Illumina MiSeq platform to improve our sequencing depth. We demonstrate that the fecal microbiome is associated with baseline clinical metadata and that these associations and differences are useful in predicting disease severity and treatment outcome.
+Our lab was approached to analyze the gut microbiomes of individuals who participated in a Phase II clinical trial to determine the efficacy of UST in treating CD [@sandborn_ust_2012]. Using stool samples taken prior to the start of the study, 16S rRNA gene sequence data from these patients will allow us to determine associations between clinical metadata, disease severity, and the fecal microbiome and whether clinical responders have a microbiome that is distinct from non-responders at baseline. We demonstrate that the fecal microbiome is associated with baseline clinical metadata and that these associations and differences are useful in predicting disease severity and treatment outcome.
 
 
 
@@ -2456,43 +2540,24 @@ Using 16s rRNA gene sequencing, we studied the fecal microbiota in a subset of T
 **Comparison of microbiome at screening based on clinical variables**
 _Question: disease severity and microboime at screening?_
 
-Following curation using the mothur software package, we obtained between 1 and 130,074 sequences per sample (median 13786) [@schloss_mothur_2009]. To limit effects of uneven sampling, we rarefied the dataset to 3,000 sequences per sample. Parallel sequencing of a mock community revealed an error rate of 0.017 %. Samples from subjects that completed the clinical trial and had complete clinical metadata were included in our analysis. Of these samples, 306 were provided prior to treatment as well as 258 provided at week 4, 289 at week 6, and 205 at week 22 post-treatment, for a total of 1058 samples. 
+Following curation using the mothur software package, we obtained between 1 and 130,074 sequences per sample (median 13786) [@schloss_mothur_2009]. Parallel sequencing of a mock community revealed an error rate of 0.017 %. To limit effects of uneven sampling, we rarefied the dataset to 3,000 sequences per sample.  Samples from subjects that completed the clinical trial and had complete clinical metadata were included in our analysis. Of these samples, 306 were provided prior to treatment as well as 258 provided at week 4, 289 at week 6, and 205 at week 22 post-treatment, for a total of 1058 samples. 
 
-To determine whether there are any significant associations between microbial diversity and clinical variables of interest, we compared the microbiome with clinical data at week 0 (Supplemental Table 1). We observed a weak, but significant correlation between CDAI and species diversity, with higher CDAI correlating to lower diversity (rho=`r signif(cor.cdai$estimate, digits = 3)`, p-value= `r signif(cor.cdai$p.value, digits = 3)`). The overall community structure was not different based on CDAI. When looking at CDAI subscores, we observed a weak, but significant association between species diversity and the frequency of loose stools per week (rho=`r signif(cor.stool$estimate, digits = 3)`, p-value= `r signif(cor.stool$p.value, digits = 3)`). The overall community structure was also significantly different based on weekly loose stool frequency `r stool.adonis.inline.pval`. No significant association was observed between CRP, fecal calprotectin, or fecal lactoferrin and species diversity, following multiple comparison correction. However, the overall community structure was significantly different based on CRP `r BL_CRP.adonis.inline.pval`, fecal calprotectin `r BL_FCALP.adonis.inline.pval`, and fecal lactoferrin `r BL_FLACT.adonis.inline.pval`. No significant differences in the microbiome were observed for BMI, weight, or sex. Overall community structure was different based on age `r AGE.adonis.inline.pval`. The overall community structure was also different based on the tissue affected `r tissinvol.adonis.inline.pval `. Species diversity (p-value= `r signif(wilcox.BCORT$p.value, digits = 3)`)and the overall community structure (adonis p-value=`r BCORT.adonis.inline.pval`) were significantly different based on corticosteroid use. The community structure was significantly different (adonis p-value=`r DDUR.adonis.inline.pval`) based on disease duration and a weak, but significant correlation was seen between species diversity and disease duration (rho=`r signif(cor.DDUR$estimate, digits = 3)`, p-value= `r signif(cor.DDUR$p.value, digits = 3)`), with lower diversity corresponding to longer disease.
+To determine whether there are any significant associations between microbial diversity and clinical variables of interest, we compared the microbiome with clinical data at week 0 (Supplemental Table 1). We observed a weak, but significant correlation between CDAI and species diversity, with higher CDAI correlating to lower diversity (rho=`r signif(cor.cdai$estimate, digits = 3)`, p-value= `r signif(cor.cdai$p.value, digits = 3)`). The overall community structure was not different based on CDAI. When looking at CDAI subscores, we observed a weak, but significant association between species diversity and the frequency of loose stools per week (rho=`r signif(cor.stool$estimate, digits = 3)`, p-value= `r signif(cor.stool$p.value, digits = 3)`). The overall community structure was also significantly different based on weekly loose stool frequency `r stool.adonis.inline.pval`. No significant association was observed between CRP, fecal calprotectin, or fecal lactoferrin and species diversity, following multiple comparison correction. However, the overall community structure was significantly different based on CRP `r BL_CRP.adonis.inline.pval`, fecal calprotectin `r BL_FCALP.adonis.inline.pval`, and fecal lactoferrin `r BL_FLACT.adonis.inline.pval`. No significant differences in the microbiome were observed for BMI, weight, or sex. Overall community structure was different based on age `r AGE.adonis.inline.pval`. The overall community structure was also different based on the tissue affected `r tissinvol.adonis.inline.pval `. Species diversity (p-value= `r signif(wilcox.BCORT$p.value, digits = 3)`)and the overall community structure (p-value=`r BCORT.adonis.inline.pval`) were significantly different based on corticosteroid use. The community structure was significantly different (p-value=`r DDUR.adonis.inline.pval`) based on disease duration and a weak, but significant correlation was seen between species diversity and disease duration (rho=`r signif(cor.DDUR$estimate, digits = 3)`, p-value= `r signif(cor.DDUR$p.value, digits = 3)`), with lower diversity corresponding to longer disease.
 
 **Comparison of clinical responders and non-responders**
-_Q: Are responder different from non responders at baseline independent of treatment group_
-CHECK THIS ANALYSIS AGAIN...
+_Q: Are responder different from non responders at baseline_
 
-Next, we hypothesized that there are associations between the microbiome at baseline and response to treatment. to test this hypothesis we compared the week 0 microbiomes of subjects who repsonded or remitted to subjects who did not at week 6 and week 22.
-
-Baseline fecal microbiome community structures and species diversity were different based on response/remission. Based on response at the primary endpoint of the study, 6 weeks after IV induction, there was no difference in species diversity between response groups, but there was a significant difference in the overall community structure of the entire cohort.
-
-Week 6 remitters were significantly different from non-remitters in both species diversity (`r all.wilcox.REMISSwk6.pval`) and overall community structure (`r all.REMISSwk6.adonis.pval`). 
-
-
-When looking at treated vs. untreated Week 6 remitters, the treated group had significant differences in both species diversity and community structure while untreated remitters we not different from untreated non-remitters. 
-
-At the secondary endpoint, 22 weeks after IV-induction and 14 weeks after maintenance dosing, there was no difference in species diversity between response groups, but there was a significant difference in the overall community structure of the entire cohort. Week 22 remitters were significantly different from non-remitters in both species diversity (`r all.wilcox.RelRSPwk22.pval`) and overall community structure (`r all.RelRSPwk22.adonis.pval`). 
-
+Next, we hypothesized that there are associations between the microbiome at baseline and response to treatment. To test this hypothesis we compared the week 0 microbiomes of subjects who repsonded or remitted to subjects who did not at week 6 and week 22. Alpha diversity at week 0 was compared based on treatment group and response status using a kruskal wallis test. Community structures at week 0 were compared based on response status and stratified on treatment group using the adonis function in vegan. Only week 6 remitters were significantly different from non-remitters in terms of species diversity (p = `r wk6remadivpval`). Baseline community strucutres were significantly different for each response status and at each clinical endpoint (p = `r wk6RSPbdivpval`,`r all.REMISSwk6.adonis.pval`, `r wk22RSPbdivpval`, `r wk22REMbdivpval`), as seen in Table 2. 
 
 
 **The microbiome by treatment and response over time**
 _Does microbiome change following treatemnt_
-The effects of biologic treatment of IBD on the microbiome are not yet well described. We tested whether treatment with UST affects the microbiome using subjects who provided samples at weeks 0, 4, and 6. This allowed for us to analyze `r n.wk046.trtd` treated subjects and `r n.wk046.plac` placebo subjects at each time point. Using the adonis function in the vegan R package [@oksanen_vegan_2016], we performed a PERMANOVA stratified on each subject, as a proxy for a repeated measures ANOVA, to determine if the community structure of microbiome changed over time. We included induction treatment group, response at each clinical endpoint, and sample date as parameters. 
+The effects of biologic treatment of IBD on the microbiome are not yet well described. We tested whether treatment with UST affects the microbiome using subjects who provided samples at weeks 0, 4, and 6. This allowed for us to analyze `r n.wk046.trtd` treated subjects and `r n.wk046.plac` placebo subjects at each time point. Using the adonis function in the vegan R package [@oksanen_vegan_2016], we performed a PERMANOVA stratified on each subject, as a proxy for a repeated measures ANOVA, to determine if the community structure of microbiome changed over time. We included induction treatment group, response at each clinical endpoint, and sample week as parameters. 
 
-We found that treatment alone does not affect the microbiome over time. No significant difference was seen based on sample date when looking at all treatment groups and week 6 response status, but there was a significant interaction between week 22 response and sample date `r signif(wk046visXtrtgrXwk22.adonis.pval[5,], 2)`. There was also a significant interaction and between week 22 response, induction group, and sample date `r signif(wk046visXtrtgrXwk22.adonis.pval[7,], 2)` (Supplemental Table 2). 
+We found that treatment only affects the microbiome over time in subjects who responded to UST at week 22. No significant difference was seen in community structure or species diversity based on sample date when looking at all treatment groups and week 6 response status, but there was a significant interaction between week 22 response and sample date `r signif(wk046visXtrtgrXwk22.adonis.pval[5,], 2)`. There was also a significant interaction and between week 22 response, induction group, and sample date `r signif(wk046visXtrtgrXwk22.adonis.pval[7,], 2)` (Supplemental Table 2). 
 
 This led us to further examining the microbial community structures in week 22 responders and nonresponders across sample date. No significant difference was observed in Week 22 non-responders over time. In week 22 responders, we saw a significant change in community structure over time. 
 
-we observed a significant difference based on visit in the treated-week 22 responders and in untreated responders across the first 3 visits prior to maintenance phase.
-
-we found that treated-week 22 responders had significantly differnt community structures over time.
-
-WTF this mean?
-There was also a significant difference based on treatment group, but no significant interaction. 
-
-When looking at treated vs. untreated responder groups, 
 
 Digging deeper,  
 
@@ -2502,7 +2567,7 @@ We also hypothesized that treatment may affect species diversity. We tested this
 **The microbiome following treatment reflects disease status**
 _Does microbiome relfect disease status at wk 6_
 
-A paper recently published by @tedjo_CDactivity_2016 demonstrated a link between the microbiome and disease severity, where specific microbes were associated with being in remission capared to active CD. We hypothesized that the microbiome could be used to monitor response to therapy in a similar manner. We used AUC-RF in order to determine if the fecal microbiome at Week 6 could be used to determine if a study participant responded to therapy or was in remission at Week 6. As seen in Figure 4, using the microbiome alone we achieved an AUC of `r otu_relrespWK6xWK6_roc$auc` for response with a sensitivity of `r otu_relrespWK6xWK6_sens` and a specificity of `r otu_relrespWK6xWK6_spec`. For remission we had an AUC of `r otu_remWK6xWK6_roc$auc` with a sensitivity of `r otu_remWK6xWK6_sens` and specificity of `r otu_remWK6xWK6_spec`. We were better able to distinguish remitters from non-remitters than responders from non-responders.
+A paper recently published by Tedjo et al. demonstrated a link between the microbiome and disease severity, where specific microbes were associated with remission capared to active CD [@tedjo_CDactivity_2016]. We hypothesized that the microbiome could be used to monitor response to therapy in a similar manner. We used AUC-RF in order to determine if the fecal microbiome at Week 6 could be used to determine if a study participant responded to therapy or was in remission at Week 6. As seen in Figure 4, using the microbiome alone we achieved an AUC of `r otu_relrespWK6xWK6_roc$auc` for response with a sensitivity of `r otu_relrespWK6xWK6_sens` and a specificity of `r otu_relrespWK6xWK6_spec`. For remission we had an AUC of `r otu_remWK6xWK6_roc$auc` with a sensitivity of `r otu_remWK6xWK6_sens` and specificity of `r otu_remWK6xWK6_spec`. We were better able to distinguish remitters from non-remitters than responders from non-responders.
 
 The top microbes that were indicitive of disease status in this model included blanks at enriched in remitters and blanks enriched in nonremitters.
 
@@ -2516,13 +2581,7 @@ Across all weeks and responses, prediction with clinical metadata alone did not 
 
 ## Discussion
 
-Our results examine the fecal microbiome of a subset of patients who participated in the CERTIFI trials to determine if the microbiome can predict response to therapy and if therapy has any effect on the microbiome. Several previous studies have looked at fecal and mucosal microbiomes in pediatric patients with new-onset and established disease and with established disease in adults [@gevers_pedsCD_2014; @papa_pedsIBD_2012; @tedjo_CDactivity_2016]. Unlike these studies, our patients were mostly Caucasian adults in their late thirties to early forties who failed to respond or lost response to anti-TNF-${\alpha}$ biologic treatment. We were able to find associations between the fecal microbiome of these patients and CDAI, stool frequency, fecal calprotectin, fecal lactoferrin, serum CRP, corticosteroid use, tissue involvement, and duration of disease. 
-
-The association of the microbiome with clinically relevant biomarkers and disease activity metrics indicates that the microbiome may also function as a biomarker for CD activity. Given that serum CRP, calprotectin, and lactoferrin are used as biomarkers to measure intestinal inflammation and CD severity, it is interesting to see that the microbial community structure is different among patients based on these markers [@boon_fmarkers_2015; @chang_monitoring_2015]. This supports the idea that the microbiome could be useful as a biomarker for measuring disease activity in patients, especially when considered in relation to these biomarkers [@tedjo_CDactivity_2016]. Higher CDAI was associated with lower microbial diversity. This appears to be consistent with other studies on the microbiome in individuals with CD compared to healthy individuals and studies looking at active disease compared to remission [@gevers_pedsCD_2014; @papa_pedsIBD_2012; @tedjo_CDactivity_2016]. However, these differences may have been driven by weekly stool frequency, one component of the CDAI, where higher stool frequency is also negatively associated with microbial diversity. Given that higher stool frequency is associated with looser stool consistency, this finding appears consistent with the association between loose stools and lower diversity [@vandeputte_stoolcon_2016]. 
-
-We also observed differences in the microbiome in relation to other clinical variables. The microbial community structure was different based on disease localization. These results are consistent with a study by Naftali et al finding distinct microbiotas for ileal versus colonic CD using mucosal tissue [@naftali_tissinvol_2016]. This study also found that corticosteroid use impacts the composition of the human fecal microbiome. This supports data seen in the mouse model where corticosteroid injections altered the fecal mouse microbiome [@huang_cort_2015]. As corticosteroid use appears to impact diversity, corticosteroids may be useful when trying to positively impact the microbiome during biologic therapy and increase the possibility of response to CD therapies. 
-
-Unlike other studies, these patients had a CD diagnosis for an average of 12 years (Supplemental Table 1) [@gevers_pedsCD_2014; @papa_pedsIBD_2012; @tedjo_CDactivity_2016]. We observed that that longer disease duration is associated with a reduction in fecal microbial diversity. This decreased diversity may be due to the long duration of inflammatory conditions in the gut. One could hypothesize earlier biologic intervention may ‘preserve’ microbiome that promotes remission and reduces the likelihood of relapse. Publications have come out in support of earlier biologic intervention, as it appears to increase the likelihood of inducing remission and mucosal healing [@monteleone_mongersen_2015; @monteleone_mongersen_2016; @ardizzone_mongersen_2016]. However, the cost of biologics for patients is hindrance to early biologic intervention. Using aptamers in place of monoclonal antibodies may reduce this cost and make earlier intervention possible. Aptamers are short strands of DNA or RNA capable of specifically binding small molecules, proteins, and whole cells. Anti-TNF aptamers have been published that could potentially be used to test this in the mouse model [@orava_short_2013].
+With this study we sought to gain a more detailed understanding of if and how biologic treatment affects the microbiome, to determine whether the microbiome can be used to identify patients who will respond to therapy, and to gain a better understanding of the interaction between the human gut microbiome and CD pathogenesis in adult patients. We found the fecal microbiome to be useful in uncovering associations between the microbiome and aspects of CD severity metrics and treatment outcomes. We also demonstrated that the microbiome of treated responders changed over time, though it is not yet possible to determine any direct effect of treatment on the microbiome. Finally, we were able to show that the microbiome could be useful in predicting response to therapy, especially clinical remission, compared to clinical metadata alone in our unique patient cohort. 
 
 One important question for the microbiome and IBD is whether or not the microbiome is affected by treatment with biologics. This study attempted to answer that question by looking at the microbiome of our CD subjects across multiple time points during treatment. While we were unable to see direct effects of the drug on the fecal microbiome, we observed that the microbiome of clinical responders changed over time, in contrast to nonresponsive subjects. This was observed for responsive patients regardless of induction treatment, leading us to think we are seeing the effects of change in disease activity and health rather than any effects from treatment. This interpretation is consistent with studies using the microbiome to distinguish between remission and active CD [@tedjo_CDactivity_2016]. We did however observe a significant difference in community structure based on treatment and cannot eliminate the possibility of a direct effect on the microbiome in treated responders. 
 
@@ -2530,8 +2589,16 @@ Another important question in for the importance of the microbiome in IBD is whe
 
 While using the presented model may not be useful clinically to predict response to therapy at this time, it is useful for hypothesis generation about the biology of CD as it relates to the microbiome. Some of the frequently occurring factors in our predictive models have already been linked to CD pathogenesis. As far as clinical biomarkers, fecal lactoferrin and fecal calprotectin occurred in the majority of models where clinical metadata was combined with the microbiome, supporting their importance as biomarkers for CD activity, especially in relation tot eh fecal microbiome [@boon_fmarkers_2015; @chang_monitoring_2015]. Faecalibacterium was the most frequently occurring OTU in our models. It is associated with health and has been shown to be low in CD patients [@wright_CDmicrobiome_2015; @hansen_pedsIBD_2012; @naftali_tissinvol_2016; @sartor_microbesIBD_2016]. Remission was much more likely in individuals who had measurable Faecalibacterium present at baseline. This supports the hypothesis that Faecalibacterium impacts CD. Escherichia/Shigella also occurred frequently in our models. This OTU is associated with inflammation and has been shown to negatively impact CD [@sartor_microbesIBD_2016]. Fusobacterium also appeared in our predictive models and is associated with CD and CRC, something CD patients are more likely to get [@sartor_microbesIBD_2016]. These observations and the positive/negative associations of these microbes and CD allow us to hypothesize on ways to alter the microbiome to increase the likelihood therapeutic response. Prior to the initiation of therapy, patients could get a fecal microbiome analysis. The community data could then be used to direct the patient to undergo a round of antibiotics to target and reduce the levels of Escherichia in the patient’s gut. Alternatively, the microbes found to be positively associated with response could be formulated into a daily probiotic patients could take while receiving therapy with the goal of increasing the likelihood of remission and mucosal healing.
 
-With this study we sought to gain a more detailed understanding of if and how biologic treatment affects the microbiome, to determine whether the microbiome can be used to identify patients who will respond to therapy, and to gain a better understanding of the interaction between the human gut microbiome and CD pathogenesis in adult patients. We found the fecal microbiome to be useful in uncovering associations between the microbiome and aspects of CD severity metrics and treatment outcomes. We also demonstrated that the microbiome of treated responders changed over time, though it is not yet possible to determine any direct effect of treatment on the microbiome. Finally, we were able to show that the microbiome could be useful in predicting response to therapy, especially clinical remission, compared to clinical metadata alone in our unique patient cohort. While this prediction is not clinically useful as of yet, altering the weighting or binning of important factors in the model could make prediction of response or remission more reliable. This could eventually allow for pre-screening of patients with stool samples to predict successful treatment or better direct treatment. If the fecal microbiome can be used as a theraprognostic tool to non-invasively predict response to specific treatment modalities or inform treatment, then more personalized treatment could result in faster achievement of remission, thereby increasing patients’ quality of life and reducing economic and healthcare impacts. 
+While this prediction is not clinically useful as of yet, altering the weighting or binning of important factors in the model could make prediction of response or remission more reliable. This could eventually allow for pre-screening of patients with stool samples to predict successful treatment or better direct treatment. If the fecal microbiome can be used as a theraprognostic tool to non-invasively predict response to specific treatment modalities or inform treatment, then more personalized treatment could result in faster achievement of remission, thereby increasing patients’ quality of life and reducing economic and healthcare impacts. 
 
+
+Our results examine the fecal microbiome of a subset of patients who participated in the CERTIFI trials to determine if the microbiome can predict response to therapy and if therapy has any effect on the microbiome. Several previous studies have looked at fecal and mucosal microbiomes in pediatric patients with new-onset and established disease and with established disease in adults [@gevers_pedsCD_2014; @papa_pedsIBD_2012; @tedjo_CDactivity_2016]. Unlike these studies, our patients were mostly Caucasian adults in their late thirties to early forties who failed to respond or lost response to anti-TNF-${\alpha}$ biologic treatment. We were able to find associations between the fecal microbiome of these patients and CDAI, stool frequency, fecal calprotectin, fecal lactoferrin, serum CRP, corticosteroid use, tissue involvement, and duration of disease. 
+
+The association of the microbiome with clinically relevant biomarkers and disease activity metrics indicates that the microbiome may also function as a biomarker for CD activity. Given that serum CRP, calprotectin, and lactoferrin are used as biomarkers to measure intestinal inflammation and CD severity, it is interesting to see that the microbial community structure is different among patients based on these markers [@boon_fmarkers_2015; @chang_monitoring_2015]. This supports the idea that the microbiome could be useful as a biomarker for measuring disease activity in patients, especially when considered in relation to these biomarkers [@tedjo_CDactivity_2016]. Higher CDAI was associated with lower microbial diversity. This appears to be consistent with other studies on the microbiome in individuals with CD compared to healthy individuals and studies looking at active disease compared to remission [@gevers_pedsCD_2014; @papa_pedsIBD_2012; @tedjo_CDactivity_2016]. However, these differences may have been driven by weekly stool frequency, one component of the CDAI, where higher stool frequency is also negatively associated with microbial diversity. Given that higher stool frequency is associated with looser stool consistency, this finding appears consistent with the association between loose stools and lower diversity [@vandeputte_stoolcon_2016]. 
+
+We also observed differences in the microbiome in relation to other clinical variables. The microbial community structure was different based on disease localization. These results are consistent with a study by Naftali et al finding distinct microbiotas for ileal versus colonic CD using mucosal tissue [@naftali_tissinvol_2016]. This study also found that corticosteroid use impacts the composition of the human fecal microbiome. This supports data seen in the mouse model where corticosteroid injections altered the fecal mouse microbiome [@huang_cort_2015]. As corticosteroid use appears to impact diversity, corticosteroids may be useful when trying to positively impact the microbiome during biologic therapy and increase the possibility of response to CD therapies. 
+
+Unlike other studies, these patients had a CD diagnosis for an average of 12 years (Supplemental Table 1) [@gevers_pedsCD_2014; @papa_pedsIBD_2012; @tedjo_CDactivity_2016]. We observed that that longer disease duration is associated with a reduction in fecal microbial diversity. This decreased diversity may be due to the long duration of inflammatory conditions in the gut. One could hypothesize earlier biologic intervention may ‘preserve’ microbiome that promotes remission and reduces the likelihood of relapse. Publications have come out in support of earlier biologic intervention, as it appears to increase the likelihood of inducing remission and mucosal healing [@monteleone_mongersen_2015; @monteleone_mongersen_2016; @ardizzone_mongersen_2016]. However, the cost of biologics for patients is hindrance to early biologic intervention. Using aptamers in place of monoclonal antibodies may reduce this cost and make earlier intervention possible. Aptamers are short strands of DNA or RNA capable of specifically binding small molecules, proteins, and whole cells. Anti-TNF aptamers have been published that could potentially be used to test this in the mouse model [@orava_short_2013].
 \newpage
 
 ###Methods
@@ -2579,9 +2646,7 @@ source("../code/table1.cohortdiv.R")
 
 **Table 2: Diversity differenced bases on Response/Remission in treated subjects.**
 
-```{r table2diversity, fig.height=5, fig.width=10}
-
-source('../code/table2diversity.R')
+```{r table2}
 ```
 
 \includegraphics{tables/table2diversity.pdf}

@@ -92,6 +92,11 @@ Disease patients.}
 \begin{document}
 \maketitle
 
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+
 \vspace{35mm}
 
 Running title: The fecal microbiome as a tool for monitoring and
@@ -216,8 +221,8 @@ previous studies have shown that the gut microbiome can be predictive of
 disease severity in new-onset, pediatric CD patients (19, 20). It
 remains to be determined, however, whether the microbiome can predict
 response to therapy in CD (14). Additionally, the effect of biologic
-treatment on the gut microbiome is not well understood. If the fecal
-microbiome can be used as a theraprognostic tool to non-invasively
+treatment on the gut microbiome is not well understood (14). If the
+fecal microbiome can be used as a theraprognostic tool to non-invasively
 determine and monitor disease severity as well as predict response to
 specific treatment modalities, then more targeted treatment could result
 in reduced adverse effects of less effective therapies and faster
@@ -265,10 +270,10 @@ variables} \emph{Question: disease severity and microboime at
 screening?}
 
 Following curation using the mothur software package, we obtained
-between 1 and 130,074 sequences per sample (median 13786) (21). To limit
-effects of uneven sampling, we rarefied the dataset to 3,000 sequences
-per sample. Parallel sequencing of a mock community revealed an error
-rate of 0.017 \%. Samples from subjects that completed the clinical
+between 1 and 130,074 sequences per sample (median 13786) (21). Parallel
+sequencing of a mock community revealed an error rate of 0.017 \%. To
+limit effects of uneven sampling, we rarefied the dataset to 3,000
+sequences per sample. Samples from subjects that completed the clinical
 trial and had complete clinical metadata were included in our analysis.
 Of these samples, 306 were provided prior to treatment as well as 258
 provided at week 4, 289 at week 6, and 205 at week 22 post-treatment,
@@ -293,43 +298,28 @@ significant differences in the microbiome were observed for BMI, weight,
 or sex. Overall community structure was different based on age 0.019.
 The overall community structure was also different based on the tissue
 affected 0.001. Species diversity (p-value= 0.000196)and the overall
-community structure (adonis p-value=0.004) were significantly different
-based on corticosteroid use. The community structure was significantly
-different (adonis p-value=0.001) based on disease duration and a weak,
-but significant correlation was seen between species diversity and
-disease duration (rho=-0.225, p-value= 0.0000713), with lower diversity
+community structure (p-value=0.004) were significantly different based
+on corticosteroid use. The community structure was significantly
+different (p-value=0.001) based on disease duration and a weak, but
+significant correlation was seen between species diversity and disease
+duration (rho=-0.225, p-value= 0.0000713), with lower diversity
 corresponding to longer disease.
 
 \textbf{Comparison of clinical responders and non-responders} \emph{Q:
-Are responder different from non responders at baseline independent of
-treatment group} CHECK THIS ANALYSIS AGAIN\ldots{}
+Are responder different from non responders at baseline}
 
 Next, we hypothesized that there are associations between the microbiome
-at baseline and response to treatment. to test this hypothesis we
+at baseline and response to treatment. To test this hypothesis we
 compared the week 0 microbiomes of subjects who repsonded or remitted to
-subjects who did not at week 6 and week 22.
-
-Baseline fecal microbiome community structures and species diversity
-were different based on response/remission. Based on response at the
-primary endpoint of the study, 6 weeks after IV induction, there was no
-difference in species diversity between response groups, but there was a
-significant difference in the overall community structure of the entire
-cohort.
-
-Week 6 remitters were significantly different from non-remitters in both
-species diversity (0.0005) and overall community structure (0.017).
-
-When looking at treated vs.~untreated Week 6 remitters, the treated
-group had significant differences in both species diversity and
-community structure while untreated remitters we not different from
-untreated non-remitters.
-
-At the secondary endpoint, 22 weeks after IV-induction and 14 weeks
-after maintenance dosing, there was no difference in species diversity
-between response groups, but there was a significant difference in the
-overall community structure of the entire cohort. Week 22 remitters were
-significantly different from non-remitters in both species diversity
-(0.57) and overall community structure (0.007).
+subjects who did not at week 6 and week 22. Alpha diversity at week 0
+was compared based on treatment group and response status using a
+kruskal wallis test. Community structures at week 0 were compared based
+on response status and stratified on treatment group using the adonis
+function in vegan. Only week 6 remitters were significantly different
+from non-remitters in terms of species diversity (p = 0.020). Baseline
+community strucutres were significantly different for each response
+status and at each clinical endpoint (p = 0.012,0.017, 0.012, 0.012), as
+seen in Table 2.
 
 \textbf{The microbiome by treatment and response over time} \emph{Does
 microbiome change following treatemnt} The effects of biologic treatment
@@ -341,32 +331,21 @@ function in the vegan R package (22), we performed a PERMANOVA
 stratified on each subject, as a proxy for a repeated measures ANOVA, to
 determine if the community structure of microbiome changed over time. We
 included induction treatment group, response at each clinical endpoint,
-and sample date as parameters.
+and sample week as parameters.
 
-We found that treatment alone does not affect the microbiome over time.
-No significant difference was seen based on sample date when looking at
-all treatment groups and week 6 response status, but there was a
-significant interaction between week 22 response and sample date 0.001.
-There was also a significant interaction and between week 22 response,
-induction group, and sample date 0.044 (Supplemental Table 2).
+We found that treatment only affects the microbiome over time in
+subjects who responded to UST at week 22. No significant difference was
+seen in community structure or species diversity based on sample date
+when looking at all treatment groups and week 6 response status, but
+there was a significant interaction between week 22 response and sample
+date 0.001. There was also a significant interaction and between week 22
+response, induction group, and sample date 0.044 (Supplemental Table 2).
 
 This led us to further examining the microbial community structures in
 week 22 responders and nonresponders across sample date. No significant
 difference was observed in Week 22 non-responders over time. In week 22
 responders, we saw a significant change in community structure over
 time.
-
-we observed a significant difference based on visit in the treated-week
-22 responders and in untreated responders across the first 3 visits
-prior to maintenance phase.
-
-we found that treated-week 22 responders had significantly differnt
-community structures over time.
-
-WTF this mean? There was also a significant difference based on
-treatment group, but no significant interaction.
-
-When looking at treated vs.~untreated responder groups,
 
 Digging deeper,
 
@@ -649,6 +628,95 @@ and response groups (47).
 \paragraph{Statistical analysis}\label{statistical-analysis}
 
 \newpage
+
+\subsection{Tables}\label{tables}
+
+\textbf{Table 1: Summary of clinical metadata of chort at baseline}
+
+\includegraphics{tables/SupTable1_baseline_metadata.pdf}
+
+\newpage
+
+\textbf{Supplemental\_Table 1: Diversity differences based on clinical
+metadata of chort at baseline}
+
+\includegraphics{tables/table1_cohortdiversity.pdf}
+
+\newpage
+
+\textbf{Table 2: Diversity differenced bases on Response/Remission in
+treated subjects.}
+
+\includegraphics{tables/table2diversity.pdf}
+
+\newpage
+
+\textbf{Supplemental Table 2: adonis}
+
+\includegraphics{tables/SF2adonis.pdf}
+
+\newpage
+
+\subsection{Figures}\label{figures}
+
+\textbf{Figure 1: Experimental design.}
+
+\includegraphics{figures/Figure1_expdesign.pdf}
+
+\newpage
+
+\textbf{Figure 2: Phyla by response/remisison week 6 and OTU abundance
+week 6 remission}
+
+\includegraphics{figures/Figure2_wk6phyla.pdf}
+
+\newpage
+
+\textbf{SF 1: Phyla by response/remission week 22}
+
+\includegraphics{figures/SF1_phylaWK22.pdf}
+
+\newpage
+
+\textbf{Figure 3: OTUS at screening}
+
+\includegraphics{figures/Figure3_basesigOTUabund.REMISSwk6.pdf}
+
+\newpage
+
+\textbf{Figure 4: Change in alpha diversity over time}
+
+\includegraphics{figures/Figure4_wk046.adivXvisitXindtrtXrelRSPwk22.pdf}
+
+\newpage
+
+\textbf{Figure 5: Determine week 6 status by week 6 stool and impt OTUs
+and abunds}
+
+\includegraphics{figures/Figure5_wk6Xwk6.pdf}
+
+\newpage
+
+\textbf{Figure 6: Prediction of RESPONSE/REMISSION in treated subjects
+using all clinical metadata, baseline microbiome alone, and combined} A.
+Response ROCs B. Response Model Performance vs.~reality C. Top
+predictive taxa and abundance based on response D. REMISSION ROCs E.
+REMISSION Model Performance vs.~reality F. Top predictive taxa and
+abundance based on remission
+
+\includegraphics{figures/Figure6_wk0Xwk6pred.pdf}
+
+\newpage
+
+\textbf{Supplemental Figure 2: Predicting Week 22 disease status using
+Week 0 samples}
+
+\includegraphics{figures/SF2-wk22predfig.pdf}
+
+\newpage
+
+\section*{References}\label{references}
+\addcontentsline{toc}{section}{References}
 
 \hypertarget{refs}{}
 \hypertarget{ref-ananthakrishnan_epidemiology_2015}{}
