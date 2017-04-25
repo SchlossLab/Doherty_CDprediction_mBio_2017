@@ -161,6 +161,15 @@ wk046.adivXvisXindtrtXrelRSPwk22.plot
 dev.off()
 
 
+ann_text <- data.frame(visit = 2, invsimpson = 31)
+trtrY.wk046.adivXvisXindtrtXrelRSPwk22.plot <- ggplot(ggplot.wk046.treatedrespY, aes(x=visit, y=invsimpson)) +
+	#stat_summary(fun.y=mean, geom="point", aes(fill = invsimpson), position = position_dodge(1)) +
+	#stat_summary(fun.data = 'median_hilow', fun.args = (conf.int=0.5), position = position_dodge(1), geom='errorbar', aes(color = otu))+
+	geom_boxplot(position=position_dodge(width = 1), alpha = .4) + #guides(fill=FALSE) +
+	ylab("Inverse Simpson") + xlab("Stool Sample") + theme(legend.position="none") + 
+	#ggtitle("Change in Species Diversity over time by Induction Group and Week 22 Response") + 
+	#facet_grid(.~INDTRTGR + RelRSPwk22, labeller = label_bquote((x) + nrow(x))) +
+	theme(plot.title = element_text(hjust = 0.5)) + geom_text(data = ann_text, label = "*", size=10)
 
 
 #adiv.vist.aov<- aov(ggplot.wk046.adiv$invsimpson~ggplot.wk046.adiv$visit + Error(ggplot.wk046.adiv$USUBJID/ggplot.wk046.adiv$visit))

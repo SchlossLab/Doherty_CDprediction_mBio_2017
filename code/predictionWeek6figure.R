@@ -77,10 +77,12 @@ plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab
 set.seed(32016)
 index <- 1
 for(i in oturf_otus ){
-	stripchart(at=index-0.35, jitter(yes_abunds[,i], amount=1e-6), pch=21, bg=alpha("royalblue1", alpha=0.25), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
-	stripchart(at=index+0.35, jitter(no_abunds[,i], amount=1e-6), pch=21, bg=alpha("orange", alpha=0.25), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
-	segments(median(yes_abunds[,i]),index-0.9,median(yes_abunds[,i]),index, lwd=4)
-	segments(median(no_abunds[,i]),index+0.9,median(no_abunds[,i]),index, lwd=4)
+	stripchart(at=index-0.35, jitter(yes_abunds[,i], amount=1e-6), pch=21, bg=alpha("royalblue1", alpha=0.5), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
+	stripchart(at=index+0.35, jitter(no_abunds[,i], amount=1e-6), pch=21, bg=alpha("orange", alpha=0.5), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
+	segments(median(yes_abunds[,i]),index-0.7,median(yes_abunds[,i]),index-0.1, lwd=6, col = "black", lty = "solid")
+	segments(median(no_abunds[,i]),index+0.7,median(no_abunds[,i]),index+0.1, lwd=6, col = "black", lty = "solid")
+	segments(median(yes_abunds[,i]),index-0.7,median(yes_abunds[,i]),index-0.1, lwd=3, col = "red", lty = "solid")
+	segments(median(no_abunds[,i]),index+0.7,median(no_abunds[,i]),index+0.1, lwd=3, col = "red", lty = "solid")
 	index <- index + 2
 }
 #oturf_otus

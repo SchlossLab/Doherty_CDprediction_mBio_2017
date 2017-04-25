@@ -84,10 +84,12 @@ plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab
 set.seed(32016)
 index <- 1
 for(i in oturf_otus ){
-	stripchart(at=index-0.35, jitter(yes_abunds[,i], amount=1e-6), pch=21, bg=alpha("royalblue1", alpha=0.25), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
-	stripchart(at=index+0.35, jitter(no_abunds[,i], amount=1e-6), pch=21, bg=alpha("orange", alpha=0.25), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
-	segments(median(yes_abunds[,i]),index-0.8,median(yes_abunds[,i]),index, lwd=4)
-	segments(median(no_abunds[,i]),index+0.8,median(no_abunds[,i]),index, lwd=4)
+	stripchart(at=index-0.35, jitter(yes_abunds[,i], amount=1e-6), pch=21, bg=alpha("royalblue1", alpha=0.5), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
+	stripchart(at=index+0.35, jitter(no_abunds[,i], amount=1e-6), pch=21, bg=alpha("orange", alpha=0.5), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
+	segments(median(yes_abunds[,i]),index-0.7,median(yes_abunds[,i]),index-0.1, lwd=6, col = "black", lty = "solid")
+	segments(median(no_abunds[,i]),index+0.7,median(no_abunds[,i]),index+0.1, lwd=6, col = "black", lty = "solid")
+	segments(median(yes_abunds[,i]),index-0.7,median(yes_abunds[,i]),index-0.1, lwd=3, col = "red", lty = "solid")
+	segments(median(no_abunds[,i]),index+0.7,median(no_abunds[,i]),index+0.1, lwd=3, col = "red", lty = "solid")
 	index <- index + 2
 }
 #oturf_otus
@@ -170,18 +172,20 @@ no_abunds <-na.omit(no_abunds)
 yes_abunds <- otu_remWK6[otu_remWK6$REMISSwk6=='1', oturf_otus]/10000 + 1e-5
 yes_abunds<- na.omit(yes_abunds)
 
-#pdf('figures/otuREMwk6AUCRFabunds.pdf', height=6, width=12)
+#pdf('figures/otuREMwk6AUCRFabunds.pdf', height=8, width=12)
 #layout(1)
-par(mar=c(4, 13, 2, 1))
-plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Week 0 Relative Abundance (%)", xaxt="n", yaxt="n")
+par(mar=c(4, 14, 2, 1))
+plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Week 0 Relative Abundance (%)", xaxt="n", yaxt="n", cex=1)
 #title('Abundance of Top OTUs from Microbiome Model')
 set.seed(32016)
 index <- 1
 for(i in oturf_otus ){
-	stripchart(at=index-0.35, jitter(yes_abunds[,i], amount=1e-6), pch=21, bg=alpha("royalblue1", alpha=0.25), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
-	stripchart(at=index+0.35, jitter(no_abunds[,i], amount=1e-6), pch=21, bg=alpha("orange", alpha=0.25), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
-	segments(median(yes_abunds[,i]),index-0.8,median(yes_abunds[,i]),index, lwd=4)
-	segments(median(no_abunds[,i]),index+0.8,median(no_abunds[,i]),index, lwd=4)
+	stripchart(at=index-0.35, jitter(yes_abunds[,i], amount=1e-6), pch=21, bg=alpha("royalblue1", alpha=0.5), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
+	stripchart(at=index+0.35, jitter(no_abunds[,i], amount=1e-6), pch=21, bg=alpha("orange", alpha=0.5), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
+	segments(median(yes_abunds[,i]),index-0.7,median(yes_abunds[,i]),index-0.1, lwd=6, col = "black", lty = "solid")
+	segments(median(no_abunds[,i]),index+0.7,median(no_abunds[,i]),index+0.1, lwd=6, col = "black", lty = "solid")
+	segments(median(yes_abunds[,i]),index-0.7,median(yes_abunds[,i]),index-0.1, lwd=3, col = "red", lty = "solid")
+	segments(median(no_abunds[,i]),index+0.7,median(no_abunds[,i]),index+0.1, lwd=3, col = "red", lty = "solid")
 	index <- index + 2
 }
 #oturf_otus
@@ -202,7 +206,7 @@ formatted <- lapply(1:nrow(oturf_tax), function(i) bquote(paste(italic(.(oturf_n
 
 axis(2, at=seq(1,index-2,2), labels=do.call(expression, formatted), las=1, line=0, tick=F, cex.axis=1)
 axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0), label=c("0", "0.01", "0.1", "1", "10", "100"))
-legend('bottomright', legend=c("Week 6 Nonremitter", "Week 6 Remitter"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
+legend('topright', legend=c("Week 6 Nonremitter", "Week 6 Remitter"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
 mtext('D', at=1e-8, side=3, line=0.1, font=2, cex=2)
 
 dev.off()
