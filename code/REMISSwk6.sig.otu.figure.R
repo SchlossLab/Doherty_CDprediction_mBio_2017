@@ -1,15 +1,15 @@
 source('../code/otu.analysis.R')
 
 #significant otus
-tax_median_otu_REMISSwk6_matrix <- merge(tax, median_otu_REMISSwk6_matrix, by.x = "OTU", by.y="row.names")
-sig_REMISSwk6_wilcox_otu_adj_p_otus <- rownames(median_otu_REMISSwk6_matrix)[sig_REMISSwk6_wilcox_otu_adj_p]
-median_signif_REMISSwk6_otu_matrix <- median_otu_REMISSwk6_matrix[sig_REMISSwk6_wilcox_otu_adj_p_otus,]
-tax_median_signif_REMISSwk6_otu_matrix <- merge(tax, median_signif_REMISSwk6_otu_matrix, by.x = "OTU", by.y="row.names")
-tax_median_signif_REMISSwk6_otu_matrix$diff <- tax_median_signif_REMISSwk6_otu_matrix$No-tax_median_signif_REMISSwk6_otu_matrix$Yes
-tax_median_signif_REMISSwk6_otu_matrix <-data.frame(tax_median_signif_REMISSwk6_otu_matrix[tax_median_signif_REMISSwk6_otu_matrix$diff!=0,])
-tax_median_signif_REMISSwk6_otu_matrix <-tax_median_signif_REMISSwk6_otu_matrix[abs(tax_median_signif_REMISSwk6_otu_matrix$diff) >= 0.013,]
-tax_median_signif_REMISSwk6_otu_matrix$Label <- factor(tax_median_signif_REMISSwk6_otu_matrix$Label, levels = as.character(tax_median_signif_REMISSwk6_otu_matrix$Label), labels= as.character(tax_median_signif_REMISSwk6_otu_matrix$Label))
-tax_median_signif_REMISSwk6_otu_matrix$OTU <- factor(tax_median_signif_REMISSwk6_otu_matrix$OTU, levels = as.character(tax_median_signif_REMISSwk6_otu_matrix$OTU), labels= as.character(tax_median_signif_REMISSwk6_otu_matrix$OTU))
+tax_median_otu_REMISSwk6_matrix <- merge(tax, median_trtd.otu_REMISSwk6_matrix, by.x = "OTU", by.y="row.names")
+sig_REMISSwk6_wilcox_trtd.otu_adj_p_otus <- rownames(median_trtd.otu_REMISSwk6_matrix)[sig_REMISSwk6_wilcox_trtd.otu_adj_p]
+median_signif_REMISSwk6_trtd.otu_matrix <- median_trtd.otu_REMISSwk6_matrix[sig_REMISSwk6_wilcox_trtd.otu_adj_p_otus,]
+tax_median_signif_REMISSwk6_trtd.otu_matrix <- merge(tax, median_signif_REMISSwk6_trtd.otu_matrix, by.x = "OTU", by.y="row.names")
+tax_median_signif_REMISSwk6_trtd.otu_matrix$diff <- tax_median_signif_REMISSwk6_trtd.otu_matrix$No-tax_median_signif_REMISSwk6_trtd.otu_matrix$Yes
+tax_median_signif_REMISSwk6_trtd.otu_matrix <-data.frame(tax_median_signif_REMISSwk6_trtd.otu_matrix[tax_median_signif_REMISSwk6_trtd.otu_matrix$diff!=0,])
+tax_median_signif_REMISSwk6_trtd.otu_matrix <-tax_median_signif_REMISSwk6_trtd.otu_matrix[abs(tax_median_signif_REMISSwk6_trtd.otu_matrix$diff) >= 0.013,]
+tax_median_signif_REMISSwk6_trtd.otu_matrix$Label <- factor(tax_median_signif_REMISSwk6_trtd.otu_matrix$Label, levels = as.character(tax_median_signif_REMISSwk6_trtd.otu_matrix$Label), labels= as.character(tax_median_signif_REMISSwk6_trtd.otu_matrix$Label))
+tax_median_signif_REMISSwk6_trtd.otu_matrix$OTU <- factor(tax_median_signif_REMISSwk6_trtd.otu_matrix$OTU, levels = as.character(tax_median_signif_REMISSwk6_trtd.otu_matrix$OTU), labels= as.character(tax_median_signif_REMISSwk6_trtd.otu_matrix$OTU))
 
 
 # labeled_mean_signif_REMISSwk6_otu_matrix <- subset(tax_mean_signif_REMISSwk6_otu_matrix, select=c("diff", "Label", "No", "Yes"))
@@ -111,12 +111,12 @@ tax<-read.table("../data/Jan400.simple.taxonomy.txt", header=T, sep='\t')
  
 
 #Abundance stripchart of sig dif otus by REMISSwk6
-oturf_otus  <- as.character(ordered(tax_median_signif_REMISSwk6_otu_matrix$OTU))
+oturf_otus  <- as.character(ordered(tax_median_signif_REMISSwk6_trtd.otu_matrix$OTU))
 #oturf_otus <- oturf_otus[1:10]
 #oturf_otus
-no_abunds <- screen_data[screen_data$REMISSwk6=='No', oturf_otus]/10000 + 1e-5
+no_abunds <- trtd.screen_data[trtd.screen_data$REMISSwk6=='No', oturf_otus]/10000 + 1e-5
 no_abunds <-na.omit(no_abunds)
-yes_abunds <- screen_data[screen_data$REMISSwk6=='Yes', oturf_otus]/10000 + 1e-5
+yes_abunds <- trtd.screen_data[trtd.screen_data$REMISSwk6=='Yes', oturf_otus]/10000 + 1e-5
 yes_abunds<- na.omit(yes_abunds)
 
 #tiff('figures/basesigOTUabund.REMISSwk6.tiff', height = 8, width = 12, units = "in", res = 300)
