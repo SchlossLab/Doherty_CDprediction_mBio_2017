@@ -110,6 +110,10 @@ sig_RelRSPwk6_wilcox_trtd.otu_adj_p <-RelRSPwk6_wilcox_trtd.otu_adj_p  < 0.05
 sig_RelRSPwk6_wilcox_trtd.otu_adj_p_otus <- rownames(median_trtd.otu_RelRSPwk6_matrix)[sig_RelRSPwk6_wilcox_trtd.otu_adj_p]
 
 
+trtd.REMISSwk6.Otu7p <- signif(REMISSwk6_wilcox_trtd.otu_adj_p["Otu00007"], 2)
+trtd.REMISSwk6.Otu19p <- signif(REMISSwk6_wilcox_trtd.otu_adj_p["Otu00019"], 2)
+
+
 screen_data.trtdtrtd_groups <- screen_data[screen_data$visit=="Screening", c("group", "TRTGRINDMAN")]
 screen_data.trtdtrtd <- screen_data[screen_data$TRTGRINDMAN=="Treated_Treated",]
 screen_data.trtdtrtd_groups <- screen_data.trtdtrtd[, c("group", "TRTGRINDMAN")]
@@ -309,9 +313,9 @@ for(otu in plac.otu_numbers){
 
 REMISSwk22_wilcox_plac.otu_adj_p <- na.omit(p.adjust(REMwk22_wilcox_plac.otu_p, method="BH"))
 sig_REMISSwk22_wilcox_plac.otu_adj_p <-REMISSwk22_wilcox_plac.otu_adj_p  < 0.05
-sig_REMISSwk22_wilcox_plac.otu_adj_p_otus <- rownames(mean_plac.otu_REMISSwk22_matrix)[sig_REMISSwk22_wilcox_plac.otu_adj_p]
+sig_REMISSwk22_wilcox_plac.otu_adj_p_otus <- rownames(median_plac.otu_REMISSwk22_matrix)[sig_REMISSwk22_wilcox_plac.otu_adj_p]
 
 RelRSPwk22_wilcox_plac.otu_adj_p <- na.omit(p.adjust(RelRSPwk22_wilcox_plac.otu_p, method="BH"))
 sig_RelRSPwk22_wilcox_plac.otu_adj_p <-RelRSPwk22_wilcox_plac.otu_adj_p  < 0.05
-sig_RelRSPwk22_wilcox_plac.otu_adj_p_otus <- rownames(mean_plac.otu_RelRSPwk22_matrix)[sig_RelRSPwk22_wilcox_plac.otu_adj_p]
+sig_RelRSPwk22_wilcox_plac.otu_adj_p_otus <- rownames(median_plac.otu_RelRSPwk22_matrix)[sig_RelRSPwk22_wilcox_plac.otu_adj_p]
 

@@ -194,8 +194,8 @@ otuRelab_TRTGR_RelRSPwk6 <- merge(TRTGR_RelRSPwk6, otu_rel_abund, by.y = "row.na
 
 REMISSwk22 <- subset(screen_data, select = c(group, REMISSwk22))
 RelRSPwk22 <- subset(screen_data, select = c(group, RelRSPwk22))
-TRTGR_REMISSwk22 <- subset(screen_data, select = c(group, TRTGR_REMISSwk22))
-TRTGR_RelRSPwk22 <- subset(screen_data, select = c(group, TRTGR_RelRSPwk22))
+TRTGRINDMAN_REMISSwk22 <- subset(screen_data, select = c(group, TRTGRINDMAN_REMISSwk22))
+TRTGRINDMAN_RelRSPwk22 <- subset(screen_data, select = c(group, TRTGRINDMAN_RelRSPwk22))
 
 phyRelab_REMISSwk22 <- merge(REMISSwk22, phylum_rel_abund, by.y = "row.names", by.x="group")
 claRelab_REMISSwk22 <- merge(REMISSwk22, class_rel_abund, by.y = "row.names", by.x="group")
@@ -210,17 +210,17 @@ ordRelab_RelRSPwk22 <- merge(RelRSPwk22, order_rel_abund, by.y = "row.names", by
 famRelab_RelRSPwk22 <- merge(RelRSPwk22, family_rel_abund, by.y = "row.names", by.x="group")
 otuRelab_RelRSPwk22 <- merge(RelRSPwk22, otu_rel_abund, by.y = "row.names", by.x="group")
 
-phyRelab_TRTGR_REMISSwk22 <- merge(TRTGR_REMISSwk22, phylum_rel_abund, by.y = "row.names", by.x="group")
-claRelab_TRTGR_REMISSwk22 <- merge(TRTGR_REMISSwk22, class_rel_abund, by.y = "row.names", by.x="group")
-ordRelab_TRTGR_REMISSwk22 <- merge(TRTGR_REMISSwk22, order_rel_abund, by.y = "row.names", by.x="group")
-famRelab_TRTGR_REMISSwk22 <- merge(TRTGR_REMISSwk22, family_rel_abund, by.y = "row.names", by.x="group")
-otuRelab_TRTGR_REMISSwk22 <- merge(TRTGR_RelRSPwk22, otu_rel_abund, by.y = "row.names", by.x="group")
+phyRelab_TRTGRINDMAN_REMISSwk22 <- merge(TRTGRINDMAN_REMISSwk22, phylum_rel_abund, by.y = "row.names", by.x="group")
+claRelab_TRTGRINDMAN_REMISSwk22 <- merge(TRTGRINDMAN_REMISSwk22, class_rel_abund, by.y = "row.names", by.x="group")
+ordRelab_TRTGRINDMAN_REMISSwk22 <- merge(TRTGRINDMAN_REMISSwk22, order_rel_abund, by.y = "row.names", by.x="group")
+famRelab_TRTGRINDMAN_REMISSwk22 <- merge(TRTGRINDMAN_REMISSwk22, family_rel_abund, by.y = "row.names", by.x="group")
+otuRelab_TRTGRINDMAN_REMISSwk22 <- merge(TRTGRINDMAN_RelRSPwk22, otu_rel_abund, by.y = "row.names", by.x="group")
 
-phyRelab_TRTGR_RelRSPwk22 <- merge(TRTGR_RelRSPwk22, phylum_rel_abund, by.y = "row.names", by.x="group")
-claRelab_TRTGR_RelRSPwk22 <- merge(TRTGR_RelRSPwk22, class_rel_abund, by.y = "row.names", by.x="group")
-ordRelab_TRTGR_RelRSPwk22 <- merge(TRTGR_RelRSPwk22, order_rel_abund, by.y = "row.names", by.x="group")
-famRelab_TRTGR_RelRSPwk22 <- merge(TRTGR_RelRSPwk22, family_rel_abund, by.y = "row.names", by.x="group")
-otuRelab_TRTGR_RelRSPwk22 <- merge(TRTGR_RelRSPwk22, otu_rel_abund, by.y = "row.names", by.x="group")
+phyRelab_TRTGRINDMAN_RelRSPwk22 <- merge(TRTGRINDMAN_RelRSPwk22, phylum_rel_abund, by.y = "row.names", by.x="group")
+claRelab_TRTGRINDMAN_RelRSPwk22 <- merge(TRTGRINDMAN_RelRSPwk22, class_rel_abund, by.y = "row.names", by.x="group")
+ordRelab_TRTGRINDMAN_RelRSPwk22 <- merge(TRTGRINDMAN_RelRSPwk22, order_rel_abund, by.y = "row.names", by.x="group")
+famRelab_TRTGRINDMAN_RelRSPwk22 <- merge(TRTGRINDMAN_RelRSPwk22, family_rel_abund, by.y = "row.names", by.x="group")
+otuRelab_TRTGRINDMAN_RelRSPwk22 <- merge(TRTGRINDMAN_RelRSPwk22, otu_rel_abund, by.y = "row.names", by.x="group")
 
 
 rownames(trtd.screen_data_otus) <- trtd.screen_data_otus$group
@@ -378,8 +378,8 @@ trtd.otuRelab_TRTGR_RelRSPwk6 <- merge(TRTGR_RelRSPwk6, trtd.otu_rel_abund, by.y
 
 REMISSwk22 <- subset(screen_data, select = c(group, REMISSwk22))
 RelRSPwk22 <- subset(screen_data, select = c(group, RelRSPwk22))
-TRTGR_REMISSwk22 <- subset(screen_data, select = c(group, TRTGR_REMISSwk22))
-TRTGR_RelRSPwk22 <- subset(screen_data, select = c(group, TRTGR_RelRSPwk22))
+TRTGRINDMAN_REMISSwk22 <- subset(screen_data, select = c(group, TRTGRINDMAN_REMISSwk22))
+TRTGRINDMAN_RelRSPwk22 <- subset(screen_data, select = c(group, TRTGRINDMAN_RelRSPwk22))
 
 trtd.phyRelab_REMISSwk22 <- merge(REMISSwk22, trtd.phylum_rel_abund, by.y = "row.names", by.x="group")
 trtd.claRelab_REMISSwk22 <- merge(REMISSwk22, trtd.class_rel_abund, by.y = "row.names", by.x="group")
@@ -394,17 +394,17 @@ trtd.ordRelab_RelRSPwk22 <- merge(RelRSPwk22, trtd.order_rel_abund, by.y = "row.
 trtd.famRelab_RelRSPwk22 <- merge(RelRSPwk22, trtd.family_rel_abund, by.y = "row.names", by.x="group")
 trtd.otuRelab_RelRSPwk22 <- merge(RelRSPwk22, trtd.otu_rel_abund, by.y = "row.names", by.x="group")
 
-trtd.phyRelab_TRTGR_REMISSwk22 <- merge(TRTGR_REMISSwk22, trtd.phylum_rel_abund, by.y = "row.names", by.x="group")
-trtd.claRelab_TRTGR_REMISSwk22 <- merge(TRTGR_REMISSwk22, trtd.class_rel_abund, by.y = "row.names", by.x="group")
-trtd.ordRelab_TRTGR_REMISSwk22 <- merge(TRTGR_REMISSwk22, trtd.order_rel_abund, by.y = "row.names", by.x="group")
-trtd.famRelab_TRTGR_REMISSwk22 <- merge(TRTGR_REMISSwk22, trtd.family_rel_abund, by.y = "row.names", by.x="group")
-trtd.otuRelab_TRTGR_REMISSwk22 <- merge(TRTGR_RelRSPwk22, trtd.otu_rel_abund, by.y = "row.names", by.x="group")
+trtd.phyRelab_TRTGRINDMAN_REMISSwk22 <- merge(TRTGRINDMAN_REMISSwk22, trtd.phylum_rel_abund, by.y = "row.names", by.x="group")
+trtd.claRelab_TRTGRINDMAN_REMISSwk22 <- merge(TRTGRINDMAN_REMISSwk22, trtd.class_rel_abund, by.y = "row.names", by.x="group")
+trtd.ordRelab_TRTGRINDMAN_REMISSwk22 <- merge(TRTGRINDMAN_REMISSwk22, trtd.order_rel_abund, by.y = "row.names", by.x="group")
+trtd.famRelab_TRTGRINDMAN_REMISSwk22 <- merge(TRTGRINDMAN_REMISSwk22, trtd.family_rel_abund, by.y = "row.names", by.x="group")
+trtd.otuRelab_TRTGRINDMAN_REMISSwk22 <- merge(TRTGRINDMAN_RelRSPwk22, trtd.otu_rel_abund, by.y = "row.names", by.x="group")
 
-trtd.phyRelab_TRTGR_RelRSPwk22 <- merge(TRTGR_RelRSPwk22, trtd.phylum_rel_abund, by.y = "row.names", by.x="group")
-trtd.claRelab_TRTGR_RelRSPwk22 <- merge(TRTGR_RelRSPwk22, trtd.class_rel_abund, by.y = "row.names", by.x="group")
-trtd.ordRelab_TRTGR_RelRSPwk22 <- merge(TRTGR_RelRSPwk22, trtd.order_rel_abund, by.y = "row.names", by.x="group")
-trtd.famRelab_TRTGR_RelRSPwk22 <- merge(TRTGR_RelRSPwk22, trtd.family_rel_abund, by.y = "row.names", by.x="group")
-trtd.otuRelab_TRTGR_RelRSPwk22 <- merge(TRTGR_RelRSPwk22, trtd.otu_rel_abund, by.y = "row.names", by.x="group")
+trtd.phyRelab_TRTGRINDMAN_RelRSPwk22 <- merge(TRTGRINDMAN_RelRSPwk22, trtd.phylum_rel_abund, by.y = "row.names", by.x="group")
+trtd.claRelab_TRTGRINDMAN_RelRSPwk22 <- merge(TRTGRINDMAN_RelRSPwk22, trtd.class_rel_abund, by.y = "row.names", by.x="group")
+trtd.ordRelab_TRTGRINDMAN_RelRSPwk22 <- merge(TRTGRINDMAN_RelRSPwk22, trtd.order_rel_abund, by.y = "row.names", by.x="group")
+trtd.famRelab_TRTGRINDMAN_RelRSPwk22 <- merge(TRTGRINDMAN_RelRSPwk22, trtd.family_rel_abund, by.y = "row.names", by.x="group")
+trtd.otuRelab_TRTGRINDMAN_RelRSPwk22 <- merge(TRTGRINDMAN_RelRSPwk22, trtd.otu_rel_abund, by.y = "row.names", by.x="group")
 
 
 
@@ -551,7 +551,7 @@ plac.otuRelab_RelRSPwk6 <- merge(RelRSPwk6, plac.otu_rel_abund, by.y = "row.name
 
 plac.phyRelab_TRTGR_REMISSwk6 <- merge(TRTGR_REMISSwk6, plac.phylum_rel_abund, by.y = "row.names", by.x="group")
 plac.claRelab_TRTGR_REMISSwk6 <- merge(TRTGR_REMISSwk6, plac.class_rel_abund, by.y = "row.names", by.x="group")
-ordRelab_TRTGR_REMISSwk6 <- merge(TRTGR_REMISSwk6, plac.order_rel_abund, by.y = "row.names", by.x="group")
+plac.ordRelab_TRTGR_REMISSwk6 <- merge(TRTGR_REMISSwk6, plac.order_rel_abund, by.y = "row.names", by.x="group")
 plac.famRelab_TRTGR_REMISSwk6 <- merge(TRTGR_REMISSwk6, plac.family_rel_abund, by.y = "row.names", by.x="group")
 plac.otuRelab_TRTGR_REMISSwk6 <- merge(TRTGR_RelRSPwk6, plac.otu_rel_abund, by.y = "row.names", by.x="group")
 
@@ -563,8 +563,8 @@ plac.otuRelab_TRTGR_RelRSPwk6 <- merge(TRTGR_RelRSPwk6, plac.otu_rel_abund, by.y
 
 REMISSwk22 <- subset(screen_data, select = c(group, REMISSwk22))
 RelRSPwk22 <- subset(screen_data, select = c(group, RelRSPwk22))
-TRTGR_REMISSwk22 <- subset(screen_data, select = c(group, TRTGR_REMISSwk22))
-TRTGR_RelRSPwk22 <- subset(screen_data, select = c(group, TRTGR_RelRSPwk22))
+TRTGRINDMAN_REMISSwk22 <- subset(screen_data, select = c(group, TRTGRINDMAN_REMISSwk22))
+TRTGRINDMAN_RelRSPwk22 <- subset(screen_data, select = c(group, TRTGRINDMAN_RelRSPwk22))
 
 plac.phyRelab_REMISSwk22 <- merge(REMISSwk22, plac.phylum_rel_abund, by.y = "row.names", by.x="group")
 plac.claRelab_REMISSwk22 <- merge(REMISSwk22, plac.class_rel_abund, by.y = "row.names", by.x="group")
@@ -579,14 +579,14 @@ plac.ordRelab_RelRSPwk22 <- merge(RelRSPwk22, plac.order_rel_abund, by.y = "row.
 plac.famRelab_RelRSPwk22 <- merge(RelRSPwk22, plac.family_rel_abund, by.y = "row.names", by.x="group")
 plac.otuRelab_RelRSPwk22 <- merge(RelRSPwk22, plac.otu_rel_abund, by.y = "row.names", by.x="group")
 
-plac.phyRelab_TRTGR_REMISSwk22 <- merge(TRTGR_REMISSwk22, plac.phylum_rel_abund, by.y = "row.names", by.x="group")
-plac.claRelab_TRTGR_REMISSwk22 <- merge(TRTGR_REMISSwk22, plac.class_rel_abund, by.y = "row.names", by.x="group")
-plac.ordRelab_TRTGR_REMISSwk22 <- merge(TRTGR_REMISSwk22, plac.order_rel_abund, by.y = "row.names", by.x="group")
-plac.famRelab_TRTGR_REMISSwk22 <- merge(TRTGR_REMISSwk22, plac.family_rel_abund, by.y = "row.names", by.x="group")
-plac.otuRelab_TRTGR_REMISSwk22 <- merge(TRTGR_RelRSPwk22, plac.otu_rel_abund, by.y = "row.names", by.x="group")
+plac.phyRelab_TRTGRINDMAN_REMISSwk22 <- merge(TRTGRINDMAN_REMISSwk22, plac.phylum_rel_abund, by.y = "row.names", by.x="group")
+plac.claRelab_TRTGRINDMAN_REMISSwk22 <- merge(TRTGRINDMAN_REMISSwk22, plac.class_rel_abund, by.y = "row.names", by.x="group")
+plac.ordRelab_TRTGRINDMAN_REMISSwk22 <- merge(TRTGRINDMAN_REMISSwk22, plac.order_rel_abund, by.y = "row.names", by.x="group")
+plac.famRelab_TRTGRINDMAN_REMISSwk22 <- merge(TRTGRINDMAN_REMISSwk22, plac.family_rel_abund, by.y = "row.names", by.x="group")
+plac.otuRelab_TRTGRINDMAN_REMISSwk22 <- merge(TRTGRINDMAN_RelRSPwk22, plac.otu_rel_abund, by.y = "row.names", by.x="group")
 
-plac.phyRelab_TRTGR_RelRSPwk22 <- merge(TRTGR_RelRSPwk22, plac.phylum_rel_abund, by.y = "row.names", by.x="group")
-plac.claRelab_TRTGR_RelRSPwk22 <- merge(TRTGR_RelRSPwk22, plac.class_rel_abund, by.y = "row.names", by.x="group")
-plac.ordRelab_TRTGR_RelRSPwk22 <- merge(TRTGR_RelRSPwk22, plac.order_rel_abund, by.y = "row.names", by.x="group")
-plac.famRelab_TRTGR_RelRSPwk22 <- merge(TRTGR_RelRSPwk22, plac.family_rel_abund, by.y = "row.names", by.x="group")
-plac.otuRelab_TRTGR_RelRSPwk22 <- merge(TRTGR_RelRSPwk22, plac.otu_rel_abund, by.y = "row.names", by.x="group")
+plac.phyRelab_TRTGRINDMAN_RelRSPwk22 <- merge(TRTGRINDMAN_RelRSPwk22, plac.phylum_rel_abund, by.y = "row.names", by.x="group")
+plac.claRelab_TRTGRINDMAN_RelRSPwk22 <- merge(TRTGRINDMAN_RelRSPwk22, plac.class_rel_abund, by.y = "row.names", by.x="group")
+plac.ordRelab_TRTGRINDMAN_RelRSPwk22 <- merge(TRTGRINDMAN_RelRSPwk22, plac.order_rel_abund, by.y = "row.names", by.x="group")
+plac.famRelab_TRTGRINDMAN_RelRSPwk22 <- merge(TRTGRINDMAN_RelRSPwk22, plac.family_rel_abund, by.y = "row.names", by.x="group")
+plac.otuRelab_TRTGRINDMAN_RelRSPwk22 <- merge(TRTGRINDMAN_RelRSPwk22, plac.otu_rel_abund, by.y = "row.names", by.x="group")

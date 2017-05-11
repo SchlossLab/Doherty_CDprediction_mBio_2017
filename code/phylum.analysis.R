@@ -74,37 +74,37 @@ median_abundant_phylum_matrix <- median_phylum_matrix[abundant, ]
 #phylum_adj_p <- p.adjust(phylum_p, method="BH") 
 #phylum_adj_p < 0.05
 
-REMISSwk6_wilcox_phylum_p <- numeric() 
+REMISSwk6_kw_phylum_p <- numeric() 
 for(phylum in phylum_names){
-	REMISSwk6_wilcox_phylum_p[phylum] <- wilcox.test(phylum_rel_abund[,phylum] ~screen_data$REMISSwk6)$p.value
+	REMISSwk6_kw_phylum_p[phylum] <- kruskal.test(phylum_rel_abund[,phylum] ~TRTGR_REMISSwk6$TRTGR_REMISSwk6)$p.value
 }
 
-RelRSPwk6_wilcox_phylum_p <- numeric() 
+RelRSPwk6_kw_phylum_p <- numeric() 
 for(phylum in phylum_names){
-	RelRSPwk6_wilcox_phylum_p[phylum] <- wilcox.test(phylum_rel_abund[,phylum] ~screen_data$RelRSPwk6)$p.value
+	RelRSPwk6_kw_phylum_p[phylum] <- kruskal.test(phylum_rel_abund[,phylum] ~TRTGR_RelRSPwk6$TRTGR_RelRSPwk6)$p.value
 }
 
-REMISSwk6_wilcox_phylum_adj_p <- na.omit(p.adjust(REMISSwk6_wilcox_phylum_p, method="BH"))
-sig_REMISSwk6_wilcox_phylum_adj_p <-REMISSwk6_wilcox_phylum_adj_p  < 0.05
+REMISSwk6_kw_phylum_adj_p <- na.omit(p.adjust(REMISSwk6_kw_phylum_p, method="BH"))
+sig_REMISSwk6_kw_phylum_adj_p <-REMISSwk6_kw_phylum_adj_p  < 0.05
 
-RelRSPwk6_wilcox_phylum_adj_p <- na.omit(p.adjust(RelRSPwk6_wilcox_phylum_p, method="BH"))
-sig_RelRSPwk6_wilcox_phylum_adj_p <-RelRSPwk6_wilcox_phylum_adj_p  < 0.05
+RelRSPwk6_kw_phylum_adj_p <- na.omit(p.adjust(RelRSPwk6_kw_phylum_p, method="BH"))
+sig_RelRSPwk6_kw_phylum_adj_p <-RelRSPwk6_kw_phylum_adj_p  < 0.05
 
-REMISSwk22_wilcox_phylum_p <- numeric() 
+REMISSwk22_kw_phylum_p <- numeric() 
 for(phylum in phylum_names){
-	REMISSwk22_wilcox_phylum_p[phylum] <- wilcox.test(phylum_rel_abund[,phylum] ~screen_data$REMISSwk22)$p.value
+	REMISSwk22_kw_phylum_p[phylum] <- kruskal.test(phylum_rel_abund[,phylum] ~screen_data$TRTGRINDMAN_REMISSwk22)$p.value
 }
 
-RelRSPwk22_wilcox_phylum_p <- numeric() 
+RelRSPwk22_kw_phylum_p <- numeric() 
 for(phylum in phylum_names){
-	RelRSPwk22_wilcox_phylum_p[phylum] <- wilcox.test(phylum_rel_abund[,phylum] ~screen_data$RelRSPwk22)$p.value
+	RelRSPwk22_kw_phylum_p[phylum] <- kruskal.test(phylum_rel_abund[,phylum] ~screen_data$TRTGRINDMAN_RelRSPwk22)$p.value
 }
 
-REMISSwk22_wilcox_phylum_adj_p <- na.omit(p.adjust(REMISSwk22_wilcox_phylum_p, method="BH"))
-sig_REMISSwk22_wilcox_phylum_adj_p <-REMISSwk22_wilcox_phylum_adj_p  < 0.05
+REMISSwk22_kw_phylum_adj_p <- na.omit(p.adjust(REMISSwk22_kw_phylum_p, method="BH"))
+sig_REMISSwk22_kw_phylum_adj_p <-REMISSwk22_kw_phylum_adj_p  < 0.05
 
-RelRSPwk22_wilcox_phylum_adj_p <- na.omit(p.adjust(RelRSPwk22_wilcox_phylum_p, method="BH"))
-sig_RelRSPwk22_wilcox_phylum_adj_p <-RelRSPwk22_wilcox_phylum_adj_p  < 0.05
+RelRSPwk22_kw_phylum_adj_p <- na.omit(p.adjust(RelRSPwk22_kw_phylum_p, method="BH"))
+sig_RelRSPwk22_kw_phylum_adj_p <-RelRSPwk22_kw_phylum_adj_p  < 0.05
 
 
 
