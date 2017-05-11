@@ -202,8 +202,8 @@ against the shared p40 subunit of IL-12 and IL-23, has been proposed as
 an alternative therapy for these patients (10). While clinical trials
 have demonstrated that UST is a viable option for the treatment of CD
 (7, 10--12) (7, 10-12), some patients within these trials were
-non-responsive to UST, which may be explained by differences in the
-patients' gut microbiomes.
+non-responsive to UST, which we hypothesized was due to differences in
+the patients' gut microbiota at the initiation of treatment.
 
 The precise etiology of CD remains unknown, but host genetics,
 environmental exposure, and the gut microbiome appear involved (1, 13).
@@ -215,42 +215,40 @@ indirect modulation of the gut microbiome (5, 14). The gut microbiome
 has also been shown to play a key role in inflammation, immunity, and
 IBD (15). Individuals with CD have reduced microbial diversity in their
 guts, compared to healthy individuals, with a lower relative abundance
-of Firmicutes and an increased relative abundance of Enterobacteraciae
-and Bacteroides, at the phylum level (14, 16--19) . Additionally,
-previous studies have shown that the gut microbiome can be predictive of
-disease severity in new-onset, pediatric CD patients (19, 20). It
-remains to be determined, however, whether the microbiome can predict
-response to therapy in CD (14). Additionally, the effect of biologic
-treatment on the gut microbiome is not well understood (14). If the
-fecal microbiome can be used as a theraprognostic tool to non-invasively
-determine and monitor disease severity as well as predict response to
-specific treatment modalities, then more targeted treatment could result
-in reduced adverse effects of less effective therapies and faster
-achievement of remission.
+of \emph{Firmicutes} and an increased relative abundance of
+\emph{Enterobacteraciae} and \emph{Bacteroides}, at the phylum level
+(14, 16--19) . Additionally, previous studies have shown that the gut
+microbiome correlates with disease severity in new-onset, pediatric CD
+patients (19, 20).
+
+The microbiome has shown promise as a predictive tool for a variety of
+disease. Colon cancer has been show to etc etc prediction\ldots{}other
+success stories leading into the Schloss lab's success predicting
+cancer? -\textgreater{} can we do for CD It remains to be determined,
+however, whether the microbiome can predict response to therapy in CD
+(14). Additionally, the effect of biologic treatment on the gut
+microbiome is not well understood (14). If the fecal microbiome can be
+used as a theraprognostic tool to non-invasively determine and monitor
+disease severity as well as predict response to specific treatment
+modalities, then more targeted treatment could result in reduced adverse
+effects of less effective therapies and faster achievement of remission.
 
 Our lab was approached to analyze the gut microbiomes of individuals who
-participated in a Phase II clinical trial to determine the efficacy of
-UST in treating CD (10). Using stool samples taken prior to the start of
-the study, 16S rRNA gene sequence data from these patients will allow us
-to determine associations between clinical metadata, disease severity,
-and the fecal microbiome and whether clinical responders have a
-microbiome that is distinct from non-responders at baseline. Preliminary
-results generated with fecal samples from a subset of study participants
-and sequenced using the Roche 454 platform suggest that the fecal
-microbiota of moderate to severe CD patients refractory to
-anti-TNF-\({\alpha}\) may differentiate individuals who will respond to
-treatment with UST; however, large interpersonal variation limited the
-power of our findings. This study attempts to overcome many of the
-limitations in our preliminary analysis by increasing our sample size to
-the full patient cohort and using the Illumina MiSeq platform to improve
-our sequencing depth. We demonstrate that the fecal microbiome is
-associated with baseline clinical metadata and that these associations
-and differences are useful in predicting disease severity and treatment
-outcome.
+participated in a placebo-controlled Phase II clinical trial to
+determine the safety and efficacy of UST in treating CD (10). Using
+stool samples taken prior to, and following, the start of the study, 16S
+rRNA gene sequence data from these patients' stool allowed us to
+determine associations between clinical metadata, disease severity, and
+the fecal microbiome, as well as whether clinical responders have a
+microbiome that is distinct from non-responders at baseline. We also
+show that the microbiome changed in subjects who responded to treatment.
+Our study demonstrates that the fecal microbiome is associated with
+baseline clinical metadata and that these associations and differences
+are useful in predicting disease severity and treatment outcome.
 
 \subsection{Results}\label{results}
 
-\textbf{Characteristics of Study Population} Using 16s rRNA gene
+\textbf{Characteristics of Study Population} Using 16S rRNA gene
 sequencing, we studied the fecal microbiota in a subset of
 TNF-\({\alpha}\) refractory CD patients who took park in the CERTIFI
 clinical trial (10). Demographic and baseline disease characteristics of
@@ -259,71 +257,84 @@ moderate to severe CD were randomly assigned to a treatment group in the
 induction phase of the study (Figure 1A). At Week 8 patients were
 re-randomized into maintenance therapy groups. Both patients and
 clinicians were blinded to their induction and maintenance treatment
-groups. Subjects provided a stool sample and were evaluated for response
-to therapy at screening (week 0), week 4, week 6, and week 22 post
-induction (Figure 1B). Response was evaluated based on the change in
-CDAI. For this study, ``response'' was defined as a decrease in CDAI of
-30\% from baseline and ``remission'' was defined as a CDAI below 150.
+groups. Subjects provided stool sample at screening (week 0), week 4,
+week 6, and week 22 post induction (Figure 1B). Therapeutic response was
+evaluated based on the change in CDAI at week 6 (primary endpoint) and
+week 22 (secondary endpoint) post induction. For this study,
+``response'' was defined as a decrease in CDAI of 30\% from baseline and
+``remission'' was defined as a CDAI below 150.
 
 \textbf{Comparison of microbiome at screening based on clinical
 variables} \emph{Question: disease severity and microboime at
 screening?}
 
-Following curation using the mothur software package, we obtained
-between 1 and 130,074 sequences per sample (median 13786) (21). Parallel
-sequencing of a mock community revealed an error rate of 0.017 \%. To
-limit effects of uneven sampling, we rarefied the dataset to 3,000
-sequences per sample. Samples from subjects that completed the clinical
-trial and had complete clinical metadata were included in our analysis.
-Of these samples, 306 were provided prior to treatment as well as 258
-provided at week 4, 289 at week 6, and 205 at week 22 post-treatment,
-for a total of 1058 samples.
+Following sequence curation using the mothur software package, we
+obtained between 1 and 130,074 sequences per sample (median 13786) (21).
+Parallel sequencing of a mock community revealed an error rate of
+0.017\%. To limit effects of uneven sampling, we rarefied the dataset to
+3,000 sequences per sample. Samples from subjects that completed the
+clinical trial and had complete clinical metadata were included in our
+analysis. Of these samples, 306 were provided prior to treatment as well
+as 258 provided at week 4, 289 at week 6, and 205 at week 22
+post-treatment, for a total of 1058 samples.
 
 To determine whether there are any significant associations between
 microbial diversity and clinical variables of interest, we compared the
 microbiome with clinical data at week 0 (Supplemental Table 1). We
 observed a weak, but significant correlation between CDAI and species
-diversity, with higher CDAI correlating to lower diversity (rho=-0.161,
-p-value= 0.00483). The overall community structure was not different
-based on CDAI. When looking at CDAI subscores, we observed a weak, but
+diversity, with higher CDAI correlating to lower diversity (rho =-0.161,
+p = 0.00483). The overall community structure was not different based on
+CDAI. When looking at CDAI subscores, we observed a weak, but
 significant association between species diversity and the frequency of
-loose stools per week (rho=-0.193, p-value= 0.000693). The overall
-community structure was also significantly different based on weekly
-loose stool frequency 0.012. No significant association was observed
-between CRP, fecal calprotectin, or fecal lactoferrin and species
-diversity, following multiple comparison correction. However, the
-overall community structure was significantly different based on CRP
-0.022, fecal calprotectin 0.002, and fecal lactoferrin 0.001. No
+loose stools per week (rho =-0.193, p = 0.000693). The overall community
+structure was also significantly different based on weekly loose stool
+frequency (p=0.012). No significant association was observed between
+CRP, fecal calprotectin, or fecal lactoferrin and species diversity,
+following multiple comparison correction. However, the overall community
+structure was significantly different based on CRP (p = 0.022), fecal
+calprotectin (p = 0.002), and fecal lactoferrin (p = 0.001). No
 significant differences in the microbiome were observed for BMI, weight,
-or sex. Overall community structure was different based on age 0.019.
-The overall community structure was also different based on the tissue
-affected 0.001. Species diversity (p-value= 0.000196)and the overall
-community structure (p-value=0.004) were significantly different based
-on corticosteroid use. The community structure was significantly
-different (p-value=0.001) based on disease duration and a weak, but
+or sex. Overall community structure was different based on age (p =
+0.019). The overall community structure was also different based on the
+tissue affected (p = 0.001). Species diversity (p = 0.000196)and the
+overall community structure (p =0.004) were significantly different
+based on corticosteroid use. The community structure was significantly
+different (p =0.001) based on disease duration and a weak, but
 significant correlation was seen between species diversity and disease
-duration (rho=-0.225, p-value= 0.0000713), with lower diversity
+duration (rho =-0.225, p = 0.0000713), with lower diversity
 corresponding to longer disease.
 
 \textbf{Comparison of clinical responders and non-responders} \emph{Q:
 Are responder different from non responders at baseline}
 
-Next, we hypothesized that there are associations between the microbiome
-at baseline and response to treatment. To test this hypothesis we
-compared the week 0 microbiomes of subjects who repsonded or remitted to
-subjects who did not at week 6 and week 22. Alpha diversity at week 0
-was compared based on treatment group and response status using a
-kruskal wallis test. Community structures at week 0 were compared based
-on response status and stratified on treatment group using the adonis
-function in vegan. Only week 6 remitters were significantly different
-from non-remitters in terms of species diversity (p = 0.020). Baseline
-community strucutres were significantly different for each response
-status and at each clinical endpoint (p = 0.012,0.017, 0.012, 0.012), as
-seen in Table 2.
+We hypothesized that there are associations between the microbiome at
+baseline and response to treatment. To test this, we compared the week 0
+microbiomes of subjects based on treatment group and response status at
+week 6 and week 22. Only week 6 remitters induced with UST were
+significantly different from non-remitters in terms of species diversity
+(p = 0.020), having higher diversity based on inverse simpson (\emph{put
+inv simp medians here? }). Baseline community structures were
+significantly different for each outcome status (response/remission) and
+treatment group at each clinical endpoint (week 6 response p = 0.012,
+week 6 remission p = 0.017, week 22 response p = 0.012, week 22
+remission p = 0.012), as seen in Table 2. No phyla were significantly
+different by treatment and response, however \emph{Fusobacteria} was
+less frequently observed in week 6 remitters than non-remitters treated
+with UST \emph{(median relative abundance , respectively}). Two taxa,
+\emph{Bacteroides} (OTU0019) (p = \texttt{trtd.REMISSwk6.Otu19p}) and
+\emph{Faecalibacterium} (OTU0007) (p = \texttt{trtd.REMISSwk6.Otu7p})
+were significantly more abundant in UST-induced, week 6 remitters
+compared to non-remitters induced with UST (\emph{Figure ?}). No
+individual taxa were significantly different among subjects receiving
+placebo for induction, regardless of response/remission status at week
+6.
 
 \textbf{The microbiome by treatment and response over time} \emph{Does
-microbiome change following treatemnt} The effects of biologic treatment
-of IBD on the microbiome are not yet well described. We tested whether
+microbiome change following treatemnt} Having oberved differences in the
+microbiomes of subjects who responded to treatment compared to those who
+did not, we hypothesized that treatment may affect the microbioime. The
+effects of biologic treatment of IBD on the microbiome are not yet well
+described, but are hypothesized to be indirect. We tested whether
 treatment with UST affects the microbiome using subjects who provided
 samples at weeks 0, 4, and 6. This allowed for us to analyze 156 treated
 subjects and 48 placebo subjects at each time point. Using the adonis
@@ -340,38 +351,40 @@ when looking at all treatment groups and week 6 response status, but
 there was a significant interaction between week 22 response and sample
 date 0.001. There was also a significant interaction and between week 22
 response, induction group, and sample date 0.044 (Supplemental Table 2).
-
 This led us to further examining the microbial community structures in
-week 22 responders and nonresponders across sample date. No significant
-difference was observed in Week 22 non-responders over time. In week 22
-responders, we saw a significant change in community structure over
-time.
+week 22 responders and nonresponders over time by induction treatment.
+No significant difference was observed in Week 22 non-responders over
+time, regardless of treatment. In week 22 responders, we saw a
+significant change in community structure over time in both placebo
+(\emph{p = }) and UST induction groups (\emph{p = }).
 
-Digging deeper,
-
-We also hypothesized that treatment may affect species diversity. We
-tested this by performing a freidman test comparing species diversity at
-each sample date within each induction treatment group based on their
-week 22 response status. As seen in Figure 4, we saw no significant
-difference in species diversity over time in subjects induced with
-placebo or treated-week 22 nonresponders. However, in treated-week 22
-responders species diversity increased significantly from week 0 to week
-4 (0.0022) and remained higher than baseline at week 6. We hypothesize
-that this reflects decreased inflammation in the responding subjects.
+Since we observed significant changes in the community structure of week
+22 repsonders, we also hypothesized that treatment may also affect
+species diversity. We tested this by performing a freidman test
+comparing species diversity at each sample date within each induction
+treatment group based on their week 22 response status. As seen in
+Figure 4, we saw no significant difference in species diversity over
+time in subjects who did not responde at week 22, regardless of
+induction treatment. However, in UST treated-week 22 responders species
+diversity increased significantly from week 0 to week 4 (0.0022) and
+remained higher than baseline at week 6. This change was not observed in
+subjects induced with placebo who responded at week 22, unlike the
+community structure analysis. We hypothesize that this reflects
+decreased inflammation in the subjects who responded to treatment.
 
 \textbf{The microbiome following treatment reflects disease status}
 \emph{Does microbiome relfect disease status at wk 6}
 
-A paper recently published by (23) demonstrated a link between the
-microbiome and disease severity, where specific microbes were associated
-with being in remission capared to active CD. We hypothesized that the
-microbiome could be used to monitor response to therapy in a similar
-manner. We used AUC-RF in order to determine if the fecal microbiome at
-Week 6 could be used to determine if a study participant responded to
-therapy or was in remission at Week 6. As seen in Figure 4, using the
-microbiome alone we achieved an AUC of 0.708 for response with a
-sensitivity of 0.769 and a specificity of 0.606. For remission we had an
-AUC of 0.866 with a sensitivity of 0.833 and specificity of 0.832. We
+A paper recently published by Tedjo et al. demonstrated a link between
+the microbiome and disease severity, where specific microbes were
+associated with remission capared to active CD (23). We hypothesized
+that the microbiome could be used to monitor response to therapy in a
+similar manner. We used AUC-RF in order to determine if the fecal
+microbiome at Week 6 could be used to determine if a study participant
+responded to therapy or was in remission at Week 6. As seen in Figure 4,
+using the microbiome alone we achieved an AUC of 0.708 for response with
+a sensitivity of 0.769 and a specificity of 0.606. For remission we had
+an AUC of 0.866 with a sensitivity of 0.833 and specificity of 0.832. We
 were better able to distinguish remitters from non-remitters than
 responders from non-responders.
 
@@ -381,157 +394,40 @@ nonremitters.
 
 \textbf{Prediction of response based on the microbiome at screening}
 \emph{can differences at baseline predict later response to treatment}
-Given the observed differencces in the fecal microbiome at baseline and
+Given the observed differences in the fecal microbiome at baseline and
 week 6 in responders/remitters compared to nonresponders/nonremitters,
 we hypothesized that the fecal microbiome could predict response to
-therapy. To test this hypothesis, we used AUCRF to develop a random
-forest classification model to differentiate responders from
-non-responders, as well as remitters from non-remitters, based on the
-relative abundance of fecal microbiome community members, clinical
+therapy. To test this hypothesis, we used the AUCRF package in R to
+develop a random forest classification model to differentiate responders
+from non-responders, as well as remitters from non-remitters, based on
+the relative abundance of fecal microbiome community members, clinical
 metadata, and the combination of microbiome and clinical data (24, 25).
 We ran these models for response and remission at Week 6 and 22 of the
 study. The optimal models for response and remission at the primary
-endpoint (Week 6) are shown in Figure 1. Using only clinical metadata to
-predict response, the model predicted response with an AUC of 0.693 with
-a specificity of 0.76 and a sensitivity of 0.598. Using only microbiome
-data, the model predicted response with an AUC of 0.737 with a
-specificity of 0.807 and a sensitivity of 0.585. When combining clinical
-metadata with the microbiome, the model predicted response with an AUC
-of 0.745 with a specificity of 0.727 and a sensitivity of 0.744. With
-respect to Week 6 remission, using solely clinical metadata we achieved
-AUC of 0.616 with a specificity of 0.801 and a sensitivity of 0.452.
-Using only fecal microbiome data we achieved an AUC of 0.838 with a
-specificity of 0.766 and a sensitivity of 0.806. When combining clinical
-metadata with the microbiome AUC of 0.844 with a specificity of 0.831
-and a sensitivity of 0.774.
+endpoint (Week 6) are shown in \emph{Figure ?}. Using only clinical
+metadata to predict response the model did not perform well, with an AUC
+of 0.693, a specificity of 0.76, and a sensitivity of 0.598. Using only
+microbiome data, the model predicted response with an AUC of 0.737 with
+a specificity of 0.807 and a sensitivity of 0.585. When combining
+clinical metadata with the microbiome, the model predicted response with
+an AUC of 0.745, a specificity of 0.727, and a sensitivity of 0.744.
+With respect to Week 6 remission, using solely clinical metadata we
+achieved AUC of 0.616a with a specificity of 0.801 and a sensitivity of
+0.452. Using only fecal microbiome data we achieved an AUC of 0.838 with
+a specificity of 0.766 and a sensitivity of 0.806. When combining
+clinical metadata with the microbiome AUC of 0.844 with a specificity of
+0.831 and a sensitivity of 0.774.
 
 Across all weeks and responses, prediction with clinical metadata alone
 did not perform as well as models using the fecal microbiome at
 screening. Also, combining microbiome data with clinical metadata did
 not consistently improve prediction compared to microbiome data alone.
 Additionally we found several OTUs occurred frequently across models
-including Faecalibacterium, among other taxa that were significantly
-more abundant in responders/remitters. Their abundances can be seen in
-figure 4.
+including \emph{Faecalibacterium}, among other taxa that were more
+abundant in responders/remitters. Their abundances can be seen in figure
+4.
 
 \subsection{Discussion}\label{discussion}
-
-Our results examine the fecal microbiome of a subset of patients who
-participated in the CERTIFI trials to determine if the microbiome can
-predict response to therapy and if therapy has any effect on the
-microbiome. Several previous studies have looked at fecal and mucosal
-microbiomes in pediatric patients with new-onset and established disease
-and with established disease in adults (19, 23, 26). Unlike these
-studies, our patients were mostly Caucasian adults in their late
-thirties to early forties who failed to respond or lost response to
-anti-TNF-\({\alpha}\) biologic treatment. We were able to find
-associations between the fecal microbiome of these patients and CDAI,
-stool frequency, fecal calprotectin, fecal lactoferrin, serum CRP,
-corticosteroid use, tissue involvement, and duration of disease.
-
-The association of the microbiome with clinically relevant biomarkers
-and disease activity metrics indicates that the microbiome may also
-function as a biomarker for CD activity. Given that serum CRP,
-calprotectin, and lactoferrin are used as biomarkers to measure
-intestinal inflammation and CD severity, it is interesting to see that
-the microbial community structure is different among patients based on
-these markers (27, 28). This supports the idea that the microbiome could
-be useful as a biomarker for measuring disease activity in patients,
-especially when considered in relation to these biomarkers (23). Higher
-CDAI was associated with lower microbial diversity. This appears to be
-consistent with other studies on the microbiome in individuals with CD
-compared to healthy individuals and studies looking at active disease
-compared to remission (19, 23, 26). However, these differences may have
-been driven by weekly stool frequency, one component of the CDAI, where
-higher stool frequency is also negatively associated with microbial
-diversity. Given that higher stool frequency is associated with looser
-stool consistency, this finding appears consistent with the association
-between loose stools and lower diversity (29).
-
-We also observed differences in the microbiome in relation to other
-clinical variables. The microbial community structure was different
-based on disease localization. These results are consistent with a study
-by Naftali et al finding distinct microbiotas for ileal versus colonic
-CD using mucosal tissue (30). This study also found that corticosteroid
-use impacts the composition of the human fecal microbiome. This supports
-data seen in the mouse model where corticosteroid injections altered the
-fecal mouse microbiome (31). As corticosteroid use appears to impact
-diversity, corticosteroids may be useful when trying to positively
-impact the microbiome during biologic therapy and increase the
-possibility of response to CD therapies.
-
-Unlike other studies, these patients had a CD diagnosis for an average
-of 12 years (Supplemental Table 1) (19, 23, 26). We observed that that
-longer disease duration is associated with a reduction in fecal
-microbial diversity. This decreased diversity may be due to the long
-duration of inflammatory conditions in the gut. One could hypothesize
-earlier biologic intervention may `preserve' microbiome that promotes
-remission and reduces the likelihood of relapse. Publications have come
-out in support of earlier biologic intervention, as it appears to
-increase the likelihood of inducing remission and mucosal healing
-(32--34). However, the cost of biologics for patients is hindrance to
-early biologic intervention. Using aptamers in place of monoclonal
-antibodies may reduce this cost and make earlier intervention possible.
-Aptamers are short strands of DNA or RNA capable of specifically binding
-small molecules, proteins, and whole cells. Anti-TNF aptamers have been
-published that could potentially be used to test this in the mouse model
-(35).
-
-One important question for the microbiome and IBD is whether or not the
-microbiome is affected by treatment with biologics. This study attempted
-to answer that question by looking at the microbiome of our CD subjects
-across multiple time points during treatment. While we were unable to
-see direct effects of the drug on the fecal microbiome, we observed that
-the microbiome of clinical responders changed over time, in contrast to
-nonresponsive subjects. This was observed for responsive patients
-regardless of induction treatment, leading us to think we are seeing the
-effects of change in disease activity and health rather than any effects
-from treatment. This interpretation is consistent with studies using the
-microbiome to distinguish between remission and active CD (23). We did
-however observe a significant difference in community structure based on
-treatment and cannot eliminate the possibility of a direct effect on the
-microbiome in treated responders.
-
-Another important question in for the importance of the microbiome in
-IBD is whether response to therapy can be predicted with the microbiome.
-We attempted to address this by developing a random-forest model that
-used relative microbial abundance data and/or clinical metadata for
-input. We found we were better able to predict remission status compared
-to response status. Response may be less predictable due to the
-``floating target'' nature of a relative decrease in CDAI compared to
-the hard threshold for remission (CDAI\textless{}150). We were also
-better able to distinguish remission/non-remission than
-response/non-response, 6 weeks after beginning treatment. This is
-consistent with other studies again suggesting the microbiome could be
-useful in detecting remission versus active disease (23).
-
-While using the presented model may not be useful clinically to predict
-response to therapy at this time, it is useful for hypothesis generation
-about the biology of CD as it relates to the microbiome. Some of the
-frequently occurring factors in our predictive models have already been
-linked to CD pathogenesis. As far as clinical biomarkers, fecal
-lactoferrin and fecal calprotectin occurred in the majority of models
-where clinical metadata was combined with the microbiome, supporting
-their importance as biomarkers for CD activity, especially in relation
-tot eh fecal microbiome (27, 28). Faecalibacterium was the most
-frequently occurring OTU in our models. It is associated with health and
-has been shown to be low in CD patients (14, 17, 30, 36). Remission was
-much more likely in individuals who had measurable Faecalibacterium
-present at baseline. This supports the hypothesis that Faecalibacterium
-impacts CD. Escherichia/Shigella also occurred frequently in our models.
-This OTU is associated with inflammation and has been shown to
-negatively impact CD (36). Fusobacterium also appeared in our predictive
-models and is associated with CD and CRC, something CD patients are more
-likely to get (36). These observations and the positive/negative
-associations of these microbes and CD allow us to hypothesize on ways to
-alter the microbiome to increase the likelihood therapeutic response.
-Prior to the initiation of therapy, patients could get a fecal
-microbiome analysis. The community data could then be used to direct the
-patient to undergo a round of antibiotics to target and reduce the
-levels of Escherichia in the patient's gut. Alternatively, the microbes
-found to be positively associated with response could be formulated into
-a daily probiotic patients could take while receiving therapy with the
-goal of increasing the likelihood of remission and mucosal healing.
 
 With this study we sought to gain a more detailed understanding of if
 and how biologic treatment affects the microbiome, to determine whether
@@ -541,20 +437,131 @@ the human gut microbiome and CD pathogenesis in adult patients. We found
 the fecal microbiome to be useful in uncovering associations between the
 microbiome and aspects of CD severity metrics and treatment outcomes. We
 also demonstrated that the microbiome of treated responders changed over
-time, though it is not yet possible to determine any direct effect of
+time, though it is not yet possible to determine any direct effects of
 treatment on the microbiome. Finally, we were able to show that the
 microbiome could be useful in predicting response to therapy, especially
 clinical remission, compared to clinical metadata alone in our unique
-patient cohort. While this prediction is not clinically useful as of
-yet, altering the weighting or binning of important factors in the model
-could make prediction of response or remission more reliable. This could
-eventually allow for pre-screening of patients with stool samples to
-predict successful treatment or better direct treatment. If the fecal
-microbiome can be used as a theraprognostic tool to non-invasively
-predict response to specific treatment modalities or inform treatment,
-then more personalized treatment could result in faster achievement of
-remission, thereby increasing patients' quality of life and reducing
-economic and healthcare impacts.
+patient cohort.
+
+We observed several associations between the microbiome and clinical
+variables that could play a role in how CD is monitored and treated in
+the future. Given that serum CRP, fecal calprotectin, and fecal
+lactoferrin are used as biomarkers to measure intestinal inflammation
+and CD severity, the observation that the microbial community structure
+is different among patients based on these markers supports the
+hypothesis that the microbiome could function as a biomarker for
+measuring disease activity in patients, especially in concert with these
+established inflammatory biomarkers (23, 26, 27). Higher CDAI was
+associated with lower microbial diversity. This appears to be consistent
+with other studies on the microbiome in individuals with CD compared to
+healthy individuals and studies looking at active disease compared to
+remission (19, 23, 28). However, these differences may have been driven
+by weekly stool frequency, one component of the CDAI, where higher stool
+frequency is also negatively associated with microbial diversity. This
+finding is consistent with the association between loose stools and
+lower diversity (29). We also observed differences in the microbial
+community structure based on disease localization. These results are
+consistent with a study by Naftali et al finding distinct microbiotas
+for ileal versus colonic CD using mucosal tissue (30). Our study also
+found that corticosteroid use impacts the composition of the human fecal
+microbiome. This supports data seen in the mouse model where
+corticosteroid injections altered the fecal mouse microbiome (31). As
+corticosteroid use appears to impact diversity, corticosteroid therapy
+may be useful when trying to positively impact microbial diversity
+during biologic therapy and thereby increase the possibility of response
+to CD therapies. We also observed that longer disease duration is
+associated with a reduction in fecal microbial diversity. This decreased
+diversity may be due to the long duration of inflammatory conditions in
+the gut. This observation and the increased likelyhood of remission and
+mucosal healing in individuals treated with biologics earlier in the
+course of their disease is an argument for earlier biologic intervention
+(32--34). Hypothetically, earlier biologic intervention could `preserve'
+a more diverse microbiome that promotes remission and reduces the
+likelihood of relapse. However, the cost of biologics for patients is
+hindrance to early biologic intervention. Using aptamers in place of
+monoclonal antibodies may reduce this cost and make earlier intervention
+possible. Aptamers are short strands of DNA or RNA capable of
+specifically binding small molecules, proteins, and whole cells.
+Anti-TNF aptamers have been published that could potentially be used to
+test this in the mouse model (35).
+
+An important question for the microbiome and IBD is whether or not the
+microbiome is affected by treatment with biologics. This study attempted
+to answer that question by looking at the microbiome of our CD subjects
+across multiple time points during treatment. While we were unable to
+see direct effects of the drug on the fecal microbiome, we observed that
+the microbiome of clinical responders changed over time, in contrast to
+nonresponsive subjects. This was observed for responsive patients
+regardless of induction treatment, leading us to think we are observing
+the effects of change in disease activity and health, leading to lower
+inflammation, rather than any effects from treatment. This
+interpretation is consistent with studies using the microbiome to
+distinguish between remission and active CD (23). We did however observe
+a significant difference in community structure based on treatment and
+cannot eliminate the possibility of a direct effect on the microbiome in
+treated responders, however the change in community structure observe in
+responders treated with placebo supports the hypothesis that the change
+in community structure reflects a change in inflammation.
+
+Another important question in for the importance of the microbiome in
+IBD is whether response to therapy can be predicted with the microbiome.
+We attempted to address this by developing a random-forest model that
+used relative microbial abundance data and/or clinical metadata for
+input. We found we were better able to predict remission status compared
+to response status. Response may be less predictable due to the
+``floating target'' nature of a relative decrease (\textgreater{}30\%
+decrease) in CDAI compared to the hard threshold for remission
+(CDAI\textless{}150). We were also better able to distinguish
+remission/non-remission than response/non-response, using samples
+provided 6 weeks after treatment induction. This is consistent with
+other studies, again suggesting the microbiome could be useful as a
+biomarker in detecting remission versus active disease (23).
+
+While using the presented model may not be useful clinically to predict
+response to therapy at this time, it is useful for hypothesis generation
+about the biology of CD as it relates to the microbiome. Some of the
+frequently occurring factors in our predictive models have already been
+linked to CD pathogenesis. As far as clinical biomarkers, fecal
+lactoferrin and fecal calprotectin occurred in the majority of models
+where clinical metadata was combined with the microbiome, supporting
+their importance as biomarkers for CD activity, especially in relation
+to the fecal microbiome (26, 27). \emph{Faecalibacterium} was the most
+frequently occurring OTU in our models. It is associated with health,
+comprising up to 5\% of the relative abundance in healthy individuals
+\emph{(source)} and has been shown to be low in CD patients (14, 17, 30,
+36). Remission was much more likely in individuals who had measurable
+\emph{Faecalibacterium} present at baseline. This supports the
+hypothesis that \emph{Faecalibacterium} impacts CD pathogenesis.
+\emph{Escherichia/Shigella} also occurred frequently in our models. This
+OTU is associated with inflammation and has been shown to negatively
+impact CD pathogenesis (36). \emph{Fusobacterium} also appeared in our
+predictive models and is associated with CD and CRC, something CD
+patients are more likely to develop than individuals without IBD (36).
+Many other taxa observed in our analysis had low abundance, but in many
+cases these taxa are related and may serve similar ecologic and
+metabolic roles in teh gut envronment. We hypothesize that these microbe
+may have genes that perform similar metabolic functions that could be
+revealed by perfroming metagenomics on the week 0 stool samples in
+future studies, especially in subjects who achieved remission. These
+observations and the positive/negative associations of these microbes
+and CD also allow us to hypothesize on ways to alter the microbiome to
+increase the likelihood therapeutic response. Prior to the initiation of
+therapy, patients could get a fecal microbiome analysis. The community
+data could then be used to direct the patient to undergo a round of
+antibiotics to target and reduce the levels of Escherichia in the
+patient's gut. Alternatively, the microbes found to be positively
+associated with response could be formulated into a daily probiotic
+patients could take while receiving therapy with the goal of increasing
+the likelihood of remission and mucosal healing. Additionally, altering
+the weighting or binning of important factors in the model could make
+prediction of response or remission more reliable. This could eventually
+allow for pre-screening of patients with stool samples to predict
+successful treatment or better direct treatment. If the fecal microbiome
+can be used as a theraprognostic tool to non-invasively predict response
+to specific treatment modalities or inform treatment, then more
+personalized treatment could result in faster achievement of remission,
+thereby increasing patients' quality of life and reducing economic and
+healthcare impacts.
 
 \newpage
 
@@ -585,7 +592,7 @@ Microbial genomic DNA was extracted using the PowerSoil-htp 96 Well Soil
 DNA Isolation Kit (MoBio Laboratories) using an EPMotion 5075 pipetting
 system, as previously described (24, 37). The V4 region of the 16S rRNA
 gene from each sample was amplified and sequenced using the Illumina
-MiSeq Personal Sequencing platform as described elsewhere (28).
+MiSeq Personal Sequencing platform as described elsewhere (27).
 Sequences were curated as described previously using the mothur software
 package (38). Briefly, we reduced sequencing and PCR errors, aligned the
 resulting sequences to the SILVA 16S rRNA sequence database, and removed
@@ -875,21 +882,21 @@ test for detecting colonic lesions. Genome Med 8:37.
 strategy for genomic profiling with random forest. Human Heredity
 72:121--132.
 
-\hypertarget{ref-papa_pedsIBD_2012}{}
-26. Papa E, Docktor M, Smillie C, Weber S, Preheim SP, Gevers D,
-Giannoukos G, Ciulla D, Tabbaa D, Ingram J, Schauer DB, Ward DV,
-Korzenik JR, Xavier RJ, Bousvaros A, Alm EJ. 2012. Non-invasive mapping
-of the gastrointestinal microbiota identifies children with inflammatory
-bowel disease. PLoS One 7:e39242.
-
 \hypertarget{ref-boon_fmarkers_2015}{}
-27. Boon GJ, Day AS, Mulder CJ, Gearry RB. 2015. Are faecal markers good
+26. Boon GJ, Day AS, Mulder CJ, Gearry RB. 2015. Are faecal markers good
 indicators of mucosal healing in inflammatory bowel disease? World J
 Gastroenterol 21:11469--80.
 
 \hypertarget{ref-chang_monitoring_2015}{}
-28. Chang S, Malter L, Hudesman D. 2015. Disease monitoring in
+27. Chang S, Malter L, Hudesman D. 2015. Disease monitoring in
 inflammatory bowel disease. World J Gastroenterol 21:11246--59.
+
+\hypertarget{ref-papa_pedsIBD_2012}{}
+28. Papa E, Docktor M, Smillie C, Weber S, Preheim SP, Gevers D,
+Giannoukos G, Ciulla D, Tabbaa D, Ingram J, Schauer DB, Ward DV,
+Korzenik JR, Xavier RJ, Bousvaros A, Alm EJ. 2012. Non-invasive mapping
+of the gastrointestinal microbiota identifies children with inflammatory
+bowel disease. PLoS One 7:e39242.
 
 \hypertarget{ref-vandeputte_stoolcon_2016}{}
 29. Vandeputte D, Falony G, Vieira-Silva S, Tito RY, Joossens M, Raes J.
