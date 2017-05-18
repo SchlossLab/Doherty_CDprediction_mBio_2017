@@ -181,7 +181,7 @@ median_trtd.phylum <- aggregate(trtd.phylum_rel_abund, by=list(trtd.screen_data$
 #median_trtd.phylum$REMISSwk6 <- median_trtd.phylum$Group.1
 median_trtd.phylum_matrix <- subset(median_trtd.phylum, select=-c(Group.1))
 median_trtd.phylum_matrix <- as.matrix(t(subset(median_trtd.phylum_matrix)))
-colnames(median_trtd.phylum_matrix) <- median_trtd.phylum$REMISSwk6
+colnames(median_trtd.phylum_matrix) <- median_trtd.phylum$Group.1
 
 
 
