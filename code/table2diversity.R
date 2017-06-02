@@ -27,7 +27,7 @@ wk6REMbdivpval <- table2_df[2,5]
 wk22RSPbdivpval <- table2_df[3,5]
 wk22REMBdivpval <- table2_df[4,5]
 
-colnames(table2_df) <- c('Clinical Variable', 'Treated (n)', "Placebo (n)",'Species Diversity\n(p-value)', 'Community Structure\n(p-value)')
+colnames(table2_df) <- c('Clinical Variable', 'Treated (n)', "Placebo (n)",'Alpha-Diversity\n(p-value)', 'Beta-Diversity\n(p-value)')
 table2 <- table2_df
 #table2 <- table2[,-2]
 table2.N <- as.matrix(table2[,c(1:3)])

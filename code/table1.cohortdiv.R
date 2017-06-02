@@ -21,8 +21,8 @@ bdiv_p <- as.numeric(as.character(tbl1$Community.Structure..beta.diversity.))
 tbl1_bdiv_adj_p <- p.adjust(bdiv_p, method="BH")
 tbl1$Community.Structure..beta.diversity.<-as.factor(round(tbl1_bdiv_adj_p, 3))
 
-colnames(tbl1) <- c('Clinical Variable', 'Correlation', 'Species Diveristy\n(p-value)', 'Community Structure\n(p-value)')
-#tbl1 <- tbl1[,-2]
+colnames(tbl1) <- c('Clinical Variable', 'Correlation', 'Alpha-Diversity\n(p-value)', 'Beta-Diversity\n(p-value)')
+tbl1 <- tbl1[-c(6:9),]
 tbl1 <- as.matrix(tbl1)
 
 tiff("tables/table1_cohortdiversity.tiff", width = 7, height = 4, units='in', res=300)
