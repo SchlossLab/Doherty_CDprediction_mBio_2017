@@ -29,18 +29,18 @@ adiv.alltp <- merge(adiv.wk046, wk22.all.adiv)
 
 #adiv.alltp <- adiv.alltp[,-1]
 #mean.adiv.byvis <- apply(adiv.alltp[,-c(1:2)], 2, mean)
-treatedresp <- wk0.all.adiv[wk0.all.adiv$INDTRTGR=="Treated",]
+treatedresp <- wk0.all.adiv[wk0.all.adiv$TRTGRINDMAN=="Treated_Treated",]
 #treatedrespY <- treatedrespY[treatedrespY$visit=="Screening",]
 treatedrespY <- treatedresp[treatedresp$RelRSPwk22=="Yes",]
 treatedrespN <- treatedresp[treatedresp$RelRSPwk22=="No",]
 alltp.treatedrespY <- adiv.alltp[adiv.alltp$USUBJID %in% treatedrespY$USUBJID,]
-#alltp.treatedrespY <- alltp.treatedrespY[, -c(4:5)]
+n.alltp.treatedrespY <- nrow(alltp.treatedrespY)
 rownames(alltp.treatedrespY) <- alltp.treatedrespY$USUBJID
 alltp.treatedrespY <- as.matrix(subset(alltp.treatedrespY,select = -c(USUBJID, INDTRTGR, RelRSPwk22, TRTGRINDMAN)))
 mean.adiv.byvis <- apply(alltp.treatedrespY, 2, mean)
 
 alltp.treatedrespN <- adiv.alltp[adiv.alltp$USUBJID %in% treatedrespN$USUBJID,]
-#alltp.treatedrespN <- alltp.treatedrespN[, -c(4:5)]
+n.alltp.treatedrespN <- nrow(alltp.treatedrespN)
 rownames(alltp.treatedrespN) <- alltp.treatedrespN$USUBJID
 alltp.treatedrespN <- as.matrix(subset(alltp.treatedrespN,select = -c(USUBJID, INDTRTGR, RelRSPwk22, TRTGRINDMAN)))
 mean.adiv.byvis <- apply(alltp.treatedrespN, 2, mean)
@@ -60,15 +60,15 @@ ggplot.alltp.treatedrespN <- ggplot.alltp.adiv[ggplot.alltp.adiv$USUBJID %in% tr
 ggplot.alltp.treatedrespN <- ggplot.alltp.treatedrespN[, -c(4:6)]
 
 
-kruskal.test(ggplot.alltp.treatedrespY$invsimpson~ggplot.alltp.treatedrespY$visit)
-kruskalmc(ggplot.alltp.treatedrespY$invsimpson~ggplot.alltp.treatedrespY$visit)
-friedman.test(alltp.treatedrespY)
-friedmc <- friedmanmc(alltp.treatedrespY)
-friedmc
+
+fried.trtdrespY <- friedman.test(alltp.treatedrespY)
+fried.trtdrespY$p.value
+friedmc.trtdrespY <- friedmanmc(alltp.treatedrespY)
+friedmc.trtdrespY.pval <- friedmc.trtdrespY$dif.com
+friedmc.trtdrespY.pval <- friedmc.trtdrespY.pval[friedmc.trtdrespY.pval$difference=="TRUE",]
 pairwise.wilcox.test(ggplot.alltp.treatedrespY$invsimpson, ggplot.alltp.treatedrespY$visit, p.adj="BH", exact=F, paired=T)
 
-kruskal.test(ggplot.alltp.treatedrespN$invsimpson~ggplot.alltp.treatedrespN$visit)
-kruskalmc(ggplot.alltp.treatedrespN$invsimpson~ggplot.alltp.treatedrespN$visit)
+
 friedman.test(alltp.treatedrespN)
 friedmc <- friedmanmc(alltp.treatedrespN)
 friedmc
@@ -85,13 +85,13 @@ placeborespN <- placeboresp[placeboresp$RelRSPwk22=="No",]
 alltp.placeborespY <- adiv.alltp[adiv.alltp$USUBJID %in% placeborespY$USUBJID,]
 #alltp.placeborespY <- alltp.placeborespY[, -c(4:5)]
 rownames(alltp.placeborespY) <- alltp.placeborespY$USUBJID
-alltp.placeborespY <- as.matrix(alltp.placeborespY[,-c(1:3)])
+alltp.placeborespY <- as.matrix(alltp.placeborespY[,-c(1:4)])
 mean.adiv.byvis <- apply(alltp.placeborespY, 2, mean)
 
 alltp.placeborespN <- adiv.alltp[adiv.alltp$USUBJID %in% placeborespN$USUBJID,]
 #alltp.placeborespN <- alltp.placeborespN[, -c(4:5)]
 rownames(alltp.placeborespN) <- alltp.placeborespN$USUBJID
-alltp.placeborespN <- as.matrix(alltp.placeborespN[,-c(1:3)])
+alltp.placeborespN <- as.matrix(alltp.placeborespN[,-c(1:4)])
 mean.adiv.byvis <- apply(alltp.placeborespN, 2, mean)
 
 ggplot.wk04.adiv<-rbind(wk0.adiv, wk4.adiv)
@@ -109,15 +109,12 @@ ggplot.alltp.placeborespN <- ggplot.alltp.adiv[ggplot.alltp.adiv$USUBJID %in% pl
 ggplot.alltp.placeborespN <- ggplot.alltp.placeborespN[, -c(4:5)]
 
 
-kruskal.test(ggplot.alltp.placeborespY$invsimpson~ggplot.alltp.adiv$visit)
-kruskalmc(ggplot.alltp.adiv$invsimpson~ggplot.alltp.adiv$visit)
 friedman.test(alltp.placeborespY)
 friedmc <- friedmanmc(alltp.placeborespY)
 friedmc
 pairwise.wilcox.test(ggplot.alltp.placeborespY$invsimpson, ggplot.alltp.placeborespY$visit, p.adj="BH", exact=F, paired=T)
 
-kruskal.test(ggplot.alltp.placeborespN$invsimpson~ggplot.alltp.adiv$visit)
-kruskalmc(ggplot.alltp.adiv$invsimpson~ggplot.alltp.adiv$visit)
+
 friedman.test(alltp.placeborespN)
 friedmc <- friedmanmc(alltp.placeborespN)
 friedmc
@@ -127,7 +124,7 @@ pairwise.wilcox.test(ggplot.alltp.placeborespN$invsimpson, ggplot.alltp.placebor
 ggplot(ggplot.alltp.treatedrespY, aes(visit, invsimpson))+
 	geom_boxplot() + theme(legend.position="none")
 
-ann_text <- data.frame(visit = 2:4, invsimpson = 31,
+ann_text <- data.frame(visit = 4, invsimpson = 31,
 											 INDTRTGR = "Treated", RelRSPwk22 = "Yes")
 
 alltp.adivXvisXindtrtXrelRSPwk22.plot <- ggplot(ggplot.alltp.adiv, aes(x=visit, y=invsimpson, fill=INDTRTGR)) +
@@ -137,13 +134,15 @@ alltp.adivXvisXindtrtXrelRSPwk22.plot <- ggplot(ggplot.alltp.adiv, aes(x=visit, 
 	ylab("Inverse Simpson") + xlab("Visit") + theme(legend.position="none") + 
 	ggtitle("Change in alpha diversity by Treatment Group and Week 22 Response") + 
 	facet_grid(.~INDTRTGR + RelRSPwk22, labeller = label_bquote((x) + nrow(x))) +
-	theme(plot.title = element_text(hjust = 0.5)) + geom_text(data = ann_text, label = "*", size=10)
+	theme(plot.title = element_text(hjust = 0.5)) + geom_text(data = ann_text, label = "*", size=10) +
+	theme(axis.text = element_text(size = 10))
 
 tiff("figures/alltp.adivXvisitXindtrtXrelRSPwk22.tiff", height = 6, width = 10, units = "in", res = 300)
 alltp.adivXvisXindtrtXrelRSPwk22.plot
 dev.off()
-	
-	
-	adiv.vist.aov<- aov(ggplot.alltp.adiv$invsimpson~ggplot.alltp.adiv$visit + Error(ggplot.alltp.adiv$USUBJID/ggplot.alltp.adiv$visit))
-	TukeyHSD(adiv.vist.aov)
+
+pdf("figures/alltp.adivXvisitXindtrtXrelRSPwk22.pdf", height = 6, width = 10)
+alltp.adivXvisXindtrtXrelRSPwk22.plot
+dev.off()
+
 	
