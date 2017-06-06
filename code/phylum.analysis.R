@@ -22,6 +22,12 @@ median_phylum_matrix <- as.matrix(t(subset(median_phylum_matrix)))
 colnames(median_phylum_matrix) <- median_phylum$REMISSwk6
 
 
+# phylum_rel_abund.remWK6Y <- phylum_rel_abund[trtd.REMISSwk6.wilcox.test.data$REMISSwk6=="Yes",]
+# median(phylum_rel_abund.remWK6Y$Fusobacteria)
+# quantile(phylum_rel_abund.remWK6Y$Fusobacteria, type=2)
+# phylum_rel_abund.remWK6N <- phylum_rel_abund[trtd.REMISSwk6.wilcox.test.data$REMISSwk6=="No",]
+# median(phylum_rel_abund.remWK6N$Fusobacteria)
+# quantile(phylum_rel_abund.remWK6N$Fusobacteria, type=2)
 
 sd_phylum <- aggregate(phylum_rel_abund, by=list(screen_data$REMISSwk6), sd)
 #sd_phylum$REMISSwk6 <- paste(sd_phylum$Group.1, sd_phylum$Group.2)

@@ -17,10 +17,25 @@ total_mean_otu_rel_abund <- apply(otu_rel_abund, 2, mean)
 #screen_data.trtd_groups <- screen_data[screen_data$visit=="Screening", c("group", "TRTGR")]
 screen_data.trtd <- screen_data[screen_data$TRTGR=="Treated",]
 screen_data.trtd_groups <- screen_data.trtd[, c("group", "TRTGR")]
-
+screen_data.trtd_Otus <- screen_data.trtd[, c("group", "TRTGR", "REMISSwk6")]
 screen.trtd_otu_rel_abund <- merge(screen_data.trtd_groups, otu_rel_abund, by.x = "group", by.y = "row.names")
 rownames(screen.trtd_otu_rel_abund) <- screen.trtd_otu_rel_abund$group
 screen.trtd_otu_rel_abund <- screen.trtd_otu_rel_abund[,-c(1:2)]
+
+screen.trtd_rel_abund_Otus <- merge(screen_data.trtd_Otus, otu_rel_abund, by.x = "group", by.y = "row.names")
+rownames(screen.trtd_rel_abund_Otus) <- screen.trtd_rel_abund_Otus$group
+screen.trtd_rel_abund_Otus <- screen.trtd_rel_abund_Otus[,-c(1:2)]
+screen.trtd_rel_abund_Otus <- subset(screen.trtd_rel_abund_Otus, select = c("REMISSwk6", "Otu00001", "Otu00007"))
+trtd.REMwk6.YES.relabund <- screen.trtd_rel_abund_Otus[screen.trtd_rel_abund_Otus$REMISSwk6=="Yes",]
+trtd.REMwk6.NO.relabund <- screen.trtd_rel_abund_Otus[screen.trtd_rel_abund_Otus$REMISSwk6=="No",]
+
+median(trtd.REMwk6.YES.relabund$Otu00001)
+quantile(trtd.REMwk6.YES.relabund$Otu00001, type = 2)
+quantile(trtd.REMwk6.NO.relabund$Otu00001, type = 2)
+quantile(trtd.REMwk6.YES.relabund$Otu00007, type = 2)
+quantile(trtd.REMwk6.NO.relabund$Otu00007, type = 2)
+trtd.REMwk6.YES.relabund$Otu00001
+
 otu_rel_abund.trtd_sum <- apply(screen.trtd_otu_rel_abund, 2, sum)
 otu_rel_abund.trtd <- otu_rel_abund.trtd_sum > (2/3000*100)
 otu_rel_abund.trtd <- screen.trtd_otu_rel_abund[, otu_rel_abund.trtd]

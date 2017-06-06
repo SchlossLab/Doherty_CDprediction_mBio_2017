@@ -1,4 +1,4 @@
-pdf("figures/Figure5_wk6Xwk6.pdf", height = 10, width = 12)
+pdf("figures/Figure3_wk6Xwk6.pdf", height = 10, width = 12)
 #figure layout
 #tiff(file='figures/RSPwk6aucrf.tiff', height=4, width=6.5, units='in', res=300)
 #pdf(file='figures/RSPwk6aucrf.pdf', height=4, width=6.5)

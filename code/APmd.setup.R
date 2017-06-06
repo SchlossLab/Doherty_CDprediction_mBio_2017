@@ -104,6 +104,7 @@ ss3k_shared_U2s <- cbind(ss3k_c1_3, ss3k_U2s)
 APmd_adiv<-merge(APmd, adiv, by.x="group", by.y="group")#nonmatch removed
 APmd_shared<-merge(APmd_adiv, ss3k_shared, by.x="group", by.y="Group")
 
+
 APmd_shared$TRTGR_REMISSwk6 <- as.factor(paste(APmd_shared$TRTGR, APmd_shared$REMISSwk6))
 APmd_shared$TRTGRINDMAN_REMISSwk22 <- as.factor(paste(APmd_shared$TRTGRINDMAN, APmd_shared$REMISSwk22))
 
