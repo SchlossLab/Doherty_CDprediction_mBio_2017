@@ -147,7 +147,8 @@ alltp.adivXvisXindtrtXrelRSPwk22.plot <- ggplot(ggplot.alltp.adiv, aes(x=visit, 
 	geom_text(data = PNn_text, label = paste("( n =", nrow(alltp.placplac.RESPno)/4, ")"), size=6)+ 
 	geom_text(data = PRn_text, label = paste("( n =", nrow(alltp.placplac.RESPyes)/4, ")"), size=6)+ 
 	geom_text(data = TNn_text, label = paste("( n =", nrow(alltp.ust.RESPno)/4, ")"), size=6)+ 
-	geom_text(data = TRn_text, label = paste("( n =", nrow(alltp.ust.RESPyes)/4, ")"), size=6)
+	geom_text(data = TRn_text, label = paste("( n =", nrow(alltp.ust.RESPyes)/4, ")"), size=6)+
+	stat_boxplot_custom(qs = c(0, 0.25, 0.5, 0.75, 1))
 
 tiff("figures/Figure2_alltp.adivXvisitXindtrtXrelRSPwk22.tiff", height = 6, width = 10, units = "in", res = 300)
 alltp.adivXvisXindtrtXrelRSPwk22.plot

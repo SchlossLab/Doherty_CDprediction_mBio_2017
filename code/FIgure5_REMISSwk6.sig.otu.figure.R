@@ -132,8 +132,8 @@ for(i in oturf_otus){
 	stripchart(at=index+0.35, jitter(no_abunds[,i], amount=1e-6), pch=21, bg=alpha("orange", alpha=0.5), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
 	segments(median(yes_abunds[,i]),index-0.7,median(yes_abunds[,i]),index-0.1, lwd=6, col = "black", lty = "solid")
 	segments(median(no_abunds[,i]),index+0.7,median(no_abunds[,i]),index+0.1, lwd=6, col = "black", lty = "solid")
-	segments(median(yes_abunds[,i]),index-0.7,median(yes_abunds[,i]),index-0.1, lwd=3, col = "red", lty = "solid")
-	segments(median(no_abunds[,i]),index+0.7,median(no_abunds[,i]),index+0.1, lwd=3, col = "red", lty = "solid")
+	#segments(median(yes_abunds[,i]),index-0.7,median(yes_abunds[,i]),index-0.1, lwd=3, col = "red", lty = "solid")
+	#segments(median(no_abunds[,i]),index+0.7,median(no_abunds[,i]),index+0.1, lwd=3, col = "red", lty = "solid")
 	index <- index + 2
 }
 #oturf_otus
@@ -152,7 +152,7 @@ formatted <- lapply(1:nrow(oturf_tax), function(i) bquote(paste(italic(.(oturf_n
 
 axis(2, at=seq(1,index-2,2), labels=do.call(expression, formatted), font =3, las=1, line=0, tick=F, cex.axis=1)
 axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0), label=c("0", "0.01", "0.1", "1", "10", "100"))
-legend('topright', legend=c("Week 6 Nonremitter", "Week 6 Remitter"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
+legend('topright', legend=c("Week 6 Active CD", "Week 6 Remission"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
 #mtext('B', at=1e-8, side=3, line=0.1, font=2, cex=2)
 dev.off()
 

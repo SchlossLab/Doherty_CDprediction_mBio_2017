@@ -121,21 +121,35 @@ friedmc
 pairwise.wilcox.test(ggplot.alltp.placeborespN$invsimpson, ggplot.alltp.placeborespN$visit, p.adj="BH", exact=F, paired=T)
 
 
+levels(ggplot.alltp.adiv$visit) <- c("0", "4", "6", "22")
+levels(ggplot.alltp.adiv$RelRSPwk22) <- c("Nonresponder", "Responder")
 ggplot(ggplot.alltp.treatedrespY, aes(visit, invsimpson))+
 	geom_boxplot() + theme(legend.position="none")
 
 ann_text <- data.frame(visit = 4, invsimpson = 31,
-											 INDTRTGR = "Treated", RelRSPwk22 = "Yes")
+											 INDTRTGR = "Treated", RelRSPwk22 = "Responder")
+PNn_text <- data.frame(visit = 2.5, invsimpson = 35,
+											 INDTRTGR = "Placebo", RelRSPwk22 = "Nonresponder")
+PRn_text <- data.frame(visit = 2.5, invsimpson = 35,
+											 INDTRTGR = "Placebo", RelRSPwk22 = "Responder")
+TNn_text <- data.frame(visit = 2.5, invsimpson = 35,
+											 INDTRTGR = "Treated", RelRSPwk22 = "Nonresponder")
+TRn_text <- data.frame(visit = 2.5, invsimpson = 35,
+											 INDTRTGR = "Treated", RelRSPwk22 = "Responder")
 
 alltp.adivXvisXindtrtXrelRSPwk22.plot <- ggplot(ggplot.alltp.adiv, aes(x=visit, y=invsimpson, fill=INDTRTGR)) +
 	#stat_summary(fun.y=mean, geom="point", aes(fill = invsimpson), position = position_dodge(1)) +
 	#stat_summary(fun.data = 'median_hilow', fun.args = (conf.int=0.5), position = position_dodge(1), geom='errorbar', aes(color = otu))+
 	geom_boxplot(position=position_dodge(width = 1), alpha = .4) + guides(fill=FALSE) +
-	ylab("Inverse Simpson") + xlab("Visit") + theme(legend.position="none") + 
-	ggtitle("Change in alpha diversity by Treatment Group and Week 22 Response") + 
+	ylab("Inverse Simpson index") + xlab("Week") + theme(legend.position="none") + 
+	#ggtitle("Change in alpha diversity by Treatment Group and Week 22 Response") + 
 	facet_grid(.~INDTRTGR + RelRSPwk22, labeller = label_bquote((x) + nrow(x))) +
-	theme(plot.title = element_text(hjust = 0.5)) + geom_text(data = ann_text, label = "*", size=10) +
-	theme(axis.text = element_text(size = 10))
+	theme(plot.title = element_text(hjust = 0.5)) + geom_text(data = ann_text, label = "*", size=12) + 
+	geom_text(data = PNn_text, label = paste("( n =", nrow(alltp.placplac.RESPno)/4, ")"), size=6)+ 
+	geom_text(data = PRn_text, label = paste("( n =", nrow(alltp.placplac.RESPyes)/4, ")"), size=6)+ 
+	geom_text(data = TNn_text, label = paste("( n =", nrow(alltp.ust.RESPno)/4, ")"), size=6)+ 
+	geom_text(data = TRn_text, label = paste("( n =", nrow(alltp.ust.RESPyes)/4, ")"), size=6)+
+	stat_boxplot_custom(qs = c(0, 0.25, 0.5, 0.75, 1))
 
 tiff("figures/Figure2_alltp.adivXvisitXindtrtXrelRSPwk22.tiff", height = 6, width = 10, units = "in", res = 300)
 alltp.adivXvisXindtrtXrelRSPwk22.plot
@@ -145,4 +159,3 @@ pdf("figures/Figure2_alltp.adivXvisitXindtrtXrelRSPwk22.pdf", height = 6, width 
 alltp.adivXvisXindtrtXrelRSPwk22.plot
 dev.off()
 
-	
