@@ -27,7 +27,7 @@ tbl1$Correlation <- gsub("rho", expression("\U03C1"), tbl1$Correlation)
 
 tbl1 <- as.matrix(tbl1)
 
-png("tables/Supp.table1_cohortdiversity.png", width = 7, height = 4, units='in', res=150)
+png("tables/Supp.table1_cohortdiversity.png", width = 7, height = 4, units='in', res=300)
 grid.table(tbl1)
 dev.off()
 

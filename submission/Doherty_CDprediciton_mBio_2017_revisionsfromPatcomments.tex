@@ -1,4 +1,4 @@
-\documentclass[11pt,]{article}
+\documentclass[12pt,]{article}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -93,14 +93,14 @@ Ustekinumab-treated Crohn's Disease patients.}
 
 \vspace{35mm}
 
-Running title: microbiota of Ustekinumab-treated Crohn's Disease
-patients.
+Running title: Microbiota of Ustekinumab-treated Crohn's patients.
 
 \vspace{35mm} Matthew K. Doherty\({^2}\), Tao Ding\({^2}\)\({^\alpha}\),
 Charlie Koumpouras\({^2}\), Shannon Telesco\({^1}\), Calixte
 Monast\({^1}\), and Patrick D. Schloss\({^2}\)\({^\dagger}\)
 
-\(\dagger\) To whom correspondence should be addressed:
+\(\dagger\) To whom correspondence should be addressed: Patrick D.
+Schloss,
 \href{mailto:pschloss@umich.edu}{\nolinkurl{pschloss@umich.edu}}
 
 1. Janssen Pharmaceutical Companies of Johnson \({\&}\) Johnson, Spring
@@ -119,16 +119,14 @@ New York, NY, USA.
 The fecal microbiota is a rich source of biomarkers that have previously
 been shown to be predictive of numerous disease states. Less well
 studied is whether these biomarkers can be predictive of response to
-therapy. Here we sought to predict the therapuetic response of Crohn's
-disease (CD) patients enrolled in a double-blinded, placebo-controlled,
-Phase 2b clinical trial to test the efficacy of Ustekinumab (UST). CD is
-a global health concern characterized by patches of ulceration and
-inflammation along the gastrointestinal tract and alterations to the
-microbial community structure. Using stool samples collected over the
-course of 22 weeks, we characterized the composition of these patients'
-fecal bacterial communities by sequencing the V4 region of the 16S rRNA
-gene. We were able to differentiate patients in remission from those
-with active disease 6 post treatment induction by using RF models
+therapy. This study sought to predict the therapeutic response of
+Crohn's disease (CD) patients enrolled in a double-blinded,
+placebo-controlled, Phase 2b clinical trial to test the efficacy of
+Ustekinumab (UST). Using stool samples collected over the course of 22
+weeks, the composition of these patients' fecal bacterial communities
+was characterized by sequencing the V4 region of the 16S rRNA gene.
+Patients in remission were distinguishable from those with active
+disease 6 weeks post treatment induction by using random forest models
 trained on the composition of their baseline microbiome and baseline
 clinical metadata (AUC = 0.844, specificity = 0.831, sensitivity =
 0.774). Top predictive OTUs that were ubiquitous among patients included
@@ -138,24 +136,22 @@ index was 1.7 times higher than treated patients with active disease at
 week 6. Their baseline community structures were similarly different.
 Two OTUs, \emph{Faecalibacterium} and \emph{Bacteroides}, were
 significantly more abundant at baseline in patients who were in
-remission 6 weeks post induction. In treated patients we could follow to
-week twenty-two, the \({\alpha}\)-diversity of UST treated clinical
+remission 6 weeks post induction. In treated patients that could be
+followed to week 22, the \({\alpha}\)-diversity of UST treated clinical
 responders increased over time, in contrast to nonresponsive patients.
 The fecal microbiota at baseline was also associated with markers for
-disease severity, such as Crohn's Disease Activity Index (CDAI), stool
-frequency, CRP, fecal lactoferrin, and fecal calprotectin. The observed
-baseline differences in fecal microbiota and changes due to therapeutic
-response support using the microbiota as a biomarker for the
-establishment and maintenance CD remission.
+disease severity.
 
-\emph{Importance:} Finding biomarkers that give clinicians the ability
-to predict response to CD treatment at diagnosis will increase the
-likelihood of faster induction and maintenance of remission. The fecal
-microbiota could be a useful non-invasive biomarker for directing or
-monitoring the treatment of CD patients. OTUs associated with remission
-post induction induction, especially \emph{Faecalibacterium}, could be
-biomarkers for successful UST treatment of TNF-\({\alpha}\) refractory
-CD patients.
+\emph{Importance:} The observed baseline differences in fecal microbiota
+and changes due to therapeutic response support using the microbiota as
+a biomarker for the establishment and maintenance CD remission. Finding
+prognostic biomarkers that give clinicians the ability to predict
+response to CD treatment at diagnosis will increase the likelihood of
+faster induction and maintenance of remission. The fecal microbiota
+could be a useful non-invasive biomarker for directing or monitoring the
+treatment of CD patients. OTUs associated with remission post treatment
+induction, especially \emph{Faecalibacterium}, could be biomarkers for
+successful UST treatment of TNF-\({\alpha}\) refractory CD patients.
 
 \textbf{Keywords: Crohn's Disease, IBD, fecal microbiome, microbiota,
 biologics, prediction, biomarkers, remission, Faecalibacterium,
@@ -169,12 +165,12 @@ The microbiome has been correlated with a variety of diseases and has
 shown promise as a predictive tool for disease outcome for gingivitis
 (1), cardiovascular disease (2), \emph{Clostridium difficile} infection
 (3, 4), and colorectal cancer (5, 6). Additionally, the microbiome has
-been shown to affect the efficacy of various therapies, including
-vaginal microbicides (7), cardiac drugs (8), and cancer treatements (9,
-10), and therefore could be used to predict therapeutic response. In
-relation to inflammatory bowel disease (IBD), previous studies have
-shown that the bacterial gut microbiota correlates with disease severity
-in new-onset, pediatric Crohn's disease (CD) patients (11, 12).
+been shown to alter the efficacy of vaginal microbicides (7), cardiac
+drugs (8), and cancer treatments (9, 10). Together, this demonstrates
+the potential of the microbiome as a prognostic biomarker. In relation
+to inflammatory bowel disease (IBD), previous studies have shown that
+the bacterial gut microbiota correlates with disease severity in
+new-onset, pediatric Crohn's disease (CD) patients (11, 12).
 Additionally, recent studies have shown promise for the gut microbiota
 as it relates to IBD and therapeutic response (13, 14). It remains to be
 determined, however, whether the composition of the fecal gut microbiota
@@ -195,8 +191,8 @@ intestinal damage and disability (18--20). Ideally, clinicians would be
 able to determine personalized treatment options for CD patients at
 diagnosis that would result in faster achievement of remission (21).
 Therefore, recent research has been focused on identifying noninvasive,
-prognostic biomarkers to monitor CD severity and predict therapeutic
-response (22--24).
+biomarkers to monitor CD severity and predict therapeutic response
+(22--24).
 
 The precise etiology of CD remains unknown, but host genetics,
 environmental exposure, and the gut microbiome appear to be involved
@@ -246,43 +242,43 @@ baseline disease characteristics of this subset are summarized in Table
 phase of the study and at week 8 patients were re-randomized into
 maintenance therapy groups based on their induction response (Figure
 1A). In our study response is defined as a decrease in a patient's
-initial Crohn's Disease Activity Index (CDAI) greater than 30\%. The
-CDAI is the standard instrument for evaluating clinical symptoms and
-disease activity in CD (38, 39). The CDAI weights patient reported stool
+initial Crohn's Disease Activity Index (CDAI) greater than 30\%.
+Remission is defined as a CDAI below 150 points. The CDAI is the
+standard instrument for evaluating clinical symptoms and disease
+activity in CD (38, 39). The CDAI weights patient reported stool
 frequency, abdominal pain, and general well being over a week, in
 combination with weight change, hematocrit, opiate usage for diarrhea,
 and the presence of abdominal masses or other complications to determine
-the disease severity score (38, 39). The international definitions for
-the levels of CD activity include relrespission (CDAI \textless{} 150),
-mild to moderate (CDAI 150\textless{}220), moderate to severe (CDAI
-220\textless{}450), and severe (CDAI \textless{} 450) (38). Patients
-provided stool samples at baseline (screening) and at 4, 6, and 22 weeks
-post induction for analysis using 16S rRNA gene sequencing (Figure 1B).
+the disease severity score (38, 39). Patients provided stool samples at
+baseline (screening) and at 4, 6, and 22 weeks post induction for
+analysis using 16S rRNA gene sequencing (Figure 1B).
 
 We hypothesized that the baseline fecal microbiota could predict
-therapuetic response (CDAI deacrease \textgreater{}30\%) 6 weeks post
-induction. To test this hypothesis, we constructed random-forest (RF)
-models to classify responders from non-responders 6 weeks post induction
-based on the relative abundance of fecal microbiota community members at
-baseline, clinical metadata at baseline, and the combination of
-microbiota and clinical data (6, 40). Clinical data included components
-of the CDAI, biomarkers for inflammation, and patient metadata described
-further in the methods section. We ran these models on 232 baseline
-stool samples from patients induced with UST. Clinical data alone
-resulted in an AUC of 0.693 (specificity = 0.76, sensitivity = 0.598)
-(Figure 2A). Using only microbiota data, the model predicted response
-with an AUC of 0.737 (specificity = 0.807, sensitivity = 0.585). When
-combining clinical metadata with the microbiome, the model predicted
-response with an AUC of 0.745 (specificity = 0.727, sensitivity =
-0.744). These models were not significantly different in their ability
-to predict response. Optimal predictors were determined based on their
-mean decrease in accuracy (MDA) in the ability of the model to classify
-response (Figure 2B).
+therapeutic response (CDAI decrease \textgreater{}30\%) 6 weeks post
+induction. To test this hypothesis, we generated prognostic random
+forest (RF) models to classify responders from non-responders 6 weeks
+post induction based on the relative abundance of fecal microbiota
+community members at baseline, clinical metadata at baseline, and the
+combination of microbiota and clinical data. We determined the optimal
+model based the largest area under the curve (AUC) of the receiver
+operating characteristic (ROC) curve for the RF model (6, 40). Clinical
+data included components of the CDAI, biomarkers for inflammation, and
+patient metadata described further in the methods section. We ran these
+models on 232 baseline stool samples from patients induced with UST.
+Clinical data alone resulted in an AUC of 0.693 (specificity = 0.76,
+sensitivity = 0.598) (Figure 2A). Using only microbiota data, the model
+predicted response with an AUC of 0.737 (specificity = 0.807,
+sensitivity = 0.585). When combining clinical metadata with the
+microbiome, the model predicted response with an AUC of 0.745
+(specificity = 0.727, sensitivity = 0.744). These models were not
+significantly different in their ability to predict response. Optimal
+predictors were determined based on their mean decrease in accuracy
+(MDA) in the ability of the model to classify response (Figure 2B).
 
 \textbf{Prediction of remission following treatment}
 
 We also investigated whether the baseline fecal microbiota could predict
-therapuetic remission (CDAI \textless{} 150) 6 weeks post induction. To
+therapeutic remission (CDAI \textless{} 150) 6 weeks post induction. To
 test this hypothesis, we again used RF models to classify patients in
 remission from those with active CD 6 weeks post induction. Clinical
 data alone resulted in an AUC of 0.616 (specificity = 0.801, sensitivity
@@ -293,21 +289,21 @@ combining clinical metadata with the microbiota we achieved an AUC of
 six. Prediction with clinical metadata alone did not perform as well as
 models using the baseline fecal microbiome (p = 0.0011) or the combined
 model (p = 0.00087). However, there was no significant difference
-between the baseline fecal microbiota model and the combined model
-\textbf{(p=)}. Also, our baseline fecal microbiota model was
-significatnly better able to classify remission compared to response (p
-= 0.043), whereas this was not true for the combined model (p = 0.055).
+between the baseline fecal microbiota model and the combined model (p =
+0.84). Also, our baseline fecal microbiota model was significantly
+better able to classify remission compared to response (p = 0.043),
+whereas this was not true for the combined model (p = 0.055).
 
 The majority of OTUs identified as optimal predictors in our model for
 remission were low in abundance across our cohort (Figure 2D). However,
 two OTUs appeared to be differentially abundant for patients in
 remission 6 weeks post induction. The relative abundance of
-\emph{Escherichia/Shigella} (OTU00001) appeared lower in remitters
-(median = 1.07 IQR = 0.033-3.7) compared to patients with active CD
-(median = 4.13, IQR = 0.667-15.4). Also, the relative abundance of
-\emph{Faecalibacterium} (OTU00007) was not only higher in remitters
-(median = 7.43, IQR = 1.43-11.9) than patients with active CD (median =
-0.167, IQR = 0-5.1), it was present prior to the start of treatment in
+\emph{Escherichia/Shigella} (OTU1) appeared lower in remitters (median =
+1.07\%, IQR = 0.033-3.7) compared to patients with active CD (median =
+4.13\%, IQR = 0.667-15.4). Also, the relative abundance of
+\emph{Faecalibacterium} (OTU7) was not only higher in remitters (median
+= 7.43\%, IQR = 1.43-11.9) than patients with active CD (median =
+0.167\%, IQR = 0-5.1), it was present prior to the start of treatment in
 every patient who was in remission 6 weeks post induction.
 
 \textbf{Comparison of clinical responders and non-responders}
@@ -322,14 +318,14 @@ Patients in remission 6 weeks post induction with UST had significantly
 higher diversity based on the inverse Simpson index than patients with
 active CD (respective median values = 11.6 (IQR = 4.66-13.9), 6.95 (IQR
 = 4.4-11.8), p = 0.020). No other treatment or response groups were
-significantly different. \({\beta}\)-diversity was significantly
-different for response and remission in UST treated patients 6 weeks
+significantly different. Baseline \({\beta}\)-diversity was
+significantly different for response and remission in patients 6 weeks
 post induction (response p = 0.012, remission p = 0.017). No phyla were
-significantly different by treatment and response (Supplemental Figure
-1) and no OTUs were significantly different among patients receiving
-placebo for induction, regardless of response and remission status. Two
-OTUs were significantly more abundant in patients in remission 6 weeks
-post induction compared to patients with active CD; \emph{Bacteroides}
+significantly different by treatment and response (Fig. S1) and no OTUs
+were significantly different among patients receiving placebo for
+induction, regardless of response and remission status. Two OTUs were
+significantly more abundant in patients in remission 6 weeks post
+induction compared to patients with active CD; \emph{Bacteroides}
 (OTU19) (p = 0.022) and \emph{Faecalibacterium} (OTU7) (p = 0.0026)
 (Figure 3).
 
@@ -344,18 +340,19 @@ disease activity (34). To test this hypothesis, we compared the baseline
 microbiota with clinical data at baseline for all 306 samples provided
 at baseline (Supplemental Table 1). We observed small, but significant
 correlations for lower \({\alpha}\)-diversity correlating with higher
-CDAI (\({\rho}\) = -0.161, p = ), higher frequency of loose stools per
-week (\({\rho}\) = -0.193, p = ), and longer disease duration
-(\({\rho}\) = -0.225, p = ). Corticosteroid use was associated with
-higher \({\alpha}\)-diversity (p = ). No significant association was
-observed between \({\alpha}\)-diversity and CRP, fecal calprotectin, or
-fecal lactoferrin. However, the \({\beta}\)-diversity was significantly
-different based on CRP (p = ), fecal calprotectin (p = ), and fecal
-lactoferrin (p = ). The \({\beta}\)-diversity was also significantly
-different based on weekly loose stool frequency (p= ), age (p = ), the
-tissue affected (p = ), corticosteroid use (p =), and disease duration
-(p = ). No significant differences in the microbiota were observed for
-BMI, weight, or sex.
+CDAI (\({\rho}\) = -0.161, p = 0.014), higher frequency of loose stools
+per week (\({\rho}\) = -0.193, p = 0.003), and longer disease duration
+(\({\rho}\) = -0.225, p = 0.001). Corticosteroid use was associated with
+higher \({\alpha}\)-diversity (p = 0.001). No significant association
+was observed between \({\alpha}\)-diversity and CRP, fecal calprotectin,
+or fecal lactoferrin. However, the \({\beta}\)-diversity was
+significantly different based on CRP (p = 0.033), fecal calprotectin (p
+= 0.006), and fecal lactoferrin (p = 0.004). The \({\beta}\)-diversity
+was also significantly different based on weekly loose stool frequency
+(p= 0.024), age (p = 0.033), the tissue affected (p = 0.004),
+corticosteroid use (p =0.010), and disease duration (p = 0.004). No
+significant differences in the microbiota were observed for BMI, weight,
+or sex.
 
 \textbf{The diversity of the microbiota changes in UST responders}
 
@@ -379,24 +376,27 @@ post induction (median = 11.4, IQR = 5.62 - 15.7).
 \textbf{The microbiota post induction can distinguish between treatment
 outcomes}
 
-Having demonstrated the microbiome changes in patients who responsd to
+Having demonstrated the microbiome changes in patients who responded to
 UST treatment, we hypothesized that the microbiota could be used to
 monitor response to UST therapy by classifying patients based on disease
-activity (34). We again contrstructed a random forest classification
-model to distinguish between patients by UST treatment outcome based on
-their fecal microbiota (6, 40). The study design resulted in only 75
-week twenty-two stool samples from patients induced and maintained with
-UST, so we focused our analysis on the 220 week 6 stool samples from
-patients induced with UST. We were again better able to distinguish
-patients in remission from patients with active CD compared to
-responders from non-responders (p = 0.0019; Figure 5A). Our model using
-week 6 stool samples for response 6 weeks post induction could classify
-patients who responded from non-responders with an AUC of 0.708
-(sensitivity = 0.769, specificity = 0.606). For remission 6 weeks post
-UST induction, the model had an AUC of 0.866 (sensitivity = 0.833,
-specificity = 0.832) when classifying patients in remission from
-patients with active CD. Important classifiers again included
-\emph{Fecalibacterium} (OTU7) (Figure 5B).
+activity (34). We again constructed a random forest classification model
+to distinguish between patients by UST treatment outcome based on their
+fecal microbiota (6, 40). The study design resulted in only 75 week
+twenty-two stool samples from patients induced and maintained with UST,
+so we focused our analysis on the 220 week 6 stool samples from patients
+induced with UST. We were again better able to distinguish patients in
+remission from patients with active CD compared to responders from
+non-responders (p = 0.0019; Figure 5A). Our model using week 6 stool
+samples for response 6 weeks post induction could classify patients who
+responded from non-responders with an AUC of 0.708 (sensitivity = 0.769,
+specificity = 0.606). For remission 6 weeks post UST induction, the
+model had an AUC of 0.866 (sensitivity = 0.833, specificity = 0.832)
+when classifying patients in remission from patients with active CD.
+Important classifiers again included \emph{Faecalibacterium} (OTU7), as
+well as \emph{Blautia} (OTU124), \emph{Clostridium XIVa} (OTU73),
+\emph{Ruminococcaceae} (OTU53), and \emph{Roseburia} (OTU12), which
+appeared to have higher median relative abundance in patients in
+remission 6 weeks post induction (Figure 5B).
 
 \subsection{Discussion}\label{discussion}
 
@@ -405,36 +405,47 @@ used to identify patients who will respond to UST therapy and to gain a
 more detailed understanding of if and how UST treatment affects the
 microbiota. We demonstrated that the microbiota could be useful in
 predicting remission due to UST therapy, compared to clinical metadata
-alone, in our unique patient cohort. We also showed found the fecal
-microbiota to be useful in uncovering associations between the
-microbiota and aspects of CD severity metrics and treatment outcomes.
-Finally, we found that the microbiota of treated responders changed over
-time. These results helped us to gain a better understanding of the
-interaction between the human gut microbiota and CD pathogenesis in
-adult patients refractory to anti-TNF-\({\alpha}\) therapies with
-moderate to severe CD.
+alone, in our unique patient cohort. We also found the fecal microbiota
+to be useful in uncovering associations between the microbiota and
+aspects of CD severity metrics and treatment outcomes. Finally, we found
+that the microbiota of treated responders changed over time. These
+results helped us to gain a better understanding of the interaction
+between the human gut microbiota and CD pathogenesis in adult patients
+refractory to anti-TNF-\({\alpha}\) therapies with moderate to severe
+CD.
 
-Porgnositc model generation paragraph
+The development of prognostic and predictive models for disease or
+treatment outcome is anticipated to have a significant impact on
+clinical decision-making in healthcare (41). Prognostic models are
+statistical tools that predict outcome based on more than one aspect of
+patient data(41). These models will help clinicians decide on the
+correct course of disease treatment or interventions for disease
+prevention with their patients. This will improve the ability of the
+clinician to deliver care. Additionally, patients will benefit with more
+individualized care that will potentially reduce adverse effects and
+result in faster recovery, reduce expenses from ineffective therapies,
+or increase quality of life by preventing disease in patients with high
+risk.
 
 The presented prognostic model is useful for biomarker discovery and
 hypothesis generation about the biology of CD as it relates to the
 microbiome. Similar models could be further developed into a clinically
-useful prognostic tool. \emph{Faecalibacterium} was the most frequently
-occurring OTU in our models. It is associated with health, comprising up
-to 5\% of the relative abundance in healthy individuals, and has been
-shown to be rare in CD patients (26, 28, 41, 42). Each patient in
-remission six weeks post UST induction had measurable
-\emph{Faecalibacterium} present at baseline. This supports the
-hypothesis that \emph{Faecalibacterium} impacts CD pathogenesis.
-\emph{Escherichia/Shigella} also occurred frequently in our models. This
-OTU is associated with inflammation and has been shown to be associated
-with CD pathogenesis (42). Many other taxa observed in our analysis had
-low abundance or were absent in the majority of patients. However, in
-many cases these taxa are related and may serve similar ecologic and
-metabolic roles in the gut environment. We hypothesize that these
-microbes may have genes that perform similar metabolic functions. These
-functions could be revealed by performing metagenomics on stool samples
-in future studies, especially in patients who achieve remission.
+useful prognostic tool. \emph{Faecalibacterium} frequently occurred in
+our models. It is associated with health, comprising up to 5\% of the
+relative abundance in healthy individuals, and has been shown to be rare
+in CD patients (26, 28, 42, 43). Each patient in remission six weeks
+post UST induction had measurable \emph{Faecalibacterium} present at
+baseline. This supports the hypothesis that \emph{Faecalibacterium}
+impacts CD pathogenesis. \emph{Escherichia/Shigella} also occurred
+frequently in our models. This OTU is associated with inflammation and
+has been shown to be associated with CD pathogenesis (43). Many other
+taxa observed in our analysis had low abundance or were absent in the
+majority of patients. However, in many cases these taxa are related and
+may serve similar ecologic and metabolic roles in the gut environment.
+We hypothesize that these microbes may have genes that perform similar
+metabolic functions. Performing metagenomics on stool samples in future
+studies, especially in patients who achieve remission, could reveal
+these functions.
 
 We were better able to classify remission status compared to response
 status. We hypothesize that this is due to the relative nature of the
@@ -443,7 +454,7 @@ status. We defined response as a decrease in a patient's baseline CDAI
 of 30\% or more, while remission was defined as a CDAI below 150. The
 original study used a decrease in CDAI of 100 points for their measure
 of response, but we felt using the relative percent change better
-represented a meaningful difference in disase activity and patient
+represented a meaningful difference in disease activity and patient
 quality of life (35). Additionally, the field appears to be moving away
 from CDAI and towards more objectively quantifiable biomarkers for
 inflammation as wells as endoscopic verification of mucosal healing.
@@ -456,33 +467,33 @@ biomarkers to measure inflammation and CD severity. We found that the
 microbial community structure is different among patients based on these
 markers. This supports the hypothesis that the fecal microbiota could
 function as a biomarker for measuring disease activity in patients,
-especially in concert with established inflammatory biomarkers (34, 43,
-44). We also found that higher CDAI was associated with lower microbial
+especially in concert with established inflammatory biomarkers (34, 44,
+45). We also found that higher CDAI was associated with lower microbial
 diversity. This is consistent with other studies on the microbiota in
 individuals with CD compared to healthy individuals and studies looking
-at active disease compared to remission (11, 34, 45). However, these
-differences may have been driven by the CDAI subscore of weekly stool
-frequency (Supplementary Table 1), which is consistent with previous
-studies (46). We also observed differences in the microbial community
-structure based on disease localization, which is consistent with a
-study by Naftali et al (41). Our study also found that corticosteroid
-use impacts the composition of the human fecal microbiota, which is
-consistent with observations in mouse models (47). As corticosteroid use
-appears to impact diversity, corticosteroid therapy may be useful when
-trying to positively impact microbial diversity during biologic therapy
-and thereby increase the possibility of response to CD therapies. We
-also observed that longer disease duration is associated with a
-reduction in fecal microbial diversity. This decreased diversity may be
-due to the long duration of inflammatory conditions in the gut. This
-observation and the increased likelihood of remission and mucosal
-healing in individuals treated with biologics earlier in the course of
-their disease is an argument for earlier biologic intervention (48--50).
+at active disease compared to remission (11, 34, 46). However, the CDAI
+sub score of weekly stool frequency may have driven these differences
+(Supplementary Table 1), which is consistent with previous studies (47).
+We also observed differences in the microbial community structure based
+on disease localization, which is consistent with a study by Naftali et
+al (42). Our study also found that corticosteroid use impacts the
+composition of the human fecal microbiota, which is consistent with
+observations in mouse models (48). As corticosteroid use appears to
+impact diversity, corticosteroid therapy may be useful when trying to
+positively impact microbial diversity during biologic therapy and
+thereby increase the possibility of response to CD therapies. We also
+observed that longer disease duration is associated with a reduction in
+fecal microbial diversity. This decreased diversity may be due to the
+long duration of inflammatory conditions in the gut. This observation
+and the increased likelihood of remission and mucosal healing in
+individuals treated with biologics earlier in the course of their
+disease is an argument for earlier biologic intervention (49--51).
 Hypothetically, earlier biologic intervention would occur before chronic
-inflammation resultled in reduced microbial diveristy. A more diverse
+inflammation resulted in reduced microbial diversity. A more diverse
 microbiota may then promote remission and reduce the likelihood of
 relapse. However, the cost of biologics for patients is hindrance to
 early biologic intervention. Using aptamers in place of monoclonal
-antibodies may alleviate this expense (51).
+antibodies may alleviate this expense (52).
 
 We observed that the \({\alpha}\)-diversity of clinical responders
 increased over time, in contrast to nonresponsive patients. This
@@ -505,11 +516,11 @@ patient's microbiome prior to or during treatment with the goal of
 improving the outcome of UST treatment. Additionally, further research
 into the microbiota as a prognostic biomarker could eventually allow for
 the screening of patients with stool samples at diagnosis to better
-inform other treatment decisions. If the fecal microbiota can be used as
-a prognostic tool to non-invasively predict response to specific
-treatment modalities or inform treatment, then more personalized
-treatment could result in faster achievement of remission, thereby
-increasing patients' quality of life and reducing economic and
+inform other treatment decisions. If the fecal microbiota can be
+validated as a prognostic tool to non-invasively predict response to
+specific treatment modalities or inform treatment, then more
+personalized treatment could result in faster achievement of remission,
+thereby increasing patients' quality of life and reducing economic and
 healthcare impacts.
 
 \newpage
@@ -524,7 +535,7 @@ II clinical study of approximately 500 patients to assess the safety and
 efficacy of UST for treating anti-TNF-\({\alpha}\) refractory, moderate
 to severe CD patients (35) (Figure 1). Institutional review board
 approval was acquired at each participating study center and patients
-provided written informed consten (35). Patient data was deidentified
+provided written informed consent (35). Patient data was de-identified
 for our study. Both patients and clinicians were blinded to their
 induction and maintenance treatment groups. Participants provided a
 stool sample prior to the initiation of the study and were then divided
@@ -548,19 +559,19 @@ Microbial genomic DNA was extracted using the PowerSoil-htp 96 Well Soil
 DNA Isolation Kit (MoBio Laboratories) and an EPMotion 5075 pipetting
 system (5, 6). The V4 region of the 16S rRNA gene from each sample was
 amplified and sequenced using the Illumina
-MiSeq\(\text{\texttrademark}\) platform (44). Sequences were curated as
-described previously using the mothur software package (v.1.34.4) (52,
-53). Briefly, we curated the sequences to reduce sequencing and PCR
-errors (54), aligned the resulting sequences to the SILVA 16S rRNA
-sequence database (55), and used UCHIME to remove any chimeric sequences
-(56). Sequences were clustered into operational taxonomic units (OTU) at
-a 97\% similarity cutoff using the average neighbor algorithm (57). All
+MiSeq\(\text{\texttrademark}\) platform (45). Sequences were curated as
+described previously using the mothur software package (v.1.34.4) (53,
+54). Briefly, we curated the sequences to reduce sequencing and PCR
+errors (55), aligned the resulting sequences to the SILVA 16S rRNA
+sequence database (56), and used UCHIME to remove any chimeric sequences
+(57). Sequences were clustered into operational taxonomic units (OTU) at
+a 97\% similarity cutoff using the average neighbor algorithm (58). All
 sequences were classified using a naive Bayesian classifier trained
 against the RDP training set (version 14) and OTUs were assigned a
 classification based on which taxonomy had the majority consensus of
-sequences within a given OTU (58).
+sequences within a given OTU (59).
 
-Following sequence curation using the mothur software package (52), we
+Following sequence curation using the mothur software package (53), we
 obtained a median of 13,732 sequences per sample (IQR = 7,863-21,978).
 Parallel sequencing of a mock community had an error rate of 0.017\%. To
 limit effects of uneven sampling, we rarefied the dataset to 3,000
@@ -575,62 +586,71 @@ at \textbf{SRA}.
 \paragraph{Gut microbiota biomarker discovery and statistical
 analysis}\label{gut-microbiota-biomarker-discovery-and-statistical-analysis}
 
-R v.3.3.2 (2016-10-31) and mothur were used to analyze the data (59). To
+R v.3.3.2 (2016-10-31) and mothur were used to analyze the data (60). To
 assess \({\alpha}\)-diversity, the inverse Simpson index was calculated
 for each sample in the dataset. Spearman correlation tests were
 performed to compare the inverse Simpson index and continuous clinical
 data. Wilcoxon rank sum tests were performed for pairwise comparisons
 and Kruskal-Wallis rank sum tests for comparisons with more than two
-groups (60, 61). To measure \({\beta}\)-diversity, the distance between
+groups (61, 62). To measure \({\beta}\)-diversity, the distance between
 samples was calculated using the thetaYC metric, which takes into
 account the types of bacteria and their abundance to calculate the
-differences between the communities (62). These distance matrices were
+differences between the communities (63). These distance matrices were
 assessed for overlap between sets of communities using the
 non-parametric analysis of molecular variance (AMOVA) and homogeneity of
-variance (HOMOVA) tests in mothur (63), as well as the adonis function
-in the R package vegan (v.2.4.2) (64). Change in \({\alpha}\)-diversity
+variance (HOMOVA) tests in mothur (64), as well as the adonis function
+in the R package vegan (v.2.4.2) (65). Change in \({\alpha}\)-diversity
 over time based on week twenty-two response was assessed using a
-Friedman test on patients who provided a sample at each time point (65).
+Friedman test on patients who provided a sample at each time point (66).
 The Friedman test is a function in the R package stats (v.3.3.2).
 Multiple comparisons following a Friedman test were performed using the
-friedmanmc function in the package pgirmess (v.1.6.5) (66). Change in
+friedmanmc function in the package pgirmess (v.1.6.5) (67). Change in
 beta-diversity over time by treatment group and response was assessed
 using the adonis function in vegan stratified by patient. We used the
 relative abundance of each OTU, inverse Simpson index, age, sex, current
 medications, BMI, disease duration, disease location, fecal
 calprotectin, fecal lactoferrin, C-reactive protein, bowel stricture,
-and CDAI subscores as input into our RF models constructed with the
-AUCRF R package (v.1.1) (67), in order to identify phylotypes or
+and CDAI sub scores as input into our RF models constructed with the
+AUCRF R package (v.1.1) (68), in order to identify phylotypes or
 clinical variables that distinguish between various treatment and
 response groups, as well as to predict or determine response outcome
-(68). Optimal predictors were determined based on their mean decrease in
+(69). Optimal predictors were determined based on their mean decrease in
 accuracy (MDA) of the model to classify patients. Differentially
 abundant OTUs and phyla were selected through comparison of clinical
 groups using Kruskal-Wallis and Wilcox tests, where appropriate, to
 identify OTUs/phyla where there was a p-value less than 0.05 following a
-Benjamini-Hochberg correction for multiple comparisons (69). Other R
-packages used in our analysis included ggplot2 v.2.2.1 (70), dplyr
-v.0.5.0 (71), pROC v.1.9.1 (72), knitr v.1.15.1 (73--75), gridExtra
-v.2.2.1 (76), devtools v.1.12.0 (77), knitcitations v.1.0.7 (78), scales
-v.0.4.1 (79), tidyr v.0.6.1 (80), Hmisc v.4.0.2 (81), and cowplot
-v.0.7.0 (82). A reproducible version of this analysis and manuscript are
-available at
+Benjamini-Hochberg correction for multiple comparisons (70). Other R
+packages used in our analysis included ggplot2 v.2.2.1 (71), dplyr
+v.0.5.0 (72), pROC v.1.9.1 (73), knitr v.1.15.1 (74), gridExtra v.2.2.1
+(75), devtools v.1.12.0 (76), knitcitations v.1.0.7 (77), scales v.0.4.1
+(78), tidyr v.0.6.1 (79), Hmisc v.4.0.2 (80), and cowplot v.0.7.0 (81).
+A reproducible version of this analysis and manuscript are available at
 \url{https://github.com/SchlossLab/Doherty_CDprediction_mBio_2017}.
+
+\subsection{Funding information.}\label{funding-information.}
+
+Janssen Research and Development generously supported this study.
+
+\subsection{Acknowledgements}\label{acknowledgements}
+
+We would like to thank N. Baxter, K. Iverson, K. Flynn, M. Sze, and N.
+Lesniak, as well as our collaborators at Janssen, for discussion of the
+work and comments on previous versions of the manuscript.
 
 \newpage
 
 \subsection{Tables}\label{tables}
 
-\textbf{Table 1: Summary of clinical metadata of chort at baseline}
+\textbf{Table 1: Summary of clinical metadata of cohort at baseline}
 
 \includegraphics{tables/Table1_baseline_metadata.pdf}
 
 \newpage
 
 \textbf{Supplemental Table 1: Diversity differences based on clinical
-metadata of chort at baseline}
+metadata of cohort at baseline}
 
-\includegraphics{tables/Supp.table1_cohortdiversity.png}
+\includegraphics{tables/Supp.table1_cohortdiversity.pdf}
 
 \newpage
 
@@ -638,22 +658,27 @@ metadata of chort at baseline}
 
 \textbf{Figure 1: Experimental design as adapted from Sandborne et al
 2012.} (A) Diagram of experimental design. Participants were divided
-into 4 groups of 125 individuals receiving placebo or 1, 3, or 6 mg/kg
-doses of UST by IV. At week 8, patients were divided into groups
-receiving either subcutaneous injection of UST or placebo at weeks 8 and
-16 as maintenance therapy, based on response at week six. Finally, at 22
-weeks patients were scored using CDAI for their response to therapy. (B)
-Stool sampling, treatment, and response evalution timeline.
+into treatment groups receiving placebo or UST by IV for induction. At
+week 8, patients were divided into groups receiving either subcutaneous
+injection of UST or placebo at weeks 8 and 16 as maintenance therapy,
+based on response at week 6. Finally, at 22 weeks patients were scored
+using CDAI for their response to therapy. (B) Stool sampling, treatment,
+and response evalution timeline. \(\uparrow\), treatment administration;
+IV, intravenous; PE, primary endpoint; R, randomization; RR,
+rerandomization (only for subjects receiving UST induction therapy); SC,
+subcutaneous.
 
 \includegraphics{figures/Figure1_expdesign.pdf}
 
 \newpage
 
-\textbf{Figure 2: Prediction of week six disease status in patients
-treated with UST, using baseline samples} ROCs for (A) response and (C)
-remission using microbiota data, clinical metadata, and a combined
-model. Top predictive taxa for the microbiota model based on MDA for (B)
-response and (D) remission.
+\textbf{Figure 2: Prediction of week 6 treatment outcome in patients
+treated with UST, using baseline samples} Receiver operating
+characteristic (ROC) curves for (A) response and (C) remission using
+microbiota data (blue), clinical metadata (black), and a combined model
+(red). Top predictive OTUs for the microbiota model based on mean
+decrease in accuracy (MDA) for (B) response and (D) remission. Black
+bars represent the median relative abundance.
 
 \includegraphics{figures/Figure2_wk0Xwk6pred.pdf}
 
@@ -664,7 +689,8 @@ patients treated with UST by week six outcome} Compared the relative
 abundance of each phylum in UST teated patients based on (A) response
 and (B) remission status using a Wilcoxon rank sum test and to identify
 phyla where there was a p-value less than 0.05 following a
-Benjamini-Hochberg correction for multiple comparisons.
+Benjamini-Hochberg correction for multiple comparisons. Whiskers
+represent the range.
 
 \includegraphics{figures/SF1_wk6phyla.pdf}
 
@@ -672,10 +698,11 @@ Benjamini-Hochberg correction for multiple comparisons.
 
 \textbf{Figure 3: Differential taxa in baseline stool samples from
 patients treated with UST, based on week six remission status} Compared
-the relative abundance of each OTU in UST teated patients based on (A)
-response and (B) remission status using a Wilcoxon rank sum test to
-identify OTUs where there was a p-value less than 0.05 following a
-Benjamini-Hochberg correction for multiple comparisons.
+the relative abundance of each OTU in patients in remission 6 weeks post
+induction using a Wilcoxon rank sum test to identify OTUs where there
+was a p-value less than 0.05 following a Benjamini-Hochberg correction
+for multiple comparisons. Black bars represent the median relative
+abundance.
 
 \includegraphics{figures/Figure3_basesigOTUabund.REMISSwk6.pdf}
 
@@ -684,20 +711,20 @@ Benjamini-Hochberg correction for multiple comparisons.
 \textbf{Figure 4: Change in alpha diversity over time by induction
 treatment and week twenty-two response status.} The
 \({\alpha}\)-diversity of 48 patients induced and maintained with UST
-and 14 patients induced and maintained with placebo was assess at each
+and 14 patients induced and maintained with placebo was assessed at each
 time point. Friedman test were perfomed within each teatment and
-responder group. * indicates week twenty-two is significantly different
-from baseline (p \textless{}0.05).
+responder group. Whiskers represent the range. * indicates week 22 is
+significantly different from baseline (p \textless{}0.05).
 
 \includegraphics{figures/Figure4_alltp.adivXvisitXindtrtXrelRSPwk22.pdf}
 
 \newpage
 
-\textbf{Figure 5: Classification of week six response or remission
-status using week six stool samples from patients treated with UST} (A)
-ROCs for week six outcome based on the week six microbiome. (B) Top
-predictive taxa from week six stool for remission status at week six,
-based on MDA.
+\textbf{Figure 5: Classification of week 6 response or remission status
+using week 6 stool samples from patients treated with UST} (A) ROC
+curves for week 6 outcome based on the week 6 microbiome. (B) Predictive
+taxa from week 6 stool for remission status at 6 weeks post induction,
+based on MDA. Black bars represent the median relative abundance.
 
 \includegraphics{figures/Figure5_wk6Xwk6.pdf}
 
@@ -946,46 +973,51 @@ study. Gastroenterology 70:439--44.
 strategy for genomic profiling with random forest. Human Heredity
 72:121--132.
 
+\hypertarget{ref-Vogenberg_progmods_2009}{}
+41. Vogenberg FR. 2009. Predictive and prognostic models: Implications
+for healthcare decision-making in a modern recession. Am Health Drug
+Benefits 2:218--22.
+
 \hypertarget{ref-naftali_tissinvol_2016}{}
-41. Naftali T, Reshef L, Kovacs A, Porat R, Amir I, Konikoff FM, Gophna
+42. Naftali T, Reshef L, Kovacs A, Porat R, Amir I, Konikoff FM, Gophna
 U. 2016. Distinct microbiotas are associated with ileum-restricted and
 colon-involving crohn's disease. Inflamm Bowel Dis 22:293--302.
 
 \hypertarget{ref-sartor_microbesIBD_2016}{}
-42. Sartor RB, Wu GD. 2016. Roles for intestinal bacteria, viruses, and
+43. Sartor RB, Wu GD. 2016. Roles for intestinal bacteria, viruses, and
 fungi in pathogenesis of inflammatory bowel diseases and therapeutic
 approaches. Gastroenterology.
 
 \hypertarget{ref-boon_fmarkers_2015}{}
-43. Boon GJ, Day AS, Mulder CJ, Gearry RB. 2015. Are faecal markers good
+44. Boon GJ, Day AS, Mulder CJ, Gearry RB. 2015. Are faecal markers good
 indicators of mucosal healing in inflammatory bowel disease? World J
 Gastroenterol 21:11469--80.
 
 \hypertarget{ref-chang_monitoring_2015}{}
-44. Chang S, Malter L, Hudesman D. 2015. Disease monitoring in
+45. Chang S, Malter L, Hudesman D. 2015. Disease monitoring in
 inflammatory bowel disease. World J Gastroenterol 21:11246--59.
 
 \hypertarget{ref-papa_pedsIBD_2012}{}
-45. Papa E, Docktor M, Smillie C, Weber S, Preheim SP, Gevers D,
+46. Papa E, Docktor M, Smillie C, Weber S, Preheim SP, Gevers D,
 Giannoukos G, Ciulla D, Tabbaa D, Ingram J, Schauer DB, Ward DV,
 Korzenik JR, Xavier RJ, Bousvaros A, Alm EJ. 2012. Non-invasive mapping
 of the gastrointestinal microbiota identifies children with inflammatory
 bowel disease. PLoS One 7:e39242.
 
 \hypertarget{ref-vandeputte_stoolcon_2016}{}
-46. Vandeputte D, Falony G, Vieira-Silva S, Tito RY, Joossens M, Raes J.
+47. Vandeputte D, Falony G, Vieira-Silva S, Tito RY, Joossens M, Raes J.
 2016. Original article: Stool consistency is strongly associated with
 gut microbiota richness and composition, enterotypes and bacterial
 growth rates. Gut 65:57--62.
 
 \hypertarget{ref-huang_cort_2015}{}
-47. Huang EY, Inoue T, Leone VA, Dalal S, Touw K, Wang Y, Musch MW,
+48. Huang EY, Inoue T, Leone VA, Dalal S, Touw K, Wang Y, Musch MW,
 Theriault B, Higuchi K, Donovan S, Gilbert J, Chang EB. 2015. Using
 corticosteroids to reshape the gut microbiome: Implications for
 inflammatory bowel diseases. Inflamm Bowel Dis 21:963--72.
 
 \hypertarget{ref-monteleone_mongersen_2015}{}
-48. Monteleone G, Neurath MF, Ardizzone S, Di Sabatino A, Fantini MC,
+49. Monteleone G, Neurath MF, Ardizzone S, Di Sabatino A, Fantini MC,
 Castiglione F, Scribano ML, Armuzzi A, Caprioli F, Sturniolo GC, Rogai
 F, Vecchi M, Atreya R, Bossa F, Onali S, Fichera M, Corazza GR, Biancone
 L, Savarino V, Pica R, Orlando A, Pallone F. 2015. Mongersen, an oral
@@ -993,24 +1025,24 @@ SMAD7 antisense oligonucleotide, and crohn's disease. N Engl J Med
 372:1104--13.
 
 \hypertarget{ref-monteleone_mongersen_2016}{}
-49. Monteleone G, Di Sabatino A, Ardizzone S, Pallone F, Usiskin K, Zhan
+50. Monteleone G, Di Sabatino A, Ardizzone S, Pallone F, Usiskin K, Zhan
 X, Rossiter G, Neurath MF. 2016. Impact of patient characteristics on
 the clinical efficacy of mongersen (GED-0301), an oral smad7 antisense
 oligonucleotide, in active crohn's disease. Aliment Pharmacol Ther
 43:717--24.
 
 \hypertarget{ref-ardizzone_mongersen_2016}{}
-50. Ardizzone S, Bevivino G, Monteleone G. 2016. Mongersen, an oral
+51. Ardizzone S, Bevivino G, Monteleone G. 2016. Mongersen, an oral
 smad7 antisense oligonucleotide, in patients with active crohn's
 disease. Therap Adv Gastroenterol 9:527--32.
 
 \hypertarget{ref-orava_short_2013}{}
-51. Orava EW, Jarvik N, Shek YL, Sidhu SS, Gariepy J. 2013. A short DNA
+52. Orava EW, Jarvik N, Shek YL, Sidhu SS, Gariepy J. 2013. A short DNA
 aptamer that recognizes TNFalpha and blocks its activity in vitro. ACS
 Chem Biol 8:170--8.
 
 \hypertarget{ref-schloss_mothur_2009}{}
-52. Schloss PD, Westcott SL, Ryabin T, Hall JR, Hartmann M, Hollister
+53. Schloss PD, Westcott SL, Ryabin T, Hall JR, Hartmann M, Hollister
 EB, Lesniewski RA, Oakley BB, Parks DH, Robinson CJ, Sahl JW, Stres B,
 Thallinger GG, Van Horn DJ, Weber CF. 2009. Introducing mothur:
 Open-source, platform-independent, community-supported software for
@@ -1018,134 +1050,125 @@ describing and comparing microbial communities. Appl Environ Microbiol
 75:7537--41.
 
 \hypertarget{ref-Kozich_MiSeqSOP_2013}{}
-53. Kozich JJ, Westcott SL, Baxter NT, Highlander SK, Schloss PD. 2013.
+54. Kozich JJ, Westcott SL, Baxter NT, Highlander SK, Schloss PD. 2013.
 Development of a dual-index sequencing strategy and curation pipeline
 for analyzing amplicon sequence data on the miseq illumina sequencing
 platform. Appl Environ Microbiol 79:5112--20.
 
 \hypertarget{ref-schloss_PCRartifacts_2011}{}
-54. Schloss PD, Gevers D, Westcott SL. 2011. Reducing the effects of PCR
+55. Schloss PD, Gevers D, Westcott SL. 2011. Reducing the effects of PCR
 amplification and sequencing artifacts on 16S rRNA-based studies. PLoS
 One 6:e27310.
 
 \hypertarget{ref-Quast_silva_2013}{}
-55. Quast C, Pruesse E, Yilmaz P, Gerken J, Schweer T, Yarza P, Peplies
+56. Quast C, Pruesse E, Yilmaz P, Gerken J, Schweer T, Yarza P, Peplies
 J, Glöckner FO. 2013. The silva ribosomal rna gene database project:
 Improved data processing and web-based tools. Nucleic Acids Res
 41:D590--6.
 
 \hypertarget{ref-edgar_uchime_2011}{}
-56. Edgar RC, Haas BJ, Clemente JC, Quince C, Knight R. 2011. UCHIME
+57. Edgar RC, Haas BJ, Clemente JC, Quince C, Knight R. 2011. UCHIME
 improves sensitivity and speed of chimera detection. Bioinformatics
 27:2194--200.
 
 \hypertarget{ref-schloss_OTUanalysis_2011}{}
-57. Schloss PD, Westcott SL. 2011. Assessing and improving methods used
+58. Schloss PD, Westcott SL. 2011. Assessing and improving methods used
 in operational taxonomic unit-based approaches for 16S rRNA gene
 sequence analysis. Appl Environ Microbiol 77:3219--26.
 
 \hypertarget{ref-wang_taxonomy_2007}{}
-58. Wang Q, Garrity GM, Tiedje JM, Cole JR. 2007. Naive bayesian
+59. Wang Q, Garrity GM, Tiedje JM, Cole JR. 2007. Naive bayesian
 classifier for rapid assignment of rRNA sequences into the new bacterial
 taxonomy. Appl Environ Microbiol 73:5261--7.
 
 \hypertarget{ref-R}{}
-59. R Core Team. 2016. R: A language and environment for statistical
+60. R Core Team. 2016. R: A language and environment for statistical
 computing. R Foundation for Statistical Computing, Vienna, Austria.
 
 \hypertarget{ref-sokal_biometrystats_1995}{}
-60. Sokal RR, Rohlf FJ. 1995. Biometry: The principles and practice of
+61. Sokal RR, Rohlf FJ. 1995. Biometry: The principles and practice of
 statistics in biological research, 3rd ed. Freeman, New York.
 
 \hypertarget{ref-magurran_measuring_2004}{}
-61. Magurran AE. 2004. Measuring biological diversity. Blackwell Pub.,
+62. Magurran AE. 2004. Measuring biological diversity. Blackwell Pub.,
 Malden, Ma.
 
 \hypertarget{ref-yue_thetaYC_2005}{}
-62. Yue JC, Clayton MK. 2005. A similarity measure based on species
+63. Yue JC, Clayton MK. 2005. A similarity measure based on species
 proportions. Communications in Statistics-Theory and Methods
 34:2123--2131.
 
 \hypertarget{ref-schloss_commstruct_2008}{}
-63. Schloss PD. 2008. Evaluating different approaches that test whether
+64. Schloss PD. 2008. Evaluating different approaches that test whether
 microbial communities have the same structure. ISME J 2:265--75.
 
 \hypertarget{ref-oksanen_vegan_2016}{}
-64. Oksanen J, Blanchet FG, Friendly M, Kindt R, Legendre P, McGlinn D,
+65. Oksanen J, Blanchet FG, Friendly M, Kindt R, Legendre P, McGlinn D,
 Minchin PR, O'Hara RB, Simpson GL, Solymos P, Stevens MHH, Szoecs E,
 Wagner H. 2016. Vegan: Community ecology package. r package version
 2.4-1.
 
 \hypertarget{ref-friedman_1937}{}
-65. Friedman M. 1937. The use of ranks to avoid the assumption of
+66. Friedman M. 1937. The use of ranks to avoid the assumption of
 normality implicit in the analysis of variance. Journal of the American
 Statistical Association 32:675--701.
 
 \hypertarget{ref-pgirmess}{}
-66. Giraudoux P. 2016. Pgirmess: Data analysis in ecology.
+67. Giraudoux P. 2016. Pgirmess: Data analysis in ecology.
 
 \hypertarget{ref-AUCRF}{}
-67. Urrea V, Calle M. 2012. AUCRF: Variable selection with random forest
+68. Urrea V, Calle M. 2012. AUCRF: Variable selection with random forest
 and the area under the curve.
 
 \hypertarget{ref-breiman_rf_2001}{}
-68. Breiman L. 2001. Random forests. Machine Learning 45:5--32.
+69. Breiman L. 2001. Random forests. Machine Learning 45:5--32.
 
 \hypertarget{ref-Benjamini_Hochberg_1995}{}
-69. Benjamini Y, Hochberg Y. 1995. Controlling the false discovery rate:
+70. Benjamini Y, Hochberg Y. 1995. Controlling the false discovery rate:
 A practical and powerful approach to multiple testing. Journal of the
 Royal Statistical Society Series B (Methodological) 57:289--300.
 
 \hypertarget{ref-ggplot2}{}
-70. Wickham H. 2009. Ggplot2: Elegant graphics for data analysis.
+71. Wickham H. 2009. Ggplot2: Elegant graphics for data analysis.
 Springer-Verlag New York.
 
 \hypertarget{ref-dplyr}{}
-71. Wickham H, Francois R. 2016. Dplyr: A grammar of data manipulation.
+72. Wickham H, Francois R. 2016. Dplyr: A grammar of data manipulation.
 
 \hypertarget{ref-pROC}{}
-72. Robin X, Turck N, Hainard A, Tiberti N, Lisacek F, Sanchez J-C,
+73. Robin X, Turck N, Hainard A, Tiberti N, Lisacek F, Sanchez J-C,
 Müller M. 2011. PROC: An open-source package for r and s+ to analyze and
 compare roc curves. BMC Bioinformatics 12:77.
-
-\hypertarget{ref-knitr2014}{}
-73. Xie Y. 2014. Knitr: A comprehensive tool for reproducible research
-in R. \emph{In} Stodden, V, Leisch, F, Peng, RD (eds.), Implementing
-reproducible computational research. Chapman; Hall/CRC.
 
 \hypertarget{ref-knitr2015}{}
 74. Xie Y. 2015. Dynamic documents with R and knitr, 2nd ed. Chapman;
 Hall/CRC, Boca Raton, Florida.
 
-\hypertarget{ref-knitr2017}{}
-75. Xie Y. 2017. Knitr: A general-purpose package for dynamic report
-generation in r.
-
 \hypertarget{ref-gridExtra}{}
-76. Auguie B. 2016. GridExtra: Miscellaneous functions for ``grid''
+75. Auguie B. 2016. GridExtra: Miscellaneous functions for ``grid''
 graphics.
 
 \hypertarget{ref-devtools}{}
-77. Wickham H, Chang W. 2016. Devtools: Tools to make developing r
+76. Wickham H, Chang W. 2016. Devtools: Tools to make developing r
 packages easier.
 
 \hypertarget{ref-knitcitations}{}
-78. Boettiger C. 2015. Knitcitations: Citations for 'knitr' markdown
+77. Boettiger C. 2015. Knitcitations: Citations for 'knitr' markdown
 files.
 
 \hypertarget{ref-scales}{}
-79. Wickham H. 2016. Scales: Scale functions for visualization.
+78. Wickham H. 2016. Scales: Scale functions for visualization.
 
 \hypertarget{ref-tidyr}{}
-80. Wickham H. 2017. Tidyr: Easily tidy data with 'spread()' and
+79. Wickham H. 2017. Tidyr: Easily tidy data with 'spread()' and
 'gather()' functions.
 
 \hypertarget{ref-Hmisc}{}
-81. Harrell Jr FE, Charles Dupont, others. 2016. Hmisc: Harrell
+80. Harrell Jr FE, Charles Dupont, others. 2016. Hmisc: Harrell
 miscellaneous.
 
 \hypertarget{ref-cowplot}{}
-82. Wilke CO. 2016. Cowplot: Streamlined plot theme and plot annotations
+81. Wilke CO. 2016. Cowplot: Streamlined plot theme and plot annotations
 for 'ggplot2'.
 
 
