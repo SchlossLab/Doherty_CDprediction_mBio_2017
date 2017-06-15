@@ -75,13 +75,6 @@ nao.screen.trtd.dist<-as.dist(nao.screen.trtd.distmat)
 nao.screen.plac.distmat<-read.table("../data/Jan400.screening.plac.na.omit.cmd.thetayc.0.03.square.ave.dist")
 nao.screen.plac.dist<-as.dist(nao.screen.plac.distmat)
 
-screen.all.distmat<-read.table("../data/Jan400.screen.all.thetayc.0.03.square.ave.dist")
-screen.all.dist<-as.dist(screen.all.distmat)
-screen.trtd.distmat<-read.table("../data/Jan400.screen.ust.thetayc.0.03.square.ave.dist")
-screen.trtd.dist<-as.dist(screen.trtd.distmat)
-screen.plac.distmat<-read.table("../data/Jan400.screen.plac.thetayc.0.03.square.ave.dist")
-screen.plac.dist<-as.dist(screen.plac.distmat)
-
 trtd_trtd.data.distmat<-read.table("../data/Jan400.trtd_trtd.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
 trtd_trtd.data.dist<-as.dist(trtd_trtd.data.distmat)
 trtd_plac.data.distmat<-read.table("../data/Jan400.trtd_plac.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
@@ -110,7 +103,7 @@ dev.off()
 
 #trtd.screen_data <- screen_data
 #screen_data <- trtd.screen_data[trtd.screen_data$TRTGR=="Treated",]
-source("../code/Figure5_REMISSwk6.sig.otu.figure.R")
+source("../code/Figure3_REMISSwk6.sig.otu.figure.R")
 
 screen_data.trtd <- screen_data[screen_data$TRTGR=="Treated",]
 screen_data.trtd_groups <- screen_data.trtd[, c("group", "TRTGR")]
@@ -997,6 +990,8 @@ tissinvol_plac<-gsub(",", "", tissinvol_plac)
 tissinvol_plac<-gsub(" ", "", tissinvol_plac)
 
 tissinvol.cohort<- matrix(c('Tissue Involvement (%) \nColon/Ileocolic/Ileal', tissinvol_trtd, tissinvol_plac, tissinvol_total), ncol = 4)
+
+source("../code/Table1_baseline_metadata.R")
 ```
 
 
@@ -1316,40 +1311,16 @@ all.REMISSwk22_AMOVA<-toString(c(all.REMISSwk22_AMOVA_p))
 all.REMISSwk22_AMOVA<-gsub(",", "", all.REMISSwk22_AMOVA)
 all.REMISSwk22<-matrix(c('Week 22 Remission (No, Yes)', trtd.REMISSwk22_sum, plac.REMISSwk22_sum, all.REMISSwk22.kw.test.pval, all.REMISSwk22_AMOVA), ncol = 5)
 
+source('../code/table2diversity.R')
 ```
 
 ```{r tbl1padj, include=F}
-colnames(CDAI) <- c('Clinical Variable', 'Summary', 'Species Richness (Alpha-diversity)', 'Community Structure (beta-diversity)')
-tbl1<-rbind(CDAI, Stool)
+source('../code/Supptable1.cohortdiv.R')
 
-cohortdiv<-c("CRP", "FCALP", "FLACT", "BMI", "weight", "AGE", "SEX", "BCORT", "DDUR", "tissinvol")
-
-for (i in cohortdiv){
-	tbl1<-rbind(tbl1, get(i))
-}
 
 tbl1 <- data.frame(tbl1)
-adiv_p <- as.numeric(as.character(tbl1$Species.Richness..Alpha.diversity.))
 
-tbl1_adiv_adj_p <- p.adjust(adiv_p, method="BH")
-tbl1$Species.Richness..Alpha.diversity.<-as.factor(round(tbl1_adiv_adj_p, 3))
 
-bdiv_p <- as.numeric(as.character(tbl1$Community.Structure..beta.diversity.))
-
-tbl1_bdiv_adj_p <- p.adjust(bdiv_p, method="BH")
-tbl1$Community.Structure..beta.diversity.<-as.factor(round(tbl1_bdiv_adj_p, 3))
-
-tbl1
-
-```
-
-```{r SUpptable1diversity, fig.height=5, fig.width=10, include=F}
-
-source('../code/table2diversity.R')
-
-# pdf(file='tables/table2diversity.pdf', height=4, width=6)
-# grid.table(table2div)
-# dev.off()
 ```
 
 ```{r timereaddata, include=FALSE}
@@ -1416,46 +1387,6 @@ alltp.all.respY<-alltime_data[alltime_data$RelRSPwk22=="Yes",]
 alltp.all.respN<-alltime_data[alltime_data$RelRSPwk22=="No",]
 summary(alltp.all.respY[,1:6])
 
-no22data<-screen_data[screen_data$visit!="Week 22",]
-no22data<-no22data[no22data$TRTGRINDMAN!="Placebo_Not",]
-no22data<-no22data[no22data$TRTGRINDMAN!="Treated_Not",]
-summary(no22data$visit)
-summary(subset(no22data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
-levs<-no22data %>% group_by(USUBJID) %>% summarise(no_rows = length(USUBJID))
-levs
-subidsover3<-levs[levs$no_rows>=3,]
-summary(subidsover3)
-subidis4<-levs[levs$no_rows==4,]
-no22subs3times<-as.character(subidsover3$USUBJID)
-no22subs3times
-
-no22_3x_data <- no22data[no22data$USUBJID %in% no22subs3times,]
-summary(subset(no22_3x_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
-
-x4tp<-no22_3x_data[no22_3x_data$USUBJID=="C0743T26045400006",]
-subset(x4tp, select = c(group, USUBJID, visit, nseqs, coverage, sobs, invsimpson))
-
-#Remove "duplicate" sample with worse coverage and nseqs
-wk046_data<-no22_3x_data[no22_3x_data$group!='E4859941-5',]
-
-summary(subset(wk046_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
-
-wk046_data<-wk046_data[wk046_data$USUBJID!='C0743T26030100002',]
-
-summary(subset(wk046_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8, INDTRTGR)))
-
-wk046wk22remitters<-wk046_data[wk046_data$REMISSwk22=="Yes",]
-summary(subset(wk046wk22remitters, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, REMISSwk22)))
-
-trtd.wk046wk22remitters<-wk046wk22remitters[wk046wk22remitters$TRTGRINDMAN!="Placebo_Placebo",]
-trtd.wk046wk22remitters<-trtd.wk046wk22remitters[trtd.wk046wk22remitters$TRTGRINDMAN!="Placebo_Treated",]
-summary(subset(trtd.wk046wk22remitters, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, REMISSwk22)))
-
-plac.wk046wk22remitters<-wk046wk22remitters[wk046wk22remitters$TRTGRINDMAN!="Treated_Placebo",]
-plac.wk046wk22remitters<-plac.wk046wk22remitters[plac.wk046wk22remitters$TRTGRINDMAN!="Treated_Treated",]
-summary(subset(plac.wk046wk22remitters, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, REMISSwk22)))
-
-
 all.distmat<-read.table("../data/Jan400.all.na.omit.cmd.thetayc.0.03.square.ave.dist")
 all.dist<-as.dist(all.distmat)
 ustdistmat<-read.table("../data/Jan400.ust.na.omit.cmd.thetayc.0.03.square.ave.dist")
@@ -1500,25 +1431,6 @@ alltp_dist.respY<-as.dist(alltp_distmat.respY)
 alltp_distmat.respN<-read.table("../data/Jan400.alltp.noPU.relRSP.N.na.omit.cmd.thetayc.0.03.sq.ave.dist")
 alltp_dist.respN<-as.dist(alltp_distmat.respN)
 
-wk046.ust<-wk046_data[wk046_data$TRTGRINDMAN!="Placebo_Placebo",]
-wk046.ust<-wk046.ust[wk046.ust$TRTGRINDMAN!="Placebo_Treated",]
-summary(wk046.ust[,1:6])
-wk046.plac<-wk046_data[wk046_data$TRTGRINDMAN!="Treated_Placebo",]
-wk046.plac<-wk046.plac[wk046.plac$TRTGRINDMAN!="Treated_Treated",]
-summary(wk046.plac[,1:6])
-
-wk046.ust.relRSP22Y<-wk046.ust[wk046.ust$RelRSPwk22=="Yes",]
-wk046.ust.relRSP22Y.distmat<-read.table("../data/Jan400.wk046.ust.relRSP22Y.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-wk046.ust.relRSP22Y.dist<-as.dist(wk046.ust.relRSP22Y.distmat)
-
-wk046.plac.relRSP22Y<-wk046.plac[wk046.plac$RelRSPwk22 =="Yes",]
-wk046.plac.relRSP22Y.distmat<-read.table("../data/Jan400.wk046.plac.relRSP22Y.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-wk046.plac.relRSP22Y.dist<-as.dist(wk046.plac.relRSP22Y.distmat)
-
-wk046_data.relRSP22Y<-wk046_data[wk046_data$RelRSPwk22=="Yes",]
-wk046_data.relRSP22Y.distmat<-read.table("../data/Jan400.wk046_data.relRSP22Y.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-wk046_data.relRSP22Y.dist<-as.dist(wk046_data.relRSP22Y.distmat)
-
 wk22remitters<-alltime_data[alltime_data$REMISSwk22=="Yes",]
 summary(subset(wk22remitters, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, REMISSwk22)))
 
@@ -1536,13 +1448,6 @@ trtd.wk22remitters.distmat<-read.table("../data/Jan400.alltp.trtd.wk22remitters.
 trtd.wk22remitters.dist<-as.dist(trtd.wk22remitters.distmat)
 plac.wk22remitters.distmat<-read.table("../data/Jan400.alltp.plac.wk22remitters.na.omit.cmd.thetayc.0.03.sq.ave.dist")
 plac.wk22remitters.dist<-as.dist(plac.wk22remitters.distmat)
-
-wk046wk22remitters.distmat<-read.table("../data/Jan400.wk046wk22remitters.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-wk046wk22remitters.dist<-as.dist(wk046wk22remitters.distmat)
-trtd.wk046wk22remitters.distmat<-read.table("../data/Jan400.trtd.wk046wk22remitters.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-trtd.wk046wk22remitters.dist<-as.dist(trtd.wk046wk22remitters.distmat)
-plac.wk046wk22remitters.distmat<-read.table("../data/Jan400.plac.wk046wk22remitters.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-plac.wk046wk22remitters.dist<-as.dist(plac.wk046wk22remitters.distmat)
 ```
 
 ```{r vars, include=F}
@@ -1625,13 +1530,11 @@ fried.trtdrespY$p.value
 friedmc.trtdrespY <- friedmanmc(alltp.treatedrespY)
 friedmc.trtdrespY.pval <- friedmc.trtdrespY$dif.com
 friedmc.trtdrespY.pval <- friedmc.trtdrespY.pval[friedmc.trtdrespY.pval$difference=="TRUE",]
-pairwise.wilcox.test(ggplot.alltp.treatedrespY$invsimpson, ggplot.alltp.treatedrespY$visit, p.adj="BH", exact=F, paired=T)
 
 
 friedman.test(alltp.treatedrespN)
 friedmc <- friedmanmc(alltp.treatedrespN)
 friedmc
-pairwise.wilcox.test(ggplot.alltp.treatedrespN$invsimpson, ggplot.alltp.treatedrespN$visit, p.adj="BH", exact=F, paired=T)
 
 
 
@@ -1674,17 +1577,15 @@ ggplot.alltp.placeborespN <- ggplot.alltp.placeborespN[, -c(4:5)]
 friedman.test(alltp.placeborespY)
 friedmc <- friedmanmc(alltp.placeborespY)
 friedmc
-pairwise.wilcox.test(ggplot.alltp.placeborespY$invsimpson, ggplot.alltp.placeborespY$visit, p.adj="BH", exact=F, paired=T)
 
 
 friedman.test(alltp.placeborespN)
 friedmc <- friedmanmc(alltp.placeborespN)
 friedmc
-pairwise.wilcox.test(ggplot.alltp.placeborespN$invsimpson, ggplot.alltp.placeborespN$visit, p.adj="BH", exact=F, paired=T)
 
-source('../code/alltp.adivXvisitXtrtgrXrelRSPwk22.R')
+source('../code/Figure4_alltp.adivXvisitXtrtgrXrelRSPwk22.R')
 
-pdf("figures/Figure2_alltp.adivXvisitXindtrtXrelRSPwk22.pdf", height = 6, width = 10)
+pdf("figures/Figure4_alltp.adivXvisitXindtrtXrelRSPwk22.pdf", height = 6, width = 10)
 alltp.adivXvisXindtrtXrelRSPwk22.plot
 dev.off()
 
@@ -1761,13 +1662,11 @@ fried.trtdremY$p.value
 friedmc.trtdremY <- friedmanmc(alltp.treatedremY)
 friedmc.trtdremY.pval <- friedmc.trtdremY$dif.com
 friedmc.trtdremY.pval <- friedmc.trtdremY.pval[friedmc.trtdremY.pval$difference=="TRUE",]
-pairwise.wilcox.test(ggplot.alltp.treatedremY$invsimpson, ggplot.alltp.treatedremY$visit, p.adj="BH", exact=F, paired=T)
 
 
 friedman.test(alltp.treatedremN)
 friedmc <- friedmanmc(alltp.treatedremN)
 friedmc
-pairwise.wilcox.test(ggplot.alltp.treatedremN$invsimpson, ggplot.alltp.treatedremN$visit, p.adj="BH", exact=F, paired=T)
 
 
 
@@ -1807,24 +1706,11 @@ ggplot.alltp.placeboremN <- ggplot.alltp.placeboremN[, -c(4:5)]
 friedman.test(alltp.placeboremY)
 friedmc <- friedmanmc(alltp.placeboremY)
 friedmc
-pairwise.wilcox.test(ggplot.alltp.placeboremY$invsimpson, ggplot.alltp.placeboremY$visit, p.adj="BH", exact=F, paired=T)
 
 
 friedman.test(alltp.placeboremN)
 friedmc <- friedmanmc(alltp.placeboremN)
 friedmc
-pairwise.wilcox.test(ggplot.alltp.placeboremN$invsimpson, ggplot.alltp.placeboremN$visit, p.adj="BH", exact=F, paired=T)
-```
-
-```{r alltpByWk22RSP, include=F, eval=F}
-summary(subset(alltime_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk6, RelRSPwk6, REMISSwk6, RESPONSEwk22, RelRSPwk22, REMISSwk22)))
-
-set.seed(32016)
-
-
-#ALL with strata
-adonis(alltp_dist ~ visit*TRTGRINDMAN*RelRSPwk22, alltime_data, strata = alltime_data$USUBJID)
-adonis(alltp_dist ~ visit*TRTGRINDMAN*REMISSwk22, alltime_data, strata = alltime_data$USUBJID)
 ```
 
 ```{r readdataAUCRF, include=FALSE}
@@ -2027,6 +1913,8 @@ mdotuvmdWK6remrocsP <- roc.test(mdotu_remWK6_roc, md_remWK6_roc)
 otuvmdWK6remrocsP <- roc.test(otu_remWK6_roc, md_remWK6_roc)
 mdotuvmdWK6remrocsPval <- signif(mdotuvmdWK6remrocsP$p.value, digits=2)
 otuvmdWK6remrocsPval <- signif(otuvmdWK6remrocsP$p.value, digits=2)
+
+source("../code/Figure2_prediction.R")
 ```
 
 ```{r REMISSwk6AUCRFinline, fig.height=5, fig.width=10, include=FALSE}
@@ -2074,235 +1962,6 @@ legend("top", lty=2, sprintf('Model Threshold'))
 otu_remWK6_rf 
 
 
-```
-
-```{r RelRSPwk22-AUC-RF, include=F, fig.height=5, fig.width=10}
-print("RelRSPwk22 by AUC-RF \\nRelative respWK22onse defined as a decrease in CDAI from Screening greater than 29.5%.")
-set.seed(32016)
-
-levels(nao.screen.trtd$RelRSPwk22) <- c(0,1)
-nao.screen.trtd.trtd <- nao.screen.trtd[nao.screen.trtd$TRTGRINDMAN == "Treated_Treated", ]
-nrow(nao.screen.trtd.trtd)
-summary(nao.screen.trtd.trtd$RelRSPwk22)
-mdotu_relrespWK22 <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening', c('RelRSPwk22',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd.trtd))])]
-#summary(mdotu_relrespWK22[,c("RelRSPwk22")])
-mdotu_relrespWK22<-na.omit(mdotu_relrespWK22)
-#summary(mdotu_relrespWK22[,c("RelRSPwk22")])
-otu_relrespWK22 <- mdotu_relrespWK22[, c('RelRSPwk22', colnames(mdotu_relrespWK22)[grep('Otu[0123456789]', colnames(mdotu_relrespWK22))])]
-#summary(otu_relrespWK22[,c("RelRSPwk22")])
-#summary(otu_relrespWK22[,c("RelRSPwk22")])
-otu_relrespWK22<-na.omit(otu_relrespWK22)
-#summary(otu_relrespWK22[,c("RelRSPwk22")])
-set.seed(32016)
-otu_relrespWK22_rf <- AUCRF(RelRSPwk22~., data=otu_relrespWK22, ranking='MDA', ntree=500, pdel=0.2)
-##otu_relrespWK22_rf # prints list of optimal OTUs
-otu_relrespWK22_probs <- predict(otu_relrespWK22_rf$RFopt, type='prob')[,2]
-otu_relrespWK22_roc <- roc(otu_relrespWK22$RelRSPwk22~otu_relrespWK22_probs)
-
-
-md_relrespWK22 <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening', c('RelRSPwk22','AGE', 'SEX', 'RACE', 'BAMINO', 'BANTIBIO', 'BCORT', 'BIMM', 'BL_BMI', 'DDUR', 'DDUR10', 'DDUR15', 'tissinvol', 'BL_FLACT', 'BL_FCALP', 'BL_CRP', 'BOWSTRICT')]
-#summary(md_relrespWK22[,c("RelRSPwk22")])
-md_relrespWK22<-na.omit(md_relrespWK22)
-#summary(md_relrespWK22[,c("RelRSPwk22")])
-set.seed(32016)
-md_relrespWK22_rf <- AUCRF(RelRSPwk22~., data=md_relrespWK22, ranking='MDA', ntree=500, pdel=0.3)
-##md_relrespWK22_rf # prints list of optimal features
-md_relrespWK22_probs <- predict(md_relrespWK22_rf$RFopt, type='prob')[,2]
-md_relrespWK22_roc <- roc(md_relrespWK22$RelRSPwk22~md_relrespWK22_probs)
-
-
-mdotu_relrespWK22 <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening', c('RelRSPwk22',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd.trtd))])]
-#summary(mdotu_relrespWK22[,c("RelRSPwk22")])
-mdotu_relrespWK22<-na.omit(mdotu_relrespWK22)
-#summary(mdotu_relrespWK22[,c("RelRSPwk22")])
-set.seed(32016)
-mdotu_relrespWK22_rf <- AUCRF(RelRSPwk22~., data=mdotu_relrespWK22, ranking='MDA', ntree=500, pdel=0.2)
-#mdotu_relrespWK22_rf # prints list of optimal features
-mdotu_relrespWK22_probs <- predict(mdotu_relrespWK22_rf$RFopt, type='prob')[,2]
-mdotu_relrespWK22_roc <- roc(mdotu_relrespWK22$RelRSPwk22~mdotu_relrespWK22_probs)
-
-
-#pdf#pdf('data/figures/relRSPwk22aucrf.#pdf', height=6, width=8)
-### Plot ROC curves
-layout(matrix(c(1,2), nrow=1))
-par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
-plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
-plot(otu_relrespWK22_roc, add=T, lwd=2, col='royalblue', lty=1)
-#plot(md_relrespWK22_roc, add=T, lwd=2, col='grey5', lty=1)
-plot(mdotu_relrespWK22_roc, add=T, lwd=2, col='red', lty=1)
-title("RelRSPwk22")
-legend('bottomright', c(sprintf('OTUs : AUC=%.3f',otu_relrespWK22_roc$auc),sprintf('Clinical Data: AUC=%.3f',md_relrespWK22_roc$auc),sprintf('Combined: AUC=%.3f',mdotu_relrespWK22_roc$auc)), lwd=2, col=c('royalblue','grey5', 'red'), bty='n', lty=1)
-#dev.off()
-
-#pdf('data/figures/RSPwk22abunds.#pdf', height=6, width=8)
-plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='', xaxt='n', cex.axis=1.2)
-stripchart(at=1, mdotu_relrespWK22_probs[mdotu_relrespWK22$'RelRSPwk22'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
-stripchart(at=2, mdotu_relrespWK22_probs[mdotu_relrespWK22$'RelRSPwk22'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
-mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
-axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
-cutoff <- coords(roc=mdotu_relrespWK22_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
-#dev.off()
-
-mdotu_relrespWK22_rf # prints list of optimal features
-```
-
-```{r REMISSwk22-AUC-RF, include=F, fig.height=5, fig.width=10}
-print("REMISSwk22 by AUC-RF")
-set.seed(32016)
-summary(nao.screen.trtd.trtd$REMISSwk22)
-levels(nao.screen.trtd.trtd$REMISSwk22) <- c(0,1)
-mdotu_remWK22 <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening', c('REMISSwk22',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd.trtd))])]
-#summary(mdotu_remWK22[,c("REMISSwk22")])
-mdotu_remWK22<-na.omit(mdotu_remWK22)
-#summary(mdotu_remWK22[,c("REMISSwk22")])
-otu_remWK22 <- mdotu_remWK22[, c('REMISSwk22', colnames(mdotu_remWK22)[grep('Otu[0123456789]', colnames(mdotu_remWK22))])]
-#summary(otu_remWK22[,c("REMISSwk22")])
-#summary(otu_remWK22[,c("REMISSwk22")])
-otu_remWK22<-na.omit(otu_remWK22)
-#summary(otu_remWK22[,c("REMISSwk22")])
-set.seed(32016)
-otu_remWK22_rf <- AUCRF(REMISSwk22~., data=otu_remWK22, ranking='MDA', ntree=500, pdel=0.2)
-#otu_remWK22_rf # prints list of optimal OTUs
-otu_remWK22_probs <- predict(otu_remWK22_rf$RFopt, type='prob')[,2]
-otu_remWK22_roc <- roc(otu_remWK22$REMISSwk22~otu_remWK22_probs)
-
-
-md_remWK22 <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening', c('REMISSwk22',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening")]
-#summary(md_remWK22[,c("REMISSwk22")])
-md_remWK22<-na.omit(md_remWK22)
-#summary(md_remWK22[,c("REMISSwk22")])
-set.seed(32016)
-md_remWK22_rf <- AUCRF(REMISSwk22~., data=md_remWK22, ranking='MDA', ntree=500, pdel=0.3)
-#md_remWK22_rf # prints list of optimal features
-md_remWK22_probs <- predict(md_remWK22_rf$RFopt, type='prob')[,2]
-md_remWK22_roc <- roc(md_remWK22$REMISSwk22~md_remWK22_probs)
-
-
-mdotu_remWK22 <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening', c('REMISSwk22', 'AGE', 'SEX', 'RACE', 'BAMINO', 'BANTIBIO', 'BCORT', 'BIMM', 'BL_BMI', 'DDUR', 'DDUR10', 'DDUR15', 'tissinvol', 'BL_FLACT', 'BL_FCALP', 'BL_CRP', 'BOWSTRICT', 'invsimpson', colnames(nao.screen.trtd.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd.trtd))])]
-#summary(mdotu_remWK22[,c("REMISSwk22")])
-mdotu_remWK22<-na.omit(mdotu_remWK22)
-#summary(mdotu_remWK22[,c("REMISSwk22")])
-set.seed(32016)
-mdotu_remWK22_rf <- AUCRF(REMISSwk22~., data=mdotu_remWK22, ranking='MDA', ntree=500, pdel=0.2)
-#mdotu_remWK22_rf # prints list of optimal features
-mdotu_remWK22_probs <- predict(mdotu_remWK22_rf$RFopt, type='prob')[,2]
-mdotu_remWK22_roc <- roc(mdotu_remWK22$REMISSwk22~mdotu_remWK22_probs)
-
-
-
-### Plot ROC curves
-layout(matrix(c(1,2), nrow=1))
-par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
-plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
-plot(otu_remWK22_roc, add=T, lwd=2, col='royalblue', lty=1)
-#plot(md_remWK22_roc, add=T, lwd=2, col='grey5', lty=1)
-plot(mdotu_remWK22_roc, add=T, lwd=2, col='red', lty=1)
-title("REMISSwk22")
-legend('bottomright', c(sprintf('OTUs : AUC=%.3f',otu_remWK22_roc$auc),sprintf('Clinical Data: AUC=%.3f',md_remWK22_roc$auc),sprintf('Combined: AUC=%.3f',mdotu_remWK22_roc$auc)), lwd=2, col=c('royalblue','grey5', 'red'), bty='n', lty=1)
-
-plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='', xaxt='n', cex.axis=1.2)
-stripchart(at=1, mdotu_remWK22_probs[mdotu_remWK22$'REMISSwk22'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
-stripchart(at=2, mdotu_remWK22_probs[mdotu_remWK22$'REMISSwk22'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
-mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
-axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
-cutoff <- coords(roc=mdotu_remWK22_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
-
-mdotu_remWK22_rf # prints list of optimal features
-```
-
-
-```{r REMISSwk22-AUC-RF-alltrtd, include=F, fig.height=5, fig.width=10}
-print("REMISSwk22 by AUC-RF")
-set.seed(32016)
-nao.screen_data.alltrtd <- nao.screen_data[nao.screen_data$TRTGRINDMAN!="Placebo_Placebo",]
-summary(nao.screen_data.alltrtd$TRTGRINDMAN)
-levels(nao.screen_data.alltrtd$REMISSwk22) <- c(0,1)
-mdotu_remWK22.alltrtd <- nao.screen_data.alltrtd[nao.screen_data.alltrtd$visit=='Screening', c('REMISSwk22',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen_data.alltrtd)[grep('Otu[0123456789]', colnames(nao.screen_data.alltrtd))])]
-#summary(mdotu_remWK22.alltrtd[,c("REMISSwk22")])
-mdotu_remWK22.alltrtd<-na.omit(mdotu_remWK22.alltrtd)
-#summary(mdotu_remWK22.alltrtd[,c("REMISSwk22")])
-otu_remWK22.alltrtd <- mdotu_remWK22.alltrtd[, c('REMISSwk22', colnames(mdotu_remWK22.alltrtd)[grep('Otu[0123456789]', colnames(mdotu_remWK22.alltrtd))])]
-#summary(otu_remWK22.alltrtd[,c("REMISSwk22")])
-#summary(otu_remWK22.alltrtd[,c("REMISSwk22")])
-otu_remWK22.alltrtd<-na.omit(otu_remWK22.alltrtd)
-#summary(otu_remWK22.alltrtd[,c("REMISSwk22")])
-set.seed(32016)
-otu_remWK22.alltrtd_rf <- AUCRF(REMISSwk22~., data=otu_remWK22.alltrtd, ranking='MDA', ntree=500, pdel=0.2)
-#otu_remWK22.alltrtd_rf # prints list of optimal OTUs
-otu_remWK22.alltrtd_probs <- predict(otu_remWK22.alltrtd_rf$RFopt, type='prob')[,2]
-otu_remWK22.alltrtd_roc <- roc(otu_remWK22.alltrtd$REMISSwk22~otu_remWK22.alltrtd_probs)
-
-
-md_remWK22.alltrtd <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening', c('REMISSwk22',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening")]
-#summary(md_remWK22.alltrtd[,c("REMISSwk22")])
-md_remWK22.alltrtd<-na.omit(md_remWK22.alltrtd)
-#summary(md_remWK22.alltrtd[,c("REMISSwk22")])
-set.seed(32016)
-md_remWK22.alltrtd_rf <- AUCRF(REMISSwk22~., data=md_remWK22.alltrtd, ranking='MDA', ntree=500, pdel=0.3)
-#md_remWK22.alltrtd_rf # prints list of optimal features
-md_remWK22.alltrtd_probs <- predict(md_remWK22.alltrtd_rf$RFopt, type='prob')[,2]
-md_remWK22.alltrtd_roc <- roc(md_remWK22.alltrtd$REMISSwk22~md_remWK22.alltrtd_probs)
-
-
-mdotu_remWK22.alltrtd <- nao.screen.trtd.trtd[nao.screen.trtd.trtd$visit=='Screening', c('REMISSwk22', 'AGE', 'SEX', 'RACE', 'BAMINO', 'BANTIBIO', 'BCORT', 'BIMM', 'BL_BMI', 'DDUR', 'DDUR10', 'DDUR15', 'tissinvol', 'BL_FLACT', 'BL_FCALP', 'BL_CRP', 'BOWSTRICT', 'invsimpson', colnames(nao.screen.trtd.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd.trtd))])]
-#summary(mdotu_remWK22.alltrtd[,c("REMISSwk22")])
-mdotu_remWK22.alltrtd<-na.omit(mdotu_remWK22.alltrtd)
-#summary(mdotu_remWK22.alltrtd[,c("REMISSwk22")])
-set.seed(32016)
-mdotu_remWK22.alltrtd_rf <- AUCRF(REMISSwk22~., data=mdotu_remWK22.alltrtd, ranking='MDA', ntree=500, pdel=0.2)
-#mdotu_remWK22.alltrtd_rf # prints list of optimal features
-mdotu_remWK22.alltrtd_probs <- predict(mdotu_remWK22.alltrtd_rf$RFopt, type='prob')[,2]
-mdotu_remWK22.alltrtd_roc <- roc(mdotu_remWK22.alltrtd$REMISSwk22~mdotu_remWK22.alltrtd_probs)
-
-
-
-### Plot ROC curves
-layout(matrix(c(1,2), nrow=1))
-par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
-plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
-plot(otu_remWK22.alltrtd_roc, add=T, lwd=2, col='royalblue', lty=1)
-#plot(md_remWK22.alltrtd_roc, add=T, lwd=2, col='grey5', lty=1)
-plot(mdotu_remWK22.alltrtd_roc, add=T, lwd=2, col='red', lty=1)
-title("REMISSwk22")
-legend('bottomright', c(sprintf('OTUs : AUC=%.3f',otu_remWK22.alltrtd_roc$auc),sprintf('Clinical Data: AUC=%.3f',md_remWK22.alltrtd_roc$auc),sprintf('Combined: AUC=%.3f',mdotu_remWK22.alltrtd_roc$auc)), lwd=2, col=c('royalblue','grey5', 'red'), bty='n', lty=1)
-
-plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='', xaxt='n', cex.axis=1.2)
-stripchart(at=1, mdotu_remWK22.alltrtd_probs[mdotu_remWK22.alltrtd$'REMISSwk22'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
-stripchart(at=2, mdotu_remWK22.alltrtd_probs[mdotu_remWK22.alltrtd$'REMISSwk22'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
-mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
-axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
-cutoff <- coords(roc=mdotu_remWK22.alltrtd_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
-
-mdotu_remWK22.alltrtd_rf # prints list of optimal features
-```
-
-```{r , include=F}
-
-tax<-read.table("../data/Jan400.simple.taxonomy.txt", header=T, sep='\t')
-
-
-#Abundance stripchart or most predictive otus
-oturf_otus  <- as.character(otu_relrespWK22_rf$Xopt)
-no_abunds <- otu_relrespWK22[otu_relrespWK22$RelRSPwk22=='0', oturf_otus]/10000 + 1e-5
-no_abunds <-na.omit(no_abunds)
-yes_abunds <- otu_relrespWK22[otu_relrespWK22$RelRSPwk22=='1', oturf_otus]/10000 + 1e-5
-yes_abunds<- na.omit(yes_abunds)
-
-layout(1)
-par(mar=c(4, 9, 0, 1))
-plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Relative Abundance (%)", xaxt="n", yaxt="n")
-index <- 1
-for(i in oturf_otus ){
-	stripchart(at=index-0.35, jitter(yes_abunds[,i], amount=1e-5), pch=21, bg="royalblue1", method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
-	stripchart(at=index+0.35, jitter(no_abunds[,i], amount=1e-5), pch=21, bg="orange", method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
-	segments(mean(yes_abunds[,i]),index-0.7,mean(yes_abunds[,i]),index, lwd=3)
-	segments(mean(no_abunds[,i]),index+0.7,mean(no_abunds[,i]),index, lwd=3)
-	index <- index + 2
-}
-oturf_otus<-as.factor(otu_relrespWK22_rf$Xopt)
-axis(2, at=seq(1,index-2,2), labels=tax[tax$OTU %in% oturf_otus, 'Label'][as.factor(oturf_otus)], las=1, line=-0.5, tick=F, cex.axis=0.8)
-axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1), label=c("0", "0.01", "0.1", "1", "10"))
-legend('topright', legend=c("No", "Yes"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=0.7)
 ```
 
 ```{r week6readdata, include=F}
@@ -2668,6 +2327,8 @@ md_remWK6xWK6_rf
 
 WK6xWK6rocsP <- roc.test(otu_relrespWK6xWK6_roc, otu_remWK6xWK6_roc)
 WK6xWK6rocsPval <- signif(WK6xWK6rocsP$p.value, digits=2)
+
+source('../code/Figure5_responseREMwk6Xwk6.R')
 ```
 
 ```{r week22readdata, include=F}
@@ -2793,58 +2454,6 @@ grid.table(wk22_wk22)
 dev.off()
 ```
 
-```{r freqOTUs list for table, eval=T, include=F}
-#mdotu_respWK4_Xopt<-mdotu_respWK4_rf$Xopt
-#mdotu_relrespWK4_Xopt<-mdotu_relrespWK4_rf$Xopt
-#mdotu_remWK4_Xopt<-mdotu_remWK4_rf$Xopt
-#otu_respWK4_Xopt<-otu_respWK4_rf$Xopt
-#otu_relrespWK4_Xopt<-otu_relrespWK4_rf$Xopt
-#otu_remWK4_Xopt<-otu_remWK4_rf$Xopt
-
-#mdotu_respWK6_Xopt<-mdotu_respWK6_rf$Xopt
-mdotu_relrespWK6_Xopt<-mdotu_relrespWK6_rf$Xopt
-mdotu_remWK6_Xopt<-mdotu_remWK6_rf$Xopt
-#otu_respWK6_Xopt<-otu_respWK6_rf$Xopt
-otu_relrespWK6_Xopt<-otu_relrespWK6_rf$Xopt
-otu_remWK6_Xopt<-otu_remWK6_rf$Xopt
-
-#mdotu_respWK8_Xopt<-mdotu_respWK8_rf$Xopt
-#mdotu_relrespWK8_Xopt<-mdotu_relrespWK8_rf$Xopt
-#mdotu_remWK8_Xopt<-mdotu_remWK8_rf$Xopt
-#otu_respWK8_Xopt<-otu_respWK8_rf$Xopt
-#otu_relrespWK8_Xopt<-otu_relrespWK8_rf$Xopt
-#otu_remWK8_Xopt<-otu_remWK8_rf$Xopt
-
-#mdotu_respWK22_Xopt<-mdotu_respWK22_rf$Xopt
-mdotu_relrespWK22_Xopt<-mdotu_relrespWK22_rf$Xopt
-mdotu_remWK22_Xopt<-mdotu_remWK22_rf$Xopt
-#otu_respWK22_Xopt<-otu_respWK22_rf$Xopt
-otu_relrespWK22_Xopt<-otu_relrespWK22_rf$Xopt
-otu_remWK22_Xopt<-otu_remWK22_rf$Xopt
-
-rows<-c("AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen_data)[grep('Otu[0123456789]', colnames(nao.screen_data))])
-
-#colnames<-c("mdotu_respWK4_Xopt", "mdotu_relrespWK4_Xopt", "mdotu_remWK4_Xopt", "otu_respWK4_Xopt", "otu_relrespWK4_Xopt", "otu_remWK4_Xopt", "mdotu_respWK6_Xopt", "mdotu_relrespWK6_Xopt", "mdotu_remWK6_Xopt", "otu_respWK6_Xopt", "otu_relrespWK6_Xopt", "otu_remWK6_Xopt", "mdotu_respWK8_Xopt", "mdotu_relrespWK8_Xopt", "mdotu_remWK8_Xopt", "otu_respWK8_Xopt", "otu_relrespWK8_Xopt", "otu_remWK8_Xopt", "mdotu_respWK22_Xopt", "mdotu_relrespWK22_Xopt", "mdotu_remWK22_Xopt", "otu_respWK22_Xopt", "otu_relrespWK22_Xopt", "otu_remWK22_Xopt")
-
-colnames<-c("mdotu_relrespWK6_Xopt", "mdotu_remWK6_Xopt", "otu_relrespWK6_Xopt", "otu_remWK6_Xopt", "mdotu_relrespWK22_Xopt", "mdotu_remWK22_Xopt", "otu_relrespWK22_Xopt", "otu_remWK22_Xopt")
-
-matches<-data.frame(row.names = rows)
-
-for( i in colnames){
-	matches[row.names(matches) %in% get(i), i]<- 1
-}
-
-matches$Sums<-apply(matches, 1, sum, na.rm=T)
-
-freqVars<-matches[matches$Sums>=4,]
-freqVars<-freqVars[order(-freqVars$Sums),]
-
-freqOTUs<-freqVars[rownames(freqVars)[grep('Otu[0123456789]', rownames(freqVars))],]
-#freqOTUs
-
-freqOTUs_list<-as.factor(row.names(freqOTUs))
-```
-
 
 ```{r, inline vars, include=F}
 
@@ -2869,41 +2478,6 @@ wk6RSPbdivpval <- table2_df[1,5]
 wk6REMbdivpval <- table2_df[2,5]
 wk22RSPbdivpval <- table2_df[3,5]
 wk22REMbdivpval <- table2_df[4,5]
-```
-
-
-```{r remwk6aucrfCV, cache=T, include=FALSE, eval=F}
-set.seed(32016)
-otu_remWK6_rf_cv <- AUCRFcv(otu_remWK6_rf)
-set.seed(32016)
-mdotu_remWK6_rf_cv <- AUCRFcv(mdotu_remWK6_rf)
-
-print("OTU Week 6 rem  cross validation")
-otu_remWK6_rf_cv
-
-print("MDOTU Week 6 rem  cross validation")
-mdotu_remWK6_rf_cv
-```
-
-```{r remWK22aucrfCV, cache=T, include=FALSE, eval=F}
-set.seed(32016)
-otu_remWK22_rf_cv <- AUCRFcv(otu_remWK22_rf)
-set.seed(32016)
-mdotu_remWK22_rf_cv <- AUCRFcv(mdotu_remWK22_rf)
-
-print("OTU Week 22 rem cross validation")
-otu_remWK22_rf_cv
-
-print("MDOTU Week 22 rem  cross validation")
-mdotu_remWK22_rf_cv
-```
-
-```{r wk6Xwk6aucrfCV, cache=T, include=FALSE, eval=F}
-set.seed(32016)
-otu_remWK6xWK6_rf_cv <- AUCRFcv(otu_remWK6xWK6_rf)
-
-print("Week 6 by Week 6 cross validation")
-otu_remWK6xWK6_rf_cv
 ```
 
 ```{r}
@@ -3065,11 +2639,11 @@ R v.3.3.2 (2016-10-31) and mothur were used to analyze the data [@R]. To assess 
 
 
 
-```{r Figure4_wk0Xwk6pred}
-#source('../code/Figure4_prediction.R')
+```{r Figure2_wk0Xwk6pred}
+#source('../code/Figure2_prediction.R')
 ```
 
-\includegraphics{figures/Figure4_wk0Xwk6pred.pdf}
+\includegraphics{figures/Figure2_wk0Xwk6pred.pdf}
 
 \newpage
 
@@ -3086,19 +2660,19 @@ R v.3.3.2 (2016-10-31) and mothur were used to analyze the data [@R]. To assess 
 
 **Figure 3: Differential taxa in baseline stool samples from patients treated with UST, based on week six remission status** Compared the relative abundance of each OTU in UST teated patients based on (A) response and (B) remission status using a Wilcoxon rank sum test to identify OTUs where there was a p-value less than 0.05 following a Benjamini-Hochberg correction for multiple comparisons.
 
-```{r Figure5_basesigOTUabund.REMISSwk6}
+```{r Figure3_basesigOTUabund.REMISSwk6}
 ```
 
-\includegraphics{figures/Figure5_basesigOTUabund.REMISSwk6.pdf}
+\includegraphics{figures/Figure3_basesigOTUabund.REMISSwk6.pdf}
 
 \newpage
 
 **Figure 4: Change in alpha diversity over time by induction treatment and week twenty-two response status.** The ${\alpha}$-diversity of `r (nrow(alltp.ust)/4)` patients induced and maintained with UST and `r (nrow(alltp.placplac)/4)` patients induced and maintained with placebo was assess at each time point. Friedman test were perfomed within each teatment and responder group. * indicates week twenty-two is significantly different from baseline (p <0.05).
 
-```{r  Figure2_alltp.adivXvisitXindtrtXrelRSPwk22.pdf}
+```{r  Figure4_alltp.adivXvisitXindtrtXrelRSPwk22.pdf}
 ```
 
-\includegraphics{figures/Figure2_alltp.adivXvisitXindtrtXrelRSPwk22.pdf}
+\includegraphics{figures/Figure4_alltp.adivXvisitXindtrtXrelRSPwk22.pdf}
 
 
 
@@ -3106,11 +2680,11 @@ R v.3.3.2 (2016-10-31) and mothur were used to analyze the data [@R]. To assess 
 
 **Figure 5: Classification of week six response or remission status using week six stool samples from patients treated with UST** (A) ROCs for week six outcome based on the week six microbiome. (B) Top predictive taxa from week six stool for remission status at week six, based on MDA.
 
-```{r Figure3_wk6Xwk6}
-#source("../code/Figure3_responseREMwk6Xwk6.R")
+```{r Figure5_wk6Xwk6}
+#source("../code/Figure5_responseREMwk6Xwk6.R")
 ```
 
-\includegraphics{figures/Figure3_wk6Xwk6.pdf}
+\includegraphics{figures/Figure5_wk6Xwk6.pdf}
 
 \newpage
 

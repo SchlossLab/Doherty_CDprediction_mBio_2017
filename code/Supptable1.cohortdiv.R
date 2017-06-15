@@ -24,12 +24,10 @@ tbl1$Community.Structure..beta.diversity.<-sprintf("%.3f", round(tbl1_bdiv_adj_p
 colnames(tbl1) <- c('Clinical Variable', 'Correlation', 'Alpha-Diversity\n(p-value)', 'Beta-Diversity\n(p-value)')
 
 tbl1$Correlation <- gsub("rho", expression("\U03C1"), tbl1$Correlation)
-#tbl1
 
-#tbl1 <- tbl1[-c(6:9),]
 tbl1 <- as.matrix(tbl1)
 
-png("tables/Supp.table1_cohortdiversity.png", width = 7, height = 4, units='in', res=100)
+png("tables/Supp.table1_cohortdiversity.png", width = 7, height = 4, units='in', res=150)
 grid.table(tbl1)
 dev.off()
 
@@ -37,11 +35,4 @@ tiff("tables/Supp.table1_cohortdiversity.tiff", width = 7, height = 4, units='in
 grid.table(tbl1)
 dev.off()
 
-#pdf("tables/Supp.table1_cohortdiversity.pdf", width = 8, height = 6)
-#grid.table(tbl1)
-
-#dev.off()
-
-#xtbl1 <- xtable(tbl1)
-#xtbl1
 

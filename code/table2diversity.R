@@ -29,7 +29,6 @@ wk22REMBdivpval <- table2_df[4,5]
 
 colnames(table2_df) <- c('Clinical Variable', 'Treated (n)', "Placebo (n)",'Alpha-Diversity\n(p-value)', 'Beta-Diversity\n(p-value)')
 table2 <- table2_df
-#table2 <- table2[,-2]
 table2.N <- as.matrix(table2[,c(1:3)])
 table2div <- as.matrix(table2[,-c(2:3)])
 table2 <- as.matrix(table2)
@@ -38,20 +37,4 @@ table2wk6div <- table2div[-c(3:4),]
 
 
 
-tiff('tables/table2diversity.tiff', height=4, width=10, units='in', res=300)
-grid.table(table2div)
-dev.off()
-
-pdf(file='tables/table2diversity.pdf', height=4, width=6)
-grid.table(table2div)
-dev.off()
-
-pdf(file='tables/table2week6diversity.pdf', height=4, width=6)
-grid.table(table2wk6div)
-dev.off()
-
-
-pdf(file='tables/table2N.pdf', height=4, width=6)
-grid.table(table2.N)
-dev.off()
 
