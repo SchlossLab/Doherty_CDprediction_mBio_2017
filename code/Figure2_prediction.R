@@ -10,7 +10,7 @@
 
 
 pdf("figures/Figure2_wk0Xwk6pred.pdf", height = 10, width = 12)
-layout(matrix(c(1,2,3,4), 2, 2, byrow = TRUE))
+layout(matrix(c(3,4,1,2), 2, 2, byrow = TRUE))
 
 par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
 plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
@@ -19,7 +19,7 @@ plot(md_relrespWK6_roc, add=T, lwd=2, col='grey5', lty=1)
 plot(mdotu_relrespWK6_roc, add=T, lwd=2, col='red', lty=1)
 
 legend('bottomright', c(sprintf('Week 0 OTUs : AUC=%.3f',otu_relrespWK6_roc$auc), sprintf('Week 0 Clinical Data: AUC=%.3f',md_relrespWK6_roc$auc), sprintf('Combined: AUC=%.3f',mdotu_relrespWK6_roc$auc)), lwd=2, col=c('royalblue', 'grey5', 'red'), bty='n', lty=1)
-mtext('A', at=1, side=3, line=0.1, font=2, cex=2)
+mtext('C', at=1.07, side=3, line=0.1, font=2, cex=2)
 
 cutoff <- coords(roc=mdotu_relrespWK6_roc, x='best', best.method='y', ret=c('threshold'))
 mdotu_relrespWK6_spec <- coords(mdotu_relrespWK6_roc, x=cutoff, input='thr', ret='spec')
@@ -53,7 +53,7 @@ yes_abunds <- otu_relrespWK6[otu_relrespWK6$RelRSPwk6=='1', oturf_otus]/10000 + 
 yes_abunds<- na.omit(yes_abunds)
 
 
-par(mar=c(3, 12, 2, 1))
+par(mar=c(3, 12.2, 2, 1))
 plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,1.5), log="x", ylab="", xlab="Week 0 Relative Abundance (%)", xaxt="n", yaxt="n")
 set.seed(32016)
 index <- 1
@@ -84,7 +84,7 @@ formatted <- lapply(1:nrow(oturf_tax), function(i) bquote(paste(italic(.(oturf_n
 axis(2, at=seq(1,index-2,2), labels=do.call(expression, formatted), las=1, line=0, tick=F, cex.axis=1)
 axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0), label=c("0", "0.01", "0.1", "1", "10", "100"))
 legend('bottomright', legend=c("Week 6 Nonresponder", "Week 6 Responder"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
-mtext('B', at=1e-8, side=3, line=0.1, font=2, cex=2)
+mtext('D', at=1e-8, side=3, line=0.1, font=2, cex=2)
 
 
 #Remission
@@ -95,7 +95,7 @@ plot(md_remWK6_roc, add=T, lwd=2, col='grey5', lty=1)
 plot(mdotu_remWK6_roc, add=T, lwd=2, col='red', lty=1)
 #title("Predicting Week 6 Remission")
 legend('bottomright', c(sprintf('Week 0 OTUs : AUC=%.3f', otu_remWK6_roc$auc), sprintf('Week 0 Clinical Data: AUC=%.3f',md_remWK6_roc$auc),sprintf('Combined: AUC=%.3f',mdotu_remWK6_roc$auc)), lwd=2, col=c('royalblue', "grey5", 'red'), bty='n', lty=1)
-mtext('C', at=1, side=3, line=0.1, font=2, cex=2)
+mtext('A', at=1.07, side=3, line=0.1, font=2, cex=2)
 
 cutoff <- coords(roc=mdotu_remWK6_roc, x='best', best.method='y', ret=c('threshold'))
 mdotu_remWK6_spec <- coords(mdotu_remWK6_roc, x=cutoff, input='thr', ret='spec')
@@ -127,7 +127,7 @@ no_abunds <-na.omit(no_abunds)
 yes_abunds <- otu_remWK6[otu_remWK6$REMISSwk6=='1', oturf_otus]/10000 + 1e-5
 yes_abunds<- na.omit(yes_abunds)
 
-par(mar=c(3, 14, 2, 1))
+par(mar=c(3, 12.2, 2, 1))
 plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,1.5), log="x", ylab="", xlab="Week 0 Relative Abundance (%)", xaxt="n", yaxt="n", cex=1)
 set.seed(32016)
 index <- 1
@@ -156,7 +156,7 @@ formatted <- lapply(1:nrow(oturf_tax), function(i) bquote(paste(italic(.(oturf_n
 axis(2, at=seq(1,index-2,2), labels=do.call(expression, formatted), las=1, line=0, tick=F, cex.axis=1)
 axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0), label=c("0", "0.01", "0.1", "1", "10", "100"))
 legend('bottomright', legend=c("Week 6 Active CD", "Week 6 Remission"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
-mtext('D', at=1.5e-9, side=3, line=0.1, font=2, cex=2)
+mtext('B', at=1e-8, side=3, line=0.1, font=2, cex=2)
 
 dev.off()
 
