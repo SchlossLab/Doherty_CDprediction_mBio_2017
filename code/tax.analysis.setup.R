@@ -15,8 +15,10 @@ taxonomy$genus <- gsub("(\\w+)[(]\\d+[)];(\\w+)[(]\\d+[)];(\\w+)[(]\\d+[)];(\\w+
 head(taxonomy)
 
 tax_no_confidence <- gsub(pattern="\\(\\d*\\)", replacement="", x=taxonomy$Taxonomy)
+no_candidatus <- gsub(pattern = "Candidatus_", replacement = "", tax_no_confidence) #remove Candidatus_ from taxonomy
 
-no_unclassified <- gsub(pattern="unclassified;", replacement="", tax_no_confidence)
+no_unclassified <- gsub(pattern="unclassified;", replacement="", no_candidatus)
+
 
 
 best_taxonomy <- gsub(pattern=".*;(.*);", replacement="\\1", no_unclassified)
