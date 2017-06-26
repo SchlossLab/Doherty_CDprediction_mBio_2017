@@ -133,7 +133,7 @@ TRn_text <- data.frame(visit = 2.5, invsimpson = 35,
 											 INDTRTGR = "Treated", RelRSPwk22 = "Responder")
 
 alltp.adivXvisXindtrtXrelRSPwk22.plot <- ggplot(ggplot.alltp.adiv, aes(x=visit, y=invsimpson, fill=INDTRTGR)) +
-	geom_boxplot(position=position_dodge(width = 1), alpha = .4) + guides(fill=FALSE) +
+	geom_boxplot(position=position_dodge(width = 1), alpha = .4, outlier.shape = NA) + guides(fill=FALSE) +
 	ylab("Inverse Simpson index") + xlab("Week") + theme(legend.position="none") + 
 	facet_grid(.~INDTRTGR + RelRSPwk22, labeller = label_bquote((x) + nrow(x))) +
 	theme(plot.title = element_text(hjust = 0.5)) + geom_text(data = ann_text, label = "*", size=12) + 
