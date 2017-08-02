@@ -1,0 +1,14 @@
+#!bash
+
+#Set local variables
+mothurRv=/Applications/mothur/mothur!!!!
+DOWNDIR=data/raw
+WORKDIR=data/mothur/
+REF=data/references
+
+#run mothur cluster.split
+
+$mothurRv "#set.dir(input=$WORKDIR, output=$WORKDIR);
+	summary.seqs(fasta=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta, count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table, processors=2);
+	remove.groups(count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table, fasta=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta, taxonomy=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy, groups=Mock3-Neg3);
+	cluster.split(fasta=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.fasta, count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.pick.count_table, taxonomy=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.pick.taxonomy, splitmethod=classify, taxlevel=4, cutoff=0.15, method=average)"

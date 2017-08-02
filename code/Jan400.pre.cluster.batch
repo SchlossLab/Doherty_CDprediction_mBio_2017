@@ -1,0 +1,26 @@
+#!bash
+
+#Set local variables
+mothurRv=/Applications/mothur/mothur!!!!
+DOWNDIR=data/raw
+WORKDIR=data/mothur/
+REF=data/references
+
+
+#run mothur through precluster
+
+
+$mothurRv "#set.dir(input=$WORKDIR, output=$WORKDIR);
+	summary.seqs(fasta=Jan400.trim.contigs.fasta, processors=4);
+	screen.seqs(fasta=Jan400.trim.contigs.fasta, group=Jan400.contigs.groups, summary=Jan400.trim.contigs.summary, maxambig=0, maxlength=275, processors=8);
+	summary.seqs(fasta=Jan400.trim.contigs.good.fasta);
+	unique.seqs(fasta=Jan400.trim.contigs.good.fasta);
+	count.seqs(name=Jan400.trim.contigs.good.names, group=Jan400.contigs.good.groups);
+	summary.seqs(count=Jan400.trim.contigs.good.count_table);
+	align.seqs(fasta=Jan400.trim.contigs.good.unique.fasta, reference=$REF/silva.v4.align, processors=8);
+	summary.seqs(fasta=Jan400.trim.contigs.good.unique.align, count=Jan400.trim.contigs.good.count_table, processors=8);
+	screen.seqs(fasta=Jan400.trim.contigs.good.unique.align, count=Jan400.trim.contigs.good.count_table, summary=Jan400.trim.contigs.good.unique.summary, start=1968, end=11550, maxhomop=8);
+	summary.seqs(fasta=current, count=current);
+	filter.seqs(fasta=Jan400.trim.contigs.good.unique.good.align, vertical=T, trump=.);
+	unique.seqs(fasta=Jan400.trim.contigs.good.unique.good.filter.fasta, count=Jan400.trim.contigs.good.good.count_table);
+	pre.cluster(fasta=Jan400.trim.contigs.good.unique.good.filter.unique.fasta, count=Jan400.trim.contigs.good.unique.good.filter.count_table, diffs=2, processors=4)"

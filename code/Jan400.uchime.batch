@@ -1,0 +1,18 @@
+#!bash
+
+#Set local variables
+mothurRv=/Applications/mothur/mothur!!!!
+DOWNDIR=data/raw
+WORKDIR=data/mothur/
+REF=data/references
+
+
+#run mothur from uchime to remove.lineage
+
+$mothurRv "#set.dir(input=$WORKDIR, output=$WORKDIR);
+	summary.seqs(fasta=Jan400.trim.contigs.fasta, processors=4);
+	chimera.uchime(fasta=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.count_table, dereplicate=t, processors=2);
+	remove.seqs(fasta=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.fasta, accnos=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.accnos);
+	summary.seqs(fasta=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, processors=8);
+	classify.seqs(fasta=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, reference=$REF/trainset14_032015.pds.fasta, taxonomy=$REF/trainset14_032015.pds.tax, cutoff=80, processors=8);
+	remove.lineage(fasta=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, taxonomy=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.taxonomy, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota)"

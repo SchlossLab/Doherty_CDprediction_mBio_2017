@@ -1,0 +1,28 @@
+#!bash
+
+#Set local variables
+mothurRv=/Applications/mothur/mothur!!!!
+DOWNDIR=data/raw
+WORKDIR=data/mothur/
+REF=data/references
+
+#Future section for dowloading data
+#wget -r -q -np -nd -k -P $DOWNDIR ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByStudy/sra/SRP/SRP062/SRP062005/
+#wget -r -q -np -nd -k -P $DOWNDIR ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByStudy/sra/SRP/SRP096/SRP096978/
+
+#Unzip fastq files and place them in work directory
+#for sample in $DOWNDIR/*.sra
+#do
+#	fastq-dump --split-files $sample -O $WORKDIR
+#
+#done
+
+#Run mothur make contigs
+
+
+$mothurRv "#set.dir(input=$DOWNDIR, output=$WORKDIR);
+	make.file(inputdir=$DOWNDIR, type=gz, prefix=Jan400);
+	make.contigs(file=$WORKDIR/Jan400.files, processors= 4);
+	set.dir(input=$WORKDIR, output=$WORKDIR);
+	summary.seqs(fasta=Jan400.trim.contigs.fasta, processors=8);"
+	
