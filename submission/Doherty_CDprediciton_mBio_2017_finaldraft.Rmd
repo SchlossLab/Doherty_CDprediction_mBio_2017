@@ -1,14 +1,14 @@
 ---
-title: Fecal microbiota signatures are predictive of response to Ustekinumab therapy
+title: Fecal microbiota signatures are associated with response to Ustekinumab therapy
   among Crohn’s Disease patients
 csl: mbio.csl
 fontsize: 12pt
 output:
-  md_document: default
-  html_document: default
   pdf_document:
     keep_tex: yes
     latex_engine: xelatex
+  md_document: default
+  html_document: default
 header-includes:
 - \usepackage{setspace}
 - \doublespacing
@@ -93,17 +93,20 @@ summary(screen_data[,c("TRTGR")])
 ```{r phylum_otu, include=FALSE}
 
 #screen_data <- screen_data[screen_data$TRTGR=="Treated",]
-source("../code/SF1_week6phyla.R")
+#source("../code/SF1_week6phyla.R")
 
-pdf("figures/SF1_wk6phyla.pdf", height = 10, width = 12)
-plot_grid(phyRabRelRSPwk6_figure2, phyRabREMISSwk6_figure2, labels = c("A", "B"), align = "v", nrow=2)
-dev.off()
+#pdf("figures/SF1_wk6phyla.pdf", height = 10, width = 12)
+#plot_grid(phyRabRelRSPwk6_figure2, phyRabREMISSwk6_figure2, labels = c("A", "B"), align = "v", nrow=2)
+#dev.off()
 
 
 
 #trtd.screen_data <- screen_data
 #screen_data <- trtd.screen_data[trtd.screen_data$TRTGR=="Treated",]
-source("../code/Figure3_REMISSwk6.sig.otu.figure.R")
+#source("../code/Figure3_REMISSwk6.sig.otu.figure.R")
+
+source('../code/phylum.analysis.R')
+source('../code/otu.analysis.R')
 
 screen_data.trtd <- screen_data[screen_data$TRTGR=="Treated",]
 screen_data.trtd_groups <- screen_data.trtd[, c("group", "TRTGR")]
@@ -991,7 +994,6 @@ tissinvol_plac<-gsub(" ", "", tissinvol_plac)
 
 tissinvol.cohort<- matrix(c('Tissue Involvement (%) \nColon/Ileocolic/Ileal', tissinvol_trtd, tissinvol_plac, tissinvol_total), ncol = 4)
 
-source("../code/Table1_baseline_metadata.R")
 ```
 
 
@@ -1326,128 +1328,9 @@ tbl1 <- data.frame(tbl1)
 ```{r timereaddata, include=FALSE}
 #Read in all data
 #metadata
-source('../code/APmd.setup.R')
-
-screen_RESPwk22<-APmd_RSPwk22 #[APmd_RSPwk22$visit=="Screening",] #removes any group with NA in RESPONSEwk22
-
-screen_data<-screen_RESPwk22				#na.omit(screen_RESPwk22)
-
-#screen_data$CDSTOOLM_Screening[screen_data$CDSTOOLM_Screening=="."]<-"NA"
-#screen_data$CDSTOOLM_Screening <-as.integer(screen_data$CDSTOOLM_Screening)
-#screen_data$CDPAINM_Screening[screen_data$CDPAINM_Screening=="."]<-"NA"
-#screen_data$CDPAINM_Screening <-as.integer(screen_data$CDPAINM_Screening)
-#screen_data$CDWELBEM_Screening[screen_data$CDWELBEM_Screening=="."]<-"NA"
-#screen_data$CDWELBEM_Screening <-as.integer(screen_data$CDWELBEM_Screening)
-#screen_data$CDHCTM_Screening[screen_data$CDHCTM_Screening=="."]<-"NA"
-#screen_data$CDHCTM_Screening <-as.integer(screen_data$CDHCTM_Screening)
-#screen_data$CDAMASSM_Screening<-as.factor(screen_data$CDAMASSM_Screening)
-
-#axes <- read.table('../data/Jan400.screen_ust.3107.subsample.thetayc.0.03.lt.ave.nmds.by3.axes', header=T)
-tax<- read.table('../data/Jan400.simple.taxonomy.txt', header=T, sep="\t")
-#summary(APmd_RSPwk22[,c("TRTGR", "visit")])
-#summary(screen_RESPwk22[,1:49])
-summary(subset(screen_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
-
-levs<-screen_data %>% group_by(USUBJID) %>% summarise(no_rows = length(USUBJID))
-levs
-subidsover4<-levs[levs$no_rows>=4,]
-summary(subidsover4)
-fourtimesubs<-as.character(subidsover4$USUBJID)
-
-fourtime_data <- screen_data[screen_data$USUBJID %in% fourtimesubs,]
-#summary(subset(fourtime_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
-
-#x5tp<-fourtime_data[fourtime_data$USUBJID=="C0743T26045400006",]
-#subset(x5tp, select = c(group, USUBJID, visit, nseqs, coverage, sobs, invsimpson))
-
-#Remove "duplicate" sample with worse coverage and nseqs
-alltime_data<-fourtime_data
-alltime_data<-alltime_data[alltime_data$TRTGRINDMAN!="Placebo_Treated", ]
-alltime_data<-alltime_data[alltime_data$TRTGRINDMAN!="Treated_Placebo", ] #remove TRTGRINDMAN=Placebo_Treated for easier analysisof all time point data placebo vs treated
-
-summary(subset(alltime_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
-alltp.ust<-alltime_data[alltime_data$TRTGRINDMAN=="Treated_Treated",]
-#alltp.ust<-alltp.ust[alltp.ust$TRTGRINDMAN!="Placebo_Treated",]
-summary(alltp.ust[,1:6])
-alltp.placplac<-alltime_data[alltime_data$TRTGRINDMAN=="Placebo_Placebo",]
-#alltp.placplac<-alltp.plac[alltp.plac$TRTGRINDMAN="Treated_Treated",]
-summary(alltp.placplac[,1:6])
-
-alltp.ust.RESPyes<-alltp.ust[alltp.ust$RelRSPwk22=="Yes",]
-summary(alltp.ust.RESPyes[,1:6])
-alltp.ust.RESPno<-alltp.ust[alltp.ust$RelRSPwk22=="No",]
-summary(alltp.ust.RESPno[,1:6])
-
-alltp.placplac.RESPyes<-alltp.placplac[alltp.placplac$RelRSPwk22=="Yes",]
-summary(alltp.placplac.RESPyes[,1:6])
-alltp.placplac.RESPno<-alltp.placplac[alltp.placplac$RelRSPwk22=="No",]
-summary(alltp.placplac.RESPno[,1:6])
-
-alltp.all.respY<-alltime_data[alltime_data$RelRSPwk22=="Yes",]
-alltp.all.respN<-alltime_data[alltime_data$RelRSPwk22=="No",]
-summary(alltp.all.respY[,1:6])
-
-all.distmat<-read.table("../data/Jan400.all.na.omit.cmd.thetayc.0.03.square.ave.dist")
-all.dist<-as.dist(all.distmat)
-ustdistmat<-read.table("../data/Jan400.ust.na.omit.cmd.thetayc.0.03.square.ave.dist")
-ustdist<-as.dist(ustdistmat)
-pladistmat<-read.table("../data/Jan400.plac.na.omit.cmd.thetayc.0.03.square.ave.dist")
-pladist<-as.dist(pladistmat)
-alltp_distmat<-read.table("../data/Jan400.alltp.noPU.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-alltp_dist<-as.dist(alltp_distmat)
-alltp_ustdistmat<-read.table("../data/Jan400.all.na.omit.cmd.ust.alltp.thetayc.square.ave.dist")
-alltp_ustdist<-as.dist(alltp_ustdistmat)
-alltp_placplacdistmat<-read.table("../data/Jan400.alltp.plac.noPU.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-alltp_placplacdist<-as.dist(alltp_placplacdistmat)
-
-wk046_distmat<-read.table("../data/Jan400.wk046.all.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk046_dist<-as.dist(wk046_distmat)
-wk046_ustdistmat<-read.table("../data/Jan400.wk046.ust.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk046_ustdist<-as.dist(wk046_ustdistmat)
-wk046_placdistmat<-read.table("../data/Jan400.wk046.plac.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk046_placdist<-as.dist(wk046_placdistmat)
-
-wk0.ustdistmat<-read.table("../data/Jan400.alltp.ust.wk0.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk0.ustdist<-as.dist(wk0.ustdistmat)
-wk4.ustdistmat<-read.table("../data/Jan400.alltp.ust.wk4.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk4.ustdist<-as.dist(wk4.ustdistmat)
-wk6.ustdistmat<-read.table("../data/Jan400.alltp.ust.wk6.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk6.ustdist<-as.dist(wk6.ustdistmat)
-
-wk0.placdistmat<-read.table("../data/Jan400.alltp.plac.wk0.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk0.placdist<-as.dist(wk0.placdistmat)
-wk4.placdistmat<-read.table("../data/Jan400.alltp.plac.wk4.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk4.placdist<-as.dist(wk4.placdistmat)
-wk6.placdistmat<-read.table("../data/Jan400.alltp.plac.wk6.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk6.placdist<-as.dist(wk6.placdistmat)
+source('../code/timereaddata.R')
 
 
-alltp_ustdistmat.respY<-read.table("../data/Jan400.alltp.noPU.trtd.relRSP.Y.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-alltp_ustdist.respY<-as.dist(alltp_ustdistmat.respY)
-alltp_placdistmat.respY<-read.table("../data/Jan400.alltp.noPU.plac.relRSP.Y.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-alltp_placdist.respY<-as.dist(alltp_placdistmat.respY)
-alltp_distmat.respY<-read.table("../data/Jan400.alltp.noPU.relRSP.Y.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-alltp_dist.respY<-as.dist(alltp_distmat.respY)
-alltp_distmat.respN<-read.table("../data/Jan400.alltp.noPU.relRSP.N.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-alltp_dist.respN<-as.dist(alltp_distmat.respN)
-
-wk22remitters<-alltime_data[alltime_data$REMISSwk22=="Yes",]
-summary(subset(wk22remitters, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, REMISSwk22)))
-
-trtd.wk22remitters<-wk22remitters[wk22remitters$TRTGRINDMAN!="Placebo_Placebo",]
-trtd.wk22remitters<-trtd.wk22remitters[trtd.wk22remitters$TRTGRINDMAN!="Placebo_Treated",]
-summary(subset(trtd.wk22remitters, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, REMISSwk22)))
-
-plac.wk22remitters<-wk22remitters[wk22remitters$TRTGRINDMAN!="Treated_Placebo",]
-plac.wk22remitters<-plac.wk22remitters[plac.wk22remitters$TRTGRINDMAN!="Treated_Treated",]
-summary(subset(plac.wk22remitters, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, REMISSwk22)))
-
-wk22remitters.distmat<-read.table("../data/Jan400.alltp.wk22remitters.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-wk22remitters.dist<-as.dist(wk22remitters.distmat)
-trtd.wk22remitters.distmat<-read.table("../data/Jan400.alltp.trtd.wk22remitters.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-trtd.wk22remitters.dist<-as.dist(trtd.wk22remitters.distmat)
-plac.wk22remitters.distmat<-read.table("../data/Jan400.alltp.plac.wk22remitters.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-plac.wk22remitters.dist<-as.dist(plac.wk22remitters.distmat)
 ```
 
 ```{r vars, include=F}
@@ -1583,11 +1466,11 @@ friedman.test(alltp.placeborespN)
 friedmc <- friedmanmc(alltp.placeborespN)
 friedmc
 
-source('../code/Figure4_alltp.adivXvisitXtrtgrXrelRSPwk22.R')
+#source('../code/Figure4_alltp.adivXvisitXtrtgrXrelRSPwk22.R')
 
-pdf("figures/Figure4_alltp.adivXvisitXindtrtXrelRSPwk22.pdf", height = 6, width = 10)
-alltp.adivXvisXindtrtXrelRSPwk22.plot
-dev.off()
+#pdf("figures/Figure4_alltp.adivXvisitXindtrtXrelRSPwk22.pdf", height = 6, width = 10)
+#alltp.adivXvisXindtrtXrelRSPwk22.plot
+#dev.off()
 
 alltp.treatedrespY <- data.frame(alltp.treatedrespY)
 alltp.treatedrespN <- data.frame(alltp.treatedrespN)
@@ -1715,52 +1598,8 @@ friedmc
 
 ```{r readdataAUCRF, include=FALSE}
 #Read in all data
-source('../code/APmd.setup.R')
+source('../code/readdataAUCRF.R')
 
-APmd_adiv<-merge(APmd, adiv, by.x="group", by.y="group")#nonmatch removed
-APmd_shared<-merge(APmd_adiv, ss3k_shared_U2s, by.x="group", by.y="Group")
-
-APmd_shared$TRTGR_REMISSwk6 <- as.factor(paste(APmd_shared$TRTGR, APmd_shared$REMISSwk6))
-APmd_shared$TRTGR_REMISSwk22 <- as.factor(paste(APmd_shared$TRTGR, APmd_shared$REMISSwk22))
-
-APmd_shared$TRTGR_RelRSPwk6 <- as.factor(paste(APmd_shared$TRTGR, APmd_shared$RelRSPwk6))
-APmd_shared$TRTGR_RelRSPwk22 <- as.factor(paste(APmd_shared$TRTGR, APmd_shared$RelRSPwk22))
-APmd_RSPwk22<-APmd_shared
-
-screen_RESPwk22<-APmd_RSPwk22[APmd_RSPwk22$visit=="Screening",] #removes any group with NA in RESPONSEwk22
-
-screen_data<-screen_RESPwk22			
-
-screen.trtd<-screen_data[screen_data$TRTGRINDMAN!="Placebo_Placebo",]
-screen.trtd<-screen.trtd[screen.trtd$TRTGRINDMAN!="Placebo_Treated",]
-summary(screen.trtd[,1:6])
-screen.plac<-screen_data[screen_data$TRTGRINDMAN!="Treated_Placebo",]
-screen.plac<-screen.plac[screen.plac$TRTGRINDMAN!="Treated_Treated",]
-summary(screen.plac[,1:6])
-
-nao.screen_data<-na.omit(screen_data)
-
-nao.screen.trtd<-nao.screen_data[nao.screen_data$TRTGRINDMAN!="Placebo_Placebo",]
-nao.screen.trtd<-nao.screen.trtd[nao.screen.trtd$TRTGRINDMAN!="Placebo_Treated",]
-summary(nao.screen.trtd[,1:6])
-nao.screen.plac<-nao.screen_data[nao.screen_data$TRTGRINDMAN!="Treated_Placebo",]
-nao.screen.plac<-nao.screen.plac[nao.screen.plac$TRTGRINDMAN!="Treated_Treated",]
-summary(nao.screen.plac[,1:6])
-
-tax<- read.table('../data/Jan400.simple.taxonomy.txt', header=T, sep="\t")
-nao.screen.all.distmat<-read.table("../data/Jan400.screening.all.na.omit.cmd.thetayc.0.03.square.ave.dist")
-nao.screen.all.dist<-as.dist(nao.screen.all.distmat)
-nao.screen.trtd.distmat<-read.table("../data/Jan400.screening.ust.na.omit.cmd.thetayc.0.03.square.ave.dist")
-nao.screen.trtd.dist<-as.dist(nao.screen.trtd.distmat)
-nao.screen.plac.distmat<-read.table("../data/Jan400.screening.plac.na.omit.cmd.thetayc.0.03.square.ave.dist")
-nao.screen.plac.dist<-as.dist(nao.screen.plac.distmat)
-
-screen.all.distmat<-read.table("../data/Jan400.screen.all.thetayc.0.03.square.ave.dist")
-screen.all.dist<-as.dist(screen.all.distmat)
-screen.trtd.distmat<-read.table("../data/Jan400.screen.ust.thetayc.0.03.square.ave.dist")
-screen.trtd.dist<-as.dist(screen.trtd.distmat)
-screen.plac.distmat<-read.table("../data/Jan400.screen.plac.thetayc.0.03.square.ave.dist")
-screen.plac.dist<-as.dist(screen.plac.distmat)
 ```	
 
 ```{r RelRSPwk6-AUC-RF, include=F, fig.height=5, fig.width=10}
@@ -1916,7 +1755,7 @@ otuvmdWK6remrocsPval <- signif(otuvmdWK6remrocsP$p.value, digits=2)
 mdotuvotuWK6remrocsP <- roc.test(mdotu_remWK6_roc, otu_remWK6_roc)
 mdotuvotuWK6remrocsPval <- signif(mdotuvotuWK6remrocsP$p.value, digits=2)
 
-source("../code/Figure2_prediction.R")
+#source("../code/Figure2_prediction.R")
 ```
 
 ```{r REMISSwk6AUCRFinline, fig.height=5, fig.width=10, include=FALSE}
@@ -1968,136 +1807,11 @@ otu_remWK6_rf
 
 ```{r week6readdata, include=F}
 
-md<-read.table(file="../data/Jan400.mdshared.wmg.txt", sep="\t", header=T) #wmg=with merged groups
-APmd.wk6<-subset(md, select=c(group, USUBJID, Site, visit, TRTGR, TRTGRINDMAN:COUNTRY, BAMINO, BANTIBIO, BCORT, BIMM, BL_BMI:tissinvol, BRSP_TNF, BL_FLACT:BL_FLACTLEV, BOWSTRICT, RESPONSEwk4:REMISSwk22, RSP_Rwk8n22:RSP_SRwk8N22, REMISSwk6, RESPONSEwk6, cdail_wk0, cdail_wk4, cdail_wk6, cdail_wk8, cdail_wk22, CDSTOOLM_Week.6, CDPAINM_Week.6, CDWELBEM_Week.6, CDARTRTM_Week.6, CDARALGM_Week.6, CDIRITM_Week.6, CDUVEITM_Week.6, CDERYTHM_Week.6, CDPYODEM_Week.6, CDSTOMAM_Week.6, CDFISURM_Week.6, CDFISTUM_Week.6, CDABSCEM_Week.6, CDOTFISM_Week.6, CDFEVERM_Week.6, CDDRGM_Week.6, CDAMASSM_Week.6, CDHCTM_Week.6, CDWEIGHM_Week.6))
-
-levels(APmd.wk6$TRTGR)<-c("Placebo", "Treated")
-levels(APmd.wk6$TRTGRINDMAN)<-c("Placebo_Not", "Placebo_Placebo", "Placebo_Treated", "Treated_Not", "Treated_Placebo", "Treated_Treated")
-
-APmd.wk6$TRTGR_REMISSwk6 <- as.factor(paste(APmd.wk6$TRTGR, APmd.wk6$REMISSwk6))
-APmd.wk6$TRTGR_REMISSwk22 <- as.factor(paste(APmd.wk6$TRTGR, APmd.wk6$REMISSwk22))
-
-APmd.wk6$TRTGR_RelRSPwk6 <- as.factor(paste(APmd.wk6$TRTGR, APmd.wk6$RelRSPwk6))
-APmd.wk6$TRTGR_RelRSPwk22 <- as.factor(paste(APmd.wk6$TRTGR, APmd.wk6$RelRSPwk22))
-
-APmd.wk6$CDSTOOLM_Week.6[APmd.wk6$CDSTOOLM_Week.6=="."]<-"NA"
-APmd.wk6$CDSTOOLM_Week.6 <-as.integer(APmd.wk6$CDSTOOLM_Week.6)
-APmd.wk6$CDHCTM_Week.6[APmd.wk6$CDHCTM_Week.6=="."]<-"NA"
-APmd.wk6$CDHCTM_Week.6 <-as.integer(APmd.wk6$CDHCTM_Week.6)
-summary(subset(APmd.wk6, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
-
-deltaCDAIwk0_22<-APmd.wk6$cdail_wk22-APmd.wk6$cdail_wk0
-deltaCDAIwk0_8<-APmd.wk6$cdail_wk8-APmd.wk6$cdail_wk0
-deltaCDAIwk0_4<-APmd.wk6$cdail_wk4-APmd.wk6$cdail_wk0
-deltaCDAIwk0_6<-APmd.wk6$cdail_wk6-APmd.wk6$cdail_wk0
-percentdelta0_4<-deltaCDAIwk0_4/APmd.wk6$cdail_wk0*100
-percentdelta0_6<-deltaCDAIwk0_6/APmd.wk6$cdail_wk0*100
-percentdelta0_8<-deltaCDAIwk0_8/APmd.wk6$cdail_wk0*100
-percentdelta0_22<-deltaCDAIwk0_22/APmd.wk6$cdail_wk0*100
-deltaCDAIwk8_22<-APmd.wk6$cdail_wk22-APmd.wk6$cdail_wk8
-percentdelta8_22<-deltaCDAIwk8_22/APmd.wk6$cdail_wk8*100
-APmd.wk6$percentdelta0_4<-percentdelta0_4
-APmd.wk6$percentdelta0_6<-percentdelta0_6
-APmd.wk6$percentdelta0_8<-percentdelta0_8
-APmd.wk6$percentdelta0_22<-percentdelta0_22
-APmd.wk6$percentdelta8_22<-percentdelta8_22
-APmd.wk6$RelRSPwk4<-as.factor(ifelse(APmd.wk6$percentdelta0_4>=-29.5, print("No"), print("Yes")))
-APmd.wk6$RelRSPwk6<-as.factor(ifelse(APmd.wk6$percentdelta0_6>=-29.5, print("No"), print("Yes")))
-APmd.wk6$RelRSPwk8<-as.factor(ifelse(APmd.wk6$percentdelta0_8>=-29.5, print("No"), print("Yes")))
-APmd.wk6$RelRSPwk22<-as.factor(ifelse(APmd.wk6$percentdelta0_22>=-29.5, print("No"), print("Yes")))
-APmd.wk6$RelRSPwk8_22<-as.factor(ifelse(APmd.wk6$percentdelta8_22>=-29.5, print("No"), print("Yes")))
-APmd.wk6$visit<-factor(APmd.wk6$visit, levels = c("Screening", "Week 4", "Week 6", "Week 22"))
-adiv<-read.table(file="../data/Jan400.all.na.omit.cmd.groups.summary", sep="\t", header=T)
-ss3k_shared<-read.table(file="../data/Jan400.all.na.omit.cmd.0.03.subsample.shared", sep="\t", header=T)#Jan400 subsampled to 3K visit=Week.6
-APmd.wk6_adiv<-merge(APmd.wk6, adiv, by.x="group", by.y="group")#nonmatch removed
-APmd.wk6_shared<-merge(APmd.wk6_adiv, ss3k_shared_U2s, by.x="group", by.y="Group")
-summary(APmd.wk6_shared[,1:20])
-APmd.wk6_shared<-APmd.wk6_shared[APmd.wk6_shared$USUBJID!='C0743T26030100002',]
-APmd.wk6_shared<-APmd.wk6_shared[APmd.wk6_shared$group!='E4859941-5',]
-levs<-APmd.wk6_shared %>% group_by(USUBJID) %>% summarise(no_rows = length(USUBJID))
-levs
-
-APmd.wk6_shared<-APmd.wk6_shared[APmd.wk6_shared$TRTGRINDMAN!="Placebo_Not",]
-APmd.wk6_shared<-APmd.wk6_shared[APmd.wk6_shared$TRTGRINDMAN!="Treated_Not",]
-
-allwk6_data<-APmd.wk6_shared[APmd.wk6_shared$visit=="Week 6",]
-summary(allwk6_data[,1:20])
-
-trtd.wk6_data<-allwk6_data[allwk6_data$TRTGR=="Treated",]
-summary(trtd.wk6_data[,1:20])
-nrow(trtd.wk6_data[trtd.wk6_data$visit=="Week 6",])
-plac.wk6_data<-allwk6_data[allwk6_data$TRTGR!="Treated",]
-summary(plac.wk6_data[,1:20])
-
-wk0_6_data<-APmd.wk6_shared[APmd.wk6_shared$visit!="Week 4",]
-wk0_6_data<-wk0_6_data[wk0_6_data$visit!="Week 22",]
-
-summary(subset(wk0_6_data, select = c(group, USUBJID, visit, nseqs, coverage, sobs, invsimpson)))
-
-levs<-wk0_6_data %>% group_by(USUBJID) %>% summarise(no_rows = length(USUBJID))
-summary(levs)
-subidsover2<-levs[levs$no_rows>=2,]
-summary(subidsover2)
-subidsover2
-zero6subs<-as.character(subidsover2$USUBJID)
-zero6subs_data <- wk0_6_data[wk0_6_data$USUBJID %in% zero6subs,]
-
-
-zero6subs_data<-zero6subs_data[zero6subs_data$TRTGRINDMAN!="Placebo_Not",]
-zero6subs_data<-zero6subs_data[zero6subs_data$TRTGRINDMAN!="Treated_Not",]
-summary(subset(zero6subs_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
-
-trtd.zero6subs_data<-zero6subs_data[zero6subs_data$TRTGRINDMAN!="Placebo_Placebo",]
-trtd.zero6subs_data<-trtd.zero6subs_data[trtd.zero6subs_data$TRTGRINDMAN!="Placebo_Treated",]
-plac.zero6subs_data<-zero6subs_data[zero6subs_data$TRTGRINDMAN!="Treated_Treated",]
-plac.zero6subs_data<-plac.zero6subs_data[plac.zero6subs_data$TRTGRINDMAN!="Treated_Placebo",]
-summary(subset(trtd.zero6subs_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
-summary(subset(plac.zero6subs_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
-
-week6.N.all <- nrow(zero6subs_data[zero6subs_data$visit=='Week 6',])
-week6.trtd <- trtd.zero6subs_data[trtd.zero6subs_data$visit=='Week 6',]
-week6.N.trtd <- nrow(trtd.zero6subs_data[trtd.zero6subs_data$visit=='Week 6',])
-week6.N.trtd.respY <- nrow(week6.trtd[week6.trtd$RelRSPwk6=='Yes',])
-week6.N.trtd.respN <- nrow(week6.trtd[week6.trtd$RelRSPwk6=='No',])
-week6.plac <- plac.zero6subs_data[plac.zero6subs_data$visit=='Week 6',]
-week6.N.plac <- nrow(plac.zero6subs_data[plac.zero6subs_data$visit=='Week 6',])
-week6.N.plac.respY <- nrow(week6.plac[week6.plac$RelRSPwk6=='Yes',])
-week6.N.plac.respN <- nrow(week6.plac[week6.plac$RelRSPwk6=='No',])
-week6.N.trtd.REMY <- nrow(week6.trtd[week6.trtd$REMISSwk6=='Yes',])
-week6.N.trtd.REMN <- nrow(week6.trtd[week6.trtd$REMISSwk6=='No',])
-week6.N.plac.REMY <- nrow(week6.plac[week6.plac$REMISSwk6=='Yes',])
-week6.N.plac.REMN <- nrow(week6.plac[week6.plac$REMISSwk6=='No',])
-
-all.RelRSPwk6<-matrix(c('Week 6 Response (No, Yes)', trtd.RelRSPwk6_sum, plac.RelRSPwk6_sum, all.RelRSPwk6.kw.test.pval, all.RelRSPwk6_AMOVA), ncol = 5)
-
-week6.N.resp.trtd_sum<-toString(c(week6.N.trtd.respN, week6.N.trtd.respY))
-week6.N.resp.plac_sum<-toString(c(week6.N.plac.respN, week6.N.plac.respY))
-
-week6.N.REM.trtd_sum<-toString(c(week6.N.trtd.REMN, week6.N.trtd.REMY))
-week6.N.REM.plac_sum<-toString(c(week6.N.plac.REMN, week6.N.plac.REMY))
-
-wk6.RelRSPwk6 <- matrix(c("Week 6", "Response Week 6 (No, Yes)", week6.N.resp.trtd_sum, week6.N.resp.plac_sum, week6.N.all), ncol=5)
-colnames(wk6.RelRSPwk6) <- c("Stool Week", 'Status Week', 'Treated (n)', "Placebo (n)", "Total (n)")
-wk6.REMISSwk6 <- matrix(c("Week 6", "Remission Week 6 (No, Yes)", week6.N.REM.trtd_sum, week6.N.REM.plac_sum, week6.N.all), ncol=5)
-colnames(wk6.REMISSwk6) <- c("Stool Week", 'Status Week', 'Treated (n)', "Placebo (n)", "Total (n)")
-
-wk6_wk6 <- rbind(wk6.RelRSPwk6, wk6.REMISSwk6)
-wk6_wk6 <- wk6_wk6[,-5]
+source('../code/wk6readdata.R')
 
 pdf("tables/wk6_wk6.sum.pdf", height=2, width=6)
 grid.table(wk6_wk6)
 dev.off()
-```
-
-```{r wk6Xwk6_phylum_otu, include=FALSE}
-#screen_data <- allwk6_data
-#source("../code/FigureDUNNO_wk6Xwk6phyla.R")
-
-#pdf("figures/FigureDUNNO_wk6Xwk6phyla.pdf", height = 10, width = 12)
-#plot_grid(phyRabRelRSPwk6_figure2, phyRabREMISSwk6_figure2, labels = c("A", "B"), align = "v", nrow=2)
-#dev.off()
-
-#source("../code/REMISSwk6Xwk6.sig.otu.figure.R")
 ```
 
 ```{r RelRSPwk6Xwk6-AUC-RF, include=F, fig.height=5, fig.width=10}
@@ -2144,7 +1858,7 @@ mdotu_relrespWK6xWK6_roc <- roc(mdotu_relrespWK6xWK6$RelRSPwk6~mdotu_relrespWK6x
 
 
 
-#pdf('data/figures/RSPwk6aucrf.#pdf', height=6, width=8)
+#pdf('../data/figures/RSPwk6aucrf.#pdf', height=6, width=8)
 ### Plot ROC curves
 layout(matrix(c(1,2), nrow=1))
 par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
@@ -2175,7 +1889,7 @@ md_relrespWK6xWK6_thr <- coords(md_relrespWK6xWK6_roc, x=md_relrespWK6xWK6_spec,
 points(coords(md_relrespWK6xWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(md_relrespWK6xWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='black', cex=1.5, pch=10)
 #dev.off()
 
-#pdf('data/figures/RSPwk6abunds.#pdf', height=6, width=8)
+#pdf('../data/figures/RSPwk6abunds.#pdf', height=6, width=8)
 plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='', xaxt='n', cex.axis=1.2)
 stripchart(at=1, md_relrespWK6xWK6_probs[md_relrespWK6xWK6$'RelRSPwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
 stripchart(at=2, md_relrespWK6xWK6_probs[md_relrespWK6xWK6$'RelRSPwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
@@ -2188,7 +1902,7 @@ cutoff <- coords(roc=md_relrespWK6xWK6_roc, x='best', best.method='y', ret=c('th
 md_relrespWK6xWK6_rf # prints list of optimal features
 
 
-#pdf('data/figures/RSPwk6aucrf.#pdf', height=6, width=8)
+#pdf('../data/figures/RSPwk6aucrf.#pdf', height=6, width=8)
 ### Plot ROC curves
 layout(matrix(c(1,2), nrow=1))
 par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
@@ -2200,7 +1914,7 @@ title("RESPONSEwk6")
 legend('bottomright', c(sprintf('OTUs : AUC=%.3f',otu_relrespWK6xWK6_roc$auc),sprintf('Clinical Data: AUC=%.3f',md_relrespWK6xWK6_roc$auc),sprintf('Combined: AUC=%.3f',mdotu_relrespWK6xWK6_roc$auc)), lwd=2, col=c('royalblue','grey5', 'red'), bty='n', lty=1)
 #dev.off()
 
-#pdf('data/figures/RSPwk6abunds.#pdf', height=6, width=8)
+#pdf('../data/figures/RSPwk6abunds.#pdf', height=6, width=8)
 plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='', xaxt='n', cex.axis=1.2)
 stripchart(at=1, mdotu_relrespWK6xWK6_probs[mdotu_relrespWK6xWK6$'RelRSPwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
 stripchart(at=2, mdotu_relrespWK6xWK6_probs[mdotu_relrespWK6xWK6$'RelRSPwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
@@ -2258,7 +1972,7 @@ mdotu_remWK6xWK6_probs <- predict(mdotu_remWK6xWK6_rf$RFopt, type='prob')[,2]
 mdotu_remWK6xWK6_roc <- roc(mdotu_remWK6xWK6$REMISSwk6~mdotu_remWK6xWK6_probs)
 
 
-#pdf('data/figures/RSPwk6aucrf.#pdf', height=6, width=8)
+#pdf('../data/figures/RSPwk6aucrf.#pdf', height=6, width=8)
 ### Plot ROC curves
 layout(matrix(c(1,2), nrow=1))
 par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
@@ -2290,7 +2004,7 @@ md_remWK6xWK6_thr <- coords(md_remWK6xWK6_roc, x=md_remWK6xWK6_spec, input='spec
 points(coords(md_remWK6xWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(md_remWK6xWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='black', cex=1.5, pch=10)
 #dev.off()
 
-#pdf('data/figures/RSPwk6abunds.#pdf', height=6, width=8)
+#pdf('../data/figures/RSPwk6abunds.#pdf', height=6, width=8)
 plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='', xaxt='n', cex.axis=1.2)
 stripchart(at=1, md_remWK6xWK6_probs[md_remWK6xWK6$'REMISSwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
 stripchart(at=2, md_remWK6xWK6_probs[md_remWK6xWK6$'REMISSwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
@@ -2302,7 +2016,7 @@ cutoff <- coords(roc=md_remWK6xWK6_roc, x='best', best.method='y', ret=c('thresh
 md_remWK6xWK6_rf # prints list of optimal features
 
 
-#pdf('data/figures/RSPwk6aucrf.#pdf', height=6, width=8)
+#pdf('../data/figures/RSPwk6aucrf.#pdf', height=6, width=8)
 ### Plot ROC curves
 layout(matrix(c(1,2), nrow=1))
 par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
@@ -2314,7 +2028,7 @@ title("Predicting Week 6 Remission using Week 6 Clinical Data")
 legend('bottomright', c(sprintf('OTUs : AUC=%.3f',otu_remWK6xWK6_roc$auc),sprintf('Clinical Data: AUC=%.3f',md_remWK6xWK6_roc$auc),sprintf('Combined: AUC=%.3f',mdotu_remWK6xWK6_roc$auc)), lwd=2, col=c('royalblue','grey5', 'red'), bty='n', lty=1)
 #dev.off()
 
-#pdf('data/figures/RSPwk6abunds.#pdf', height=6, width=8)
+#pdf('../data/figures/RSPwk6abunds.#pdf', height=6, width=8)
 plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='', xaxt='n', cex.axis=1.2)
 stripchart(at=1, mdotu_remWK6xWK6_probs[mdotu_remWK6xWK6$'REMISSwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
 stripchart(at=2, mdotu_remWK6xWK6_probs[mdotu_remWK6xWK6$'REMISSwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
@@ -2330,7 +2044,7 @@ md_remWK6xWK6_rf
 WK6xWK6rocsP <- roc.test(otu_relrespWK6xWK6_roc, otu_remWK6xWK6_roc)
 WK6xWK6rocsPval <- signif(WK6xWK6rocsP$p.value, digits=2)
 
-source('../code/Figure5_responseREMwk6Xwk6.R')
+#source('../code/Figure5_responseREMwk6Xwk6.R')
 ```
 
 ```{r week22readdata, include=F}
@@ -2487,10 +2201,10 @@ wk22REMbdivpval <- table2_df[4,5]
 
 \vspace{35mm}
 	
-Running title: Microbiota of Ustekinumab-treated Crohn’s patients.
+Running title: Microbiota of Ustekinumab-treated Crohn’s subjects.
 	
 \vspace{35mm}
-Matthew K. Doherty${^1}$, Tao Ding${^1}$${^\alpha}$, Charlie Koumpouras${^1}$, Shannon Telesco${^2}$, Calixte Monast${^2}$, and Patrick D. Schloss${^1}$${^\dagger}$
+Matthew K. Doherty${^1}$, Tao Ding${^1}$${^\alpha}$, Charlie Koumpouras${^1}$, Shannon E. Telesco${^2}$, Calixte Monast${^2}$, Anuk Das${^2}$, Carrie Brodmerkel${^2}$, and Patrick D. Schloss${^1}$${^\dagger}$
 
 $\dagger$ To whom correspondence should be addressed: Patrick D. Schloss, pschloss@umich.edu
 
@@ -2515,9 +2229,9 @@ ${\alpha}$ Currently at Department of Biology, New York University, New York, NY
 
 
 ## Abstract
-The fecal microbiota is a rich source of biomarkers that have previously been shown to be predictive of numerous disease states. Less well studied is whether these biomarkers can be predictive of response to therapy. This study sought to predict the therapeutic response of Ustekinumab (UST) treated Crohn’s disease (CD) patients. Using stool samples collected over the course of 22 weeks, the composition of these patients' fecal bacterial communities was characterized by sequencing the 16S rRNA gene. Patients in remission could be distinguished from those with active disease 6 weeks after treatment induction using Random Forest models trained on patients' baseline microbiota and clinical data (AUC = `r mdotu_remWK6_roc$auc`, specificity = `r mdotu_remWK6_spec`, sensitivity = `r mdotu_remWK6_sens`). The most predictive OTUs that were ubiquitous among patients were affiliated with *Faecalibacterium* and *Escherichia/Shigella*. Among patients in remission 6 weeks after induction, the median baseline community diversity was `r signif(median.REMwk6.invsimp$Yes/median.REMwk6.invsimp$No, digits=2)` times higher than treated patients with active disease (p = `r wk6remadivpval`). Their baseline community structures were also significantly different (p = `r all.REMISSwk6.adonis.pval`). Two OTUs affiliated with *Faecalibacterium* (p = `r round(trtd.REMISSwk6.Otu7p, 3)`) and *Bacteroides* (p = `r trtd.REMISSwk6.Otu19p`) were significantly more abundant at baseline in patients who were in remission 6 weeks after induction than those with active CD. The diversity of UST treated clinical responders increased over the 22 weeks of the study, in contrast to nonresponsive patients (p = `r signif(fried.trtdrespY$p.value, digits = 1)`). The observed baseline differences in fecal microbiota and changes due to therapeutic response support using the microbiota as a biomarker for predicting a patient's response to UST. (word count= 243/250, TextWrangler)
+The fecal microbiota is a rich source of biomarkers that have previously been shown to be predictive of numerous disease states. Less well studied is whether these biomarkers can be predictive of response to therapy. This study sought to predict the therapeutic response of Ustekinumab (UST) treated Crohn’s disease (CD) patients. Using stool samples collected over the course of 22 weeks, the composition of these subjects' fecal bacterial communities was characterized by sequencing the 16S rRNA gene. Subjects in remission could be distinguished from those with active disease 6 weeks after treatment using Random Forest models trained on subjects' baseline microbiota and clinical data (AUC = `r mdotu_remWK6_roc$auc`, specificity = `r mdotu_remWK6_spec`, sensitivity = `r mdotu_remWK6_sens`). The most predictive OTUs that were ubiquitous among subjects were affiliated with *Faecalibacterium* and *Escherichia/Shigella*. Among subjects in remission 6 weeks after treatment, the median baseline community diversity was `r signif(median.REMwk6.invsimp$Yes/median.REMwk6.invsimp$No, digits=2)` times higher than treated subjects with active disease (p = `r wk6remadivpval`). Their baseline community structures were also significantly different (p = `r all.REMISSwk6.adonis.pval`). Two OTUs affiliated with *Faecalibacterium* (p = `r round(trtd.REMISSwk6.Otu7p, 3)`) and *Bacteroides* (p = `r trtd.REMISSwk6.Otu19p`) were significantly more abundant at baseline in subjects who were in remission 6 weeks after induction than those with active CD. The diversity of UST treated clinical responders increased over the 22 weeks of the study, in contrast to nonresponsive subjects (p = `r signif(fried.trtdrespY$p.value, digits = 1)`). The observed baseline differences in fecal microbiota and changes due to therapeutic response support using the microbiota as a biomarker for predicting a patient's response to UST. (word count= 243/250, TextWrangler)
 
-_Importance:_  CD is a global health concern, with increasing incidence and prevalence, causing large economic and health care impacts. Finding prognostic biomarkers that give clinicians the ability to predict response to CD treatment at diagnosis will increase the likelihood of faster induction and maintenance of remission. OTUs associated with remission after treatment induction, especially *Faecalibacterium*, could be biomarkers for successful UST treatment of TNF-${\alpha}$ refractory CD patients. More broadly, these results suggest the fecal microbiota could be a useful non-invasive biomarker for directing or monitoring the treatment of gastrointestinal diseases. (word count =91/150, TextWrangler)
+_Importance:_  CD is a global health concern, with increasing incidence and prevalence, causing large economic and health care impacts. Finding prognostic biomarkers will give clinicians the ability to predict response to CD treatment at diagnosis. OTUs associated with remission after treatment induction, especially *Faecalibacterium*, could be biomarkers for successful UST treatment of TNF-${\alpha}$ refractory CD patients. More broadly, these results suggest the fecal microbiota could be a useful non-invasive biomarker for directing or monitoring the treatment of gastrointestinal diseases. (word count =91/150, TextWrangler)
 
 
 **Keywords: IBD, microbiome, biologics, prediction, biomarkers, remission, Stelara, machine learning**
@@ -2531,19 +2245,19 @@ CD is a global health concern causing large economic and health care impacts [@a
 
 The precise etiology of CD remains unknown, but host genetics, environmental exposure, and the gut microbiome appear to be involved [@ananthakrishnan_epidemiology_2015; @sartor_IBDpath_2006]. Individuals with CD have reduced microbial diversity in their guts, compared to healthy individuals, with a lower relative abundance of *Firmicutes* and an increased relative abundance of *Enterobacteraciae* and *Bacteroides* [@wright_CDmicrobiome_2015; @manichanh_diversityCD_2006; @hansen_pedsIBD_2012; @haberman_pedsCD_2014; @gevers_pedsCD_2014]. Additionally, genome-wide association studies of individuals with CD identified several susceptibility loci including loci involved in the IL-23 signaling pathway, which could impact the gut microbiota composition and function [@randall_CDbiologics_2015; @wright_CDmicrobiome_2015; @Riol-Blanco_IL23microbiome_2010; @Round_IL23microbiome_2009; @Eken_IL23CD_2014; @Shih_IL23Th17_2014]. If the fecal microbiota can be used to monitor disease severity and predict response to specific treatment modalities, then clinicians could use it as a noninvasive tool for prescribing therapies that result in faster remission [@tedjo_CDactivity_2016]. 
 
-The FDA recently approved Ustekinumab (UST), a monoclonal antibody directed against the shared p40 subunit of IL-12 and IL-23, for the treatment of CD [Feagan_UST_2016; @wils_ust_2015; @sandborn_ust_2012; @sandborn_ust_2008; @kopylov_ust_2014]. Given the potential impact of IL-23 on the microbiota [@Riol-Blanco_IL23microbiome_2010; @Round_IL23microbiome_2009; @Eken_IL23CD_2014; @Shih_IL23Th17_2014], we hypothesized that response to UST could be predicted or influenced by differences in patients’ gut microbiota and that UST treatment may alter the fecal microbiota. The effects of biologic treatment of IBD on the microbiota are not yet well described, but are hypothesized to be indirect, as these drugs act on host factors [@randall_CDbiologics_2015]. We analyzed the fecal microbiota of patients who participated in a double-blinded, placebo-controlled Phase II clinical trial that demonstrated the safety and efficacy of UST for treating CD [@sandborn_ust_2012]. The original study found that UST induction treatment had an increased rate of response as well as increased rates of response and remission with UST maintenance therapy, compared to placebo. We quantified the association between the fecal microbiota and disease severity. Finally, we tested whether clinical responders had a microbiota that was distinct from non-responders and whether the fecal microbiota changed in patients treated with UST using 16S rRNA gene sequence data from these patients' stool samples.  Our study demonstrates that these associations are useful in predicting and monitoring UST treatment outcome and suggest the fecal microbiota may be a broadly useful source of biomarkers for predicting response to treatment.
+The FDA recently approved Ustekinumab (UST), a monoclonal antibody directed against the shared p40 subunit of IL-12 and IL-23, for the treatment of CD [Feagan_UST_2016; @wils_ust_2015; @sandborn_ust_2012; @sandborn_ust_2008; @kopylov_ust_2014]. Given the potential impact of IL-23 on the microbiota [@Riol-Blanco_IL23microbiome_2010; @Round_IL23microbiome_2009; @Eken_IL23CD_2014; @Shih_IL23Th17_2014], we hypothesized that response to UST could be predicted or influenced by differences in subjects’ gut microbiota and that UST treatment may alter the fecal microbiota. The effects of biologic treatment of IBD on the microbiota are not yet well described, but are hypothesized to be indirect, as these drugs act on host factors [@randall_CDbiologics_2015]. We analyzed the fecal microbiota of subjects who participated in a double-blinded, placebo-controlled Phase II clinical trial that demonstrated the safety and efficacy of UST for treating CD [@sandborn_ust_2012]. The original study found that UST induction treatment had an increased rate of response as well as increased rates of response and remission with UST maintenance therapy, compared to placebo. We quantified the association between the fecal microbiota and disease severity. Finally, we tested whether clinical responders had a microbiota that was distinct from non-responders and whether the fecal microbiota changed in subjects treated with UST using 16S rRNA gene sequence data from these subjects' stool samples.  Our study demonstrates that these associations are useful in predicting and monitoring UST treatment outcome and suggest the fecal microbiota may be a broadly useful source of biomarkers for predicting response to treatment.
 
 ## Results
 
 **Study design**
 
-We characterized the fecal microbiota in a subset of anti-TNF-${\alpha}$ refractory CD patients, with moderate to severe CD, who took part in a double-blinded clinical trial that demonstrated the efficacy of UST in treating CD [@sandborn_ust_2012].  Demographic and baseline disease characteristics of this subset are summarized in Table 1. Patients were randomly assigned to a treatment group in the induction phase of the study and were re-randomized into maintenance therapy groups 8 weeks after induction based on their response (Figure 1A). In our study, response was defined as a decrease in a patient's initial Crohn's Disease Activity Index (CDAI) greater than 30%. Remission was defined as a CDAI below 150 points. The CDAI is the standard instrument for evaluating clinical symptoms and disease activity in CD [@PB_CDAI_2016; @Best_CDAI_1976]. The CDAI weights patient reported stool frequency, abdominal pain, and general well being over a week, in combination with weight change, hematocrit, opiate usage for diarrhea, and the presence of abdominal masses or other complications to determine the disease severity score [@Best_CDAI_1976; @PB_CDAI_2016]. Patients provided stool samples at baseline (screening) and at 4, 6, and 22 weeks after induction for analysis using 16S rRNA gene sequencing (Figure 1B).
+We characterized the fecal microbiota in a subset of anti-TNF-${\alpha}$ refractory CD patients, with moderate to severe CD, who took part in a double-blinded clinical trial that demonstrated the efficacy of UST in treating CD [@sandborn_ust_2012].  Demographic and baseline disease characteristics of this subset are summarized in Table 1. Subjects were randomly assigned to a treatment group in the induction phase of the study and were re-randomized into maintenance therapy groups 8 weeks after induction based on their response (Figure 1A). In our study, response was defined as a decrease in a subject's initial Crohn's Disease Activity Index (CDAI) greater than 30%. Remission was defined as a CDAI below 150 points. The CDAI is the standard instrument for evaluating clinical symptoms and disease activity in CD [@PB_CDAI_2016; @Best_CDAI_1976]. The CDAI weights patient reported stool frequency, abdominal pain, and general well being over a week, in combination with weight change, hematocrit, opiate usage for diarrhea, and the presence of abdominal masses or other complications to determine the disease severity score [@Best_CDAI_1976; @PB_CDAI_2016]. Subjects provided stool samples at baseline (screening) and at 4, 6, and 22 weeks after induction for analysis using 16S rRNA gene sequencing (Figure 1B).
 
 **Prediction of remission following treatment**
 
-We investigated whether the composition of the baseline fecal microbiota could predict therapeutic remission (CDAI < 150) 6 weeks after induction. To test this hypothesis, we generated Random Forest (RF) models to predict which patients would be in remission 6 weeks after induction based on the relative abundance of the fecal microbiota at baseline, clinical metadata at baseline, and the combination of microbiota and clinical data. We determined the optimal model based the largest area under the curve (AUC) of the receiver operating characteristic (ROC) curve for the RF model [@baxter_FIT_2016; @calle_aucrf_2011]. Clinical data included components of the CDAI, biomarkers for inflammation, and patient metadata described further in the methods section. We trained these models using `r nrow(nao.screen.trtd)` baseline stool samples from patients induced with UST. Clinical data alone resulted in an AUC of `r md_remWK6_roc$auc` (specificity = `r md_remWK6_spec`, sensitivity = `r md_remWK6_sens`) (Figure 2A). Using only fecal microbiota data the model had an AUC of `r otu_remWK6_roc$auc` (specificity = `r otu_remWK6_spec`, sensitivity = `r otu_remWK6_sens`). Finally, when combining clinical metadata with the microbiota we achieved an AUC of `r mdotu_remWK6_roc$auc` (specificity = `r mdotu_remWK6_spec`, sensitivity = `r mdotu_remWK6_sens`) for remission 6 weeks after induction. Prediction with clinical metadata alone did not perform as well as models using the baseline fecal microbiome (p = `r round(otuvmdWK6remrocsPval, 3)`) or the combined model (p = `r round(mdotuvmdWK6remrocsPval, 3)`); however, there was not a significant difference between the baseline fecal microbiota model and the combined model (p = `r mdotuvotuWK6remrocsPval`). 
+We investigated whether the composition of the baseline fecal microbiota could predict therapeutic remission (CDAI < 150) 6 weeks after induction. To test this hypothesis, we generated Random Forest (RF) models to predict which subjects would be in remission 6 weeks after induction based on the relative abundance of the fecal microbiota at baseline, clinical metadata at baseline, and the combination of microbiota and clinical data. We determined the optimal model based the largest area under the curve (AUC) of the receiver operating characteristic (ROC) curve for the RF model [@baxter_FIT_2016; @calle_aucrf_2011]. Clinical data included components of the CDAI, biomarkers for inflammation, and subject metadata described further in the methods section. We trained these models using `r nrow(nao.screen.trtd)` baseline stool samples from subjects induced with UST. Clinical data alone resulted in an AUC of `r md_remWK6_roc$auc` (specificity = `r md_remWK6_spec`, sensitivity = `r md_remWK6_sens`) (Figure 2A). Using only fecal microbiota data the model had an AUC of `r otu_remWK6_roc$auc` (specificity = `r otu_remWK6_spec`, sensitivity = `r otu_remWK6_sens`). Finally, when combining clinical metadata with the microbiota we achieved an AUC of `r mdotu_remWK6_roc$auc` (specificity = `r mdotu_remWK6_spec`, sensitivity = `r mdotu_remWK6_sens`) for remission 6 weeks after induction. Prediction with clinical metadata alone did not perform as well as models using the baseline fecal microbiome (p = `r round(otuvmdWK6remrocsPval, 3)`) or the combined model (p = `r round(mdotuvmdWK6remrocsPval, 3)`); however, there was not a significant difference between the baseline fecal microbiota model and the combined model (p = `r mdotuvotuWK6remrocsPval`). 
 
-Optimal predictors were determined based on their mean decrease in accuracy (MDA) in the ability of the model to classify remission from active CD (Figure 2B). The majority of OTUs identified as optimal predictors in our model for remission had low abundance. However, two OTUs were differentially abundant for patients in remission 6 weeks after induction. The relative abundance of *Escherichia/Shigella* (OTU1) was lower in patients in remission 6 weeks after induction (median = `r round(quantile(trtd.REMwk6.YES.relabund$Otu00001, type = 2, .50), 3)`%, IQR = `r  round(quantile(trtd.REMwk6.YES.relabund$Otu00001, type = 2, .25), 3)`-`r round(quantile(trtd.REMwk6.YES.relabund$Otu00001, type = 2, .75), 3)`) compared to patients with active CD (median = `r round(quantile(trtd.REMwk6.NO.relabund$Otu00001, type = 2, .50), 3)`%, IQR = `r  round(quantile(trtd.REMwk6.NO.relabund$Otu00001, type = 2, .25), 3)`-`r round(quantile(trtd.REMwk6.NO.relabund$Otu00001, type = 2, .75), 3)`).  Also, the relative abundance of *Faecalibacterium* (OTU7) was not only higher in patients in remission 6 weeks after induction (median = `r round(quantile(trtd.REMwk6.YES.relabund$Otu00007, type = 2, .50), 3)`%, IQR = `r  round(quantile(trtd.REMwk6.YES.relabund$Otu00007, type = 2, .25), 3)`-`r round(quantile(trtd.REMwk6.YES.relabund$Otu00007, type = 2, .75), 3)`) than patients with active CD (median = `r round(quantile(trtd.REMwk6.NO.relabund$Otu00007, type = 2, .50), 3)`%, IQR = `r  round(quantile(trtd.REMwk6.NO.relabund$Otu00007, type = 2, .25), 3)`-`r round(quantile(trtd.REMwk6.NO.relabund$Otu00007, type = 2, .75), 3)`), but it was also present prior to the start of treatment in every patient who was in remission 6 weeks after induction. 
+Optimal predictors were determined based on their mean decrease in accuracy (MDA) in the ability of the model to classify remission from active CD (Figure 2B). The majority of OTUs identified as optimal predictors in our model for remission had low abundance. However, two OTUs were differentially abundant for subjects in remission 6 weeks after induction. The relative abundance of *Escherichia/Shigella* (OTU1) was lower in subjects in remission 6 weeks after induction (median = `r round(quantile(trtd.REMwk6.YES.relabund$Otu00001, type = 2, .50), 3)`%, IQR = `r  round(quantile(trtd.REMwk6.YES.relabund$Otu00001, type = 2, .25), 3)`-`r round(quantile(trtd.REMwk6.YES.relabund$Otu00001, type = 2, .75), 3)`) compared to subjects with active CD (median = `r round(quantile(trtd.REMwk6.NO.relabund$Otu00001, type = 2, .50), 3)`%, IQR = `r  round(quantile(trtd.REMwk6.NO.relabund$Otu00001, type = 2, .25), 3)`-`r round(quantile(trtd.REMwk6.NO.relabund$Otu00001, type = 2, .75), 3)`).  Also, the relative abundance of *Faecalibacterium* (OTU7) was not only higher in subjects in remission 6 weeks after induction (median = `r round(quantile(trtd.REMwk6.YES.relabund$Otu00007, type = 2, .50), 3)`%, IQR = `r  round(quantile(trtd.REMwk6.YES.relabund$Otu00007, type = 2, .25), 3)`-`r round(quantile(trtd.REMwk6.YES.relabund$Otu00007, type = 2, .75), 3)`) than subjects with active CD (median = `r round(quantile(trtd.REMwk6.NO.relabund$Otu00007, type = 2, .50), 3)`%, IQR = `r  round(quantile(trtd.REMwk6.NO.relabund$Otu00007, type = 2, .25), 3)`-`r round(quantile(trtd.REMwk6.NO.relabund$Otu00007, type = 2, .75), 3)`), but it was also present prior to the start of treatment in every subject who was in remission 6 weeks after induction. 
 
 **Prediction of response following treatment**
 
@@ -2551,9 +2265,9 @@ We also hypothesized that the composition of the baseline fecal microbiota could
 
 **Comparison of baseline microbiota based on clinical outcome**
 
-As our RF models identified OTUs abundant across our cohort that were important in classification of outcome, we further investigated differences in the baseline microbiota that could serve as potential biomarkers for successful UST treatment. We compared the baseline microbiota of all `r nrow(APmd_shared[APmd_shared$visit=="Screening",])` patients who provided a baseline sample based on treatment group and treatment outcome 6 weeks after induction. There was no significant difference in diversity based on response 6 weeks after induction, however the baseline ${\beta}$-diversity was significantly different by response (p = `r wk6RSPbdivpval`). No phyla were significantly different by treatment and response (Fig. S1) and no OTUs were significantly different based on UST response or among patients receiving placebo for induction, regardless of response and remission status. 
+As our RF models identified OTUs abundant across our cohort that were important in classification of outcome, we further investigated differences in the baseline microbiota that could serve as potential biomarkers for successful UST treatment. We compared the baseline microbiota of all `r nrow(APmd_shared[APmd_shared$visit=="Screening",])` subjects who provided a baseline sample based on treatment group and treatment outcome 6 weeks after induction. There was no significant difference in diversity based on response 6 weeks after induction, however the baseline ${\beta}$-diversity was significantly different by response (p = `r wk6RSPbdivpval`). No phyla were significantly different by treatment and response (Fig. S1) and no OTUs were significantly different based on UST response or among subjects receiving placebo for induction, regardless of response and remission status. 
 
-Patients in remission 6 weeks after induction with UST had significantly higher baseline ${\alpha}$-diversity based on the inverse Simpson diversity index than patients with active CD (respective median values = `r REMwk6.YES.invsimp` (IQR = `r  Yes.inv.25quantile`-`r Yes.inv.75quantile`), `r REMwk6.NO.invsimp` (IQR = `r  No.inv.25quantile`-`r No.inv.75quantile`), p = `r wk6remadivpval`). The baseline community structure was also significantly different based on remission status in patients 6 weeks after induction (p = `r all.REMISSwk6.adonis.pval`). Finally, 2 OTUs were significantly more abundant in patients in remission 6 weeks after induction compared to patients with active CD: *Bacteroides* (OTU19) (p = `r trtd.REMISSwk6.Otu19p`) and *Faecalibacterium* (OTU7) (p = `r round(trtd.REMISSwk6.Otu7p, 3)`) (Figure 3).  
+Subjects in remission 6 weeks after induction with UST had significantly higher baseline ${\alpha}$-diversity based on the inverse Simpson diversity index than subjects with active CD (respective median values = `r REMwk6.YES.invsimp` (IQR = `r  Yes.inv.25quantile`-`r Yes.inv.75quantile`), `r REMwk6.NO.invsimp` (IQR = `r  No.inv.25quantile`-`r No.inv.75quantile`), p = `r wk6remadivpval`). The baseline community structure was also significantly different based on remission status in subjects 6 weeks after induction (p = `r all.REMISSwk6.adonis.pval`). Finally, 2 OTUs were significantly more abundant in subjects in remission 6 weeks after induction compared to subjects with active CD: *Bacteroides* (OTU19) (p = `r trtd.REMISSwk6.Otu19p`) and *Faecalibacterium* (OTU7) (p = `r round(trtd.REMISSwk6.Otu7p, 3)`) (Figure 3).  
 
 **Variation in the baseline microbiota is associated with variation in clinical data**
 
@@ -2561,12 +2275,12 @@ Based on the associations we identified between baseline microbial diversity and
 
 **The diversity of the microbiota changes in UST responders**
 
-We tested whether treatment with UST altered the microbiota by performing a Friedman test comparing ${\alpha}$-diversity, based on the inverse Simpson diversity index, at each time point within each treatment group based on the patient's response 22 weeks after induction. We included `r (nrow(alltp.ust)/4)` patients induced and maintained with UST (`r (nrow(alltp.ust.RESPyes)/4)` responders, `r (nrow(alltp.ust.RESPno)/4)` non-responders) and `r (nrow(alltp.placplac)/4)` patients induced and maintained with placebo (`r (nrow(alltp.placplac.RESPyes)/4)` responders, `r (nrow(alltp.placplac.RESPno)/4)` non-responders), who provided samples at every time point (Figure 1). We saw no significant difference in the ${\alpha}$-diversity over time in patients who did not respond 22 weeks after induction, regardless of treatment, and in patients who received placebo (Figure 4). However, the median ${\alpha}$-diversity of responders 22 weeks after UST induction significantly changed over time (p = `r signif(fried.trtdrespY$p.value, digits = 1)`) having increased from baseline (median = `r median(alltp.treatedrespY$Week0adiv)`, IQR = `r quantile(alltp.treatedrespY$Week0adiv, 0.25)` - `r quantile(alltp.treatedrespY$Week0adiv, .75)`) to 4 weeks after UST induction(median = `r median(alltp.treatedrespY$Week4adiv)`, IQR = `r quantile(alltp.treatedrespY$Week4adiv, .25)` - `r quantile(alltp.treatedrespY$Week4adiv, .75)`), decreased from 4 to 6 weeks after induction (median = `r median(alltp.treatedrespY$Week6adiv)`, IQR = `r quantile(alltp.treatedrespY$Week6adiv, .25)` - `r quantile(alltp.treatedrespY$Week6adiv, .75)`), and was significantly higher than baseline (p < 0.05) at 22 weeks after induction (median = `r median(alltp.treatedrespY$Week22adiv)`, IQR = 
+We tested whether treatment with UST altered the microbiota by performing a Friedman test comparing ${\alpha}$-diversity, based on the inverse Simpson diversity index, at each time point within each treatment group based on the subject's response 22 weeks after induction. We included `r (nrow(alltp.ust)/4)` subjects induced and maintained with UST (`r (nrow(alltp.ust.RESPyes)/4)` responders, `r (nrow(alltp.ust.RESPno)/4)` non-responders) and `r (nrow(alltp.placplac)/4)` subjects induced and maintained with placebo (`r (nrow(alltp.placplac.RESPyes)/4)` responders, `r (nrow(alltp.placplac.RESPno)/4)` non-responders), who provided samples at every time point (Figure 1). We saw no significant difference in the ${\alpha}$-diversity over time in subjects who did not respond 22 weeks after induction, regardless of treatment, and in subjects who received placebo (Figure 4). However, the median ${\alpha}$-diversity of responders 22 weeks after UST induction significantly changed over time (p = `r signif(fried.trtdrespY$p.value, digits = 1)`) having increased from baseline (median = `r median(alltp.treatedrespY$Week0adiv)`, IQR = `r quantile(alltp.treatedrespY$Week0adiv, 0.25)` - `r quantile(alltp.treatedrespY$Week0adiv, .75)`) to 4 weeks after UST induction(median = `r median(alltp.treatedrespY$Week4adiv)`, IQR = `r quantile(alltp.treatedrespY$Week4adiv, .25)` - `r quantile(alltp.treatedrespY$Week4adiv, .75)`), decreased from 4 to 6 weeks after induction (median = `r median(alltp.treatedrespY$Week6adiv)`, IQR = `r quantile(alltp.treatedrespY$Week6adiv, .25)` - `r quantile(alltp.treatedrespY$Week6adiv, .75)`), and was significantly higher than baseline (p < 0.05) at 22 weeks after induction (median = `r median(alltp.treatedrespY$Week22adiv)`, IQR = 
 `r quantile(alltp.treatedrespY$Week22adiv, .25)` - `r quantile(alltp.treatedrespY$Week22adiv, .75)`).
 
 **The microbiota after induction can distinguish between treatment outcomes**
 
-Having demonstrated the microbiome changes in patients who responded to UST treatment, we hypothesized that the microbiota could be used to monitor response to UST therapy by classifying patients based on disease activity [@tedjo_CDactivity_2016]. We again constructed RF classification models to distinguish between patients by UST treatment outcome based on their fecal microbiota 6 weeks after induction [@baxter_FIT_2016; @calle_aucrf_2011]. The study design resulted in only `r week22.N.trtd` week twenty-two stool samples from patients induced and maintained with UST, so we focused our analysis on the `r nrow(trtd.wk6_data)` week 6 stool samples from patients induced with UST. We were again better able to distinguish patients in remission from patients with active CD compared to responders from non-responders (p = `r round(WK6xWK6rocsPval, 3)`; Figure 5A). Our model could classify response 6 weeks after induction using week 6 stool samples from patients treated with UST with an AUC of `r otu_relrespWK6xWK6_roc$auc` (sensitivity = `r otu_relrespWK6xWK6_sens`, specificity = `r otu_relrespWK6xWK6_spec`). For classifying patients in remission from patients with active CD 6 weeks after UST induction using week 6 stool samples, the model had an AUC of `r otu_remWK6xWK6_roc$auc` (sensitivity = `r otu_remWK6xWK6_sens`, specificity = `r otu_remWK6xWK6_spec`). OTUs that were important for these classifications again included *Faecalibacterium* (OTU7), as well as *Blautia* (OTU124), *Clostridium XIVa* (OTU73), *Ruminococcaceae* (OTU53), and *Roseburia* (OTU12). These all had higher median relative abundance in patients in remission 6 weeks after induction than those with active disease (Figure 5B).
+Having demonstrated the microbiome changes in subjects who responded to UST treatment, we hypothesized that the microbiota could be used to monitor response to UST therapy by classifying subjects based on disease activity [@tedjo_CDactivity_2016]. We again constructed RF classification models to distinguish between subjects by UST treatment outcome based on their fecal microbiota 6 weeks after induction [@baxter_FIT_2016; @calle_aucrf_2011]. The study design resulted in only `r week22.N.trtd` week twenty-two stool samples from subjects induced and maintained with UST, so we focused our analysis on the `r nrow(trtd.wk6_data)` week 6 stool samples from subjects induced with UST. We were again better able to distinguish subjects in remission from subjects with active CD compared to responders from non-responders (p = `r round(WK6xWK6rocsPval, 3)`; Figure 5A). Our model could classify response 6 weeks after induction using week 6 stool samples from subjects treated with UST with an AUC of `r otu_relrespWK6xWK6_roc$auc` (sensitivity = `r otu_relrespWK6xWK6_sens`, specificity = `r otu_relrespWK6xWK6_spec`). For classifying subjects in remission from subjects with active CD 6 weeks after UST induction using week 6 stool samples, the model had an AUC of `r otu_remWK6xWK6_roc$auc` (sensitivity = `r otu_remWK6xWK6_sens`, specificity = `r otu_remWK6xWK6_spec`). OTUs that were important for these classifications again included *Faecalibacterium* (OTU7), as well as *Blautia* (OTU124), *Clostridium XIVa* (OTU73), *Ruminococcaceae* (OTU53), and *Roseburia* (OTU12). These all had higher median relative abundance in subjects in remission 6 weeks after induction than those with active disease (Figure 5B).
 
 ## Discussion
 
@@ -2574,11 +2288,11 @@ We sought to determine whether fecal microbiota can be used to identify patients
 
 The development of predictive models for disease or treatment outcome is anticipated to have a significant impact on clinical decision-making in health care [@Vogenberg_progmods_2009]. These models will help clinicians decide on the correct course of disease treatment or interventions for disease prevention with their patients. Additionally, patients will benefit with more individualized care that will potentially reduce adverse effects and result in faster recovery, reduce expenses from ineffective therapies, or increase quality of life by preventing disease in patients with high risk.
 
-Our predictive model revealed potential microbial biomarkers for successful UST therapy and allowed us to generate hypotheses about the biology of CD as it relates to the microbiome and UST response. *Faecalibacterium* frequently occurred in our models. It is associated with health, comprising up to 5% of the relative abundance in healthy individuals, and is generally rare in CD patients [@wright_CDmicrobiome_2015; @hansen_pedsIBD_2012; @naftali_tissinvol_2016; @sartor_microbesIBD_2016]. Each patient in remission 6 weeks after UST induction had measurable *Faecalibacterium* present at baseline. This supports the hypothesis that *Faecalibacterium* impacts CD pathogenesis. *Escherichia/Shigella* also occurred frequently in our models. This OTU is associated with inflammation and has been shown to be associated with CD pathogenesis [@sartor_microbesIBD_2016]. Many other taxa observed in our analysis had low abundance or were absent in the majority of patients. However, in many cases these taxa are related and may serve similar ecologic and metabolic roles in the gut environment. We hypothesize that these microbes may have genes that perform similar metabolic functions. Performing metagenomics on stool samples in future studies, especially in patients who achieve remission, could reveal these functions, which could be further developed into a clinically useful predictive tool. 
+Our predictive model revealed potential microbial biomarkers for successful UST therapy and allowed us to generate hypotheses about the biology of CD as it relates to the microbiome and UST response. *Faecalibacterium* frequently occurred in our models. It is associated with health, comprising up to 5% of the relative abundance in healthy individuals, and is generally rare in CD patients [@wright_CDmicrobiome_2015; @hansen_pedsIBD_2012; @naftali_tissinvol_2016; @sartor_microbesIBD_2016]. Each subject in remission 6 weeks after UST induction had measurable *Faecalibacterium* present at baseline. This supports the hypothesis that *Faecalibacterium* impacts CD pathogenesis. *Escherichia/Shigella* also occurred frequently in our models. This OTU is associated with inflammation and has been shown to be associated with CD pathogenesis [@sartor_microbesIBD_2016]. Many other taxa observed in our analysis had low abundance or were absent in the majority of subjects. However, in many cases these taxa are related and may serve similar ecologic and metabolic roles in the gut environment. We hypothesize that these microbes may have genes that perform similar metabolic functions. Performing metagenomics on stool samples in future studies, especially in patients who achieve remission, could reveal these functions, which could be further developed into a clinically useful predictive tool. 
 
-We were better able to predict whether a patient would go into remission rather than respond to treatment, as determined by CDAI score. We hypothesize that this was due to the subjective nature of the patient-reported CDAI factors and the relative nature of the response criteria compared to the threshold used to determine remission status. We defined response as a decrease in a patient's baseline CDAI of 30% or more, while remission was defined as a CDAI below 150. The original study used a decrease in CDAI of 100 points for their measure of response, but we felt using the relative percent change better represented a meaningful difference in disease activity and patient quality of life [@sandborn_ust_2012]. Additionally, the field appears to be moving away from CDAI and towards more objectively quantifiable biomarkers for inflammation as wells as endoscopic verification of mucosal healing. [@colombel_deepremission_2015]. 
+We were better able to predict whether a subject would go into remission rather than respond to treatment, as determined by CDAI score. We hypothesize that this was due to the subjective nature of the patient-reported CDAI factors and the relative nature of the response criteria compared to the threshold used to determine remission status. We defined response as a decrease in a subject's baseline CDAI of 30% or more, while remission was defined as a CDAI below 150. The original study used a decrease in CDAI of 100 points for their measure of response, but we felt using the relative percent change better represented a meaningful difference in disease activity and patient quality of life [@sandborn_ust_2012]. Additionally, the field appears to be moving away from CDAI and towards more objectively quantifiable biomarkers for inflammation as wells as endoscopic verification of mucosal healing. [@colombel_deepremission_2015]. 
 
-We identified several associations between the microbiota and clinical variables that could impact how CD is monitored and treated in the future. Serum CRP, fecal calprotectin, and fecal lactoferrin are widely used as biomarkers to measure inflammation and CD severity. We found that the microbial community structure was different among patients based on these markers. These results support the hypothesis that the fecal microbiota could function as a biomarker for measuring disease activity in patients, especially in concert with established inflammatory biomarkers [@tedjo_CDactivity_2016; @boon_fmarkers_2015; @chang_monitoring_2015]. We also found that higher CDAI scores were associated with lower microbial diversity. This is consistent with other studies on the microbiota in individuals with CD compared to healthy individuals and studies looking at active disease compared to remission [@gevers_pedsCD_2014; @papa_pedsIBD_2012; @tedjo_CDactivity_2016]. However, the CDAI sub score of weekly stool frequency may have driven these differences (Supplementary Table 1), which is consistent with previous studies [@vandeputte_stoolcon_2016]. We also observed differences in the microbial community structure based on disease localization, which is consistent with a study by Naftali et al [@naftali_tissinvol_2016]. Our study also found that corticosteroid use impacts the composition of the human fecal microbiota, which is consistent with observations in mouse models [@huang_cort_2015]. As corticosteroid use appears to impact diversity, corticosteroid therapy may be useful when trying to positively impact microbial diversity during biologic therapy and thereby increase the possibility of response to CD therapies. We also observed that longer disease duration is associated with a reduction in fecal microbial diversity. This decreased diversity may be due to the long duration of inflammatory conditions in the gut.
+We identified several associations between the microbiota and clinical variables that could impact how CD is monitored and treated in the future. Serum CRP, fecal calprotectin, and fecal lactoferrin are widely used as biomarkers to measure inflammation and CD severity. We found that the microbial community structure was different among subjects based on these markers. These results support the hypothesis that the fecal microbiota could function as a biomarker for measuring disease activity in patients, especially in concert with established inflammatory biomarkers [@tedjo_CDactivity_2016; @boon_fmarkers_2015; @chang_monitoring_2015]. We also found that higher CDAI scores were associated with lower microbial diversity. This is consistent with other studies on the microbiota in individuals with CD compared to healthy individuals and studies looking at active disease compared to remission [@gevers_pedsCD_2014; @papa_pedsIBD_2012; @tedjo_CDactivity_2016]. However, the CDAI sub score of weekly stool frequency may have driven these differences (Supplementary Table 1), which is consistent with previous studies [@vandeputte_stoolcon_2016]. We also observed differences in the microbial community structure based on disease localization, which is consistent with a study by Naftali et al [@naftali_tissinvol_2016]. Our study also found that corticosteroid use impacts the composition of the human fecal microbiota, which is consistent with observations in mouse models [@huang_cort_2015]. As corticosteroid use appears to impact diversity, corticosteroid therapy may be useful when trying to positively impact microbial diversity during biologic therapy and thereby increase the possibility of response to CD therapies. We also observed that longer disease duration is associated with a reduction in fecal microbial diversity. This decreased diversity may be due to the long duration of inflammatory conditions in the gut.
 
 Further research into fecal microbiota as a source of biomarkers for predicting therapeutic response could eventually allow for the screening of patients with stool samples at diagnosis to better inform treatment decisions for a wide range of diseases. For CD specifically, using the microbiota to predict response to specific treatment modalities could result in more personalized treatment and faster achievement of remission, thereby increasing patients’ quality of life and reducing economic and health care impacts for CD patients. Our results showing that the ${\alpha}$-diversity of clinical UST responders increased over time, in contrast to non-responsive patients, and our ability to classify patients in remission from those with active disease following UST treatment are again consistent with other studies suggesting the microbiota could be a useful biomarker for predicting or monitoring response to treatment [@tedjo_CDactivity_2016]. Additionally, the positive and negative associations between the microbiota and CD allow us to predict the types of mechanisms most likely to alter the microbiota in order to increase the likelihood of achieveing a therapeutic response or to monitor disease severity. Prior to the initiation of therapy, patients could have their fecal microbiome analyzed. Then the microbial community data could be used to direct the modification of a patient's microbiota prior to or during treatment with the goal of improving treatment outcomes. Since it has been shown that the microbiome can alter the efficacy of treatments for a variety of diseases [@Klatt_microbicide_2017; @Haiser_cardiac_2013; @Sivan_cancer_2015; @Vetizou_cancer_2015], if fecal microbiota can be validated as biomarkers to non-invasively predict response to therapy, then patients and clinicians will be able to more rapidly ascertain effective therapies that result increased patient quality of life.
  
@@ -2591,17 +2305,17 @@ Further research into fecal microbiota as a source of biomarkers for predicting 
 
 ####Study Design and Sample Collection
 
-Janssen Research and Development conducted a placebo-controlled, phase II clinical study of approximately 500 patients to assess the safety and efficacy of UST for treating anti-TNF-${\alpha}$ refractory, moderate to severe CD patients [@sandborn_ust_2012] (Figure 1). Institutional review board approval was acquired at each participating study center and patients provided written informed consent [@sandborn_ust_2012]. Patient data was de-identified for our study. Both patients and clinicians were blinded to their induction and maintenance treatment groups. Participants provided a stool sample prior to the initiation of the study and were then divided into treatment groups. Additional stool samples were provided 4 weeks after induction. At 6 weeks after induction an additional stool sample was collected, patients were scored for their response to UST based on CDAI, and then divided into groups receiving either subcutaneous injection of UST or placebo at weeks 8 and 16 as maintenance therapy. Response was defined as a decrease in a patient's initial CDAI of 30% or more. This value was determined by using the approximate percent change in CDAI from mild-moderate CD (220) to remission (150). Remission was defined as a CDAI below the threshold of 150. Finally, at 22 weeks patients provided an additional stool sample and were then scored using CDAI for their response to therapy. Frozen fecal samples were shipped to the University of Michigan and stored at -80°C prior to DNA extraction.
+Janssen Research and Development conducted a placebo-controlled, phase II clinical study of approximately 500 subjects to assess the safety and efficacy of UST for treating anti-TNF-${\alpha}$ refractory, moderate to severe CD subjects [@sandborn_ust_2012] (Figure 1). Institutional review board approval was acquired at each participating study center and subjects provided written informed consent [@sandborn_ust_2012]. Subject data was de-identified for our study. Both subjects and clinicians were blinded to their induction and maintenance treatment groups. Participants provided a stool sample prior to the initiation of the study and were then divided into treatment groups. Additional stool samples were provided 4 weeks after induction. At 6 weeks after induction an additional stool sample was collected, subjects were scored for their response to UST based on CDAI, and then divided into groups receiving either subcutaneous injection of UST or placebo at weeks 8 and 16 as maintenance therapy. Response was defined as a decrease in a subject's initial CDAI of 30% or more. This value was determined by using the approximate percent change in CDAI from mild-moderate CD (220) to remission (150). Remission was defined as a CDAI below the threshold of 150. Finally, at 22 weeks subjects provided an additional stool sample and were then scored using CDAI for their response to therapy. Frozen fecal samples were shipped to the University of Michigan and stored at -80°C prior to DNA extraction.
 
 ####DNA extraction and 16S rRNA gene sequencing 
 
 Microbial genomic DNA was extracted using the PowerSoil-htp 96 Well Soil DNA Isolation Kit (MoBio Laboratories) and an EPMotion 5075 pipetting system [@baxter_FIT_2016; @zackular_CRC_2014]. The V4 region of the 16S rRNA gene from each sample was amplified and sequenced using the Illumina MiSeq$\text{\texttrademark}$ platform [@chang_monitoring_2015]. Sequences were curated as described previously using the mothur software package (v.1.34.4) [@schloss_mothur_2009; @Kozich_MiSeqSOP_2013]. Briefly, we curated the sequences to reduce sequencing and PCR errors [@schloss_PCRartifacts_2011], aligned the resulting sequences to the SILVA 16S rRNA sequence database [@Quast_silva_2013], and used UCHIME to remove any chimeric sequences [@edgar_uchime_2011]. Sequences were clustered into operational taxonomic units (OTU) at a 97% similarity cutoff using the average neighbor algorithm [@schloss_OTUanalysis_2011]. All sequences were classified using a naive Bayesian classifier trained against the RDP training set (version 14) and OTUs were assigned a classification based on which taxonomy had the majority consensus of sequences within a given OTU [@wang_taxonomy_2007].  
 
-Following sequence curation using the mothur software package [@schloss_mothur_2009], we obtained a median of `r median(md$shared_count)` sequences per sample (IQR = `r quantile(md$shared_count, .25, type = 2)`-`r quantile(md$shared_count, .75, type = 2)`). Parallel sequencing of a mock community had an error rate of 0.017%. To limit effects of uneven sampling, we rarefied the dataset to 3,000 sequences per sample. Samples from patients that completed the clinical trial and had complete clinical metadata were included in our analysis. Of these samples, `r nrow(APmd_shared[APmd_shared$visit=="Screening",])` were provided prior to treatment as well as `r nrow(APmd_shared[APmd_shared$visit=="Week 4",])` provided at week 4, `r nrow(APmd_shared[APmd_shared$visit=="Week 6",])` at week 6, and `r nrow(APmd_shared[APmd_shared$visit=="Week 22",])` at week 22 after treatment, for a total of `r nrow(APmd_shared)` samples. All fastq files and the MIMARKS spreadsheet with de-identified clinical metadata are available at **SRA**. 
+Following sequence curation using the mothur software package [@schloss_mothur_2009], we obtained a median of `r median(md$shared_count)` sequences per sample (IQR = `r quantile(md$shared_count, .25, type = 2)`-`r quantile(md$shared_count, .75, type = 2)`). Parallel sequencing of a mock community had an error rate of 0.017%. To limit effects of uneven sampling, we rarefied the dataset to 3,000 sequences per sample. Samples from subjects that completed the clinical trial and had complete clinical metadata were included in our analysis. Of these samples, `r nrow(APmd_shared[APmd_shared$visit=="Screening",])` were provided prior to treatment as well as `r nrow(APmd_shared[APmd_shared$visit=="Week 4",])` provided at week 4, `r nrow(APmd_shared[APmd_shared$visit=="Week 6",])` at week 6, and `r nrow(APmd_shared[APmd_shared$visit=="Week 22",])` at week 22 after treatment, for a total of `r nrow(APmd_shared)` samples. All fastq files and the MIMARKS spreadsheet with de-identified clinical metadata are available at **SRA**. 
 
 ####Gut microbiota biomarker discovery and statistical analysis 
 
-R v.3.3.2 (2016-10-31) and mothur were used to analyze the data [@R]. To assess ${\alpha}$-diversity, the inverse Simpson index was calculated for each sample in the dataset. Spearman correlation tests were performed to compare the inverse Simpson index and continuous clinical data. Wilcoxon rank sum tests were performed for pairwise comparisons and Kruskal-Wallis rank sum tests for comparisons with more than two groups [@sokal_biometrystats_1995; @magurran_measuring_2004]. To measure ${\beta}$-diversity, the distance between samples was calculated using the ${\theta}$YC metric, which takes into account the types of bacteria and their abundance to calculate the differences between the communities [@yue_thetaYC_2005]. These distance matrices were assessed for overlap between sets of communities using the non-parametric analysis of molecular variance (AMOVA) test as implemented in the adonis function from the vegan R package (v.`r as.character(packageVersion("vegan"))`) [@oksanen_vegan_2016]. Changes in ${\alpha}$-diversity over time based on week 22 response was assessed using a Friedman test on patients who provided a sample at each time point [@friedman_1937]. The Friedman test is a function in the stats R package (v.`r as.character(packageVersion('stats'))`). Multiple comparisons following a Friedman test were performed using the friedmanmc function in the pgirmess package (v.`r as.character(packageVersion("pgirmess"))`) [@pgirmess]. Changes in ${\beta}$-diversity over time by treatment group and response were assessed using the adonis function in vegan stratified by patient. We used the relative abundance of each OTU, ${\alpha}$-diversity, age, sex, current medications, BMI, disease duration, disease location, fecal calprotectin, fecal lactoferrin, C-reactive protein, bowel stricture, and CDAI sub scores as input into our RF models constructed with the AUCRF R package (v.`r as.character(packageVersion("AUCRF"))`) [@AUCRF], to identify phylotypes or clinical variables that distinguish between various treatment and response groups, as well as to predict or determine response outcome [@breiman_rf_2001, @calle_aucrf_2011]. Optimal predictors were determined based on their mean decrease in accuracy (MDA) of the model to classify patients. Differentially abundant OTUs and phyla were selected through comparison of clinical groups using Kruskal-Wallis and Wilcox tests, where appropriate, to identify OTUs/phyla where there was a p-value less than 0.05 following a Benjamini-Hochberg correction for multiple comparisons [@Benjamini_Hochberg_1995].  Other R packages used in our analysis included ggplot2 v.`r as.character(packageVersion("ggplot2"))` [@ggplot2], dplyr v.`r as.character(packageVersion("dplyr"))` [@dplyr], pROC v.`r as.character(packageVersion("pROC"))` [@pROC], knitr v.`r as.character(packageVersion('knitr'))` [@knitr2015], gridExtra v.`r as.character(packageVersion("gridExtra"))` [@gridExtra], devtools v.`r as.character(packageVersion("devtools"))` [@devtools], knitcitations v.`r as.character(packageVersion("knitcitations"))` [@knitcitations], scales v.`r as.character(packageVersion("scales"))` [@scales], tidyr v.`r as.character(packageVersion("tidyr"))` [@tidyr], Hmisc v.`r as.character(packageVersion("Hmisc"))` [@Hmisc], and cowplot v.`r as.character(packageVersion("cowplot"))` [@cowplot]. A reproducible version of this analysis and manuscript are available at https://github.com/SchlossLab/Doherty_CDprediction_mBio_2017.
+R v.3.3.2 (2016-10-31) and mothur were used to analyze the data [@R]. To assess ${\alpha}$-diversity, the inverse Simpson index was calculated for each sample in the dataset. Spearman correlation tests were performed to compare the inverse Simpson index and continuous clinical data. Wilcoxon rank sum tests were performed for pairwise comparisons and Kruskal-Wallis rank sum tests for comparisons with more than two groups [@sokal_biometrystats_1995; @magurran_measuring_2004]. To measure ${\beta}$-diversity, the distance between samples was calculated using the ${\theta}$YC metric, which takes into account the types of bacteria and their abundance to calculate the differences between the communities [@yue_thetaYC_2005]. These distance matrices were assessed for overlap between sets of communities using the non-parametric analysis of molecular variance (AMOVA) test as implemented in the adonis function from the vegan R package (v.`r as.character(packageVersion("vegan"))`) [@oksanen_vegan_2016]. Changes in ${\alpha}$-diversity over time based on week 22 response was assessed using a Friedman test on subjects who provided a sample at each time point [@friedman_1937]. The Friedman test is a function in the stats R package (v.`r as.character(packageVersion('stats'))`). Multiple comparisons following a Friedman test were performed using the friedmanmc function in the pgirmess package (v.`r as.character(packageVersion("pgirmess"))`) [@pgirmess]. Changes in ${\beta}$-diversity over time by treatment group and response were assessed using the adonis function in vegan stratified by subject. We used the relative abundance of each OTU, ${\alpha}$-diversity, age, sex, current medications, BMI, disease duration, disease location, fecal calprotectin, fecal lactoferrin, C-reactive protein, bowel stricture, and CDAI sub scores as input into our RF models constructed with the AUCRF R package (v.`r as.character(packageVersion("AUCRF"))`) [@AUCRF], to identify phylotypes or clinical variables that distinguish between various treatment and response groups, as well as to predict or determine response outcome [@breiman_rf_2001, @calle_aucrf_2011]. Optimal predictors were determined based on their mean decrease in accuracy (MDA) of the model to classify subjects. Differentially abundant OTUs and phyla were selected through comparison of clinical groups using Kruskal-Wallis and Wilcox tests, where appropriate, to identify OTUs/phyla where there was a p-value less than 0.05 following a Benjamini-Hochberg correction for multiple comparisons [@Benjamini_Hochberg_1995].  Other R packages used in our analysis included ggplot2 v.`r as.character(packageVersion("ggplot2"))` [@ggplot2], dplyr v.`r as.character(packageVersion("dplyr"))` [@dplyr], pROC v.`r as.character(packageVersion("pROC"))` [@pROC], knitr v.`r as.character(packageVersion('knitr'))` [@knitr2015], gridExtra v.`r as.character(packageVersion("gridExtra"))` [@gridExtra], devtools v.`r as.character(packageVersion("devtools"))` [@devtools], knitcitations v.`r as.character(packageVersion("knitcitations"))` [@knitcitations], scales v.`r as.character(packageVersion("scales"))` [@scales], tidyr v.`r as.character(packageVersion("tidyr"))` [@tidyr], Hmisc v.`r as.character(packageVersion("Hmisc"))` [@Hmisc], and cowplot v.`r as.character(packageVersion("cowplot"))` [@cowplot]. A reproducible version of this analysis and manuscript are available at https://github.com/SchlossLab/Doherty_CDprediction_mBio_2017.
 
 
 ##Funding information.
@@ -2628,13 +2342,13 @@ Janssen Research and Development provided financial and technical support for th
 
 #xtable(tbl1)
 ```
-\includegraphics{tables/Supp.table1_cohortdiversity.pdf}
+\includegraphics{tables/Supp.table1_cohortdiversity.png}
 
 \newpage
 
 ## Figures
 
-**Figure 1: Experimental design as adapted from Sandborn et al 2012.** (A) Participants were divided into treatment groups receiving placebo or UST by IV for induction. At week 8, patients were divided into groups receiving either subcutaneous injection of UST or placebo at weeks 8 and 16 as maintenance therapy, based on response at week 6. Finally, at 22 weeks patients were scored using CDAI for their response to therapy. (B) Stool sampling, treatment, and response evaluation time line. $\uparrow$, treatment administration; IV, intravenous; PE, primary endpoint; R, randomization; RR, re-randomization (only for subjects receiving UST induction therapy); SC, subcutaneous.
+**Figure 1: Experimental design as adapted from Sandborn et al 2012.** (A) Participants were divided into treatment groups receiving placebo or UST by IV for induction. At week 8, subjects were divided into groups receiving either subcutaneous injection of UST or placebo at weeks 8 and 16 as maintenance therapy, based on response at week 6. Finally, at 22 weeks subjects were scored using CDAI for their response to therapy. (B) Stool sampling, treatment, and response evaluation time line. $\uparrow$, treatment administration; IV, intravenous; PE, primary endpoint; R, randomization; RR, re-randomization (only for subjects receiving UST induction therapy); SC, subcutaneous.
 
 
 
@@ -2647,7 +2361,7 @@ Janssen Research and Development provided financial and technical support for th
 
 
 
-**Figure 2: Prediction of week 6 treatment outcome in patients treated with UST, using baseline samples** Receiver operating characteristic (ROC) curves for (A) response and (C) remission using microbiota data (blue), clinical metadata (black), and a combined model (red). Top predictive OTUs for the microbiota model based on mean decrease in accuracy (MDA) for (B) response and (D) remission. Black bars represent the median relative abundance. 
+**Figure 2: Prediction of week 6 treatment outcome in subjects treated with UST, using baseline samples** Receiver operating characteristic (ROC) curves for (A) response and (C) remission using microbiota data (blue), clinical metadata (black), and a combined model (red). Top predictive OTUs for the microbiota model based on mean decrease in accuracy (MDA) for (B) response and (D) remission. Black bars represent the median relative abundance. 
 
 
 
@@ -2659,9 +2373,9 @@ Janssen Research and Development provided financial and technical support for th
 
 \newpage
 
-**Supplemental Figure 1: Phyla from baseline stool samples in patients treated with UST by week six outcome** The relative abundance of each phylum in UST treated patients were compared based on (A) response and (B) remission status using a Wilcoxon rank sum test and to identify phyla where there was a p-value less than 0.05 following a Benjamini-Hochberg correction for multiple comparisons. No comparisons were significant. Whiskers represent the range and boxes represent the 25-75% interquartile range of the median (black bar).
+**Supplemental Figure 1: Phyla from baseline stool samples in subjects treated with UST by week six outcome** The relative abundance of each phylum in UST treated subjects were compared based on (A) response and (B) remission status using a Wilcoxon rank sum test and to identify phyla where there was a p-value less than 0.05 following a Benjamini-Hochberg correction for multiple comparisons. No comparisons were significant. Whiskers represent the range and boxes represent the 25-75% interquartile range of the median (black bar).
 
-```{r SF1_wk6phyla}
+```{r SF1_wk6phyla.pdf}
 
 ```
 
@@ -2670,7 +2384,7 @@ Janssen Research and Development provided financial and technical support for th
 
 \newpage
 
-**Figure 3: Differential taxa in baseline stool samples from patients treated with UST, based on week six remission status** The baseline relative abundance of each OTU was compared between patients in remission and those with active CD 6 weeks after induction using a Wilcoxon rank sum test followed by a Benjamini-Hochberg correction for multiple comparisons. This identified 2 OTUs with significantly different relative abundance at baseline (p < 0.05). Black bars represent the median relative abundance.
+**Figure 3: Differential taxa in baseline stool samples from subjects treated with UST, based on week six remission status** The baseline relative abundance of each OTU was compared between subjects in remission and those with active CD 6 weeks after induction using a Wilcoxon rank sum test followed by a Benjamini-Hochberg correction for multiple comparisons. This identified 2 OTUs with significantly different relative abundance at baseline (p < 0.05). Black bars represent the median relative abundance.
 
 ```{r Figure3_basesigOTUabund.REMISSwk6}
 ```
@@ -2679,7 +2393,7 @@ Janssen Research and Development provided financial and technical support for th
 
 \newpage
 
-**Figure 4: Change in alpha diversity over time by induction treatment and week 22 response status.** The ${\alpha}$-diversity of `r (nrow(alltp.ust)/4)` patients induced and maintained with UST and `r (nrow(alltp.placplac)/4)` patients induced and maintained with placebo was assessed at each time point. Friedman test were performed within each treatment and responder group. Whiskers represent the range and boxes represent the 25-75% interquartile range of the median (black bar). * indicates week 22 is significantly different from baseline (p <0.05).
+**Figure 4: Change in alpha diversity over time by induction treatment and week 22 response status.** The ${\alpha}$-diversity of `r (nrow(alltp.ust)/4)` subjects induced and maintained with UST and `r (nrow(alltp.placplac)/4)` subjects induced and maintained with placebo was assessed at each time point. Friedman test were performed within each treatment and responder group. Whiskers represent the range and boxes represent the 25-75% interquartile range of the median (black bar). * indicates week 22 is significantly different from baseline (p <0.05).
 
 ```{r  Figure4_alltp.adivXvisitXindtrtXrelRSPwk22.pdf}
 ```
@@ -2690,7 +2404,7 @@ Janssen Research and Development provided financial and technical support for th
 
 \newpage
 
-**Figure 5: Classification of week 6 response or remission status using week 6 stool samples from patients treated with UST** (A) ROC curves for week 6 outcome based on the week 6 microbiota. (B) Predictive OTUs from week 6 stool for remission status at 6 weeks after induction, based on mean decrease in accuracy. Black bars represent the median relative abundance.
+**Figure 5: Classification of week 6 response or remission status using week 6 stool samples from subjects treated with UST** (A) ROC curves for week 6 outcome based on the week 6 microbiota. (B) Predictive OTUs from week 6 stool for remission status at 6 weeks after induction, based on mean decrease in accuracy. Black bars represent the median relative abundance.
 
 ```{r Figure5_wk6Xwk6}
 #source("../code/Figure5_responseREMwk6Xwk6.R")
