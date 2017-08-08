@@ -1,3 +1,5 @@
+source('../code/timereaddata.R')
+
 alltime_data <- alltime_data[alltime_data$TRTGRINDMAN != "Treated_Placebo",]
 
 summary(alltime_data[, c("USUBJID", "visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RelRSPwk22")])

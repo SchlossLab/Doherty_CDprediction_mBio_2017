@@ -85,7 +85,7 @@ APmd<-APmd[APmd$TRTGRINDMAN!="Treated_Not",]
 
 #shared
 #merge APmd and Jan400.an.0.03.subsampled.shared
-#adiv<-read.table(file='../data/Jan400.screen.all.groups.summary', sep="\t", header=T)
+#adiv<-read.table(file='data/Jan400.screen.all.groups.summary', sep="\t", header=T)
 #ss3k_shared<-read.table(file="../data/Jan400.screen.all.subsample.shared", sep="\t", header=T)#Jan400 subsampled to 3K visit=Screening
 adiv<-read.table(file="../data/Jan400.all.na.omit.cmd.groups.summary", sep="\t", header=T)
 ss3k_shared<-read.table(file="../data/Jan400.all.na.omit.cmd.0.03.subsample.shared", sep="\t", header=T)#Jan400 subsampled to 3K visit=Screening

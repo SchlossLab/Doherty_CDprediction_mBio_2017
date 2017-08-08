@@ -1,3 +1,56 @@
+source('../code/R_packages_setup.R')
+source('../code/APmd.setup.R')
+
+screen_RESPwk22<-APmd_RSPwk22[APmd_RSPwk22$visit=="Screening",] #removes any group with NA in RESPONSEwk22
+
+screen_data<-screen_RESPwk22				#na.omit(screen_RESPwk22)
+summary(subset(screen_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
+
+summary(subset(screen_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
+
+summary(subset(screen_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
+
+
+screen_data<-screen_data[screen_data$TRTGRINDMAN!="Placebo_Not",]
+screen_data<-screen_data[screen_data$TRTGRINDMAN!="Treated_Not",]
+
+summary(screen_data[,c("TRTGR", "TRTGRINDMAN", "visit", "RESPONSEwk6", "RelRSPwk6", "REMISSwk6")])
+
+
+screen.trtd<-screen_data[screen_data$TRTGRINDMAN!="Placebo_Placebo",]
+screen.trtd<-screen.trtd[screen.trtd$TRTGRINDMAN!="Placebo_Treated",]
+summary(screen.trtd[,1:6])
+screen.plac<-screen_data[screen_data$TRTGRINDMAN!="Treated_Placebo",]
+screen.plac<-screen.plac[screen.plac$TRTGRINDMAN!="Treated_Treated",]
+summary(screen.plac[,1:6])
+
+nao.screen_data<-na.omit(screen_data)
+
+nao.screen.trtd<-nao.screen_data[nao.screen_data$TRTGRINDMAN!="Placebo_Placebo",]
+nao.screen.trtd<-nao.screen.trtd[nao.screen.trtd$TRTGRINDMAN!="Placebo_Treated",]
+summary(nao.screen.trtd[,1:6])
+nao.screen.plac<-nao.screen_data[nao.screen_data$TRTGRINDMAN!="Treated_Placebo",]
+nao.screen.plac<-nao.screen.plac[nao.screen.plac$TRTGRINDMAN!="Treated_Treated",]
+summary(nao.screen.plac[,1:6])
+
+
+tax<- read.table('data/Jan400.simple.taxonomy.txt', header=T, sep="\t")
+nao.screen.all.distmat<-read.table("../data/Jan400.screening.all.na.omit.cmd.thetayc.0.03.square.ave.dist")
+nao.screen.all.dist<-as.dist(nao.screen.all.distmat)
+nao.screen.trtd.distmat<-read.table("../data/Jan400.screening.ust.na.omit.cmd.thetayc.0.03.square.ave.dist")
+nao.screen.trtd.dist<-as.dist(nao.screen.trtd.distmat)
+nao.screen.plac.distmat<-read.table("../data/Jan400.screening.plac.na.omit.cmd.thetayc.0.03.square.ave.dist")
+nao.screen.plac.dist<-as.dist(nao.screen.plac.distmat)
+
+trtd_trtd.data.distmat<-read.table("../data/Jan400.trtd_trtd.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
+trtd_trtd.data.dist<-as.dist(trtd_trtd.data.distmat)
+trtd_plac.data.distmat<-read.table("../data/Jan400.trtd_plac.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
+trtd_plac.data.dist<-as.dist(trtd_plac.data.distmat)
+plac_plac.data.distmat<-read.table("../data/Jan400.plac_plac.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
+plac_plac.data.dist<-as.dist(plac_plac.data.distmat)
+plac_trtd.data.distmat<-read.table("../data/Jan400.plac_trtd.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
+plac_trtd.data.dist<-as.dist(plac_trtd.data.distmat)
+
 source('../code/otu.analysis.R')
 
 #significant otus
@@ -52,3 +105,33 @@ axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0), label=c("0", "0.01", "0.1", "1"
 legend('topright', legend=c("Week 6 Active CD", "Week 6 Remission"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
 dev.off()
 
+tiff('figures/basesigOTUabund.REMISSwk6.tiff', height = 6, width = 8, units = "in", res = 300)
+#pdf('figures/Figure3_basesigOTUabund.REMISSwk6.pdf', height = 6, width = 8)
+layout(1)
+par(mar=c(4, 12, 2, 1))
+plot(1, type="n", ylim=c(0,length(oturf_otus )*2), xlim=c(1e-5,3), log="x", ylab="", xlab="Week 0 Relative Abundance (%)", xaxt="n", yaxt="n")
+set.seed(32016)
+index <- 1
+for(i in oturf_otus){
+	stripchart(at=index-0.35, jitter(yes_abunds[,i], amount=1e-6), pch=21, bg=alpha("royalblue1", alpha=0.5), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
+	stripchart(at=index+0.35, jitter(no_abunds[,i], amount=1e-6), pch=21, bg=alpha("orange", alpha=0.5), method="jitter", jitter=0.2, add=T, cex=1, lwd=0.5)
+	segments(median(yes_abunds[,i]),index-0.7,median(yes_abunds[,i]),index-0.1, lwd=6, col = "black", lty = "solid")
+	segments(median(no_abunds[,i]),index+0.7,median(no_abunds[,i]),index+0.1, lwd=6, col = "black", lty = "solid")
+	index <- index + 2
+}
+rf_tax<-data.frame(oturf_otus)
+colnames(rf_tax) <- c('OTU')
+
+oturf_tax<-merge(rf_tax, tax, by='OTU')
+lab <- levels(oturf_tax$tax)
+oturf_tax$Classification <- gsub("(OTU\\d+)", "(\\1)", oturf_tax$Classification)
+
+oturf_tax<-oturf_tax[match(rf_tax$OTU, oturf_tax$OTU),]
+oturf_name<-as.character(oturf_tax$tax)
+oturf_numb<-oturf_tax$Classification
+formatted <- lapply(1:nrow(oturf_tax), function(i) bquote(paste(italic(.(oturf_name[i])), .(oturf_numb[i]), sep=" ")))
+
+axis(2, at=seq(1,index-2,2), labels=do.call(expression, formatted), font =3, las=1, line=0, tick=F, cex.axis=1)
+axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0), label=c("0", "0.01", "0.1", "1", "10", "100"))
+legend('topright', legend=c("Week 6 Active CD", "Week 6 Remission"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
+dev.off()
