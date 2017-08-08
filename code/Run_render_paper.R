@@ -14,4 +14,8 @@ loadLibs <- function(deps){
 loadLibs(c("knitr", "rmarkdown"))
 
 # Render the final pdfs
+<<<<<<< HEAD
 render('submission/Doherty_CDprediciton_mBio_2017_finaldraft.Rmd', output_format = "pdf_document", clean = FALSE)
+=======
+render('submission/Doherty_CDprediciton_mBio_2017_finaldraft.Rmd', clean = FALSE)
+>>>>>>> 10b96170ecb159b892699d21633615dedccbdd8f
