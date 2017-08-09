@@ -1,5 +1,18 @@
 Addressing comments from ST&CSM:
 
+Call Notes:
+Janssen call on the paper
+
+sra data, sample sheet
+
+soften prediciton language - replicated in an independent cohort?
+what can this biomarker do?	
+	what is a better phrase?- classifying  or associated with later response
+	conjecture in the discussion - pat likes prediction can we do it in the discussion with validation in other cohorts <- hypothesis <- make clear we are thinking ahead making a hypo (Cal)\	
+		"if validated its a path to application"
+
+
+
 Line5:
 Added Shannon's middle initial and Anuk and Carrie to author list
 
@@ -12,8 +25,8 @@ Line 19: sigfigs
 Not sure of the issue as this is 3 sigfigs (and/or 3 decimal places) and consistant for experimental values throughout document.
 
 line21: replaced induction with treatment
-
-Line 32: reworded the text as described by strikethrough
+Line 25: replaced induciton with treatment
+Line 32-33: reworded the text as described by strikethrough
 
 Line 94: section in methods
 Not everyone will read the methods so a brief description of the original study and response definitions is warranted for context in later results.
@@ -30,4 +43,8 @@ The week 22 results were not as promising as week 6. Adding week 22 weakens/obfu
 Line 212: "Do the predictive #s you got using clinical data alone match up with previous literature (i.e. previous attempts at predicting response to therapy in Crohn's using fecal calprotectin, CRP etc)? Would be worth mentioning."
 
 Unsure and need to check this.
+
+Line 216: "I'm a stickler. I'm not a big fan of this word despite it being used incorrectly all the time. It really means how a disease develops. These subjects have established disease so it really doesn't tell us anything about how it developed."
+
+Agree. removed.
 
