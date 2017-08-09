@@ -14,7 +14,7 @@ $mothurRv "#set.dir(input=$WORKDIR, output=$WORKDIR);
 	make.shared(list=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.list, count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.pick.count_table, label=0.03);
 	classify.otu(list=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.list, count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.pick.count_table, taxonomy=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.pick.taxonomy, label=0.03);
 	get.oturep(fasta=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.fasta, count=current, list=current, label=0.03, method=abundance);
-	
+	bin.seqs(fasta=current, count=current, list=current);
 	
 #Rename data files;
 

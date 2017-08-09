@@ -45,18 +45,18 @@ alltp.placplac<-alltime_data[alltime_data$TRTGRINDMAN=="Placebo_Placebo",]
 #alltp.placplac<-alltp.plac[alltp.plac$TRTGRINDMAN="Treated_Treated",]
 summary(alltp.placplac[,1:6])
 
-alltp.ust.RESPyes<-alltp.ust[alltp.ust$RelRSPwk22=="Yes",]
+alltp.ust.RESPyes<-alltp.ust[alltp.ust$RESPONSEwk22=="Yes",]
 summary(alltp.ust.RESPyes[,1:6])
-alltp.ust.RESPno<-alltp.ust[alltp.ust$RelRSPwk22=="No",]
+alltp.ust.RESPno<-alltp.ust[alltp.ust$RESPONSEwk22=="No",]
 summary(alltp.ust.RESPno[,1:6])
 
-alltp.placplac.RESPyes<-alltp.placplac[alltp.placplac$RelRSPwk22=="Yes",]
+alltp.placplac.RESPyes<-alltp.placplac[alltp.placplac$RESPONSEwk22=="Yes",]
 summary(alltp.placplac.RESPyes[,1:6])
-alltp.placplac.RESPno<-alltp.placplac[alltp.placplac$RelRSPwk22=="No",]
+alltp.placplac.RESPno<-alltp.placplac[alltp.placplac$RESPONSEwk22=="No",]
 summary(alltp.placplac.RESPno[,1:6])
 
-alltp.all.respY<-alltime_data[alltime_data$RelRSPwk22=="Yes",]
-alltp.all.respN<-alltime_data[alltime_data$RelRSPwk22=="No",]
+alltp.all.respY<-alltime_data[alltime_data$RESPONSEwk22=="Yes",]
+alltp.all.respN<-alltime_data[alltime_data$RESPONSEwk22=="No",]
 summary(alltp.all.respY[,1:6])
 
 all.distmat<-read.table("../data/Jan400.all.na.omit.cmd.thetayc.0.03.square.ave.dist")

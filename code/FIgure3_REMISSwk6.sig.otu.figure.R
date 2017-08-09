@@ -34,7 +34,7 @@ nao.screen.plac<-nao.screen.plac[nao.screen.plac$TRTGRINDMAN!="Treated_Treated",
 summary(nao.screen.plac[,1:6])
 
 
-tax<- read.table('data/Jan400.simple.taxonomy.txt', header=T, sep="\t")
+tax<- read.table('../data/Jan400.simple.taxonomy.txt', header=T, sep="\t")
 nao.screen.all.distmat<-read.table("../data/Jan400.screening.all.na.omit.cmd.thetayc.0.03.square.ave.dist")
 nao.screen.all.dist<-as.dist(nao.screen.all.distmat)
 nao.screen.trtd.distmat<-read.table("../data/Jan400.screening.ust.na.omit.cmd.thetayc.0.03.square.ave.dist")

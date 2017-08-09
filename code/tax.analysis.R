@@ -79,32 +79,32 @@ median_abundant_phylum_matrix <- median_phylum_matrix[abundant, ]
 #	REMwk6_wilcox_phylum_p[phylum] <- wilcox.test(phylum_rel_abund[,phylum] ~screen_data$REMISSwk6)$p.value
 #}
 
-#RelRSPwk6_wilcox_phylum_p <- numeric() 
+#RESPONSEwk6_wilcox_phylum_p <- numeric() 
 #for(phylum in phylum_names){
-#	RelRSPwk6_wilcox_phylum_p[phylum] <- wilcox.test(phylum_rel_abund[,phylum] ~screen_data$RelRSPwk6)$p.value
+#	RESPONSEwk6_wilcox_phylum_p[phylum] <- wilcox.test(phylum_rel_abund[,phylum] ~screen_data$RESPONSEwk6)$p.value
 #}
 
 #REMISSwk6_wilcox_phylum_adj_p <- na.omit(p.adjust(REMwk6_wilcox_phylum_p, method="BH"))
 #sig_REMISSwk6_wilcox_phylum_adj_p <-REMISSwk6_wilcox_phylum_adj_p  < 0.05
 
-#RelRSPwk6_wilcox_phylum_adj_p <- na.omit(p.adjust(RelRSPwk6_wilcox_phylum_p, method="BH"))
-#sig_RelRSPwk6_wilcox_phylum_adj_p <-RelRSPwk6_wilcox_phylum_adj_p  < 0.05
+#RESPONSEwk6_wilcox_phylum_adj_p <- na.omit(p.adjust(RESPONSEwk6_wilcox_phylum_p, method="BH"))
+#sig_RESPONSEwk6_wilcox_phylum_adj_p <-RESPONSEwk6_wilcox_phylum_adj_p  < 0.05
 
 #REMISSwk22_wilcox_phylum_p <- numeric() 
 #for(phylum in phylum_names){
 #	REMwk22_wilcox_phylum_p[phylum] <- wilcox.test(phylum_rel_abund[,phylum] ~screen_data$REMISSwk22)$p.value
 #}
 
-#RelRSPwk22_wilcox_phylum_p <- numeric() 
+#RESPONSEwk22_wilcox_phylum_p <- numeric() 
 #for(phylum in phylum_names){
-#	RelRSPwk22_wilcox_phylum_p[phylum] <- wilcox.test(phylum_rel_abund[,phylum] ~screen_data$RelRSPwk22)$p.value
+#	RESPONSEwk22_wilcox_phylum_p[phylum] <- wilcox.test(phylum_rel_abund[,phylum] ~screen_data$RESPONSEwk22)$p.value
 #}
 
 #REMISSwk22_wilcox_phylum_adj_p <- na.omit(p.adjust(REMISSwk22_wilcox_phylum_p, method="BH"))
 #sig_REMISSwk22_wilcox_phylum_adj_p <-REMISSwk22_wilcox_phylum_adj_p  < 0.05
 
-#RelRSPwk22_wilcox_phylum_adj_p <- na.omit(p.adjust(RelRSPwk22_wilcox_phylum_p, method="BH"))
-#sig_RelRSPwk22_wilcox_phylum_adj_p <-RelRSPwk22_wilcox_phylum_adj_p  < 0.05
+#RESPONSEwk22_wilcox_phylum_adj_p <- na.omit(p.adjust(RESPONSEwk22_wilcox_phylum_p, method="BH"))
+#sig_RESPONSEwk22_wilcox_phylum_adj_p <-RESPONSEwk22_wilcox_phylum_adj_p  < 0.05
 
 
 

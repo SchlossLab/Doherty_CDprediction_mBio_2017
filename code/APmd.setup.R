@@ -108,6 +108,6 @@ APmd_shared<-merge(APmd_adiv, ss3k_shared, by.x="group", by.y="Group")
 APmd_shared$TRTGR_REMISSwk6 <- as.factor(paste(APmd_shared$TRTGR, APmd_shared$REMISSwk6))
 APmd_shared$TRTGRINDMAN_REMISSwk22 <- as.factor(paste(APmd_shared$TRTGRINDMAN, APmd_shared$REMISSwk22))
 
-APmd_shared$TRTGR_RelRSPwk6 <- as.factor(paste(APmd_shared$TRTGR, APmd_shared$RelRSPwk6))
-APmd_shared$TRTGRINDMAN_RelRSPwk22 <- as.factor(paste(APmd_shared$TRTGRINDMAN, APmd_shared$RelRSPwk22))
+APmd_shared$TRTGR_RESPONSEwk6 <- as.factor(paste(APmd_shared$TRTGR, APmd_shared$RESPONSEwk6))
+APmd_shared$TRTGRINDMAN_RESPONSEwk22 <- as.factor(paste(APmd_shared$TRTGRINDMAN, APmd_shared$RESPONSEwk22))
 APmd_RSPwk22<-APmd_shared

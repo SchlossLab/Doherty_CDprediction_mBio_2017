@@ -53,15 +53,15 @@ median_trtd.otu_trtRemWk6_matrix <- subset(median_trtd.otu_trtRemWk6, select=-c(
 median_trtd.otu_trtRemWk6_matrix <- as.matrix(t(subset(median_trtd.otu_trtRemWk6_matrix, select=-c(1:2))))
 colnames(median_trtd.otu_trtRemWk6_matrix) <- median_trtd.otu_trtRemWk6$TRTGRrem
 
-mean_trtd.otu_RelRSPwk6 <- aggregate(otu_rel_abund.trtd, by=list(screen_data.trtd$RelRSPwk6), mean)
-mean_trtd.otu_RelRSPwk6_matrix <- subset(mean_trtd.otu_RelRSPwk6, select=-c(Group.1))
-mean_trtd.otu_RelRSPwk6_matrix <- as.matrix(t(subset(mean_trtd.otu_RelRSPwk6_matrix)))
-colnames(mean_trtd.otu_RelRSPwk6_matrix) <- mean_trtd.otu_RelRSPwk6$Group.1
+mean_trtd.otu_RESPONSEwk6 <- aggregate(otu_rel_abund.trtd, by=list(screen_data.trtd$RESPONSEwk6), mean)
+mean_trtd.otu_RESPONSEwk6_matrix <- subset(mean_trtd.otu_RESPONSEwk6, select=-c(Group.1))
+mean_trtd.otu_RESPONSEwk6_matrix <- as.matrix(t(subset(mean_trtd.otu_RESPONSEwk6_matrix)))
+colnames(mean_trtd.otu_RESPONSEwk6_matrix) <- mean_trtd.otu_RESPONSEwk6$Group.1
 
-median_trtd.otu_RelRSPwk6 <- aggregate(otu_rel_abund.trtd, by=list(screen_data.trtd$RelRSPwk6), median)
-median_trtd.otu_RelRSPwk6_matrix <- subset(median_trtd.otu_RelRSPwk6, select=-c(Group.1))
-median_trtd.otu_RelRSPwk6_matrix <- as.matrix(t(median_trtd.otu_RelRSPwk6_matrix))
-colnames(median_trtd.otu_RelRSPwk6_matrix) <- median_trtd.otu_RelRSPwk6$Group.1
+median_trtd.otu_RESPONSEwk6 <- aggregate(otu_rel_abund.trtd, by=list(screen_data.trtd$RESPONSEwk6), median)
+median_trtd.otu_RESPONSEwk6_matrix <- subset(median_trtd.otu_RESPONSEwk6, select=-c(Group.1))
+median_trtd.otu_RESPONSEwk6_matrix <- as.matrix(t(median_trtd.otu_RESPONSEwk6_matrix))
+colnames(median_trtd.otu_RESPONSEwk6_matrix) <- median_trtd.otu_RESPONSEwk6$Group.1
 
 mean_trtd.otu_REMISSwk6 <- aggregate(otu_rel_abund.trtd, by=list(screen_data.trtd$REMISSwk6), mean)
 mean_trtd.otu_REMISSwk6_matrix <- subset(mean_trtd.otu_REMISSwk6, select=-c(Group.1))
@@ -110,9 +110,9 @@ for(otu in trtd.otu_numbers){
 }
 
 set.seed(32016)
-RelRSPwk6_wilcox_trtd.otu_p <- numeric() 
+RESPONSEwk6_wilcox_trtd.otu_p <- numeric() 
 for(otu in trtd.otu_numbers){
-	RelRSPwk6_wilcox_trtd.otu_p[otu] <- wilcox.test(otu_rel_abund.trtd[,otu] ~screen_data.trtd$RelRSPwk6)$p.value
+	RESPONSEwk6_wilcox_trtd.otu_p[otu] <- wilcox.test(otu_rel_abund.trtd[,otu] ~screen_data.trtd$RESPONSEwk6)$p.value
 }
 
 
@@ -120,9 +120,9 @@ REMISSwk6_wilcox_trtd.otu_adj_p <- na.omit(p.adjust(REMwk6_wilcox_trtd.otu_p, me
 sig_REMISSwk6_wilcox_trtd.otu_adj_p <-REMISSwk6_wilcox_trtd.otu_adj_p  < 0.05
 sig_REMISSwk6_wilcox_trtd.otu_adj_p_otus <- rownames(median_trtd.otu_REMISSwk6_matrix)[sig_REMISSwk6_wilcox_trtd.otu_adj_p]
 
-RelRSPwk6_wilcox_trtd.otu_adj_p <- na.omit(p.adjust(RelRSPwk6_wilcox_trtd.otu_p, method="BH"))
-sig_RelRSPwk6_wilcox_trtd.otu_adj_p <-RelRSPwk6_wilcox_trtd.otu_adj_p  < 0.05
-sig_RelRSPwk6_wilcox_trtd.otu_adj_p_otus <- rownames(median_trtd.otu_RelRSPwk6_matrix)[sig_RelRSPwk6_wilcox_trtd.otu_adj_p]
+RESPONSEwk6_wilcox_trtd.otu_adj_p <- na.omit(p.adjust(RESPONSEwk6_wilcox_trtd.otu_p, method="BH"))
+sig_RESPONSEwk6_wilcox_trtd.otu_adj_p <-RESPONSEwk6_wilcox_trtd.otu_adj_p  < 0.05
+sig_RESPONSEwk6_wilcox_trtd.otu_adj_p_otus <- rownames(median_trtd.otu_RESPONSEwk6_matrix)[sig_RESPONSEwk6_wilcox_trtd.otu_adj_p]
 
 
 trtd.REMISSwk6.Otu7p <- signif(REMISSwk6_wilcox_trtd.otu_adj_p["Otu00007"], 2)
@@ -146,15 +146,15 @@ trtd.otu_numbers <- colnames(otu_rel_abund.trtdtrtd)
 
 stopifnot(rownames(screen_data.trtdtrtd) == rownames(otu_rel_abund.trtdtrtd))
 
-mean_trtd.otu_RelRSPwk22 <- aggregate(otu_rel_abund.trtdtrtd, by=list(screen_data.trtdtrtd$RelRSPwk22), mean)
-mean_trtd.otu_RelRSPwk22_matrix <- subset(mean_trtd.otu_RelRSPwk22, select=-c(Group.1))
-mean_trtd.otu_RelRSPwk22_matrix <- as.matrix(t(subset(mean_trtd.otu_RelRSPwk22_matrix)))
-colnames(mean_trtd.otu_RelRSPwk22_matrix) <- mean_trtd.otu_RelRSPwk22$Group.1
+mean_trtd.otu_RESPONSEwk22 <- aggregate(otu_rel_abund.trtdtrtd, by=list(screen_data.trtdtrtd$RESPONSEwk22), mean)
+mean_trtd.otu_RESPONSEwk22_matrix <- subset(mean_trtd.otu_RESPONSEwk22, select=-c(Group.1))
+mean_trtd.otu_RESPONSEwk22_matrix <- as.matrix(t(subset(mean_trtd.otu_RESPONSEwk22_matrix)))
+colnames(mean_trtd.otu_RESPONSEwk22_matrix) <- mean_trtd.otu_RESPONSEwk22$Group.1
 
-median_trtd.otu_RelRSPwk22 <- aggregate(otu_rel_abund.trtdtrtd, by=list(screen_data.trtdtrtd$RelRSPwk22), median)
-median_trtd.otu_RelRSPwk22_matrix <- subset(median_trtd.otu_RelRSPwk22, select=-c(Group.1))
-median_trtd.otu_RelRSPwk22_matrix <- as.matrix(t(median_trtd.otu_RelRSPwk22_matrix))
-colnames(median_trtd.otu_RelRSPwk22_matrix) <- median_trtd.otu_RelRSPwk22$Group.1
+median_trtd.otu_RESPONSEwk22 <- aggregate(otu_rel_abund.trtdtrtd, by=list(screen_data.trtdtrtd$RESPONSEwk22), median)
+median_trtd.otu_RESPONSEwk22_matrix <- subset(median_trtd.otu_RESPONSEwk22, select=-c(Group.1))
+median_trtd.otu_RESPONSEwk22_matrix <- as.matrix(t(median_trtd.otu_RESPONSEwk22_matrix))
+colnames(median_trtd.otu_RESPONSEwk22_matrix) <- median_trtd.otu_RESPONSEwk22$Group.1
 
 mean_trtd.otu_REMISSwk22 <- aggregate(otu_rel_abund.trtdtrtd, by=list(screen_data.trtdtrtd$REMISSwk22), mean)
 mean_trtd.otu_REMISSwk22_matrix <- subset(mean_trtd.otu_REMISSwk22, select=-c(Group.1))
@@ -174,18 +174,18 @@ for(otu in trtd.otu_numbers){
 }
 
 set.seed(32016)
-RelRSPwk22_wilcox_trtd.otu_p <- numeric() 
+RESPONSEwk22_wilcox_trtd.otu_p <- numeric() 
 for(otu in trtd.otu_numbers){
-	RelRSPwk22_wilcox_trtd.otu_p[otu] <- wilcox.test(otu_rel_abund.trtdtrtd[,otu] ~screen_data.trtdtrtd$RelRSPwk22)$p.value
+	RESPONSEwk22_wilcox_trtd.otu_p[otu] <- wilcox.test(otu_rel_abund.trtdtrtd[,otu] ~screen_data.trtdtrtd$RESPONSEwk22)$p.value
 }
 
 REMISSwk22_wilcox_trtd.otu_adj_p <- na.omit(p.adjust(REMwk22_wilcox_trtd.otu_p, method="BH"))
 sig_REMISSwk22_wilcox_trtd.otu_adj_p <-REMISSwk22_wilcox_trtd.otu_adj_p  < 0.05
 sig_REMISSwk22_wilcox_trtd.otu_adj_p_otus <- rownames(mean_trtd.otu_REMISSwk22_matrix)[sig_REMISSwk22_wilcox_trtd.otu_adj_p]
 
-RelRSPwk22_wilcox_trtd.otu_adj_p <- na.omit(p.adjust(RelRSPwk22_wilcox_trtd.otu_p, method="BH"))
-sig_RelRSPwk22_wilcox_trtd.otu_adj_p <-RelRSPwk22_wilcox_trtd.otu_adj_p  < 0.05
-sig_RelRSPwk22_wilcox_trtd.otu_adj_p_otus <- rownames(mean_trtd.otu_RelRSPwk22_matrix)[sig_RelRSPwk22_wilcox_trtd.otu_adj_p]
+RESPONSEwk22_wilcox_trtd.otu_adj_p <- na.omit(p.adjust(RESPONSEwk22_wilcox_trtd.otu_p, method="BH"))
+sig_RESPONSEwk22_wilcox_trtd.otu_adj_p <-RESPONSEwk22_wilcox_trtd.otu_adj_p  < 0.05
+sig_RESPONSEwk22_wilcox_trtd.otu_adj_p_otus <- rownames(mean_trtd.otu_RESPONSEwk22_matrix)[sig_RESPONSEwk22_wilcox_trtd.otu_adj_p]
 
 
 
@@ -213,15 +213,15 @@ median_plac.otu_trtRemWk6_matrix <- subset(median_plac.otu_trtRemWk6, select=-c(
 median_plac.otu_trtRemWk6_matrix <- as.matrix(t(subset(median_plac.otu_trtRemWk6_matrix, select=-c(1:2))))
 colnames(median_plac.otu_trtRemWk6_matrix) <- median_plac.otu_trtRemWk6$TRTGRrem
 
-mean_plac.otu_RelRSPwk6 <- aggregate(otu_rel_abund.plac, by=list(screen_data.plac$RelRSPwk6), mean)
-mean_plac.otu_RelRSPwk6_matrix <- subset(mean_plac.otu_RelRSPwk6, select=-c(Group.1))
-mean_plac.otu_RelRSPwk6_matrix <- as.matrix(t(subset(mean_plac.otu_RelRSPwk6_matrix)))
-colnames(mean_plac.otu_RelRSPwk6_matrix) <- mean_plac.otu_RelRSPwk6$Group.1
+mean_plac.otu_RESPONSEwk6 <- aggregate(otu_rel_abund.plac, by=list(screen_data.plac$RESPONSEwk6), mean)
+mean_plac.otu_RESPONSEwk6_matrix <- subset(mean_plac.otu_RESPONSEwk6, select=-c(Group.1))
+mean_plac.otu_RESPONSEwk6_matrix <- as.matrix(t(subset(mean_plac.otu_RESPONSEwk6_matrix)))
+colnames(mean_plac.otu_RESPONSEwk6_matrix) <- mean_plac.otu_RESPONSEwk6$Group.1
 
-median_plac.otu_RelRSPwk6 <- aggregate(otu_rel_abund.plac, by=list(screen_data.plac$RelRSPwk6), median)
-median_plac.otu_RelRSPwk6_matrix <- subset(median_plac.otu_RelRSPwk6, select=-c(Group.1))
-median_plac.otu_RelRSPwk6_matrix <- as.matrix(t(median_plac.otu_RelRSPwk6_matrix))
-colnames(median_plac.otu_RelRSPwk6_matrix) <- median_plac.otu_RelRSPwk6$Group.1
+median_plac.otu_RESPONSEwk6 <- aggregate(otu_rel_abund.plac, by=list(screen_data.plac$RESPONSEwk6), median)
+median_plac.otu_RESPONSEwk6_matrix <- subset(median_plac.otu_RESPONSEwk6, select=-c(Group.1))
+median_plac.otu_RESPONSEwk6_matrix <- as.matrix(t(median_plac.otu_RESPONSEwk6_matrix))
+colnames(median_plac.otu_RESPONSEwk6_matrix) <- median_plac.otu_RESPONSEwk6$Group.1
 
 mean_plac.otu_REMISSwk6 <- aggregate(otu_rel_abund.plac, by=list(screen_data.plac$REMISSwk6), mean)
 mean_plac.otu_REMISSwk6_matrix <- subset(mean_plac.otu_REMISSwk6, select=-c(Group.1))
@@ -270,9 +270,9 @@ for(otu in plac.otu_numbers){
 }
 
 set.seed(32016)
-RelRSPwk6_wilcox_plac.otu_p <- numeric() 
+RESPONSEwk6_wilcox_plac.otu_p <- numeric() 
 for(otu in plac.otu_numbers){
-	RelRSPwk6_wilcox_plac.otu_p[otu] <- wilcox.test(otu_rel_abund.plac[,otu] ~screen_data.plac$RelRSPwk6)$p.value
+	RESPONSEwk6_wilcox_plac.otu_p[otu] <- wilcox.test(otu_rel_abund.plac[,otu] ~screen_data.plac$RESPONSEwk6)$p.value
 }
 
 
@@ -280,9 +280,9 @@ REMISSwk6_wilcox_plac.otu_adj_p <- na.omit(p.adjust(REMwk6_wilcox_plac.otu_p, me
 sig_REMISSwk6_wilcox_plac.otu_adj_p <-REMISSwk6_wilcox_plac.otu_adj_p  < 0.05
 sig_REMISSwk6_wilcox_plac.otu_adj_p_otus <- rownames(median_plac.otu_REMISSwk6_matrix)[sig_REMISSwk6_wilcox_plac.otu_adj_p]
 
-RelRSPwk6_wilcox_plac.otu_adj_p <- na.omit(p.adjust(RelRSPwk6_wilcox_plac.otu_p, method="BH"))
-sig_RelRSPwk6_wilcox_plac.otu_adj_p <-RelRSPwk6_wilcox_plac.otu_adj_p  < 0.05
-sig_RelRSPwk6_wilcox_plac.otu_adj_p_otus <- rownames(median_plac.otu_RelRSPwk6_matrix)[sig_RelRSPwk6_wilcox_plac.otu_adj_p]
+RESPONSEwk6_wilcox_plac.otu_adj_p <- na.omit(p.adjust(RESPONSEwk6_wilcox_plac.otu_p, method="BH"))
+sig_RESPONSEwk6_wilcox_plac.otu_adj_p <-RESPONSEwk6_wilcox_plac.otu_adj_p  < 0.05
+sig_RESPONSEwk6_wilcox_plac.otu_adj_p_otus <- rownames(median_plac.otu_RESPONSEwk6_matrix)[sig_RESPONSEwk6_wilcox_plac.otu_adj_p]
 
 
 screen_data.placplac_groups <- screen_data[screen_data$visit=="Screening", c("group", "TRTGRINDMAN")]
@@ -303,10 +303,10 @@ plac.otu_numbers <- colnames(otu_rel_abund.placplac)
 stopifnot(rownames(screen_data.placplac) == rownames(otu_rel_abund.placplac))
 
 
-median_plac.otu_RelRSPwk22 <- aggregate(otu_rel_abund.placplac, by=list(screen_data.placplac$RelRSPwk22), median)
-median_plac.otu_RelRSPwk22_matrix <- subset(median_plac.otu_RelRSPwk22, select=-c(Group.1))
-median_plac.otu_RelRSPwk22_matrix <- as.matrix(t(median_plac.otu_RelRSPwk22_matrix))
-colnames(median_plac.otu_RelRSPwk22_matrix) <- median_plac.otu_RelRSPwk22$Group.1
+median_plac.otu_RESPONSEwk22 <- aggregate(otu_rel_abund.placplac, by=list(screen_data.placplac$RESPONSEwk22), median)
+median_plac.otu_RESPONSEwk22_matrix <- subset(median_plac.otu_RESPONSEwk22, select=-c(Group.1))
+median_plac.otu_RESPONSEwk22_matrix <- as.matrix(t(median_plac.otu_RESPONSEwk22_matrix))
+colnames(median_plac.otu_RESPONSEwk22_matrix) <- median_plac.otu_RESPONSEwk22$Group.1
 
 median_plac.otu_REMISSwk22 <- aggregate(otu_rel_abund.placplac, by=list(screen_data.placplac$REMISSwk22), median)
 median_plac.otu_REMISSwk22_matrix <- subset(median_plac.otu_REMISSwk22, select=-c(Group.1))
@@ -321,16 +321,16 @@ for(otu in plac.otu_numbers){
 }
 
 set.seed(32016)
-RelRSPwk22_wilcox_plac.otu_p <- numeric() 
+RESPONSEwk22_wilcox_plac.otu_p <- numeric() 
 for(otu in plac.otu_numbers){
-	RelRSPwk22_wilcox_plac.otu_p[otu] <- wilcox.test(otu_rel_abund.placplac[,otu] ~screen_data.placplac$RelRSPwk22)$p.value
+	RESPONSEwk22_wilcox_plac.otu_p[otu] <- wilcox.test(otu_rel_abund.placplac[,otu] ~screen_data.placplac$RESPONSEwk22)$p.value
 }
 
 REMISSwk22_wilcox_plac.otu_adj_p <- na.omit(p.adjust(REMwk22_wilcox_plac.otu_p, method="BH"))
 sig_REMISSwk22_wilcox_plac.otu_adj_p <-REMISSwk22_wilcox_plac.otu_adj_p  < 0.05
 sig_REMISSwk22_wilcox_plac.otu_adj_p_otus <- rownames(median_plac.otu_REMISSwk22_matrix)[sig_REMISSwk22_wilcox_plac.otu_adj_p]
 
-RelRSPwk22_wilcox_plac.otu_adj_p <- na.omit(p.adjust(RelRSPwk22_wilcox_plac.otu_p, method="BH"))
-sig_RelRSPwk22_wilcox_plac.otu_adj_p <-RelRSPwk22_wilcox_plac.otu_adj_p  < 0.05
-sig_RelRSPwk22_wilcox_plac.otu_adj_p_otus <- rownames(median_plac.otu_RelRSPwk22_matrix)[sig_RelRSPwk22_wilcox_plac.otu_adj_p]
+RESPONSEwk22_wilcox_plac.otu_adj_p <- na.omit(p.adjust(RESPONSEwk22_wilcox_plac.otu_p, method="BH"))
+sig_RESPONSEwk22_wilcox_plac.otu_adj_p <-RESPONSEwk22_wilcox_plac.otu_adj_p  < 0.05
+sig_RESPONSEwk22_wilcox_plac.otu_adj_p_otus <- rownames(median_plac.otu_RESPONSEwk22_matrix)[sig_RESPONSEwk22_wilcox_plac.otu_adj_p]
 

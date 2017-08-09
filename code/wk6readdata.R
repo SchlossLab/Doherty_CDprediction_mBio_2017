@@ -87,18 +87,18 @@ summary(subset(plac.zero6subs_data, select=c(group, USUBJID, visit, TRTGR, TRTGR
 week6.N.all <- nrow(zero6subs_data[zero6subs_data$visit=='Week 6',])
 week6.trtd <- trtd.zero6subs_data[trtd.zero6subs_data$visit=='Week 6',]
 week6.N.trtd <- nrow(trtd.zero6subs_data[trtd.zero6subs_data$visit=='Week 6',])
-week6.N.trtd.respY <- nrow(week6.trtd[week6.trtd$RelRSPwk6=='Yes',])
-week6.N.trtd.respN <- nrow(week6.trtd[week6.trtd$RelRSPwk6=='No',])
+week6.N.trtd.respY <- nrow(week6.trtd[week6.trtd$RESPONSEwk6=='Yes',])
+week6.N.trtd.respN <- nrow(week6.trtd[week6.trtd$RESPONSEwk6=='No',])
 week6.plac <- plac.zero6subs_data[plac.zero6subs_data$visit=='Week 6',]
 week6.N.plac <- nrow(plac.zero6subs_data[plac.zero6subs_data$visit=='Week 6',])
-week6.N.plac.respY <- nrow(week6.plac[week6.plac$RelRSPwk6=='Yes',])
-week6.N.plac.respN <- nrow(week6.plac[week6.plac$RelRSPwk6=='No',])
+week6.N.plac.respY <- nrow(week6.plac[week6.plac$RESPONSEwk6=='Yes',])
+week6.N.plac.respN <- nrow(week6.plac[week6.plac$RESPONSEwk6=='No',])
 week6.N.trtd.REMY <- nrow(week6.trtd[week6.trtd$REMISSwk6=='Yes',])
 week6.N.trtd.REMN <- nrow(week6.trtd[week6.trtd$REMISSwk6=='No',])
 week6.N.plac.REMY <- nrow(week6.plac[week6.plac$REMISSwk6=='Yes',])
 week6.N.plac.REMN <- nrow(week6.plac[week6.plac$REMISSwk6=='No',])
 
-all.RelRSPwk6<-matrix(c('Week 6 Response (No, Yes)', trtd.RelRSPwk6_sum, plac.RelRSPwk6_sum, all.RelRSPwk6.kw.test.pval, all.RelRSPwk6_AMOVA), ncol = 5)
+all.RESPONSEwk6<-matrix(c('Week 6 Response (No, Yes)', trtd.RESPONSEwk6_sum, plac.RESPONSEwk6_sum, all.RESPONSEwk6.kw.test.pval, all.RESPONSEwk6_AMOVA), ncol = 5)
 
 week6.N.resp.trtd_sum<-toString(c(week6.N.trtd.respN, week6.N.trtd.respY))
 week6.N.resp.plac_sum<-toString(c(week6.N.plac.respN, week6.N.plac.respY))
@@ -106,10 +106,10 @@ week6.N.resp.plac_sum<-toString(c(week6.N.plac.respN, week6.N.plac.respY))
 week6.N.REM.trtd_sum<-toString(c(week6.N.trtd.REMN, week6.N.trtd.REMY))
 week6.N.REM.plac_sum<-toString(c(week6.N.plac.REMN, week6.N.plac.REMY))
 
-wk6.RelRSPwk6 <- matrix(c("Week 6", "Response Week 6 (No, Yes)", week6.N.resp.trtd_sum, week6.N.resp.plac_sum, week6.N.all), ncol=5)
-colnames(wk6.RelRSPwk6) <- c("Stool Week", 'Status Week', 'Treated (n)', "Placebo (n)", "Total (n)")
+wk6.RESPONSEwk6 <- matrix(c("Week 6", "Response Week 6 (No, Yes)", week6.N.resp.trtd_sum, week6.N.resp.plac_sum, week6.N.all), ncol=5)
+colnames(wk6.RESPONSEwk6) <- c("Stool Week", 'Status Week', 'Treated (n)', "Placebo (n)", "Total (n)")
 wk6.REMISSwk6 <- matrix(c("Week 6", "Remission Week 6 (No, Yes)", week6.N.REM.trtd_sum, week6.N.REM.plac_sum, week6.N.all), ncol=5)
 colnames(wk6.REMISSwk6) <- c("Stool Week", 'Status Week', 'Treated (n)', "Placebo (n)", "Total (n)")
 
-wk6_wk6 <- rbind(wk6.RelRSPwk6, wk6.REMISSwk6)
+wk6_wk6 <- rbind(wk6.RESPONSEwk6, wk6.REMISSwk6)
 wk6_wk6 <- wk6_wk6[,-5]

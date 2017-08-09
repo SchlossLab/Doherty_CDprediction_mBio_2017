@@ -85,32 +85,32 @@ for(phylum in phylum_names){
 	REMISSwk6_kw_phylum_p[phylum] <- kruskal.test(phylum_rel_abund[,phylum] ~TRTGR_REMISSwk6$TRTGR_REMISSwk6)$p.value
 }
 
-RelRSPwk6_kw_phylum_p <- numeric() 
+RESPONSEwk6_kw_phylum_p <- numeric() 
 for(phylum in phylum_names){
-	RelRSPwk6_kw_phylum_p[phylum] <- kruskal.test(phylum_rel_abund[,phylum] ~TRTGR_RelRSPwk6$TRTGR_RelRSPwk6)$p.value
+	RESPONSEwk6_kw_phylum_p[phylum] <- kruskal.test(phylum_rel_abund[,phylum] ~TRTGR_RESPONSEwk6$TRTGR_RESPONSEwk6)$p.value
 }
 
 REMISSwk6_kw_phylum_adj_p <- na.omit(p.adjust(REMISSwk6_kw_phylum_p, method="BH"))
 sig_REMISSwk6_kw_phylum_adj_p <-REMISSwk6_kw_phylum_adj_p  < 0.05
 
-RelRSPwk6_kw_phylum_adj_p <- na.omit(p.adjust(RelRSPwk6_kw_phylum_p, method="BH"))
-sig_RelRSPwk6_kw_phylum_adj_p <-RelRSPwk6_kw_phylum_adj_p  < 0.05
+RESPONSEwk6_kw_phylum_adj_p <- na.omit(p.adjust(RESPONSEwk6_kw_phylum_p, method="BH"))
+sig_RESPONSEwk6_kw_phylum_adj_p <-RESPONSEwk6_kw_phylum_adj_p  < 0.05
 
 REMISSwk22_kw_phylum_p <- numeric() 
 for(phylum in phylum_names){
 	REMISSwk22_kw_phylum_p[phylum] <- kruskal.test(phylum_rel_abund[,phylum] ~screen_data$TRTGRINDMAN_REMISSwk22)$p.value
 }
 
-RelRSPwk22_kw_phylum_p <- numeric() 
+RESPONSEwk22_kw_phylum_p <- numeric() 
 for(phylum in phylum_names){
-	RelRSPwk22_kw_phylum_p[phylum] <- kruskal.test(phylum_rel_abund[,phylum] ~screen_data$TRTGRINDMAN_RelRSPwk22)$p.value
+	RESPONSEwk22_kw_phylum_p[phylum] <- kruskal.test(phylum_rel_abund[,phylum] ~screen_data$TRTGRINDMAN_RESPONSEwk22)$p.value
 }
 
 REMISSwk22_kw_phylum_adj_p <- na.omit(p.adjust(REMISSwk22_kw_phylum_p, method="BH"))
 sig_REMISSwk22_kw_phylum_adj_p <-REMISSwk22_kw_phylum_adj_p  < 0.05
 
-RelRSPwk22_kw_phylum_adj_p <- na.omit(p.adjust(RelRSPwk22_kw_phylum_p, method="BH"))
-sig_RelRSPwk22_kw_phylum_adj_p <-RelRSPwk22_kw_phylum_adj_p  < 0.05
+RESPONSEwk22_kw_phylum_adj_p <- na.omit(p.adjust(RESPONSEwk22_kw_phylum_p, method="BH"))
+sig_RESPONSEwk22_kw_phylum_adj_p <-RESPONSEwk22_kw_phylum_adj_p  < 0.05
 
 
 
@@ -123,14 +123,14 @@ cbind(data.frame(mean_abundant_phylum_matrix, Phylum = row.names(mean_abundant_p
 	geom_bar(position = "dodge", stat="identity") + ylab("Relative Abundance (%)") + xlab("Week 6 Remission") +
 	theme(legend.text = element_text(face = "italic"))
 
-#phyRelab_RelRSPwk6 <- phyRelab_RelRSPwk6*100
-phyRabRelRSPwk6_ggplot <- gather(phyRelab_RelRSPwk6, phylum, relabund, one_of(row.names(mean_phylum_matrix)[abundant]))
+#phyRelab_RESPONSEwk6 <- phyRelab_RESPONSEwk6*100
+phyRabRESPONSEwk6_ggplot <- gather(phyRelab_RESPONSEwk6, phylum, relabund, one_of(row.names(mean_phylum_matrix)[abundant]))
 rank <- c("Firmicutes","Bacteroidetes","Proteobacteria","Actinobacteria","Verrucomicrobia","Fusobacteria")
-phyRabRelRSPwk6_ggplot$phylum <- factor(phyRabRelRSPwk6_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
-phyRabRelRSPwk6_ggplot <- phyRabRelRSPwk6_ggplot[order(phyRabRelRSPwk6_ggplot$phylum),]
-phyRabRelRSPwk6_ggplot <- gather(phyRelab_RelRSPwk6, phylum, relabund, one_of(row.names(mean_phylum_matrix)[abundant]))
-phyRabRelRSPwk6_ggplot$phylum <- factor(phyRabRelRSPwk6_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
-phyRabRelRSPwk6_ggplot <- phyRabRelRSPwk6_ggplot[order(phyRabRelRSPwk6_ggplot$phylum),]
+phyRabRESPONSEwk6_ggplot$phylum <- factor(phyRabRESPONSEwk6_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
+phyRabRESPONSEwk6_ggplot <- phyRabRESPONSEwk6_ggplot[order(phyRabRESPONSEwk6_ggplot$phylum),]
+phyRabRESPONSEwk6_ggplot <- gather(phyRelab_RESPONSEwk6, phylum, relabund, one_of(row.names(mean_phylum_matrix)[abundant]))
+phyRabRESPONSEwk6_ggplot$phylum <- factor(phyRabRESPONSEwk6_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
+phyRabRESPONSEwk6_ggplot <- phyRabRESPONSEwk6_ggplot[order(phyRabRESPONSEwk6_ggplot$phylum),]
 
 
 #phyRelab_REMISSwk6 <- phyRelab_REMISSwk6*100
@@ -143,14 +143,14 @@ phyRabREMISSwk6_ggplot$phylum <- factor(phyRabREMISSwk6_ggplot$phylum, levels = 
 phyRabREMISSwk6_ggplot <- phyRabREMISSwk6_ggplot[order(phyRabREMISSwk6_ggplot$phylum),]
 
 
-#phyRelab_RelRSPwk22 <- phyRelab_RelRSPwk22*100
-phyRabRelRSPwk22_ggplot <- gather(phyRelab_RelRSPwk22, phylum, relabund, one_of(row.names(mean_phylum_matrix)[abundant]))
+#phyRelab_RESPONSEwk22 <- phyRelab_RESPONSEwk22*100
+phyRabRESPONSEwk22_ggplot <- gather(phyRelab_RESPONSEwk22, phylum, relabund, one_of(row.names(mean_phylum_matrix)[abundant]))
 rank <- c("Firmicutes","Bacteroidetes","Proteobacteria","Actinobacteria","Verrucomicrobia","Fusobacteria")
-phyRabRelRSPwk22_ggplot$phylum <- factor(phyRabRelRSPwk22_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
-phyRabRelRSPwk22_ggplot <- phyRabRelRSPwk22_ggplot[order(phyRabRelRSPwk22_ggplot$phylum),]
-phyRabRelRSPwk22_ggplot <- gather(phyRelab_RelRSPwk22, phylum, relabund, one_of(row.names(mean_phylum_matrix)[abundant]))
-phyRabRelRSPwk22_ggplot$phylum <- factor(phyRabRelRSPwk22_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
-phyRabRelRSPwk22_ggplot <- phyRabRelRSPwk22_ggplot[order(phyRabRelRSPwk22_ggplot$phylum),]
+phyRabRESPONSEwk22_ggplot$phylum <- factor(phyRabRESPONSEwk22_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
+phyRabRESPONSEwk22_ggplot <- phyRabRESPONSEwk22_ggplot[order(phyRabRESPONSEwk22_ggplot$phylum),]
+phyRabRESPONSEwk22_ggplot <- gather(phyRelab_RESPONSEwk22, phylum, relabund, one_of(row.names(mean_phylum_matrix)[abundant]))
+phyRabRESPONSEwk22_ggplot$phylum <- factor(phyRabRESPONSEwk22_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
+phyRabRESPONSEwk22_ggplot <- phyRabRESPONSEwk22_ggplot[order(phyRabRESPONSEwk22_ggplot$phylum),]
 
 
 #phyRelab_REMISSwk22 <- phyRelab_REMISSwk22*100
@@ -247,32 +247,32 @@ for(phylum in trtd.phylum_names){
 	REMISSwk6_wilcox_trtd.phylum_p[phylum] <- wilcox.test(trtd.phylum_rel_abund[,phylum] ~trtd.screen_data$REMISSwk6)$p.value
 }
 
-RelRSPwk6_wilcox_trtd.phylum_p <- numeric() 
+RESPONSEwk6_wilcox_trtd.phylum_p <- numeric() 
 for(phylum in trtd.phylum_names){
-	RelRSPwk6_wilcox_trtd.phylum_p[phylum] <- wilcox.test(trtd.phylum_rel_abund[,phylum] ~trtd.screen_data$RelRSPwk6)$p.value
+	RESPONSEwk6_wilcox_trtd.phylum_p[phylum] <- wilcox.test(trtd.phylum_rel_abund[,phylum] ~trtd.screen_data$RESPONSEwk6)$p.value
 }
 
 REMISSwk6_wilcox_trtd.phylum_adj_p <- na.omit(p.adjust(REMISSwk6_wilcox_trtd.phylum_p, method="BH"))
 sig_REMISSwk6_wilcox_trtd.phylum_adj_p <-REMISSwk6_wilcox_trtd.phylum_adj_p  < 0.05
 
-RelRSPwk6_wilcox_trtd.phylum_adj_p <- na.omit(p.adjust(RelRSPwk6_wilcox_trtd.phylum_p, method="BH"))
-sig_RelRSPwk6_wilcox_trtd.phylum_adj_p <-RelRSPwk6_wilcox_trtd.phylum_adj_p  < 0.05
+RESPONSEwk6_wilcox_trtd.phylum_adj_p <- na.omit(p.adjust(RESPONSEwk6_wilcox_trtd.phylum_p, method="BH"))
+sig_RESPONSEwk6_wilcox_trtd.phylum_adj_p <-RESPONSEwk6_wilcox_trtd.phylum_adj_p  < 0.05
 
 REMISSwk22_wilcox_trtd.phylum_p <- numeric() 
 for(phylum in trtd.phylum_names){
 	REMISSwk22_wilcox_trtd.phylum_p[phylum] <- wilcox.test(trtd.phylum_rel_abund[,phylum] ~trtd.screen_data$REMISSwk22)$p.value
 }
 
-RelRSPwk22_wilcox_trtd.phylum_p <- numeric() 
+RESPONSEwk22_wilcox_trtd.phylum_p <- numeric() 
 for(phylum in trtd.phylum_names){
-	RelRSPwk22_wilcox_trtd.phylum_p[phylum] <- wilcox.test(trtd.phylum_rel_abund[,phylum] ~trtd.screen_data$RelRSPwk22)$p.value
+	RESPONSEwk22_wilcox_trtd.phylum_p[phylum] <- wilcox.test(trtd.phylum_rel_abund[,phylum] ~trtd.screen_data$RESPONSEwk22)$p.value
 }
 
 REMISSwk22_wilcox_trtd.phylum_adj_p <- na.omit(p.adjust(REMISSwk22_wilcox_trtd.phylum_p, method="BH"))
 sig_REMISSwk22_wilcox_trtd.phylum_adj_p <-REMISSwk22_wilcox_trtd.phylum_adj_p  < 0.05
 
-RelRSPwk22_wilcox_trtd.phylum_adj_p <- na.omit(p.adjust(RelRSPwk22_wilcox_trtd.phylum_p, method="BH"))
-sig_RelRSPwk22_wilcox_trtd.phylum_adj_p <-RelRSPwk22_wilcox_trtd.phylum_adj_p  < 0.05
+RESPONSEwk22_wilcox_trtd.phylum_adj_p <- na.omit(p.adjust(RESPONSEwk22_wilcox_trtd.phylum_p, method="BH"))
+sig_RESPONSEwk22_wilcox_trtd.phylum_adj_p <-RESPONSEwk22_wilcox_trtd.phylum_adj_p  < 0.05
 
 
 
@@ -285,14 +285,14 @@ cbind(data.frame(mean_abundant_trtd.phylum_matrix, Phylum = row.names(mean_abund
 	geom_bar(position = "dodge", stat="identity") + ylab("Relative Abundance (%)") + xlab("Week 6 Remission") +
 	theme(legend.text = element_text(face = "italic"))
 
-#phyRelab_RelRSPwk6 <- phyRelab_RelRSPwk6*100
-trtd.phyRabRelRSPwk6_ggplot <- gather(phyRelab_RelRSPwk6, phylum, relabund, one_of(row.names(mean_trtd.phylum_matrix)[abundant]))
+#phyRelab_RESPONSEwk6 <- phyRelab_RESPONSEwk6*100
+trtd.phyRabRESPONSEwk6_ggplot <- gather(phyRelab_RESPONSEwk6, phylum, relabund, one_of(row.names(mean_trtd.phylum_matrix)[abundant]))
 rank <- c("Firmicutes","Bacteroidetes","Proteobacteria","Actinobacteria","Verrucomicrobia","Fusobacteria")
-trtd.phyRabRelRSPwk6_ggplot$phylum <- factor(trtd.phyRabRelRSPwk6_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
-trtd.phyRabRelRSPwk6_ggplot <- trtd.phyRabRelRSPwk6_ggplot[order(trtd.phyRabRelRSPwk6_ggplot$phylum),]
-trtd.phyRabRelRSPwk6_ggplot <- gather(phyRelab_RelRSPwk6, phylum, relabund, one_of(row.names(mean_trtd.phylum_matrix)[abundant]))
-trtd.phyRabRelRSPwk6_ggplot$phylum <- factor(trtd.phyRabRelRSPwk6_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
-trtd.phyRabRelRSPwk6_ggplot <- trtd.phyRabRelRSPwk6_ggplot[order(trtd.phyRabRelRSPwk6_ggplot$phylum),]
+trtd.phyRabRESPONSEwk6_ggplot$phylum <- factor(trtd.phyRabRESPONSEwk6_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
+trtd.phyRabRESPONSEwk6_ggplot <- trtd.phyRabRESPONSEwk6_ggplot[order(trtd.phyRabRESPONSEwk6_ggplot$phylum),]
+trtd.phyRabRESPONSEwk6_ggplot <- gather(phyRelab_RESPONSEwk6, phylum, relabund, one_of(row.names(mean_trtd.phylum_matrix)[abundant]))
+trtd.phyRabRESPONSEwk6_ggplot$phylum <- factor(trtd.phyRabRESPONSEwk6_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
+trtd.phyRabRESPONSEwk6_ggplot <- trtd.phyRabRESPONSEwk6_ggplot[order(trtd.phyRabRESPONSEwk6_ggplot$phylum),]
 
 
 #phyRelab_REMISSwk6 <- phyRelab_REMISSwk6*100
@@ -305,14 +305,14 @@ trtd.phyRabREMISSwk6_ggplot$phylum <- factor(trtd.phyRabREMISSwk6_ggplot$phylum,
 trtd.phyRabREMISSwk6_ggplot <- trtd.phyRabREMISSwk6_ggplot[order(trtd.phyRabREMISSwk6_ggplot$phylum),]
 
 
-#phyRelab_RelRSPwk22 <- phyRelab_RelRSPwk22*100
-trtd.phyRabRelRSPwk22_ggplot <- gather(phyRelab_RelRSPwk22, phylum, relabund, one_of(row.names(mean_trtd.phylum_matrix)[abundant]))
+#phyRelab_RESPONSEwk22 <- phyRelab_RESPONSEwk22*100
+trtd.phyRabRESPONSEwk22_ggplot <- gather(phyRelab_RESPONSEwk22, phylum, relabund, one_of(row.names(mean_trtd.phylum_matrix)[abundant]))
 rank <- c("Firmicutes","Bacteroidetes","Proteobacteria","Actinobacteria","Verrucomicrobia","Fusobacteria")
-trtd.phyRabRelRSPwk22_ggplot$phylum <- factor(trtd.phyRabRelRSPwk22_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
-trtd.phyRabRelRSPwk22_ggplot <- trtd.phyRabRelRSPwk22_ggplot[order(trtd.phyRabRelRSPwk22_ggplot$phylum),]
-trtd.phyRabRelRSPwk22_ggplot <- gather(phyRelab_RelRSPwk22, phylum, relabund, one_of(row.names(mean_trtd.phylum_matrix)[abundant]))
-trtd.phyRabRelRSPwk22_ggplot$phylum <- factor(trtd.phyRabRelRSPwk22_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
-trtd.phyRabRelRSPwk22_ggplot <- trtd.phyRabRelRSPwk22_ggplot[order(trtd.phyRabRelRSPwk22_ggplot$phylum),]
+trtd.phyRabRESPONSEwk22_ggplot$phylum <- factor(trtd.phyRabRESPONSEwk22_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
+trtd.phyRabRESPONSEwk22_ggplot <- trtd.phyRabRESPONSEwk22_ggplot[order(trtd.phyRabRESPONSEwk22_ggplot$phylum),]
+trtd.phyRabRESPONSEwk22_ggplot <- gather(phyRelab_RESPONSEwk22, phylum, relabund, one_of(row.names(mean_trtd.phylum_matrix)[abundant]))
+trtd.phyRabRESPONSEwk22_ggplot$phylum <- factor(trtd.phyRabRESPONSEwk22_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
+trtd.phyRabRESPONSEwk22_ggplot <- trtd.phyRabRESPONSEwk22_ggplot[order(trtd.phyRabRESPONSEwk22_ggplot$phylum),]
 
 
 #phyRelab_REMISSwk22 <- phyRelab_REMISSwk22*100
@@ -407,32 +407,32 @@ for(phylum in plac.phylum_names){
 	REMISSwk6_wilcox_plac.phylum_p[phylum] <- wilcox.test(plac.phylum_rel_abund[,phylum] ~plac.screen_data$REMISSwk6)$p.value
 }
 
-RelRSPwk6_wilcox_plac.phylum_p <- numeric() 
+RESPONSEwk6_wilcox_plac.phylum_p <- numeric() 
 for(phylum in plac.phylum_names){
-	RelRSPwk6_wilcox_plac.phylum_p[phylum] <- wilcox.test(plac.phylum_rel_abund[,phylum] ~plac.screen_data$RelRSPwk6)$p.value
+	RESPONSEwk6_wilcox_plac.phylum_p[phylum] <- wilcox.test(plac.phylum_rel_abund[,phylum] ~plac.screen_data$RESPONSEwk6)$p.value
 }
 
 REMISSwk6_wilcox_plac.phylum_adj_p <- na.omit(p.adjust(REMISSwk6_wilcox_plac.phylum_p, method="BH"))
 sig_REMISSwk6_wilcox_plac.phylum_adj_p <-REMISSwk6_wilcox_plac.phylum_adj_p  < 0.05
 
-RelRSPwk6_wilcox_plac.phylum_adj_p <- na.omit(p.adjust(RelRSPwk6_wilcox_plac.phylum_p, method="BH"))
-sig_RelRSPwk6_wilcox_plac.phylum_adj_p <-RelRSPwk6_wilcox_plac.phylum_adj_p  < 0.05
+RESPONSEwk6_wilcox_plac.phylum_adj_p <- na.omit(p.adjust(RESPONSEwk6_wilcox_plac.phylum_p, method="BH"))
+sig_RESPONSEwk6_wilcox_plac.phylum_adj_p <-RESPONSEwk6_wilcox_plac.phylum_adj_p  < 0.05
 
 REMISSwk22_wilcox_plac.phylum_p <- numeric() 
 for(phylum in plac.phylum_names){
 	REMISSwk22_wilcox_plac.phylum_p[phylum] <- wilcox.test(plac.phylum_rel_abund[,phylum] ~plac.screen_data$REMISSwk22)$p.value
 }
 
-RelRSPwk22_wilcox_plac.phylum_p <- numeric() 
+RESPONSEwk22_wilcox_plac.phylum_p <- numeric() 
 for(phylum in plac.phylum_names){
-	RelRSPwk22_wilcox_plac.phylum_p[phylum] <- wilcox.test(plac.phylum_rel_abund[,phylum] ~plac.screen_data$RelRSPwk22)$p.value
+	RESPONSEwk22_wilcox_plac.phylum_p[phylum] <- wilcox.test(plac.phylum_rel_abund[,phylum] ~plac.screen_data$RESPONSEwk22)$p.value
 }
 
 REMISSwk22_wilcox_plac.phylum_adj_p <- na.omit(p.adjust(REMISSwk22_wilcox_plac.phylum_p, method="BH"))
 sig_REMISSwk22_wilcox_plac.phylum_adj_p <-REMISSwk22_wilcox_plac.phylum_adj_p  < 0.05
 
-RelRSPwk22_wilcox_plac.phylum_adj_p <- na.omit(p.adjust(RelRSPwk22_wilcox_plac.phylum_p, method="BH"))
-sig_RelRSPwk22_wilcox_plac.phylum_adj_p <-RelRSPwk22_wilcox_plac.phylum_adj_p  < 0.05
+RESPONSEwk22_wilcox_plac.phylum_adj_p <- na.omit(p.adjust(RESPONSEwk22_wilcox_plac.phylum_p, method="BH"))
+sig_RESPONSEwk22_wilcox_plac.phylum_adj_p <-RESPONSEwk22_wilcox_plac.phylum_adj_p  < 0.05
 
 
 
@@ -445,14 +445,14 @@ cbind(data.frame(mean_abundant_plac.phylum_matrix, Phylum = row.names(mean_abund
 	geom_bar(position = "dodge", stat="identity") + ylab("Relative Abundance (%)") + xlab("Week 6 Remission") +
 	theme(legend.text = element_text(face = "italic"))
 
-#phyRelab_RelRSPwk6 <- phyRelab_RelRSPwk6*100
-plac.phyRabRelRSPwk6_ggplot <- gather(phyRelab_RelRSPwk6, phylum, relabund, one_of(row.names(mean_plac.phylum_matrix)[abundant]))
+#phyRelab_RESPONSEwk6 <- phyRelab_RESPONSEwk6*100
+plac.phyRabRESPONSEwk6_ggplot <- gather(phyRelab_RESPONSEwk6, phylum, relabund, one_of(row.names(mean_plac.phylum_matrix)[abundant]))
 rank <- c("Firmicutes","Bacteroidetes","Proteobacteria","Actinobacteria","Verrucomicrobia","Fusobacteria")
-plac.phyRabRelRSPwk6_ggplot$phylum <- factor(plac.phyRabRelRSPwk6_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
-plac.phyRabRelRSPwk6_ggplot <- plac.phyRabRelRSPwk6_ggplot[order(plac.phyRabRelRSPwk6_ggplot$phylum),]
-plac.phyRabRelRSPwk6_ggplot <- gather(phyRelab_RelRSPwk6, phylum, relabund, one_of(row.names(mean_plac.phylum_matrix)[abundant]))
-plac.phyRabRelRSPwk6_ggplot$phylum <- factor(plac.phyRabRelRSPwk6_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
-plac.phyRabRelRSPwk6_ggplot <- plac.phyRabRelRSPwk6_ggplot[order(plac.phyRabRelRSPwk6_ggplot$phylum),]
+plac.phyRabRESPONSEwk6_ggplot$phylum <- factor(plac.phyRabRESPONSEwk6_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
+plac.phyRabRESPONSEwk6_ggplot <- plac.phyRabRESPONSEwk6_ggplot[order(plac.phyRabRESPONSEwk6_ggplot$phylum),]
+plac.phyRabRESPONSEwk6_ggplot <- gather(phyRelab_RESPONSEwk6, phylum, relabund, one_of(row.names(mean_plac.phylum_matrix)[abundant]))
+plac.phyRabRESPONSEwk6_ggplot$phylum <- factor(plac.phyRabRESPONSEwk6_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
+plac.phyRabRESPONSEwk6_ggplot <- plac.phyRabRESPONSEwk6_ggplot[order(plac.phyRabRESPONSEwk6_ggplot$phylum),]
 
 
 #phyRelab_REMISSwk6 <- phyRelab_REMISSwk6*100
@@ -465,14 +465,14 @@ plac.phyRabREMISSwk6_ggplot$phylum <- factor(plac.phyRabREMISSwk6_ggplot$phylum,
 plac.phyRabREMISSwk6_ggplot <- plac.phyRabREMISSwk6_ggplot[order(plac.phyRabREMISSwk6_ggplot$phylum),]
 
 
-#phyRelab_RelRSPwk22 <- phyRelab_RelRSPwk22*100
-plac.phyRabRelRSPwk22_ggplot <- gather(phyRelab_RelRSPwk22, phylum, relabund, one_of(row.names(mean_plac.phylum_matrix)[abundant]))
+#phyRelab_RESPONSEwk22 <- phyRelab_RESPONSEwk22*100
+plac.phyRabRESPONSEwk22_ggplot <- gather(phyRelab_RESPONSEwk22, phylum, relabund, one_of(row.names(mean_plac.phylum_matrix)[abundant]))
 rank <- c("Firmicutes","Bacteroidetes","Proteobacteria","Actinobacteria","Verrucomicrobia","Fusobacteria")
-plac.phyRabRelRSPwk22_ggplot$phylum <- factor(plac.phyRabRelRSPwk22_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
-plac.phyRabRelRSPwk22_ggplot <- plac.phyRabRelRSPwk22_ggplot[order(plac.phyRabRelRSPwk22_ggplot$phylum),]
-plac.phyRabRelRSPwk22_ggplot <- gather(phyRelab_RelRSPwk22, phylum, relabund, one_of(row.names(mean_plac.phylum_matrix)[abundant]))
-plac.phyRabRelRSPwk22_ggplot$phylum <- factor(plac.phyRabRelRSPwk22_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
-plac.phyRabRelRSPwk22_ggplot <- plac.phyRabRelRSPwk22_ggplot[order(plac.phyRabRelRSPwk22_ggplot$phylum),]
+plac.phyRabRESPONSEwk22_ggplot$phylum <- factor(plac.phyRabRESPONSEwk22_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
+plac.phyRabRESPONSEwk22_ggplot <- plac.phyRabRESPONSEwk22_ggplot[order(plac.phyRabRESPONSEwk22_ggplot$phylum),]
+plac.phyRabRESPONSEwk22_ggplot <- gather(phyRelab_RESPONSEwk22, phylum, relabund, one_of(row.names(mean_plac.phylum_matrix)[abundant]))
+plac.phyRabRESPONSEwk22_ggplot$phylum <- factor(plac.phyRabRESPONSEwk22_ggplot$phylum, levels = rank, labels= rank)  #order the subset dataset by the median abundances
+plac.phyRabRESPONSEwk22_ggplot <- plac.phyRabRESPONSEwk22_ggplot[order(plac.phyRabRESPONSEwk22_ggplot$phylum),]
 
 
 #phyRelab_REMISSwk22 <- phyRelab_REMISSwk22*100

@@ -2,25 +2,25 @@ source('../code/timereaddata.R')
 
 alltime_data <- alltime_data[alltime_data$TRTGRINDMAN != "Treated_Placebo",]
 
-summary(alltime_data[, c("USUBJID", "visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RelRSPwk22")])
+summary(alltime_data[, c("USUBJID", "visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RESPONSEwk22")])
 
 #change in adiv over time?
-wk0.all.adiv <- alltime_data[alltime_data$visit=="Screening", c("USUBJID", "visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RelRSPwk22")]
+wk0.all.adiv <- alltime_data[alltime_data$visit=="Screening", c("USUBJID", "visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RESPONSEwk22")]
 wk0.adiv <- wk0.all.adiv
 colnames(wk0.all.adiv)[3] <- "Week0adiv"
 wk0.all.adiv <- subset(wk0.all.adiv, select=-c(visit))
 
-wk4.all.adiv <- alltime_data[alltime_data$visit=="Week 4", c("USUBJID","visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RelRSPwk22")]
+wk4.all.adiv <- alltime_data[alltime_data$visit=="Week 4", c("USUBJID","visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RESPONSEwk22")]
 wk4.adiv <- wk4.all.adiv
 colnames(wk4.all.adiv)[3] <- "Week4adiv"
 wk4.all.adiv <- subset(wk4.all.adiv, select=-c(visit))
 
-wk6.all.adiv <- alltime_data[alltime_data$visit=="Week 6", c("USUBJID","visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RelRSPwk22")]
+wk6.all.adiv <- alltime_data[alltime_data$visit=="Week 6", c("USUBJID","visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RESPONSEwk22")]
 wk6.adiv <- wk6.all.adiv
 colnames(wk6.all.adiv)[3] <- "Week6adiv"
 wk6.all.adiv <- subset(wk6.all.adiv, select=-c(visit))
 
-wk22.all.adiv <- alltime_data[alltime_data$visit=="Week 22", c("USUBJID","visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RelRSPwk22")]
+wk22.all.adiv <- alltime_data[alltime_data$visit=="Week 22", c("USUBJID","visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RESPONSEwk22")]
 wk22.adiv <- wk22.all.adiv
 colnames(wk22.all.adiv)[3] <- "Week22adiv"
 wk22.all.adiv <- subset(wk22.all.adiv, select=-c(visit))
@@ -30,18 +30,18 @@ adiv.wk046 <- merge(adiv.wk04, wk6.all.adiv)
 adiv.alltp <- merge(adiv.wk046, wk22.all.adiv)
 
 treatedresp <- wk0.all.adiv[wk0.all.adiv$TRTGRINDMAN=="Treated_Treated",]
-treatedrespY <- treatedresp[treatedresp$RelRSPwk22=="Yes",]
-treatedrespN <- treatedresp[treatedresp$RelRSPwk22=="No",]
+treatedrespY <- treatedresp[treatedresp$RESPONSEwk22=="Yes",]
+treatedrespN <- treatedresp[treatedresp$RESPONSEwk22=="No",]
 alltp.treatedrespY <- adiv.alltp[adiv.alltp$USUBJID %in% treatedrespY$USUBJID,]
 n.alltp.treatedrespY <- nrow(alltp.treatedrespY)
 rownames(alltp.treatedrespY) <- alltp.treatedrespY$USUBJID
-alltp.treatedrespY <- as.matrix(subset(alltp.treatedrespY,select = -c(USUBJID, INDTRTGR, RelRSPwk22, TRTGRINDMAN)))
+alltp.treatedrespY <- as.matrix(subset(alltp.treatedrespY,select = -c(USUBJID, INDTRTGR, RESPONSEwk22, TRTGRINDMAN)))
 mean.adiv.byvis <- apply(alltp.treatedrespY, 2, mean)
 
 alltp.treatedrespN <- adiv.alltp[adiv.alltp$USUBJID %in% treatedrespN$USUBJID,]
 n.alltp.treatedrespN <- nrow(alltp.treatedrespN)
 rownames(alltp.treatedrespN) <- alltp.treatedrespN$USUBJID
-alltp.treatedrespN <- as.matrix(subset(alltp.treatedrespN,select = -c(USUBJID, INDTRTGR, RelRSPwk22, TRTGRINDMAN)))
+alltp.treatedrespN <- as.matrix(subset(alltp.treatedrespN,select = -c(USUBJID, INDTRTGR, RESPONSEwk22, TRTGRINDMAN)))
 mean.adiv.byvis <- apply(alltp.treatedrespN, 2, mean)
 
 ggplot.wk04.adiv<-rbind(wk0.adiv, wk4.adiv)
@@ -49,12 +49,12 @@ ggplot.wk046.adiv<-rbind(ggplot.wk04.adiv, wk6.adiv)
 ggplot.alltp.adiv<-rbind(ggplot.wk046.adiv, wk22.adiv)
 treatedresp <- ggplot.alltp.adiv[ggplot.alltp.adiv$INDTRTGR=="Treated",]
 treatedresp <- treatedresp[treatedresp$visit=="Screening",]
-treatedrespY <- treatedresp[treatedresp$RelRSPwk22=="Yes",]
+treatedrespY <- treatedresp[treatedresp$RESPONSEwk22=="Yes",]
 ggplot.alltp.treatedrespY <- ggplot.alltp.adiv[ggplot.alltp.adiv$USUBJID %in% treatedrespY$USUBJID,]
 ggplot.alltp.treatedrespY <- ggplot.alltp.treatedrespY[, -c(4:6)]
 
 
-treatedrespN <- treatedresp[treatedresp$RelRSPwk22=="No",]
+treatedrespN <- treatedresp[treatedresp$RESPONSEwk22=="No",]
 ggplot.alltp.treatedrespN <- ggplot.alltp.adiv[ggplot.alltp.adiv$USUBJID %in% treatedrespN$USUBJID,]
 ggplot.alltp.treatedrespN <- ggplot.alltp.treatedrespN[, -c(4:6)]
 
@@ -79,8 +79,8 @@ pairwise.wilcox.test(ggplot.alltp.treatedrespN$invsimpson, ggplot.alltp.treatedr
 #mean.adiv.byvis <- apply(adiv.alltp[,-c(1:2)], 2, mean)
 placeboresp <- wk0.all.adiv[wk0.all.adiv$INDTRTGR=="Placebo",]
 #placeborespY <- placeborespY[placeborespY$visit=="Screening",]
-placeborespY <- placeboresp[placeboresp$RelRSPwk22=="Yes",]
-placeborespN <- placeboresp[placeboresp$RelRSPwk22=="No",]
+placeborespY <- placeboresp[placeboresp$RESPONSEwk22=="Yes",]
+placeborespN <- placeboresp[placeboresp$RESPONSEwk22=="No",]
 alltp.placeborespY <- adiv.alltp[adiv.alltp$USUBJID %in% placeborespY$USUBJID,]
 #alltp.placeborespY <- alltp.placeborespY[, -c(4:5)]
 rownames(alltp.placeborespY) <- alltp.placeborespY$USUBJID
@@ -98,12 +98,12 @@ ggplot.wk046.adiv<-rbind(ggplot.wk04.adiv, wk6.adiv)
 ggplot.alltp.adiv<-rbind(ggplot.wk046.adiv, wk22.adiv)
 placeboresp <- ggplot.alltp.adiv[ggplot.alltp.adiv$INDTRTGR=="Placebo",]
 placeboresp <- placeboresp[placeboresp$visit=="Screening",]
-placeborespY <- placeboresp[placeboresp$RelRSPwk22=="Yes",]
+placeborespY <- placeboresp[placeboresp$RESPONSEwk22=="Yes",]
 ggplot.alltp.placeborespY <- ggplot.alltp.adiv[ggplot.alltp.adiv$USUBJID %in% placeborespY$USUBJID,]
 ggplot.alltp.placeborespY <- ggplot.alltp.placeborespY[, -c(4:5)]
 
 
-placeborespN <- placeboresp[placeboresp$RelRSPwk22=="No",]
+placeborespN <- placeboresp[placeboresp$RESPONSEwk22=="No",]
 ggplot.alltp.placeborespN <- ggplot.alltp.adiv[ggplot.alltp.adiv$USUBJID %in% placeborespN$USUBJID,]
 ggplot.alltp.placeborespN <- ggplot.alltp.placeborespN[, -c(4:5)]
 
@@ -119,25 +119,25 @@ friedmc
 
 
 levels(ggplot.alltp.adiv$visit) <- c("0", "4", "6", "22")
-levels(ggplot.alltp.adiv$RelRSPwk22) <- c("Nonresponder", "Responder")
+levels(ggplot.alltp.adiv$RESPONSEwk22) <- c("Nonresponder", "Responder")
 ggplot(ggplot.alltp.treatedrespY, aes(visit, invsimpson))+
 	geom_boxplot() + theme(legend.position="none")
 
 ann_text <- data.frame(visit = 4, invsimpson = 31,
-											 INDTRTGR = "Treated", RelRSPwk22 = "Responder")
+											 INDTRTGR = "Treated", RESPONSEwk22 = "Responder")
 PNn_text <- data.frame(visit = 2.5, invsimpson = 35,
-											 INDTRTGR = "Placebo", RelRSPwk22 = "Nonresponder")
+											 INDTRTGR = "Placebo", RESPONSEwk22 = "Nonresponder")
 PRn_text <- data.frame(visit = 2.5, invsimpson = 35,
-											 INDTRTGR = "Placebo", RelRSPwk22 = "Responder")
+											 INDTRTGR = "Placebo", RESPONSEwk22 = "Responder")
 TNn_text <- data.frame(visit = 2.5, invsimpson = 35,
-											 INDTRTGR = "Treated", RelRSPwk22 = "Nonresponder")
+											 INDTRTGR = "Treated", RESPONSEwk22 = "Nonresponder")
 TRn_text <- data.frame(visit = 2.5, invsimpson = 35,
-											 INDTRTGR = "Treated", RelRSPwk22 = "Responder")
+											 INDTRTGR = "Treated", RESPONSEwk22 = "Responder")
 
-alltp.adivXvisXindtrtXrelRSPwk22.plot <- ggplot(ggplot.alltp.adiv, aes(x=visit, y=invsimpson, fill=INDTRTGR)) +
+alltp.adivXvisXindtrtXRESPONSEwk22.plot <- ggplot(ggplot.alltp.adiv, aes(x=visit, y=invsimpson, fill=INDTRTGR)) +
 	geom_boxplot(position=position_dodge(width = 1), alpha = .4, outlier.shape = NA) + guides(fill=FALSE) +
 	ylab("Inverse Simpson index") + xlab("Week") + theme(legend.position="none") + 
-	facet_grid(.~INDTRTGR + RelRSPwk22, labeller = label_bquote((x) + nrow(x))) +
+	facet_grid(.~INDTRTGR + RESPONSEwk22, labeller = label_bquote((x) + nrow(x))) +
 	theme(plot.title = element_text(hjust = 0.5)) + geom_text(data = ann_text, label = "*", size=12) + 
 	geom_text(data = PNn_text, label = paste("( n =", nrow(alltp.placplac.RESPno)/4, ")"), size=6)+ 
 	geom_text(data = PRn_text, label = paste("( n =", nrow(alltp.placplac.RESPyes)/4, ")"), size=6)+ 
@@ -145,11 +145,11 @@ alltp.adivXvisXindtrtXrelRSPwk22.plot <- ggplot(ggplot.alltp.adiv, aes(x=visit, 
 	geom_text(data = TRn_text, label = paste("( n =", nrow(alltp.ust.RESPyes)/4, ")"), size=6)+
 	stat_boxplot_custom(qs = c(0, 0.25, 0.5, 0.75, 1))
 
-tiff("figures/Figure4_alltp.adivXvisitXindtrtXrelRSPwk22.tiff", height = 6, width = 10, units = "in", res = 300)
-alltp.adivXvisXindtrtXrelRSPwk22.plot
+tiff("figures/Figure4_alltp.adivXvisitXindtrtXRESPONSEwk22.tiff", height = 6, width = 10, units = "in", res = 300)
+alltp.adivXvisXindtrtXRESPONSEwk22.plot
 dev.off()
 
-pdf("figures/Figure4_alltp.adivXvisitXindtrtXrelRSPwk22.pdf", height = 6, width = 10)
-alltp.adivXvisXindtrtXrelRSPwk22.plot
+pdf("figures/Figure4_alltp.adivXvisitXindtrtXRESPONSEwk22.pdf", height = 6, width = 10)
+alltp.adivXvisXindtrtXRESPONSEwk22.plot
 dev.off()
 

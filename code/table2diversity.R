@@ -1,9 +1,9 @@
 #**Table 2: Diversity differenced bases on Response/Remission in treated subjects.**
 	
-colnames(all.RelRSPwk6) <- c('Status Week', 'Treated', "Placebo", 'Species Diversity (p-value)', 'Community Structure (p-value)')
-table2<-rbind(all.RelRSPwk6, all.REMISSwk6)
+colnames(all.RESPONSEwk6) <- c('Status Week', 'Treated', "Placebo", 'Species Diversity (p-value)', 'Community Structure (p-value)')
+table2<-rbind(all.RESPONSEwk6, all.REMISSwk6)
 
-divers<-c("all.RelRSPwk22", "all.REMISSwk22")
+divers<-c("all.RESPONSEwk22", "all.REMISSwk22")
 
 for (i in divers){
 	table2<-rbind(table2, get(i))
