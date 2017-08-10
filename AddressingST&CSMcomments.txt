@@ -26,14 +26,22 @@ Not sure of the issue as this is 3 sigfigs (and/or 3 decimal places) and consist
 
 line21: replaced induction with treatment
 Line 25: replaced induciton with treatment
+line 29: added "and monitoring"
 Line 32-33: reworded the text as described by strikethrough
+
+Line 45: replaced strongly suggest with demonstrate
+
+line 48-50 made suggested changes
+
+line 52: changed "it is likely" to "we hypothesize"
+
+line 92: made suggested change
 
 Line 94: section in methods
 Not everyone will read the methods so a brief description of the original study and response definitions is warranted for context in later results.
 
 Line 98: redefining study definitions
-waiting for email response
-" we decided to make the change as individuals who started with CDAI scores in the moderate range (between 220-249) who went into remission (CDAI<150) were considered remitters, but not responders using the original definitions. This is due to using a decrease in 100 points as the response criteria, whereas the subjects I mentioned would have a CDAI below 150 but a change in CDAI ranging from 70-99. I am still ruminating over how best to address this in the text."
+reverted to RESPONSE instead of RelRSP per email with Shannon. Change should not impact overall conclusions but will verify and make apropriate changes where needed for altered pROC results that I have noted since the change
 
 Could include original response results, but since they arent as good as remission or relative response they could also be omitted. May depend on the strength of our justification.
 
