@@ -40,13 +40,16 @@ line 92: made suggested change
 Line 94: section in methods
 Not everyone will read the methods so a brief description of the original study and response definitions is warranted for context in later results.
 
+Line 96: changed "our" to "the current"
+
 Line 98: redefining study definitions
 reverted to RESPONSE instead of RelRSP per email with Shannon. Change should not impact overall conclusions but will verify and make apropriate changes where needed for altered pROC results that I have noted since the change
 
-Could include original response results, but since they arent as good as remission or relative response they could also be omitted. May depend on the strength of our justification.
 
 Line 109-110: wk 22 results
-The week 22 results were not as promising as week 6. Adding week 22 weakens/obfuscates the story.
+The week 22 results were not as promising as week 6 when subjects who changed treatments at week 8 were omitted. Adding week 22 weakens/obfuscates the story.
+
+line210-217: made suggested changes
 
 Line 212: "Do the predictive #s you got using clinical data alone match up with previous literature (i.e. previous attempts at predicting response to therapy in Crohn's using fecal calprotectin, CRP etc)? Would be worth mentioning."
 
@@ -56,3 +59,24 @@ Line 216: "I'm a stickler. I'm not a big fan of this word despite it being used 
 
 Agree. removed.
 
+Line 231: removed pathogeneis
+
+Line 237: Added breif line specualting on probiotic therapy with faecali following description of hte OTU
+
+Line240: True shifted focus to threshold.
+
+Line241-245: removed description of definitions since we shifted back to original defs.
+
+Line245: clarified and emphasized research into biomarkers
+
+Line 262: good point on chicken/egg -> removed discussion on steroids and increasing diveristy
+
+Line 265: this is my hypothesis and I will state it as such so that it makes more sense
+
+Line 276: added to concluding paragraph
+
+LIne 288: made suggest changes
+
+line 292-93: removed text as recommended 
+
+Line 298: Changed to original study definition per shannon's email

@@ -1606,97 +1606,97 @@ source('../code/readdataAUCRF.R')
 print("RESPONSEwk6 by AUC-RF \\nRelative response defined as a decrease in CDAI from Screening greater than 29.5%.")
 set.seed(32016)
 levels(nao.screen.trtd$RESPONSEwk6) <- c(0,1)
-mdotu_relrespWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd))])]
-#summary(mdotu_relrespWK6[,c("RESPONSEwk6")])
-mdotu_relrespWK6<-na.omit(mdotu_relrespWK6)
-#summary(mdotu_relrespWK6[,c("RESPONSEwk6")])
-otu_relrespWK6 <- mdotu_relrespWK6[, c('RESPONSEwk6', colnames(mdotu_relrespWK6)[grep('Otu[0123456789]', colnames(mdotu_relrespWK6))])]
-#summary(otu_relrespWK6[,c("RESPONSEwk6")])
-#summary(otu_relrespWK6[,c("RESPONSEwk6")])
-otu_relrespWK6<-na.omit(otu_relrespWK6)
-#summary(otu_relrespWK6[,c("RESPONSEwk6")])
+mdotu_respWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd))])]
+#summary(mdotu_respWK6[,c("RESPONSEwk6")])
+mdotu_respWK6<-na.omit(mdotu_respWK6)
+#summary(mdotu_respWK6[,c("RESPONSEwk6")])
+otu_respWK6 <- mdotu_respWK6[, c('RESPONSEwk6', colnames(mdotu_respWK6)[grep('Otu[0123456789]', colnames(mdotu_respWK6))])]
+#summary(otu_respWK6[,c("RESPONSEwk6")])
+#summary(otu_respWK6[,c("RESPONSEwk6")])
+otu_respWK6<-na.omit(otu_respWK6)
+#summary(otu_respWK6[,c("RESPONSEwk6")])
 set.seed(32016)
-otu_relrespWK6_rf <- AUCRF(RESPONSEwk6~., data=otu_relrespWK6, ranking='MDA', ntree=500, pdel=0.2)
-##otu_relrespWK6_rf # prints list of optimal OTUs
-otu_relrespWK6_probs <- predict(otu_relrespWK6_rf$RFopt, type='prob')[,2]
-otu_relrespWK6_roc <- roc(otu_relrespWK6$RESPONSEwk6~otu_relrespWK6_probs)
+otu_respWK6_rf <- AUCRF(RESPONSEwk6~., data=otu_respWK6, ranking='MDA', ntree=500, pdel=0.2)
+##otu_respWK6_rf # prints list of optimal OTUs
+otu_respWK6_probs <- predict(otu_respWK6_rf$RFopt, type='prob')[,2]
+otu_respWK6_roc <- roc(otu_respWK6$RESPONSEwk6~otu_respWK6_probs)
 
 
-md_relrespWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening")]
-#summary(md_relrespWK6[,c("RESPONSEwk6")])
-md_relrespWK6<-na.omit(md_relrespWK6)
-#summary(md_relrespWK6[,c("RESPONSEwk6")])
+md_respWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening")]
+#summary(md_respWK6[,c("RESPONSEwk6")])
+md_respWK6<-na.omit(md_respWK6)
+#summary(md_respWK6[,c("RESPONSEwk6")])
 set.seed(32016)
-md_relrespWK6_rf <- AUCRF(RESPONSEwk6~., data=md_relrespWK6, ranking='MDA', ntree=500, pdel=0.3)
-##md_relrespWK6_rf # prints list of optimal features
-md_relrespWK6_probs <- predict(md_relrespWK6_rf$RFopt, type='prob')[,2]
-md_relrespWK6_roc <- roc(md_relrespWK6$RESPONSEwk6~md_relrespWK6_probs)
+md_respWK6_rf <- AUCRF(RESPONSEwk6~., data=md_respWK6, ranking='MDA', ntree=500, pdel=0.3)
+##md_respWK6_rf # prints list of optimal features
+md_respWK6_probs <- predict(md_respWK6_rf$RFopt, type='prob')[,2]
+md_respWK6_roc <- roc(md_respWK6$RESPONSEwk6~md_respWK6_probs)
 
 
-mdotu_relrespWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd))])]
-#summary(mdotu_relrespWK6[,c("RESPONSEwk6")])
-mdotu_relrespWK6<-na.omit(mdotu_relrespWK6)
-#summary(mdotu_relrespWK6[,c("RESPONSEwk6")])
+mdotu_respWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd))])]
+#summary(mdotu_respWK6[,c("RESPONSEwk6")])
+mdotu_respWK6<-na.omit(mdotu_respWK6)
+#summary(mdotu_respWK6[,c("RESPONSEwk6")])
 set.seed(32016)
-mdotu_relrespWK6_rf <- AUCRF(RESPONSEwk6~., data=mdotu_relrespWK6, ranking='MDA', ntree=500, pdel=0.2)
-#mdotu_relrespWK6_rf # prints list of optimal features
-mdotu_relrespWK6_probs <- predict(mdotu_relrespWK6_rf$RFopt, type='prob')[,2]
-mdotu_relrespWK6_roc <- roc(mdotu_relrespWK6$RESPONSEwk6~mdotu_relrespWK6_probs)
-mdotu_relrespWK6_rf
-otu_relrespWK6_rf
-md_relrespWK6_rf
+mdotu_respWK6_rf <- AUCRF(RESPONSEwk6~., data=mdotu_respWK6, ranking='MDA', ntree=500, pdel=0.2)
+#mdotu_respWK6_rf # prints list of optimal features
+mdotu_respWK6_probs <- predict(mdotu_respWK6_rf$RFopt, type='prob')[,2]
+mdotu_respWK6_roc <- roc(mdotu_respWK6$RESPONSEwk6~mdotu_respWK6_probs)
+mdotu_respWK6_rf
+otu_respWK6_rf
+md_respWK6_rf
 
-mdotuvmdWK6relresprocsP <- roc.test(mdotu_relrespWK6_roc, md_relrespWK6_roc)
-otuvmdWK6relresprocsP <- roc.test(otu_relrespWK6_roc, md_relrespWK6_roc)
-mdotuvmdWK6relresprocsPval <- signif(mdotuvmdWK6relresprocsP$p.value, digits=2)
-otuvmdWK6relresprocsPval <- signif(otuvmdWK6relresprocsP$p.value, digits=2)
+mdotuvmdWK6resprocsP <- roc.test(mdotu_respWK6_roc, md_respWK6_roc)
+otuvmdWK6resprocsP <- roc.test(otu_respWK6_roc, md_respWK6_roc)
+mdotuvmdWK6resprocsPval <- signif(mdotuvmdWK6resprocsP$p.value, digits=2)
+otuvmdWK6resprocsPval <- signif(otuvmdWK6resprocsP$p.value, digits=2)
 ```
 
 ```{r RESPONSEwk6AUCRFinline, include=F, fig.height=5, fig.width=10}
-cutoff <- coords(roc=md_relrespWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
+cutoff <- coords(roc=md_respWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
 
 ### Plot ROC curves
 layout(matrix(c(1,2), nrow=1))
 par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
 plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
-plot(otu_relrespWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
-plot(md_relrespWK6_roc, add=T, lwd=2, col='grey5', lty=1)
-plot(mdotu_relrespWK6_roc, add=T, lwd=2, col='red', lty=1)
+plot(otu_respWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
+plot(md_respWK6_roc, add=T, lwd=2, col='grey5', lty=1)
+plot(mdotu_respWK6_roc, add=T, lwd=2, col='red', lty=1)
 title("Predicting Week 6 Response")
-legend('bottomright', c(sprintf('Week 0 OTUs : AUC=%.3f',otu_relrespWK6_roc$auc), sprintf('Week 0 Clinical Data: AUC=%.3f',md_relrespWK6_roc$auc), sprintf('Combined: AUC=%.3f',mdotu_relrespWK6_roc$auc)), lwd=2, col=c('royalblue', 'grey5', 'red'), bty='n', lty=1)
+legend('bottomright', c(sprintf('Week 0 OTUs : AUC=%.3f',otu_respWK6_roc$auc), sprintf('Week 0 Clinical Data: AUC=%.3f',md_respWK6_roc$auc), sprintf('Combined: AUC=%.3f',mdotu_respWK6_roc$auc)), lwd=2, col=c('royalblue', 'grey5', 'red'), bty='n', lty=1)
 
-cutoff <- coords(roc=mdotu_relrespWK6_roc, x='best', best.method='y', ret=c('threshold'))
-mdotu_relrespWK6_spec <- coords(mdotu_relrespWK6_roc, x=cutoff, input='thr', ret='spec')
-mdotu_relrespWK6_sens <- coords(mdotu_relrespWK6_roc, x=mdotu_relrespWK6_spec, input='spec', ret='sens')
-mdotu_relrespWK6_thr <- coords(mdotu_relrespWK6_roc, x=mdotu_relrespWK6_spec, input='spec', ret='thr')
+cutoff <- coords(roc=mdotu_respWK6_roc, x='best', best.method='y', ret=c('threshold'))
+mdotu_respWK6_spec <- coords(mdotu_respWK6_roc, x=cutoff, input='thr', ret='spec')
+mdotu_respWK6_sens <- coords(mdotu_respWK6_roc, x=mdotu_respWK6_spec, input='spec', ret='sens')
+mdotu_respWK6_thr <- coords(mdotu_respWK6_roc, x=mdotu_respWK6_spec, input='spec', ret='thr')
 
-points(coords(mdotu_relrespWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(mdotu_relrespWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='red', cex=1.5, pch=10)
+points(coords(mdotu_respWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(mdotu_respWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='red', cex=1.5, pch=10)
 
-cutoff <- coords(roc=otu_relrespWK6_roc, x='best', best.method='y', ret=c('threshold'))
-otu_relrespWK6_spec <- coords(otu_relrespWK6_roc, x=cutoff, input='thr', ret='spec')
-otu_relrespWK6_sens <- coords(otu_relrespWK6_roc, x=otu_relrespWK6_spec, input='spec', ret='sens')
-otu_relrespWK6_thr <- coords(otu_relrespWK6_roc, x=otu_relrespWK6_spec, input='spec', ret='thr')
-points(coords(otu_relrespWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(otu_relrespWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='royalblue', cex=1.5, pch=10)
+cutoff <- coords(roc=otu_respWK6_roc, x='best', best.method='y', ret=c('threshold'))
+otu_respWK6_spec <- coords(otu_respWK6_roc, x=cutoff, input='thr', ret='spec')
+otu_respWK6_sens <- coords(otu_respWK6_roc, x=otu_respWK6_spec, input='spec', ret='sens')
+otu_respWK6_thr <- coords(otu_respWK6_roc, x=otu_respWK6_spec, input='spec', ret='thr')
+points(coords(otu_respWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(otu_respWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='royalblue', cex=1.5, pch=10)
 
-cutoff <- coords(roc=md_relrespWK6_roc, x='best', best.method='y', ret=c('threshold'))
-md_relrespWK6_spec <- coords(md_relrespWK6_roc, x=cutoff, input='thr', ret='spec')
-md_relrespWK6_sens <- coords(md_relrespWK6_roc, x=md_relrespWK6_spec, input='spec', ret='sens')
-md_relrespWK6_thr <- coords(md_relrespWK6_roc, x=md_relrespWK6_spec, input='spec', ret='thr')
+cutoff <- coords(roc=md_respWK6_roc, x='best', best.method='y', ret=c('threshold'))
+md_respWK6_spec <- coords(md_respWK6_roc, x=cutoff, input='thr', ret='spec')
+md_respWK6_sens <- coords(md_respWK6_roc, x=md_respWK6_spec, input='spec', ret='sens')
+md_respWK6_thr <- coords(md_respWK6_roc, x=md_respWK6_spec, input='spec', ret='thr')
 
-points(coords(md_relrespWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(md_relrespWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='black', cex=1.5, pch=10)
+points(coords(md_respWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(md_respWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='black', cex=1.5, pch=10)
 
 plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='Response Week 6', xaxt='n', cex.axis=1.2)
 title('Response Status Compared to Combined Model')
-stripchart(at=1, mdotu_relrespWK6_probs[mdotu_relrespWK6$'RESPONSEwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
-stripchart(at=2, mdotu_relrespWK6_probs[mdotu_relrespWK6$'RESPONSEwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
+stripchart(at=1, mdotu_respWK6_probs[mdotu_respWK6$'RESPONSEwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
+stripchart(at=2, mdotu_respWK6_probs[mdotu_respWK6$'RESPONSEwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
 mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
 axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
-cutoff <- coords(roc=mdotu_relrespWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
+cutoff <- coords(roc=mdotu_respWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
 abline(h=cutoff, lty=2)
 legend("top", lty=2, sprintf('Model Threshold'))
 
-#mdotu_relrespWK6_rf # prints list of optimal features
-otu_relrespWK6_rf 
+#mdotu_respWK6_rf # prints list of optimal features
+otu_respWK6_rf 
 ```
 
 ```{r REMISSwk6-AUC-RF, include=F, fig.height=5, fig.width=10}
@@ -1742,11 +1742,11 @@ mdotu_remWK6_roc <- roc(mdotu_remWK6$REMISSwk6~mdotu_remWK6_probs)
 
 
 
-otu_relrespWK6xremWK6rocsP <- roc.test(otu_relrespWK6_roc, otu_remWK6_roc)
-otu_relrespWK6xremWK6rocsPval <- signif(otu_relrespWK6xremWK6rocsP$p.value, digits=2)
+otu_respWK6xremWK6rocsP <- roc.test(otu_respWK6_roc, otu_remWK6_roc)
+otu_respWK6xremWK6rocsPval <- signif(otu_respWK6xremWK6rocsP$p.value, digits=2)
 
-mdotu_relrespWK6xremWK6rocsP <- roc.test(mdotu_relrespWK6_roc, mdotu_remWK6_roc)
-mdotu_relrespWK6xremWK6rocsPval <- signif(mdotu_relrespWK6xremWK6rocsP$p.value, digits=2)
+mdotu_respWK6xremWK6rocsP <- roc.test(mdotu_respWK6_roc, mdotu_remWK6_roc)
+mdotu_respWK6xremWK6rocsPval <- signif(mdotu_respWK6xremWK6rocsP$p.value, digits=2)
 
 mdotuvmdWK6remrocsP <- roc.test(mdotu_remWK6_roc, md_remWK6_roc)
 otuvmdWK6remrocsP <- roc.test(otu_remWK6_roc, md_remWK6_roc)
@@ -1819,42 +1819,42 @@ print("RESPONSEwk6 by AUC-RF \\nRelative response defined as a decrease in CDAI 
 set.seed(32016)
 levels(trtd.wk6_data$RESPONSEwk6) <- c(0,1)
 
-mdotu_relrespWK6xWK6 <- trtd.wk6_data[trtd.wk6_data$visit=='Week 6', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Week.6", "CDPAINM_Week.6", "CDWELBEM_Week.6", "CDARTRTM_Week.6", "CDARALGM_Week.6", "CDIRITM_Week.6", "CDUVEITM_Week.6", "CDERYTHM_Week.6", "CDPYODEM_Week.6", "CDSTOMAM_Week.6", "CDFISURM_Week.6", "CDFISTUM_Week.6", "CDABSCEM_Week.6", "CDOTFISM_Week.6", "CDFEVERM_Week.6", "CDDRGM_Week.6", "CDAMASSM_Week.6", "CDHCTM_Week.6", "CDWEIGHM_Week.6", "invsimpson", colnames(trtd.wk6_data)[grep('Otu[0123456789]', colnames(trtd.wk6_data))])]
-#summary(mdotu_relrespWK6xWK6[,c("RESPONSEwk6")])
-mdotu_relrespWK6xWK6<-na.omit(mdotu_relrespWK6xWK6)
-#summary(mdotu_relrespWK6xWK6[,c("RESPONSEwk6")])
-otu_relrespWK6xWK6 <- mdotu_relrespWK6xWK6[, c('RESPONSEwk6', colnames(mdotu_relrespWK6xWK6)[grep('Otu[0123456789]', colnames(mdotu_relrespWK6xWK6))])]
-#summary(otu_relrespWK6xWK6[,c("RESPONSEwk6")])
-#summary(otu_relrespWK6xWK6[,c("RESPONSEwk6")])
-otu_relrespWK6xWK6<-na.omit(otu_relrespWK6xWK6)
-summary(otu_relrespWK6xWK6[,c("RESPONSEwk6")])
+mdotu_respWK6xWK6 <- trtd.wk6_data[trtd.wk6_data$visit=='Week 6', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Week.6", "CDPAINM_Week.6", "CDWELBEM_Week.6", "CDARTRTM_Week.6", "CDARALGM_Week.6", "CDIRITM_Week.6", "CDUVEITM_Week.6", "CDERYTHM_Week.6", "CDPYODEM_Week.6", "CDSTOMAM_Week.6", "CDFISURM_Week.6", "CDFISTUM_Week.6", "CDABSCEM_Week.6", "CDOTFISM_Week.6", "CDFEVERM_Week.6", "CDDRGM_Week.6", "CDAMASSM_Week.6", "CDHCTM_Week.6", "CDWEIGHM_Week.6", "invsimpson", colnames(trtd.wk6_data)[grep('Otu[0123456789]', colnames(trtd.wk6_data))])]
+#summary(mdotu_respWK6xWK6[,c("RESPONSEwk6")])
+mdotu_respWK6xWK6<-na.omit(mdotu_respWK6xWK6)
+#summary(mdotu_respWK6xWK6[,c("RESPONSEwk6")])
+otu_respWK6xWK6 <- mdotu_respWK6xWK6[, c('RESPONSEwk6', colnames(mdotu_respWK6xWK6)[grep('Otu[0123456789]', colnames(mdotu_respWK6xWK6))])]
+#summary(otu_respWK6xWK6[,c("RESPONSEwk6")])
+#summary(otu_respWK6xWK6[,c("RESPONSEwk6")])
+otu_respWK6xWK6<-na.omit(otu_respWK6xWK6)
+summary(otu_respWK6xWK6[,c("RESPONSEwk6")])
 set.seed(32016)
-otu_relrespWK6xWK6_rf <- AUCRF(RESPONSEwk6~., data=otu_relrespWK6xWK6, ranking='MDA', ntree=500, pdel=0.2)
-##otu_relrespWK6xWK6_rf # prints list of optimal OTUs
-otu_relrespWK6xWK6_probs <- predict(otu_relrespWK6xWK6_rf$RFopt, type='prob')[,2]
-otu_relrespWK6xWK6_roc <- roc(otu_relrespWK6xWK6$RESPONSEwk6~otu_relrespWK6xWK6_probs)
+otu_respWK6xWK6_rf <- AUCRF(RESPONSEwk6~., data=otu_respWK6xWK6, ranking='MDA', ntree=500, pdel=0.2)
+##otu_respWK6xWK6_rf # prints list of optimal OTUs
+otu_respWK6xWK6_probs <- predict(otu_respWK6xWK6_rf$RFopt, type='prob')[,2]
+otu_respWK6xWK6_roc <- roc(otu_respWK6xWK6$RESPONSEwk6~otu_respWK6xWK6_probs)
 
 
-md_relrespWK6xWK6 <- trtd.wk6_data[trtd.wk6_data$visit=='Week 6', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Week.6", "CDPAINM_Week.6", "CDWELBEM_Week.6", "CDARTRTM_Week.6", "CDARALGM_Week.6", "CDIRITM_Week.6", "CDUVEITM_Week.6", "CDERYTHM_Week.6", "CDPYODEM_Week.6", "CDSTOMAM_Week.6", "CDFISURM_Week.6", "CDFISTUM_Week.6", "CDABSCEM_Week.6", "CDOTFISM_Week.6", "CDFEVERM_Week.6", "CDDRGM_Week.6", "CDAMASSM_Week.6", "CDHCTM_Week.6", "CDWEIGHM_Week.6")]
-#summary(md_relrespWK6xWK6[,c("RESPONSEwk6")])
-md_relrespWK6xWK6<-na.omit(md_relrespWK6xWK6)
-#summary(md_relrespWK6xWK6[,c("RESPONSEwk6")])
+md_respWK6xWK6 <- trtd.wk6_data[trtd.wk6_data$visit=='Week 6', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Week.6", "CDPAINM_Week.6", "CDWELBEM_Week.6", "CDARTRTM_Week.6", "CDARALGM_Week.6", "CDIRITM_Week.6", "CDUVEITM_Week.6", "CDERYTHM_Week.6", "CDPYODEM_Week.6", "CDSTOMAM_Week.6", "CDFISURM_Week.6", "CDFISTUM_Week.6", "CDABSCEM_Week.6", "CDOTFISM_Week.6", "CDFEVERM_Week.6", "CDDRGM_Week.6", "CDAMASSM_Week.6", "CDHCTM_Week.6", "CDWEIGHM_Week.6")]
+#summary(md_respWK6xWK6[,c("RESPONSEwk6")])
+md_respWK6xWK6<-na.omit(md_respWK6xWK6)
+#summary(md_respWK6xWK6[,c("RESPONSEwk6")])
 set.seed(32016)
-md_relrespWK6xWK6_rf <- AUCRF(RESPONSEwk6~., data=md_relrespWK6xWK6, ranking='MDA', ntree=500, pdel=0.3)
-##md_relrespWK6xWK6_rf # prints list of optimal features
-md_relrespWK6xWK6_probs <- predict(md_relrespWK6xWK6_rf$RFopt, type='prob')[,2]
-md_relrespWK6xWK6_roc <- roc(md_relrespWK6xWK6$RESPONSEwk6~md_relrespWK6xWK6_probs)
+md_respWK6xWK6_rf <- AUCRF(RESPONSEwk6~., data=md_respWK6xWK6, ranking='MDA', ntree=500, pdel=0.3)
+##md_respWK6xWK6_rf # prints list of optimal features
+md_respWK6xWK6_probs <- predict(md_respWK6xWK6_rf$RFopt, type='prob')[,2]
+md_respWK6xWK6_roc <- roc(md_respWK6xWK6$RESPONSEwk6~md_respWK6xWK6_probs)
 
 
-mdotu_relrespWK6xWK6 <- trtd.wk6_data[trtd.wk6_data$visit=='Week 6', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Week.6", "CDPAINM_Week.6", "CDWELBEM_Week.6", "CDARTRTM_Week.6", "CDARALGM_Week.6", "CDIRITM_Week.6", "CDUVEITM_Week.6", "CDERYTHM_Week.6", "CDPYODEM_Week.6", "CDSTOMAM_Week.6", "CDFISURM_Week.6", "CDFISTUM_Week.6", "CDABSCEM_Week.6", "CDOTFISM_Week.6", "CDFEVERM_Week.6", "CDDRGM_Week.6", "CDAMASSM_Week.6", "CDHCTM_Week.6", "CDWEIGHM_Week.6", "invsimpson", colnames(trtd.wk6_data)[grep('Otu[0123456789]', colnames(trtd.wk6_data))])]
-#summary(mdotu_relrespWK6xWK6[,c("RESPONSEwk6")])
-mdotu_relrespWK6xWK6<-na.omit(mdotu_relrespWK6xWK6)
-#summary(mdotu_relrespWK6xWK6[,c("RESPONSEwk6")])
+mdotu_respWK6xWK6 <- trtd.wk6_data[trtd.wk6_data$visit=='Week 6', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Week.6", "CDPAINM_Week.6", "CDWELBEM_Week.6", "CDARTRTM_Week.6", "CDARALGM_Week.6", "CDIRITM_Week.6", "CDUVEITM_Week.6", "CDERYTHM_Week.6", "CDPYODEM_Week.6", "CDSTOMAM_Week.6", "CDFISURM_Week.6", "CDFISTUM_Week.6", "CDABSCEM_Week.6", "CDOTFISM_Week.6", "CDFEVERM_Week.6", "CDDRGM_Week.6", "CDAMASSM_Week.6", "CDHCTM_Week.6", "CDWEIGHM_Week.6", "invsimpson", colnames(trtd.wk6_data)[grep('Otu[0123456789]', colnames(trtd.wk6_data))])]
+#summary(mdotu_respWK6xWK6[,c("RESPONSEwk6")])
+mdotu_respWK6xWK6<-na.omit(mdotu_respWK6xWK6)
+#summary(mdotu_respWK6xWK6[,c("RESPONSEwk6")])
 set.seed(32016)
-mdotu_relrespWK6xWK6_rf <- AUCRF(RESPONSEwk6~., data=mdotu_relrespWK6xWK6, ranking='MDA', ntree=500, pdel=0.2)
-#mdotu_relrespWK6xWK6_rf # prints list of optimal features
-mdotu_relrespWK6xWK6_probs <- predict(mdotu_relrespWK6xWK6_rf$RFopt, type='prob')[,2]
-mdotu_relrespWK6xWK6_roc <- roc(mdotu_relrespWK6xWK6$RESPONSEwk6~mdotu_relrespWK6xWK6_probs)
+mdotu_respWK6xWK6_rf <- AUCRF(RESPONSEwk6~., data=mdotu_respWK6xWK6, ranking='MDA', ntree=500, pdel=0.2)
+#mdotu_respWK6xWK6_rf # prints list of optimal features
+mdotu_respWK6xWK6_probs <- predict(mdotu_respWK6xWK6_rf$RFopt, type='prob')[,2]
+mdotu_respWK6xWK6_roc <- roc(mdotu_respWK6xWK6$RESPONSEwk6~mdotu_respWK6xWK6_probs)
 
 
 
@@ -1863,43 +1863,43 @@ mdotu_relrespWK6xWK6_roc <- roc(mdotu_relrespWK6xWK6$RESPONSEwk6~mdotu_relrespWK
 layout(matrix(c(1,2), nrow=1))
 par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
 plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
-#plot(otu_relrespWK6xWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
-plot(md_relrespWK6xWK6_roc, add=T, lwd=2, col='grey5', lty=1)
-#plot(mdotu_relrespWK6xWK6_roc, add=T, lwd=2, col='red', lty=1)
+#plot(otu_respWK6xWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
+plot(md_respWK6xWK6_roc, add=T, lwd=2, col='grey5', lty=1)
+#plot(mdotu_respWK6xWK6_roc, add=T, lwd=2, col='red', lty=1)
 title("Predicting Week 6 Response using Week 0 Clinical Data")
-legend('bottomright', sprintf('Clinical Data: AUC=%.3f',md_relrespWK6xWK6_roc$auc), lwd=2, col='grey5', bty='n', lty=1)
-cutoff <- coords(roc=mdotu_relrespWK6xWK6_roc, x='best', best.method='y', ret=c('threshold'))
-mdotu_relrespWK6xWK6_spec <- coords(mdotu_relrespWK6xWK6_roc, x=cutoff, input='thr', ret='spec')
-mdotu_relrespWK6xWK6_sens <- coords(mdotu_relrespWK6xWK6_roc, x=mdotu_relrespWK6xWK6_spec, input='spec', ret='sens')
-mdotu_relrespWK6xWK6_thr <- coords(mdotu_relrespWK6xWK6_roc, x=mdotu_relrespWK6xWK6_spec, input='spec', ret='thr')
+legend('bottomright', sprintf('Clinical Data: AUC=%.3f',md_respWK6xWK6_roc$auc), lwd=2, col='grey5', bty='n', lty=1)
+cutoff <- coords(roc=mdotu_respWK6xWK6_roc, x='best', best.method='y', ret=c('threshold'))
+mdotu_respWK6xWK6_spec <- coords(mdotu_respWK6xWK6_roc, x=cutoff, input='thr', ret='spec')
+mdotu_respWK6xWK6_sens <- coords(mdotu_respWK6xWK6_roc, x=mdotu_respWK6xWK6_spec, input='spec', ret='sens')
+mdotu_respWK6xWK6_thr <- coords(mdotu_respWK6xWK6_roc, x=mdotu_respWK6xWK6_spec, input='spec', ret='thr')
 
-points(coords(mdotu_relrespWK6xWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(mdotu_relrespWK6xWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='red', cex=1.5, pch=10)
+points(coords(mdotu_respWK6xWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(mdotu_respWK6xWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='red', cex=1.5, pch=10)
 
-cutoff <- coords(roc=otu_relrespWK6xWK6_roc, x='best', best.method='y', ret=c('threshold'))
-otu_relrespWK6xWK6_spec <- coords(otu_relrespWK6xWK6_roc, x=cutoff, input='thr', ret='spec')
-otu_relrespWK6xWK6_sens <- coords(otu_relrespWK6xWK6_roc, x=otu_relrespWK6xWK6_spec, input='spec', ret='sens')
-otu_relrespWK6xWK6_thr <- coords(otu_relrespWK6xWK6_roc, x=otu_relrespWK6xWK6_spec, input='spec', ret='thr')
-points(coords(otu_relrespWK6xWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(otu_relrespWK6xWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='royalblue', cex=1.5, pch=10)
+cutoff <- coords(roc=otu_respWK6xWK6_roc, x='best', best.method='y', ret=c('threshold'))
+otu_respWK6xWK6_spec <- coords(otu_respWK6xWK6_roc, x=cutoff, input='thr', ret='spec')
+otu_respWK6xWK6_sens <- coords(otu_respWK6xWK6_roc, x=otu_respWK6xWK6_spec, input='spec', ret='sens')
+otu_respWK6xWK6_thr <- coords(otu_respWK6xWK6_roc, x=otu_respWK6xWK6_spec, input='spec', ret='thr')
+points(coords(otu_respWK6xWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(otu_respWK6xWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='royalblue', cex=1.5, pch=10)
 
-cutoff <- coords(roc=md_relrespWK6xWK6_roc, x='best', best.method='y', ret=c('threshold'))
-md_relrespWK6xWK6_spec <- coords(md_relrespWK6xWK6_roc, x=cutoff, input='thr', ret='spec')
-md_relrespWK6xWK6_sens <- coords(md_relrespWK6xWK6_roc, x=md_relrespWK6xWK6_spec, input='spec', ret='sens')
-md_relrespWK6xWK6_thr <- coords(md_relrespWK6xWK6_roc, x=md_relrespWK6xWK6_spec, input='spec', ret='thr')
+cutoff <- coords(roc=md_respWK6xWK6_roc, x='best', best.method='y', ret=c('threshold'))
+md_respWK6xWK6_spec <- coords(md_respWK6xWK6_roc, x=cutoff, input='thr', ret='spec')
+md_respWK6xWK6_sens <- coords(md_respWK6xWK6_roc, x=md_respWK6xWK6_spec, input='spec', ret='sens')
+md_respWK6xWK6_thr <- coords(md_respWK6xWK6_roc, x=md_respWK6xWK6_spec, input='spec', ret='thr')
 
-points(coords(md_relrespWK6xWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(md_relrespWK6xWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='black', cex=1.5, pch=10)
+points(coords(md_respWK6xWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(md_respWK6xWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='black', cex=1.5, pch=10)
 #dev.off()
 
 #pdf('../data/figures/RSPwk6abunds.#pdf', height=6, width=8)
 plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='', xaxt='n', cex.axis=1.2)
-stripchart(at=1, md_relrespWK6xWK6_probs[md_relrespWK6xWK6$'RESPONSEwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
-stripchart(at=2, md_relrespWK6xWK6_probs[md_relrespWK6xWK6$'RESPONSEwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
+stripchart(at=1, md_respWK6xWK6_probs[md_respWK6xWK6$'RESPONSEwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
+stripchart(at=2, md_respWK6xWK6_probs[md_respWK6xWK6$'RESPONSEwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
 mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
 axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
-cutoff <- coords(roc=md_relrespWK6xWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
+cutoff <- coords(roc=md_respWK6xWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
 #dev.off()
 
 
-md_relrespWK6xWK6_rf # prints list of optimal features
+md_respWK6xWK6_rf # prints list of optimal features
 
 
 #pdf('../data/figures/RSPwk6aucrf.#pdf', height=6, width=8)
@@ -1907,25 +1907,25 @@ md_relrespWK6xWK6_rf # prints list of optimal features
 layout(matrix(c(1,2), nrow=1))
 par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
 plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
-plot(otu_relrespWK6xWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
-plot(md_relrespWK6xWK6_roc, add=T, lwd=2, col='grey5', lty=1)
-plot(mdotu_relrespWK6xWK6_roc, add=T, lwd=2, col='red', lty=1)
+plot(otu_respWK6xWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
+plot(md_respWK6xWK6_roc, add=T, lwd=2, col='grey5', lty=1)
+plot(mdotu_respWK6xWK6_roc, add=T, lwd=2, col='red', lty=1)
 title("RESPONSEwk6")
-legend('bottomright', c(sprintf('OTUs : AUC=%.3f',otu_relrespWK6xWK6_roc$auc),sprintf('Clinical Data: AUC=%.3f',md_relrespWK6xWK6_roc$auc),sprintf('Combined: AUC=%.3f',mdotu_relrespWK6xWK6_roc$auc)), lwd=2, col=c('royalblue','grey5', 'red'), bty='n', lty=1)
+legend('bottomright', c(sprintf('OTUs : AUC=%.3f',otu_respWK6xWK6_roc$auc),sprintf('Clinical Data: AUC=%.3f',md_respWK6xWK6_roc$auc),sprintf('Combined: AUC=%.3f',mdotu_respWK6xWK6_roc$auc)), lwd=2, col=c('royalblue','grey5', 'red'), bty='n', lty=1)
 #dev.off()
 
 #pdf('../data/figures/RSPwk6abunds.#pdf', height=6, width=8)
 plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='', xaxt='n', cex.axis=1.2)
-stripchart(at=1, mdotu_relrespWK6xWK6_probs[mdotu_relrespWK6xWK6$'RESPONSEwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
-stripchart(at=2, mdotu_relrespWK6xWK6_probs[mdotu_relrespWK6xWK6$'RESPONSEwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
+stripchart(at=1, mdotu_respWK6xWK6_probs[mdotu_respWK6xWK6$'RESPONSEwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
+stripchart(at=2, mdotu_respWK6xWK6_probs[mdotu_respWK6xWK6$'RESPONSEwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
 mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
 axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
-cutoff <- coords(roc=mdotu_relrespWK6xWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
+cutoff <- coords(roc=mdotu_respWK6xWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
 #dev.off()
 
-mdotu_relrespWK6xWK6_rf # prints list of optimal features
-otu_relrespWK6xWK6_rf
-md_relrespWK6xWK6_rf
+mdotu_respWK6xWK6_rf # prints list of optimal features
+otu_respWK6xWK6_rf
+md_respWK6xWK6_rf
 ```
 
 
@@ -2041,7 +2041,7 @@ mdotu_remWK6xWK6_rf # prints list of optimal features
 otu_remWK6xWK6_rf
 md_remWK6xWK6_rf
 
-WK6xWK6rocsP <- roc.test(otu_relrespWK6xWK6_roc, otu_remWK6xWK6_roc)
+WK6xWK6rocsP <- roc.test(otu_respWK6xWK6_roc, otu_remWK6xWK6_roc)
 WK6xWK6rocsPval <- signif(WK6xWK6rocsP$p.value, digits=2)
 
 #source('../code/Figure5_responseREMwk6Xwk6.R')
@@ -2261,7 +2261,7 @@ Optimal predictors were determined based on their mean decrease in accuracy (MDA
 
 **Prediction of response following treatment**
 
-We also hypothesized that the composition of the baseline fecal microbiota could predict therapeutic response (CDAI decrease >30%) 6 weeks after induction. To test this hypothesis, we again used RF models to classify responders from non-responders 6 weeks after induction. Clinical data alone resulted in an AUC of `r md_relrespWK6_roc$auc` (specificity = `r sprintf("%.3f", md_relrespWK6_spec)`, sensitivity = `r md_relrespWK6_sens`) (Figure 2C). Using only microbiota data, the model predicted response with an AUC of `r otu_relrespWK6_roc$auc` (specificity = `r otu_relrespWK6_spec`, sensitivity = `r otu_relrespWK6_sens`). When combining clinical metadata with the microbiome, the model predicted response with an AUC of `r mdotu_relrespWK6_roc$auc` (specificity = `r mdotu_relrespWK6_spec`, sensitivity = `r mdotu_relrespWK6_sens`). These models were not significantly different in their ability to predict response (p > 0.05 for each comparison). Optimal predictors were again determined based on their MDA in the ability of the model to classify response (Figure 2D). Also, our baseline fecal microbiota model was significantly better able to classify remission compared to response (p = `r otu_relrespWK6xremWK6rocsPval`), whereas this was not true for the combined model (p = `r mdotu_relrespWK6xremWK6rocsPval`).
+We also hypothesized that the composition of the baseline fecal microbiota could predict therapeutic response (CDAI decrease >30%) 6 weeks after induction. To test this hypothesis, we again used RF models to classify responders from non-responders 6 weeks after induction. Clinical data alone resulted in an AUC of `r md_respWK6_roc$auc` (specificity = `r sprintf("%.3f", md_respWK6_spec)`, sensitivity = `r md_respWK6_sens`) (Figure 2C). Using only microbiota data, the model predicted response with an AUC of `r otu_respWK6_roc$auc` (specificity = `r otu_respWK6_spec`, sensitivity = `r otu_respWK6_sens`). When combining clinical metadata with the microbiome, the model predicted response with an AUC of `r mdotu_respWK6_roc$auc` (specificity = `r mdotu_respWK6_spec`, sensitivity = `r mdotu_respWK6_sens`). These models were not significantly different in their ability to predict response (p > 0.05 for each comparison). Optimal predictors were again determined based on their MDA in the ability of the model to classify response (Figure 2D). Also, our baseline fecal microbiota model was significantly better able to classify remission compared to response (p = `r otu_respWK6xremWK6rocsPval`), whereas this was not true for the combined model (p = `r mdotu_respWK6xremWK6rocsPval`).
 
 **Comparison of baseline microbiota based on clinical outcome**
 
@@ -2280,7 +2280,7 @@ We tested whether treatment with UST altered the microbiota by performing a Frie
 
 **The microbiota after induction can distinguish between treatment outcomes**
 
-Having demonstrated the microbiome changes in subjects who responded to UST treatment, we hypothesized that the microbiota could be used to monitor response to UST therapy by classifying subjects based on disease activity [@tedjo_CDactivity_2016]. We again constructed RF classification models to distinguish between subjects by UST treatment outcome based on their fecal microbiota 6 weeks after induction [@baxter_FIT_2016; @calle_aucrf_2011]. The study design resulted in only `r week22.N.trtd` week twenty-two stool samples from subjects induced and maintained with UST, so we focused our analysis on the `r nrow(trtd.wk6_data)` week 6 stool samples from subjects induced with UST. We were again better able to distinguish subjects in remission from subjects with active CD compared to responders from non-responders (p = `r round(WK6xWK6rocsPval, 3)`; Figure 5A). Our model could classify response 6 weeks after induction using week 6 stool samples from subjects treated with UST with an AUC of `r otu_relrespWK6xWK6_roc$auc` (sensitivity = `r otu_relrespWK6xWK6_sens`, specificity = `r otu_relrespWK6xWK6_spec`). For classifying subjects in remission from subjects with active CD 6 weeks after UST induction using week 6 stool samples, the model had an AUC of `r otu_remWK6xWK6_roc$auc` (sensitivity = `r otu_remWK6xWK6_sens`, specificity = `r otu_remWK6xWK6_spec`). OTUs that were important for these classifications again included *Faecalibacterium* (OTU7), as well as *Blautia* (OTU124), *Clostridium XIVa* (OTU73), *Ruminococcaceae* (OTU53), and *Roseburia* (OTU12). These all had higher median relative abundance in subjects in remission 6 weeks after induction than those with active disease (Figure 5B).
+Having demonstrated the microbiome changes in subjects who responded to UST treatment, we hypothesized that the microbiota could be used to monitor response to UST therapy by classifying subjects based on disease activity [@tedjo_CDactivity_2016]. We again constructed RF classification models to distinguish between subjects by UST treatment outcome based on their fecal microbiota 6 weeks after induction [@baxter_FIT_2016; @calle_aucrf_2011]. The study design resulted in only `r week22.N.trtd` week twenty-two stool samples from subjects induced and maintained with UST, so we focused our analysis on the `r nrow(trtd.wk6_data)` week 6 stool samples from subjects induced with UST. We were again better able to distinguish subjects in remission from subjects with active CD compared to responders from non-responders (p = `r round(WK6xWK6rocsPval, 3)`; Figure 5A). Our model could classify response 6 weeks after induction using week 6 stool samples from subjects treated with UST with an AUC of `r otu_respWK6xWK6_roc$auc` (sensitivity = `r otu_respWK6xWK6_sens`, specificity = `r otu_respWK6xWK6_spec`). For classifying subjects in remission from subjects with active CD 6 weeks after UST induction using week 6 stool samples, the model had an AUC of `r otu_remWK6xWK6_roc$auc` (sensitivity = `r otu_remWK6xWK6_sens`, specificity = `r otu_remWK6xWK6_spec`). OTUs that were important for these classifications again included *Faecalibacterium* (OTU7), as well as *Blautia* (OTU124), *Clostridium XIVa* (OTU73), *Ruminococcaceae* (OTU53), and *Roseburia* (OTU12). These all had higher median relative abundance in subjects in remission 6 weeks after induction than those with active disease (Figure 5B).
 
 ## Discussion
 
@@ -2288,13 +2288,13 @@ We sought to determine whether fecal microbiota can be used to identify patients
 
 The development of predictive models for disease or treatment outcome is anticipated to have a significant impact on clinical decision-making in health care [@Vogenberg_progmods_2009]. These models will help clinicians decide on the correct course of disease treatment or interventions for disease prevention with their patients. Additionally, patients will benefit with more individualized care that will potentially reduce adverse effects and result in faster recovery, reduce expenses from ineffective therapies, or increase quality of life by preventing disease in patients with high risk.
 
-Our predictive model revealed potential microbial biomarkers for successful UST therapy and allowed us to generate hypotheses about the biology of CD as it relates to the microbiome and UST response. *Faecalibacterium* frequently occurred in our models. It is associated with health, comprising up to 5% of the relative abundance in healthy individuals, and is generally rare in CD patients [@wright_CDmicrobiome_2015; @hansen_pedsIBD_2012; @naftali_tissinvol_2016; @sartor_microbesIBD_2016]. Each subject in remission 6 weeks after UST induction had measurable *Faecalibacterium* present at baseline. This supports the hypothesis that *Faecalibacterium* impacts CD pathogenesis. *Escherichia/Shigella* also occurred frequently in our models. This OTU is associated with inflammation and has been shown to be associated with CD [@sartor_microbesIBD_2016]. Many other taxa observed in our analysis had low abundance or were absent in the majority of subjects. However, in many cases these taxa are related and may serve similar ecologic and metabolic roles in the gut environment. We hypothesize that these microbes may have genes that perform similar metabolic functions. Performing metagenomics on stool samples in future studies, especially in patients who achieve remission, could reveal these functions, which could be further developed into a clinically useful predictive tool. 
+Our predictive model revealed potential microbial biomarkers for successful UST therapy and allowed us to generate hypotheses about the biology of CD as it relates to the microbiome and UST response. *Faecalibacterium* frequently occurred in our models. It is associated with health, comprising up to 5% of the relative abundance in healthy individuals, and is generally rare in CD patients [@wright_CDmicrobiome_2015; @hansen_pedsIBD_2012; @naftali_tissinvol_2016; @sartor_microbesIBD_2016]. Each subject in remission 6 weeks after UST induction had measurable *Faecalibacterium* present at baseline. This supports the hypothesis that *Faecalibacterium* impacts CD pathogenesis. It may even be beneficial to administer *Faecalibacterium* as a probiotic during therapy. *Escherichia/Shigella* also occurred frequently in our models. This OTU is associated with inflammation and has been shown to be associated with CD [@sartor_microbesIBD_2016]. Many other taxa observed in our analysis had low abundance or were absent in the majority of subjects. However, in many cases these taxa are related and may serve similar ecologic and metabolic roles in the gut environment. We hypothesize that these microbes may have genes that perform similar metabolic functions. Performing metagenomics on stool samples in future studies, especially in patients who achieve remission, could reveal these functions, which could be further developed into a clinically useful predictive tool.
 
-We were better able to predict whether a subject would go into remission rather than respond to treatment, as determined by CDAI score. We hypothesize that this was due to the subjective nature of the patient-reported CDAI factors and the relative nature of the response criteria compared to the threshold used to determine remission status. We defined response as a decrease in a subject's baseline CDAI of 30% or more, while remission was defined as a CDAI below 150. The original study used a decrease in CDAI of 100 points for their measure of response, but we felt using the relative percent change better represented a meaningful difference in disease activity and patient quality of life [@sandborn_ust_2012]. Additionally, the field appears to be moving away from CDAI and towards more objectively quantifiable biomarkers for inflammation as wells as endoscopic verification of mucosal healing. [@colombel_deepremission_2015]. 
+We were better able to predict whether a subject would go into remission rather than respond to treatment, as determined by CDAI score. We hypothesize that this was due to the relative nature of the response criteria compared to the threshold used to determine remission status. While the field appears to be moving away from CDAI and towards more objectively quantifiable patient reported outcomes and endoscopic verification of mucosal healing [@colombel_deepremission_2015; PRO ref], research is ongoing to discover less invasive and objectively quantifiable biomarkers [biomarkers refs].
 
-We identified several associations between the microbiota and clinical variables that could impact how CD is monitored and treated in the future. Serum CRP, fecal calprotectin, and fecal lactoferrin are widely used as biomarkers to measure inflammation and CD severity. We found that the microbial community structure was different among subjects based on these markers. These results support the hypothesis that the fecal microbiota could function as a biomarker for measuring disease activity in patients, especially in concert with established inflammatory biomarkers [@tedjo_CDactivity_2016; @boon_fmarkers_2015; @chang_monitoring_2015]. We also found that higher CDAI scores were associated with lower microbial diversity. This is consistent with other studies on the microbiota in individuals with CD compared to healthy individuals and studies looking at active disease compared to remission [@gevers_pedsCD_2014; @papa_pedsIBD_2012; @tedjo_CDactivity_2016]. However, the CDAI sub score of weekly stool frequency may have driven these differences (Supplementary Table 1), which is consistent with previous studies [@vandeputte_stoolcon_2016]. We also observed differences in the microbial community structure based on disease localization, which is consistent with a study by Naftali et al [@naftali_tissinvol_2016]. Our study also found that corticosteroid use impacts the composition of the human fecal microbiota, which is consistent with observations in mouse models [@huang_cort_2015]. As corticosteroid use appears to impact diversity, corticosteroid therapy may be useful when trying to positively impact microbial diversity during biologic therapy and thereby increase the possibility of response to CD therapies. We also observed that longer disease duration is associated with a reduction in fecal microbial diversity. This decreased diversity may be due to the long duration of inflammatory conditions in the gut.
+We identified several associations between the microbiota and clinical variables that could impact how CD is monitored and treated in the future. Serum CRP, fecal calprotectin, and fecal lactoferrin are widely used as biomarkers to measure inflammation and CD severity. We found that the microbial community structure was different among subjects based on these markers. These results support the hypothesis that the fecal microbiota could function as a biomarker for measuring disease activity in patients, especially in concert with established inflammatory biomarkers [@tedjo_CDactivity_2016; @boon_fmarkers_2015; @chang_monitoring_2015]. We also found that higher CDAI scores were associated with lower microbial diversity. This is consistent with other studies on the microbiota in individuals with CD compared to healthy individuals and studies looking at active disease compared to remission [@gevers_pedsCD_2014; @papa_pedsIBD_2012; @tedjo_CDactivity_2016]. However, the CDAI sub score of weekly stool frequency may have driven these differences (Supplementary Table 1), which is consistent with previous studies [@vandeputte_stoolcon_2016]. We also observed differences in the microbial community structure based on disease localization, which is consistent with a study by Naftali et al [@naftali_tissinvol_2016]. Our study also found that corticosteroid use impacts the composition of the human fecal microbiota, which is consistent with observations in mouse models [@huang_cort_2015]. We also observed that longer disease duration is associated with a reduction in fecal microbial diversity. We hypothesize that prolonged disease duration and the associated inflammation results in the observed decrease in diversity.
 
-Further research into fecal microbiota as a source of biomarkers for predicting therapeutic response could eventually allow for the screening of patients with stool samples at diagnosis to better inform treatment decisions for a wide range of diseases. For CD specifically, using the microbiota to predict response to specific treatment modalities could result in more personalized treatment and faster achievement of remission, thereby increasing patients’ quality of life and reducing economic and health care impacts for CD patients. Our results showing that the ${\alpha}$-diversity of clinical UST responders increased over time, in contrast to non-responsive patients, and our ability to classify patients in remission from those with active disease following UST treatment are again consistent with other studies suggesting the microbiota could be a useful biomarker for predicting or monitoring response to treatment [@tedjo_CDactivity_2016]. Additionally, the positive and negative associations between the microbiota and CD allow us to predict the types of mechanisms most likely to alter the microbiota in order to increase the likelihood of achieveing a therapeutic response or to monitor disease severity. Prior to the initiation of therapy, patients could have their fecal microbiome analyzed. Then the microbial community data could be used to direct the modification of a patient's microbiota prior to or during treatment with the goal of improving treatment outcomes. Since it has been shown that the microbiome can alter the efficacy of treatments for a variety of diseases [@Klatt_microbicide_2017; @Haiser_cardiac_2013; @Sivan_cancer_2015; @Vetizou_cancer_2015], if fecal microbiota can be validated as biomarkers to non-invasively predict response to therapy, then patients and clinicians will be able to more rapidly ascertain effective therapies that result increased patient quality of life.
+Further research into fecal microbiota as a source of biomarkers for predicting therapeutic response could eventually allow for the screening of patients with stool samples at diagnosis to better inform treatment decisions for a wide range of diseases. For CD specifically, using the microbiota to predict response to specific treatment modalities could result in more personalized treatment and faster achievement of remission, thereby increasing patients’ quality of life and reducing economic and health care impacts for CD patients. Our results showing that the ${\alpha}$-diversity of clinical UST responders increased over time, in contrast to non-responsive patients, and our ability to classify patients in remission from those with active disease following UST treatment are again consistent with other studies suggesting the microbiota could be a useful biomarker for predicting or monitoring response to treatment [@tedjo_CDactivity_2016]. These predictive biomarkers will need to be validated using independent cohorts in future studies. Additionally, the positive and negative associations between the microbiota and CD allow us to predict the types of mechanisms most likely to alter the microbiota in order to increase the likelihood of achieveing a therapeutic response or to monitor disease severity. Prior to the initiation of therapy, patients could have their fecal microbiome analyzed. Then the microbial community data could be used to direct the modification of a patient's microbiota prior to or during treatment with the goal of improving treatment outcomes. Since it has been shown that the microbiome can alter the efficacy of treatments for a variety of diseases [@Klatt_microbicide_2017; @Haiser_cardiac_2013; @Sivan_cancer_2015; @Vetizou_cancer_2015], if fecal microbiota can be validated as biomarkers to non-invasively predict response to therapy, then patients and clinicians will be able to more rapidly ascertain effective therapies that result increased patient quality of life.
  
 
 
@@ -2305,7 +2305,7 @@ Further research into fecal microbiota as a source of biomarkers for predicting 
 
 ####Study Design and Sample Collection
 
-Janssen Research and Development conducted a placebo-controlled, phase II clinical study of approximately 500 subjects to assess the safety and efficacy of UST for treating anti-TNF-${\alpha}$ refractory, moderate to severe CD subjects [@sandborn_ust_2012] (Figure 1). Institutional review board approval was acquired at each participating study center and subjects provided written informed consent [@sandborn_ust_2012]. Subject data was de-identified for our study. Both subjects and clinicians were blinded to their induction and maintenance treatment groups. Participants provided a stool sample prior to the initiation of the study and were then divided into treatment groups. Additional stool samples were provided 4 weeks after induction. At 6 weeks after induction an additional stool sample was collected, subjects were scored for their response to UST based on CDAI, and then divided into groups receiving either subcutaneous injection of UST or placebo at weeks 8 and 16 as maintenance therapy. Response was defined as a decrease in a subject's initial CDAI of 30% or more. This value was determined by using the approximate percent change in CDAI from mild-moderate CD (220) to remission (150). Remission was defined as a CDAI below the threshold of 150. Finally, at 22 weeks subjects provided an additional stool sample and were then scored using CDAI for their response to therapy. Frozen fecal samples were shipped to the University of Michigan and stored at -80°C prior to DNA extraction.
+Previously, a randomized, double-blinded, placebo-controlled phase II clinical study of approximately 500 subjects assessed the safety and efficacy of UST for treating anti-TNF-${\alpha}$ refractory, moderate to severe CD subjects [@sandborn_ust_2012] (Figure 1). Institutional review board approval was acquired at each participating study center and subjects provided written informed consent [@sandborn_ust_2012]. Subject data was de-identified for our study. Participants provided a stool sample prior to the initiation of the study and were then divided into treatment groups. Additional stool samples were provided 4 weeks after induction. At 6 weeks after induction an additional stool sample was collected, subjects were scored for their response to UST based on CDAI, and then divided into groups receiving either subcutaneous injection of UST or placebo at weeks 8 and 16 as maintenance therapy. Clinical response was defined as a reduction from baseline CDAI score of 100 or more points or as remission in subjects with a baseline CDAI score between 220 to 248 points [@sandborn_ust_2012]. Remission was defined as a CDAI below the threshold of 150. Finally, at 22 weeks subjects provided an additional stool sample and were then scored using CDAI for their response to therapy. Frozen fecal samples were shipped to the University of Michigan and stored at -80°C prior to DNA extraction.
 
 ####DNA extraction and 16S rRNA gene sequencing 
 
