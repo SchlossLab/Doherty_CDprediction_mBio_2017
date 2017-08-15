@@ -119,10 +119,11 @@ New York, NY, USA.
 
 The fecal microbiota is a rich source of biomarkers that have previously
 been shown to be predictive of numerous disease states. Less well
-studied is whether these biomarkers can be predictive of response to
-therapy. This study sought to predict the therapeutic response of
-Ustekinumab (UST) treated Crohn's disease (CD) patients. Using stool
-samples collected over the course of 22 weeks, the composition of these
+studied is the effect of immunomodulatory therapy on the microbiota and
+its role in response to therapy. This study explored associations
+between the fecal microbiota and therapeutic response of Ustekinumab
+(UST) treated Crohn's disease (CD) patients. Using stool samples
+collected over the course of 22 weeks, the composition of these
 subjects' fecal bacterial communities was characterized by sequencing
 the 16S rRNA gene. Subjects in remission could be distinguished from
 those with active disease 6 weeks after treatment using Random Forest
@@ -138,23 +139,22 @@ different (p = 0.017). Two OTUs affiliated with \emph{Faecalibacterium}
 abundant at baseline in subjects who were in remission 6 weeks after
 treatment than those with active CD. The diversity of UST treated
 clinical responders increased over the 22 weeks of the study, in
-contrast to nonresponsive subjects (p = 0.01). The observed baseline
+contrast to nonresponsive subjects (p = 0.012). The observed baseline
 differences in fecal microbiota and changes due to therapeutic response
-support using the microbiota as a biomarker for predicting and
-monitoring a patient's response to UST. (word count= 244/250,
-TextWrangler)
+support the potential for the microbiota as a response biomarker. (word
+count= 246/250, TextWrangler)
 
 \emph{Importance:} CD is a global health concern, with increasing
 incidence and prevalence, causing large economic and health care
 impacts. Finding prognostic biomarkers that give clinicians the ability
-to predict response to CD treatment at diagnosis will reduce the time
-that subjects spend taking drugs that will not be beneficial. OTUs
-associated with remission after treatment induction, especially
-\emph{Faecalibacterium}, could be biomarkers for successful UST
-treatment of TNF-\({\alpha}\) refractory CD patients. More broadly,
+to identify patients more likely to respond to CD treatment at diagnosis
+will reduce the time that subjects spend taking drugs that will not be
+beneficial. OTUs associated with remission after treatment induction,
+especially \emph{Faecalibacterium}, could be biomarkers for successful
+UST treatment of TNF-\({\alpha}\) refractory CD patients. More broadly,
 these results suggest the fecal microbiota could be a useful
 non-invasive biomarker for directing or monitoring the treatment of
-gastrointestinal diseases. (word count =94/150, TextWrangler)
+gastrointestinal diseases. (word count =98/150, TextWrangler)
 
 \textbf{Keywords: IBD, microbiome, biologics, prediction, biomarkers,
 remission, Stelara, machine learning}
@@ -167,20 +167,21 @@ The microbiome has been correlated with a variety of diseases and has
 shown promise as a predictive tool for disease outcome for gingivitis
 (1), cardiovascular disease (2), \emph{Clostridium difficile} infection
 (3, 4), and colorectal cancer (5, 6). Additionally, the microbiome has
-been shown to alter the efficacy of vaginal microbicides (7), cardiac
-drugs (8), and cancer treatments (9, 10). These results demonstrate that
-it is possible to use biomarkers from within the microbiome to predict
-response to therapeutics. In relation to inflammatory bowel disease
-(IBD), previous studies have shown that the bacterial gut microbiota
-correlates with disease severity in new-onset, pediatric Crohn's disease
-(CD) patients (11, 12). Additionally, recent studies suggest the gut
-microbiota could be used to predict clinical response to treatment in
-individuals with IBD (13, 14). It remains to be determined, however,
-whether the composition of the fecal gut microbiota can predict and
-monitor response to CD therapy. Considering the involvement of the
-immune system and previous evidence for involvement of the microbiome,
-we hypothesize that response to immunological CD therapy can be
-predicted using microbiome data.
+been shown to alter the efficacy of vaginal microbicides in African
+women (7), as well as cardiac drugs (8) and cancer treatments (9, 10) in
+murine models of disease. These results demonstrate that it is possible
+to use biomarkers from within the microbiome to predict response to
+therapeutics. In relation to inflammatory bowel disease (IBD), previous
+studies have shown that the bacterial gut microbiota correlates with
+disease severity in new-onset, pediatric Crohn's disease (CD) patients
+(11, 12). Additionally, recent studies suggest the gut microbiota could
+be used to predict clinical response to treatment in individuals with
+IBD (13, 14). It remains to be determined, however, whether the
+composition of the fecal gut microbiota can predict and monitor response
+to CD therapy. Considering the involvement of the immune system and
+previous evidence for involvement of the microbiome, we hypothesize that
+response to immunological CD therapy can be predicted using microbiome
+data.
 
 CD is a global health concern causing large economic and health care
 impacts (15, 16). The disease is characterized by patches of ulceration
@@ -215,24 +216,24 @@ The FDA recently approved Ustekinumab (UST), a monoclonal antibody
 directed against the shared p40 subunit of IL-12 and IL-23, for the
 treatment of CD (18, 35--37). Given the potential impact of IL-23 on the
 microbiota (30--33), we hypothesized that response to UST could be
-predicted or influenced by differences in subjects' gut microbiota and
-that UST treatment may alter the fecal microbiota. The effects of
-biologic treatment of IBD on the microbiota are not yet well described,
-but are hypothesized to be indirect, as these drugs act on host factors
-(17). We analyzed the fecal microbiota of subjects who participated in a
+influenced by differences in subjects' gut microbiota and that UST
+treatment may alter the fecal microbiota. The effects of biologic
+treatment of IBD on the microbiota are not yet well described, but are
+hypothesized to be indirect, as these drugs act on host factors (17). We
+analyzed the fecal microbiota of subjects who participated in a
 double-blinded, placebo-controlled Phase II clinical trial that
 demonstrated the safety and efficacy of UST for treating CD (35). The
 original study found that UST induction treatment had an increased rate
 of response as well as increased rates of response and remission with
 UST maintenance therapy, compared to placebo. We quantified the
-association between the fecal microbiota and disease severity. Finally,
-we tested whether clinical responders had a microbiota that was distinct
-from non-responders and whether the fecal microbiota changed in subjects
-treated with UST using 16S rRNA gene sequence data from these subjects'
-stool samples. Our study demonstrates that these associations are useful
-in predicting and monitoring UST treatment outcome and suggest the fecal
-microbiota may be a broadly useful source of biomarkers for predicting
-response to treatment.
+association between the fecal microbiota and disease severity, tested
+whether clinical responders had a microbiota that was distinct from
+non-responders, and determined whether the fecal microbiota changed in
+subjects treated with UST using 16S rRNA gene sequence data from these
+subjects' stool samples. Our study demonstrates that these associations
+may be useful in predicting and monitoring UST treatment outcome and
+suggest the fecal microbiota may be a broadly useful source of
+biomarkers for predicting response to treatment.
 
 \subsection{Results}\label{results}
 
@@ -276,16 +277,17 @@ characteristic (ROC) curve for the RF model (6, 40). Clinical data
 included components of the CDAI, biomarkers for inflammation, and
 subject metadata described further in the methods section. We trained
 these models using 232 baseline stool samples from subjects induced with
-UST. Clinical data alone resulted in an AUC of 0.616 (specificity =
-0.801, sensitivity = 0.452) (Figure 2A). Using only fecal microbiota
-data the model had an AUC of 0.838 (specificity = 0.766, sensitivity =
-0.806). Finally, when combining clinical metadata with the microbiota we
-achieved an AUC of 0.844 (specificity = 0.831, sensitivity = 0.774) for
-remission 6 weeks after induction. Prediction with clinical metadata
-alone did not perform as well as models using the baseline fecal
-microbiome (p = 0.001) or the combined model (p = 0.001); however, there
-was not a significant difference between the baseline fecal microbiota
-model and the combined model (p = 0.841).
+UST; 31 of which acheived remission (Table 2). Clinical data alone
+resulted in an AUC of 0.616 (specificity = 0.801, sensitivity = 0.452)
+(Figure 2A). Using only fecal microbiota data the model had an AUC of
+0.838 (specificity = 0.766, sensitivity = 0.806). Finally, when
+combining clinical metadata with the microbiota we achieved an AUC of
+0.844 (specificity = 0.831, sensitivity = 0.774) for remission 6 weeks
+after induction. Prediction with clinical metadata alone did not perform
+as well as models using the baseline fecal microbiome (p = 0.001) or the
+combined model (p = 0.001); however, there was not a significant
+difference between the baseline fecal microbiota model and the combined
+model (p = 0.841).
 
 Optimal predictors were determined based on their mean decrease in
 accuracy (MDA) in the ability of the model to classify remission from
@@ -309,12 +311,12 @@ We also hypothesized that the composition of the baseline fecal
 microbiota could predict therapeutic response (CDAI decrease ≥ 100 or
 remission) 6 weeks after induction. To test this hypothesis, we again
 used RF models to classify responders from non-responders 6 weeks after
-induction. Clinical data alone resulted in an AUC of 0.651 (specificity
-= 0.545, sensitivity = 0.724) (Figure 2C). Using only microbiota data,
-the model predicted response with an AUC of 0.762 (specificity = 0.558,
-sensitivity = 0.882). When combining clinical metadata with the
-microbiome, the model predicted response with an AUC of 0.733
-(specificity = 0.724, sensitivity = 0.684).
+induction (Table 2). Clinical data alone resulted in an AUC of 0.651
+(specificity = 0.545, sensitivity = 0.724) (Figure 2C). Using only
+microbiota data, the model predicted response with an AUC of 0.762
+(specificity = 0.558, sensitivity = 0.882). When combining clinical
+metadata with the microbiome, the model predicted response with an AUC
+of 0.733 (specificity = 0.724, sensitivity = 0.684).
 
 The microbiota model was significantly better able to predict response
 than the metadata alone (p = 0.017), whereas this was not true for the
@@ -323,8 +325,8 @@ fecal microbiota model were not significantly different in their ability
 to predict response (p = 0.263). Optimal predictors were again
 determined based on their MDA in the ability of the model to classify
 response (Figure 2D). Also, our baseline combined model was
-significantly better able to classify remission compared to response (p
-= 0.036), whereas this was not true for the fecal microbiota model (p =
+significantly better at classifying remission compared to response (p =
+0.036), whereas this was not true for the fecal microbiota model (p =
 0.117).
 
 \textbf{Comparison of baseline microbiota based on clinical outcome}
@@ -334,13 +336,14 @@ important in classification of outcome, we further investigated
 differences in the baseline microbiota that could serve as potential
 biomarkers for successful UST treatment. We compared the baseline
 microbiota of all 306 subjects who provided a baseline sample based on
-treatment group and treatment outcome 6 weeks after induction. There was
-no significant difference in diversity based on response 6 weeks after
-induction, however the baseline \({\beta}\)-diversity was significantly
-different by response (p = 0.018). No phyla were significantly different
-by treatment and response (Fig. S1) and no OTUs were significantly
-different based on UST response or among subjects receiving placebo for
-induction, regardless of response and remission status.
+treatment group and treatment outcome 6 weeks after induction to asses
+diversity measures (Table 2). There was no significant difference in
+diversity based on response 6 weeks after induction, however the
+baseline \({\beta}\)-diversity was significantly different by response
+(p = 0.018). No phyla were significantly different by treatment and
+response (Fig. S1) and no OTUs were significantly different based on UST
+response or among subjects receiving placebo for induction, regardless
+of response and remission status.
 
 Subjects in remission 6 weeks after induction with UST had significantly
 higher baseline \({\alpha}\)-diversity based on the inverse Simpson
@@ -354,7 +357,7 @@ induction compared to subjects with active CD: \emph{Bacteroides}
 (Figure 3).
 
 \textbf{Variation in the baseline microbiota is associated with
-variation in clinical data}
+variation in clinical phenotypes}
 
 Based on the associations we identified between baseline microbial
 diversity and response, we hypothesized that there were associations
@@ -378,7 +381,7 @@ loose stool frequency (p= 0.024), age (p = 0.033), the tissue affected
 0.004). No significant differences in \({\alpha}\) or \({\beta}\)
 diversity were observed for BMI, weight, or sex.
 
-\textbf{The diversity of the microbiota changes in UST responders}
+\textbf{The diversity of the microbiota changes following UST therapy}
 
 We tested whether treatment with UST altered the microbiota by
 performing a Friedman test comparing \({\alpha}\)-diversity, based on
@@ -390,13 +393,14 @@ with placebo (8 responders, 6 non-responders), who provided samples at
 every time point (Figure 1). We saw no significant difference in the
 \({\alpha}\)-diversity over time in subjects who did not respond 22
 weeks after induction, regardless of treatment, and in subjects who
-received placebo (Figure 4). However, the median \({\alpha}\)-diversity
-of responders 22 weeks after UST induction significantly changed over
-time (p = 0.012) having increased from baseline (median = 6.65, IQR =
-4.60 - 9.24) to 4 weeks after UST induction(median = 9.33, IQR = 6.54 -
-16.7), decreased from 4 to 6 weeks after induction (median = 8.42, IQR =
-4.93 - 17.5), and was significantly higher than baseline (p \textless{}
-0.05) at 22 weeks after induction (median = 10.7, IQR = 5.49 - 14.6).
+responded to placebo (Figure 4). However, the median
+\({\alpha}\)-diversity of responders 22 weeks after UST induction
+significantly changed over time (p = 0.012) having increased from
+baseline (median = 6.65, IQR = 4.60 - 9.24) to 4 weeks after UST
+induction(median = 9.33, IQR = 6.54 - 16.7), decreased from 4 to 6 weeks
+after induction (median = 8.42, IQR = 4.93 - 17.5), and was
+significantly higher than baseline (p \textless{} 0.05) at 22 weeks
+after induction (median = 10.7, IQR = 5.49 - 14.6).
 
 \textbf{The microbiota after induction can distinguish between treatment
 outcomes}
@@ -429,14 +433,16 @@ those with active disease (Figure 5B).
 We sought to determine whether fecal microbiota can be used to identify
 patients who will respond to UST therapy and to gain a more detailed
 understanding of how UST treatment may affect the microbiota. We
-demonstrated that the microbiota could predict remission following UST
-therapy, compared to clinical metadata alone, in this unique cohort. We
-also found the fecal microbiota to be associated with CD severity
-metrics and treatment outcomes. Finally, we found that the microbiota of
-treated responders changed over time. These results helped further our
-understanding of the interaction between the human gut microbiota and CD
-in adult subjects with moderate-to-severe CD refractory to
-anti-TNF-\({\alpha}\) therapies.
+demonstrated that the microbiota could identify patients more likely to
+achieve remission following UST therapy, compared to clinical metadata
+alone, in this unique cohort, though this will need to be validated in
+future studies with independent cohorts. We also found the fecal
+microbiota to be associated with CD severity metrics and treatment
+outcomes. Finally, we found that the microbiota of treated responders
+changed over time. These results helped further our understanding of the
+interaction between the human gut microbiota and CD in adult subjects
+with moderate-to-severe CD refractory to anti-TNF-\({\alpha}\)
+therapies.
 
 The development of predictive models for disease or treatment outcome is
 anticipated to have a significant impact on clinical decision-making in
@@ -470,8 +476,8 @@ studies, especially in patients who achieve remission, could reveal
 these functions, which could be further developed into a clinically
 useful predictive tool.
 
-We were better able to predict whether a subject would go into remission
-rather than respond to treatment, as determined by CDAI score. We
+We were better able to predict whether a subject would achieve clinical
+remission rather than clinical response, as determined by CDAI score. We
 hypothesize that this was due to the relative nature of the response
 criteria compared to the threshold used to determine remission status.
 While the field appears to be moving away from CDAI and towards more
@@ -526,12 +532,12 @@ therapeutic response or to monitor disease severity. Prior to the
 initiation of therapy, patients could have their fecal microbiome
 analyzed. Then the microbial community data could be used to direct the
 modification of a patient's microbiota prior to or during treatment with
-the goal of improving treatment outcomes. Since it has been shown that
-the microbiome can alter the efficacy of treatments for a variety of
-diseases (7--10), if fecal microbiota can be validated as biomarkers to
-non-invasively predict response to therapy, then patients and clinicians
-will be able to more rapidly ascertain effective therapies that result
-increased patient quality of life.
+the goal of improving treatment outcomes. Since it has been shown
+experimentally that the microbiome can alter the efficacy of treatments
+for a variety of diseases (7--10), if fecal microbiota can be validated
+as biomarkers to non-invasively predict response to therapy, then
+patients and clinicians will be able to more rapidly ascertain effective
+therapies that result in increased patient quality of life.
 
 \newpage
 
