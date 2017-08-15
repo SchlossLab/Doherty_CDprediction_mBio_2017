@@ -1,0 +1,55 @@
+Cbt comments
+
+Line 1: Addressed from CSM ST comments too
+
+Line 13: Made suggested change
+
+Line 14: Changed to "This study explored associations between the fecal microbiota and therapeutic response of Ustekinumab (UST) treated Crohn’s disease (CD) patients."
+
+Line 28: Changed to "support the potential for the microbiota as a response biomarker."
+
+Line 32: Made suggested change
+
+Line44-45: Made suggested changes
+
+Line 63: Tew et al
+Ananthakrishan et al already cited in later paragraph but will highlight more
+Kohlo
+
+Line 76: Made suggested change
+
+Line 83: This makes for a very long sentence, but made a change so that it is a one long sentence separated by commas
+
+Line 86: made suggested change
+
+Line 105: Not going to change order at this time, but changes the section heading as recommended
+
+Line113: Had table ready and have added it to the manu in experimental design section, "The number of subjects in each treatment group at the primary and secondary endpoints are summarized in Table 2 by their treatment outcome." and also added numbers to text explicitly
+
+Line 132: Made suggested Change
+
+Line 143: made suggested change
+
+Line 145: Directed reader to Table 2 after stating 306 subjects based on Tx and outcome
+
+Line 162: Made suggested change
+
+Line 173: directionality cannot be determined, just that community structures are different based on these markers
+
+Line 177: made suggested change
+
+Line 184: yes this is redundant addressed to clarify that we did not see differenced in nonresponders and in placebo responders
+
+Line 190: Clarified in line 184 to address
+
+Line 211: would change if i changed the order of the results, but keeping at this time
+
+Line 211: made suggested change
+
+Line 212: cross-val done but not great will/do say that "these results need to be validated in independent cohorts"
+
+Line 229-230: Disagree. This addressed as the median amount of Faecali present in nonremitters is significatnly lower as shown in in figure 3 and less so in figure 2. Placebo resp/nonresp and rem/nonrem addressed in that section of manu as well (nothing significantly different). Additionally supported in the literature.
+
+Line238: made suggested change
+
+Line 251: in results it says the community structure (b-div) was different basedon these markers and it says the same thing in the discussion. We can't really determine directionality just that the overall community structure is different.

@@ -248,17 +248,21 @@ to a treatment group in the induction phase of the study and were
 re-randomized into maintenance therapy groups 8 weeks after induction
 based on their response (Figure 1A). In the current study, response was
 defined as a decrease in a subject's initial Crohn's Disease Activity
-Index (CDAI) greater than 30\%. Remission was defined as a CDAI below
-150 points. The CDAI is the standard instrument for evaluating clinical
-symptoms and disease activity in CD (38, 39). The CDAI weights patient
-reported stool frequency, abdominal pain, and general well being over a
-week, in combination with weight change, hematocrit, opiate usage for
-diarrhea, and the presence of abdominal masses or other complications to
-determine the disease severity score (38, 39). Subjects provided stool
-samples at baseline (screening) and at 4, 6, and 22 weeks after
-induction for analysis using 16S rRNA gene sequencing (Figure 1B).
+Index (CDAI) greater than 100 points or remission. Remission was defined
+as a CDAI below 150 points. The CDAI is the standard instrument for
+evaluating clinical symptoms and disease activity in CD (38, 39). The
+CDAI weights patient reported stool frequency, abdominal pain, and
+general well being over a week, in combination with weight change,
+hematocrit, opiate usage for diarrhea, and the presence of abdominal
+masses or other complications to determine the disease severity score
+(38, 39). Subjects provided stool samples at baseline (screening) and at
+4, 6, and 22 weeks after induction for analysis using 16S rRNA gene
+sequencing (Figure 1B). The number of subjects in each treatment group
+at the primary and secondary endpoints are summarized in Table 2 by
+their treatment outcome.
 
-\textbf{Prediction of remission following treatment}
+\textbf{Association of baseline microbial signatures with treatment
+remission}
 
 We investigated whether the composition of the baseline fecal microbiota
 could predict therapeutic remission (CDAI \textless{} 150) 6 weeks after
@@ -281,7 +285,7 @@ remission 6 weeks after induction. Prediction with clinical metadata
 alone did not perform as well as models using the baseline fecal
 microbiome (p = 0.001) or the combined model (p = 0.001); however, there
 was not a significant difference between the baseline fecal microbiota
-model and the combined model (p = 0.84).
+model and the combined model (p = 0.841).
 
 Optimal predictors were determined based on their mean decrease in
 accuracy (MDA) in the ability of the model to classify remission from
@@ -290,32 +294,38 @@ predictors in our model for remission had low abundance. However, two
 OTUs were differentially abundant for subjects in remission 6 weeks
 after induction. The relative abundance of \emph{Escherichia/Shigella}
 (OTU1) was lower in subjects in remission 6 weeks after induction
-(median = 1.07\%, IQR = 0.033-3.7) compared to subjects with active CD
+(median = 1.07\%, IQR = 0.033-3.70) compared to subjects with active CD
 (median = 4.13\%, IQR = 0.667-15.4). Also, the relative abundance of
 \emph{Faecalibacterium} (OTU7) was not only higher in subjects in
 remission 6 weeks after induction (median = 7.43\%, IQR = 1.43-11.9)
-than subjects with active CD (median = 0.167\%, IQR = 0-5.1), but it was
-also present prior to the start of treatment in every subject who was in
-remission 6 weeks after induction.
+than subjects with active CD (median = 0.167\%, IQR = 0-5.10), but it
+was also present prior to the start of treatment in every subject who
+was in remission 6 weeks after induction.
 
-\textbf{Prediction of response following treatment}
+\textbf{Association of baseline microbial signatures with treatment
+response}
 
 We also hypothesized that the composition of the baseline fecal
-microbiota could predict therapeutic response (CDAI decrease
-\textgreater{}30\%) 6 weeks after induction. To test this hypothesis, we
-again used RF models to classify responders from non-responders 6 weeks
-after induction. Clinical data alone resulted in an AUC of 0.651
-(specificity = 0.545, sensitivity = 0.724) (Figure 2C). Using only
-microbiota data, the model predicted response with an AUC of 0.762
-(specificity = 0.558, sensitivity = 0.882). When combining clinical
-metadata with the microbiome, the model predicted response with an AUC
-of 0.733 (specificity = 0.724, sensitivity = 0.684). These models were
-not significantly different in their ability to predict response (p
-\textgreater{} 0.05 for each comparison). Optimal predictors were again
+microbiota could predict therapeutic response (CDAI decrease ≥ 100 or
+remission) 6 weeks after induction. To test this hypothesis, we again
+used RF models to classify responders from non-responders 6 weeks after
+induction. Clinical data alone resulted in an AUC of 0.651 (specificity
+= 0.545, sensitivity = 0.724) (Figure 2C). Using only microbiota data,
+the model predicted response with an AUC of 0.762 (specificity = 0.558,
+sensitivity = 0.882). When combining clinical metadata with the
+microbiome, the model predicted response with an AUC of 0.733
+(specificity = 0.724, sensitivity = 0.684).
+
+The microbiota model was significantly better able to predict response
+than the metadata alone (p = 0.017), whereas this was not true for the
+combined model (p = 0.069). Additionally, the combined model and the
+fecal microbiota model were not significantly different in their ability
+to predict response (p = 0.263). Optimal predictors were again
 determined based on their MDA in the ability of the model to classify
-response (Figure 2D). Also, our baseline fecal microbiota model was
+response (Figure 2D). Also, our baseline combined model was
 significantly better able to classify remission compared to response (p
-= 0.12), whereas this was not true for the combined model (p = 0.036).
+= 0.036), whereas this was not true for the fecal microbiota model (p =
+0.117).
 
 \textbf{Comparison of baseline microbiota based on clinical outcome}
 
@@ -382,8 +392,8 @@ every time point (Figure 1). We saw no significant difference in the
 weeks after induction, regardless of treatment, and in subjects who
 received placebo (Figure 4). However, the median \({\alpha}\)-diversity
 of responders 22 weeks after UST induction significantly changed over
-time (p = 0.01) having increased from baseline (median = 6.65, IQR = 4.6
-- 9.24) to 4 weeks after UST induction(median = 9.33, IQR = 6.54 -
+time (p = 0.012) having increased from baseline (median = 6.65, IQR =
+4.60 - 9.24) to 4 weeks after UST induction(median = 9.33, IQR = 6.54 -
 16.7), decreased from 4 to 6 weeks after induction (median = 8.42, IQR =
 4.93 - 17.5), and was significantly higher than baseline (p \textless{}
 0.05) at 22 weeks after induction (median = 10.7, IQR = 5.49 - 14.6).
@@ -638,6 +648,13 @@ support for this study.
 \textbf{Table 1: Summary of clinical metadata of cohort at baseline}
 
 \includegraphics{tables/Table1_baseline_metadata.pdf}
+
+\newpage
+
+\textbf{Table 2: Summary of subjects in each treatment group by endpoint
+and outcome}
+
+\includegraphics{tables/table2_resposne_treatN.pdf}
 
 \newpage
 

@@ -35,6 +35,12 @@ table2 <- as.matrix(table2)
 
 table2wk6div <- table2div[-c(3:4),]
 
+tiff("tables/table2_resposne_treatN.tiff", width = 7, height = 4, units='in', res=300)
+grid.table(table2.N)
+dev.off()
 
+pdf("tables/table2_resposne_treatN.pdf", width = 8, height = 6)
+grid.table(table2.N)
+dev.off()
 
 
