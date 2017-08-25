@@ -45,7 +45,7 @@ MOTHUR = data/mothur/
 FINAL = submission
 CODE = code
 METADATA = data/metadata
-mothurRV = Applications/mothur/mothur!!!!
+GZ_FILES = $(wildcard data/raw/*.fastq.gz)
 
 
 # utility function to print various variables. For example, running the
@@ -74,6 +74,7 @@ print-%:
 # also contains the reference taxonomy. We will limit the databases to only
 # include bacterial sequences.
 
+#make data/refs/silva.v4.align
 $(REFS)/silva.v4.align :
 	wget -N http://mothur.org/w/images/1/15/Silva.seed_v123.tgz
 	tar xvzf Silva.seed_v123.tgz silva.seed_v123.align silva.seed_v123.tax
@@ -109,45 +110,96 @@ $(REFS)/trainset14_032015.% :
 # SOP.
 
 #make.contigs
-#make data/process/mothur/WB/WBI.trim.contigs.fasta
-$(MOTHUR)/WBI.trim.contigs.fasta :
-	bash $(CODE)/WBI.make.contigs.batch
-#	qsub run_mothur_MiSeq_SOP_make.contigs.PBS
+#make /nfs/turbo/schloss-lab/mkdohert/maketest/data/mothur/Jan400.trim.contigs.fasta
+.PHONY : make.contigs
+make.contigs : $(GZ_FILES) $(MOTHUR)/Jan400.files
+	bash $(CODE)/Jan400.make.contigs.batch
+
+#or run this if using UMich flux computing
+.PHONY : qsub_make.contigs
+qsub_make.contigs : $(GZ_FILES) $(MOTHUR)/Jan400.files
+	qsub run_mothur_MiSeq_SOP_make.contigs.PBS
 
 #precluster
-#make data/process/mothur/WB/WBI.trim.contigs.good.unique.good.filter.unique.precluster.fasta
-$(MOTHUR)/WBI.trim.contigs.good.unique.good.filter.unique.precluster.fasta :
-	bash $(CODE)/WBI.pre.cluster.batch
-#	qsub run_mothur_MiSeq_SOP_pre.clust.PBS
+#make data/mothur/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.fasta
+##$(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.fasta :
+.PHONY : precluster
+precluster : $(MOTHUR)/Jan400.trim.contigs.fasta\
+$(MOTHUR)/Jan400.contigs.groups\
+$(MOTHUR)/Jan400.trim.contigs.summary
+	bash $(CODE)/Jan400.pre.cluster.batch
+
+#or run this if using UMich flux computing
+.PHONY : qsub_precluster
+qsub_precluster : $(MOTHUR)/Jan400.trim.contigs.fasta\
+$(MOTHUR)/Jan400.contigs.groups\
+$(MOTHUR)/Jan400.trim.contigs.summary
+	qsub run_mothur_MiSeq_SOP_pre.clust.PBS
+
 
 #uchime
-#make data/process/mothur/WB/WBI.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta
-$(MOTHUR)/WBI.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta :
-	bash $(CODE)/WBI.uchime.batch
-#	qsub run_mothur_MiSeq_SOP_uchime_rm.lin.PBS
+#make data/mothur/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta
+#$(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta :
+.PHONY : uchime
+uchime : $(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.fasta\
+$(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.count_table
+	bash $(CODE)/Jan400.uchime.batch
+
+#or run this if using UMich flux computing
+.PHONY : qsub_uchime
+qsub_uchime : $(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.fasta\
+$(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.count_table
+	qsub run_mothur_MiSeq_SOP_uchime_rm.lin.PBS
 	
 #cluster.split
-#make data/process/mothur/WB/WBI.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.list
-$(MOTHUR)/WBI.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.list :
-	bash $(CODE)/WBI.cluster.split.batch
-#	qsub run_mothur_MiSeq_SOP_cluster.split.PBS
-	
+#make data/mothur/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.list
+#$(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.list :
+.PHONY : cluster.split
+cluster.split : $(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta\
+$(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table\
+$(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy
+	bash $(CODE)/Jan400.cluster.split.batch
+
+#or run this if using UMich flux computing
+.PHONY : qsub_cluster.split
+qsub_cluster.split : $(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta\
+$(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table\
+$(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy
+	qsub run_mothur_MiSeq_SOP_cluster.split.PBS
+
 #makeshared
-#make data/process/mothur/WB/WBI.an.shared
-$(MOTHUR)/WBI.an.shared :
-	bash $(CODE)/WBI.make.shared.batch
-#	qsub run_mothur_MiSeq_SOP_make.shared.PBS
-	
+#make data/mothur/Jan400.an.shared
+#$(MOTHUR)/Jan400.an.shared :
+.PHONY : shared
+shared : $(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.an.unique_list.list\
+$(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table\
+$(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta
+	bash $(CODE)/Jan400.make.shared.batch
+
+#or run this if using UMich flux computing
+.PHONY : qsub_shared
+qsub_shared : $(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.an.unique_list.list\
+$(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table\
+$(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta
+	qsub run_mothur_MiSeq_SOP_make.shared.PBS
+
 #error rates
-$(MOTHUR)/stability.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.error.% :
+.PHONY : error
+error : $(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table\
+$(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta
 	bash $(CODE)/errorrates.batch
-#	qsub run_mothur_MiSeq_SOP_error_rate.PBS
+
+#or run this if using UMich flux computing
+.PHONY : qsub_error
+qsub_error : $(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table\
+$(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta
+	qsub run_mothur_MiSeq_SOP_error_rate.PBS
 
 
 
 #################################################################################
 #																				#
-# Metadata Processing and General Analysis 										#
+# Metadata Processing, General Analysis, Building Figures and Tables										#
 #																				#
 #																				#
 #################################################################################
@@ -155,8 +207,59 @@ $(MOTHUR)/stability.trim.contigs.good.unique.good.filter.unique.precluster.pick.
 # This modifies the meta data files by adding necessary categories (e.g. lesion)
 # for files that will be used for all downstream analysis.
 
+#remove NAs and make files for analysis
+#acconos file was make by using na.omit on the metadata file in R and then copying the group to a text file called accnos
+#this removes groups from analysis with NA in the metadata.
+
+.PHONY : na.omit_files
+na.omit_files : $(CODE)/analysis_files.batch\
+$(MOTHUR)/Jan400.final.shared
+	bash $(CODE)/analysis_files.batch
 
 
+
+	
+$(FIGS)/Figure_2 : $(CODE)/R_packages_setup.R\
+$(CODE)/APmd.setup.R 
+	R -e "source('code/Figure2_prediction.R')"
+	
+
+Figure_3 : $(CODE)/R_packages_setup.R\
+$(CODE)/APmd.setup.R\
+$(CODE)/tax.analysis.setup.R\
+$(CODE)/tax.analysis.R\
+$(CODE)/otu.analysis.R\
+	R -e "source('code/FIgure3_REMISSwk6.sig.otu.figure.R')"
+	
+Figure_4 : $(CODE)/R_packages_setup.R\
+$(CODE)/APmd.setup.R
+	R -e "source('code/Figure4_alltp.adivXvisitXtrtgrXrelRSPwk22.R')"
+	
+Figure_5 : $(CODE)/R_packages_setup.R\
+$(CODE)/APmd.setup.R
+	R -e "source('code/Figure5_responseREMwk6Xwk6.R')"
+	
+SF_1 : $(CODE)/R_packages_setup.R\
+$(CODE)/APmd.setup.R\
+$(CODE)/tax.analysis.setup.R\
+$(CODE)/tax.analysis.R\
+$(CODE)/phylum.analysis.R
+	R -e "source('code/SF1_week6phyla.R')"
+	
+Table_1 : $(CODE)/R_packages_setup.R\
+$(CODE)/APmd.setup.R
+	R -e "source('code/Table1_baseline_metadata.R')"
+	
+Table_2 : $(CODE)/R_packages_setup.R\
+$(CODE)/APmd.setup.R
+	R -e "source('code/table1.cohortdiv.R')"
+	
+ST_1 : $(CODE)/R_packages_setup.R\
+$(CODE)/APmd.setup.R
+	R -e "source('code/table2diversity.R')"
+	
+	
+	
 #####################################################################################
 #																					#
 # Part 5: Pull it all together 														#

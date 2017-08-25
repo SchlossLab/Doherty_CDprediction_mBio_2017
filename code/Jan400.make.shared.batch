@@ -1,7 +1,6 @@
 #!bash
 
 #Set local variables
-mothurRv=/Applications/mothur/mothur!!!!
 DOWNDIR=data/raw
 WORKDIR=data/mothur/
 REF=data/references
@@ -9,7 +8,7 @@ REF=data/references
 
 #make shared file
 
-$mothurRv "#set.dir(input=$WORKDIR, output=$WORKDIR);
+mothur "#set.dir(input=$WORKDIR, output=$WORKDIR);
 	summary.seqs(fasta=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.fasta, count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.pick.count_table, processors=8);
 	make.shared(list=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.list, count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.pick.count_table, label=0.03);
 	classify.otu(list=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.list, count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.pick.count_table, taxonomy=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.pick.taxonomy, label=0.03);

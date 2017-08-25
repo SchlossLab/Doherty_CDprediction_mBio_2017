@@ -1,7 +1,6 @@
-#!bash
+#!bashmodelue 
 
 #Set local variables
-mothurRv=/Applications/mothur/mothur!!!!
 DOWNDIR=data/raw
 WORKDIR=data/mothur/
 REF=data/references
@@ -20,7 +19,7 @@ REF=data/references
 #Run mothur make contigs
 
 
-$mothurRv "#set.dir(input=$DOWNDIR, output=$WORKDIR);
+mothur "#set.dir(input=$DOWNDIR, output=$WORKDIR);
 	make.file(inputdir=$DOWNDIR, type=gz, prefix=Jan400);
 	make.contigs(file=$WORKDIR/Jan400.files, processors= 4);
 	set.dir(input=$WORKDIR, output=$WORKDIR);

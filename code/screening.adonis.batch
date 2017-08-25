@@ -1,0 +1,16 @@
+summary.shared(shared=Jan400.all.na.omit.cmd.shared, processors=4)
+
+#ALL
+get.groups(shared=Jan400.all.na.omit.cmd.shared, accnos=all.screening.accnos)
+system(mv Jan400.all.na.omit.cmd.0.03.pick.shared Jan400.screening.all.na.omit.cmd.shared)
+dist.shared(shared=Jan400.screening.all.na.omit.cmd.shared, calc=thetayc, subsample=3000)
+
+#UST
+get.groups(shared=Jan400.all.na.omit.cmd.shared, accnos=ust.screening.accnos)
+system(mv Jan400.all.na.omit.cmd.0.03.pick.shared Jan400.screening.ust.na.omit.cmd.shared)
+dist.shared(shared=Jan400.screening.ust.na.omit.cmd.shared, calc=thetayc, subsample=3000)
+
+#PLACEBO
+get.groups(shared=Jan400.all.na.omit.cmd.shared, accnos=plac.screening.accnos)
+system(mv Jan400.all.na.omit.cmd.0.03.pick.shared Jan400.screening.plac.na.omit.cmd.shared)
+dist.shared(shared=Jan400.screening.plac.na.omit.cmd.shared, calc=thetayc, subsample=3000)
