@@ -1,18 +1,19 @@
 #!bash
 
 #Set local variables
+
 DOWNDIR=data/raw
-WORKDIR=data/mothur/
+WORKDIR=data/mothur
 REF=data/references
 
 
 #make shared file
 
 mothur "#set.dir(input=$WORKDIR, output=$WORKDIR);
-	summary.seqs(fasta=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.fasta, count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.pick.count_table, processors=8);
-	make.shared(list=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.list, count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.pick.count_table, label=0.03);
-	classify.otu(list=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.list, count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.pick.count_table, taxonomy=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.pick.taxonomy, label=0.03);
-	get.oturep(fasta=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.fasta, count=current, list=current, label=0.03, method=abundance);
+	summary.seqs(fasta=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta, count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table, processors=8);
+	make.shared(list=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.an.unique_list.list, count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table, label=0.03);
+	classify.otu(list=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.an.unique_list.list, count=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table, taxonomy=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy, label=0.03);
+	get.oturep(fasta=Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta, count=current, list=current, label=0.03, method=abundance);
 	bin.seqs(fasta=current, count=current, list=current);
 	
 #Rename data files;
@@ -20,19 +21,16 @@ mothur "#set.dir(input=$WORKDIR, output=$WORKDIR);
 	system(mv $WORKDIR/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta $WORKDIR/Jan400.fasta);
 	system(mv $WORKDIR/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table $WORKDIR/Jan400.count_table);
 	system(mv $WORKDIR/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy $WORKDIR/Jan400.taxonomy);
-	system(mv $WORKDIR/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared $WORKDIR/Jan400.final.shared);
-	system(mv $WORKDIR/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.0.03.cons.taxonomy $WORKDIR/Jan400.cons.taxonomy);
-	system(mv $WORKDIR/*0.03.rep.fasta $WORKDIR/final.rep.seqs);
+	system(mv $WORKDIR/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.an.unique_list.shared $WORKDIR/Jan400.an.shared);
+	system(mv $WORKDIR/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.an.unique_list.0.03.cons.taxonomy $WORKDIR/Jan400.cons.taxonomy);
+	system(mv $WORKDIR/*.0.03.rep.fasta $WORKDIR/final.rep.seqs);
 	system(mv $WORKDIR/*.0.03.rep.count_table $WORKDIR/final.rep.count_table);
 
 #Run diversity analysis on new aligned data set;
 
-	count.groups(shared=Jan400.final.shared);
-	sub.sample(shared=Jan400.final.shared, size=1737);
-	summary.single(shared=Jan400.final.shared, calc=nseqs-coverage-sobs-invsimpson, subsample=1737);
-	dist.shared(shared=Jan400.final.shared, calc=thetayc-jclass, subsample=1737);
-	pcoa(phylip=Jan400.final.thetayc.0.03.lt.ave.dist);
-	nmds(phylip=Jan400.final.thetayc.0.03.lt.ave.dist, mindim=3, maxdim=3)"
+	count.groups(shared=Jan400.an.shared);
+	sub.sample(shared=Jan400.an.shared, size=3000);
+	summary.single(shared=Jan400.an.shared, calc=nseqs-coverage-sobs-invsimpson, subsample=3000);"
 
 # Remove raw files to free up space
 rm $WORKDIR/*.map $WORKDIR/*.temp

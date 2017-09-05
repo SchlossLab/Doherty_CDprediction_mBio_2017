@@ -1,3 +1,7 @@
+setwd("submission")
+source('../code/R_packages_setup.R')
+source('../code/APmd.setup.R')
+
 #**Figure 1: Prediction of RESPONSE/REMISSION in treated subjects using all clinical metadata, baseline microbiome alone, and combined**
 #	*Question:* Can the microbiome, clinical metadata, or combined models reliably predict response?
 #*Goal:* Show clinical metadata isn’t great for prediction and improvement of prediction using microbiome. Show taxa marked as important for prediction are abundant enough to care about

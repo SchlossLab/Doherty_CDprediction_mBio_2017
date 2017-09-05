@@ -60,54 +60,12 @@ print-%:
 
 #################################################################################
 #																				#
-# Part 1: Get the references 													#
-#																				#
-# We will need several reference files to complete the analyses including the   #
-# SILVA reference alignment and RDP reference taxonomy.                         #
-#																				#
-#################################################################################
-
-# We want the latest greatest reference alignment and the SILVA reference
-# alignment is the best reference alignment on the market. This version is from
-# v123 and described at http://blog.mothur.org/2015/12/03/SILVA-v123-reference-files/
-# We will use the SEED v. 123, which contain 12,083 bacterial sequences. This
-# also contains the reference taxonomy. We will limit the databases to only
-# include bacterial sequences.
-
-#make data/refs/silva.v4.align
-$(REFS)/silva.v4.align :
-	wget -N http://mothur.org/w/images/1/15/Silva.seed_v123.tgz
-	tar xvzf Silva.seed_v123.tgz silva.seed_v123.align silva.seed_v123.tax
-	/Applications/mothur/mothur "#get.lineage(fasta=silva.seed_v123.align, taxonomy=silva.seed_v123.tax, taxon=Bacteria);degap.seqs(fasta=silva.seed_v123.pick.align, processors=8)"
-	mv silva.seed_v123.pick.align $(REFS)/silva.seed.align
-	rm Silva.seed_v123.tgz silva.seed_v123.*
-	/Applications/mothur/mothur "#pcr.seqs(fasta=$(REFS)/silva.seed.align, start=11894, end=25319, keepdots=F, processors=8)"
-	mv $(REFS)/silva.seed.pcr.align $(REFS)/silva.v4.align
-
-# Next, we want the RDP reference taxonomy. The current version is v10 and we
-# use a "special" pds version of the database files, which are described at
-# http://blog.mothur.org/2014/10/28/RDP-v10-reference-files/
-
-$(REFS)/trainset14_032015.% :
-	wget -N http://mothur.org/w/images/8/88/Trainset14_032015.pds.tgz
-	tar xvzf Trainset14_032015.pds.tgz trainset14_032015.pds/trainset14_032015.pds.*
-	mv trainset14_032015.pds/* $(REFS)/
-	rmdir trainset14_032015.pds
-	rm Trainset14_032015.pds.tgz
-
-##################################################################################
+# Part 1: Run data through mothur 												 #
 #																				 #
-# Part 2: Run data through mothur 												 #
-#																				 #
-#	Process fastq data through the generation of files that will be used in the  #
+#	Process fastq.gz data through the generation of files that will be used in the  #
 # overall analysis.																 #
 #																				 #
 ##################################################################################
-
-# This runs the download of needed fastq files and runs sequence processing
-# using the mothur program.  It runs up to the cluster.split step.  The
-# majority of the processing can be found on www.mothur.org under the MiSeq
-# SOP.
 
 #make.contigs
 #make /nfs/turbo/schloss-lab/mkdohert/maketest/data/mothur/Jan400.trim.contigs.fasta
@@ -184,21 +142,22 @@ $(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pic
 	qsub run_mothur_MiSeq_SOP_make.shared.PBS
 
 #error rates
-.PHONY : error
-error : $(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table\
-$(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta
+.PHONY : error.rates
+error : $(MOTHUR)/Jan400.count_table\
+$(MOTHUR)/Jan400.fasta
 	bash $(CODE)/errorrates.batch
 
 #or run this if using UMich flux computing
-.PHONY : qsub_error
-qsub_error : $(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table\
-$(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta
+.PHONY : qsub_error.rates
+qsub_error.rates : $(MOTHUR)/Jan400.count_table\
+$(MOTHUR)/Jan400.fasta
 	qsub run_mothur_MiSeq_SOP_error_rate.PBS
 
 
 
 #################################################################################
-#																				#
+#
+#	Part 2:																			#
 # Metadata Processing, General Analysis, Building Figures and Tables										#
 #																				#
 #																				#
@@ -211,58 +170,66 @@ $(MOTHUR)/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pic
 #acconos file was make by using na.omit on the metadata file in R and then copying the group to a text file called accnos
 #this removes groups from analysis with NA in the metadata.
 
-.PHONY : na.omit_files
-na.omit_files : $(CODE)/analysis_files.batch\
-$(MOTHUR)/Jan400.final.shared
+.PHONY : analysis_files
+analysis_files : $(CODE)/analysis_files.batch\
+$(MOTHUR)/Jan400.an.shared
 	bash $(CODE)/analysis_files.batch
 
+.PHONY : qsub_analysis_files
+qsub_analysis_files : $(CODE)/analysis_files.batch\
+$(MOTHUR)/Jan400.an.shared
+	qsub run_analysis_files.PBS
 
-
-	
-$(FIGS)/Figure_2 : $(CODE)/R_packages_setup.R\
+.PHONY : Figure_2	
+Figure_2 : $(CODE)/R_packages_setup.R\
 $(CODE)/APmd.setup.R 
 	R -e "source('code/Figure2_prediction.R')"
 	
-
+.PHONY : Figure_3
 Figure_3 : $(CODE)/R_packages_setup.R\
 $(CODE)/APmd.setup.R\
 $(CODE)/tax.analysis.setup.R\
 $(CODE)/tax.analysis.R\
-$(CODE)/otu.analysis.R\
+$(CODE)/otu.analysis.R
 	R -e "source('code/FIgure3_REMISSwk6.sig.otu.figure.R')"
-	
+
+#figure4 may require running the R code directly. Not sure what/where the bug is as the code works when run in R,
+# but does not produce pdf/tiff when sourced
+.PHONY : Figure_4
 Figure_4 : $(CODE)/R_packages_setup.R\
 $(CODE)/APmd.setup.R
-	R -e "source('code/Figure4_alltp.adivXvisitXtrtgrXrelRSPwk22.R')"
+	R -e "source('code/Figure4_alltp.adivXvisitXtrtgrXRESPONSEwk22.R')"
 	
+.PHONY : Figure_5
 Figure_5 : $(CODE)/R_packages_setup.R\
 $(CODE)/APmd.setup.R
 	R -e "source('code/Figure5_responseREMwk6Xwk6.R')"
-	
+
+#like figure4, SF_1 may require running the R code directly. Not sure what/where the bug is as the code works when run in R,
+# but does not produce pdf/tiff when sourced	
+.PHONY : SF_1 
 SF_1 : $(CODE)/R_packages_setup.R\
 $(CODE)/APmd.setup.R\
 $(CODE)/tax.analysis.setup.R\
 $(CODE)/tax.analysis.R\
 $(CODE)/phylum.analysis.R
 	R -e "source('code/SF1_week6phyla.R')"
-	
-Table_1 : $(CODE)/R_packages_setup.R\
+
+.PHONY : Table_1_ST_1	
+Table_1_ST_1 : $(CODE)/R_packages_setup.R\
 $(CODE)/APmd.setup.R
-	R -e "source('code/Table1_baseline_metadata.R')"
+	R -e "source('code/makeTable1&SuppTbl1.R')"
 	
+.PHONY : Table_2
 Table_2 : $(CODE)/R_packages_setup.R\
 $(CODE)/APmd.setup.R
-	R -e "source('code/table1.cohortdiv.R')"
-	
-ST_1 : $(CODE)/R_packages_setup.R\
-$(CODE)/APmd.setup.R
-	R -e "source('code/table2diversity.R')"
+	R -e "source('code/makeTable2diversity.R')"
 	
 	
 	
 #####################################################################################
 #																					#
-# Part 5: Pull it all together 														#
+# Part 3: Pull it all together 														#
 #																					#
 # Render the manuscript 															#
 #																					#

@@ -1,0 +1,90 @@
+#!bash
+
+#Set local variables
+DOWNDIR=data/raw
+WORKDIR=data/mothur
+REF=data/references
+COUNT=Jan400.count_table
+FASTA=Jan400.fasta
+
+#run mothur error rates
+
+mothur "#set.dir(input=$WORKDIR, output=$WORKDIR);
+	summary.seqs(fasta=$FASTA, count=$COUNT, processors=8);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=MOCK1-MOCK2-MOCK3-MOCK4-MOCK5-MOCK6-MOCK7-MOCK8-MOCK9-MOCK10-MOCK11-MOCK12-MOCK13-MOCK14-MOCK15-MOCK16-Mock1-Mock2);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/allmocks.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/allmocks.count_table);
+	seq.error(fasta=allmocks.fasta, count=allmocks.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=MOCK1);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/MOCK1.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/MOCK1.count_table);
+	seq.error(fasta=MOCK1.fasta, count=MOCK1.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=MOCK2);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/MOCK2.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/MOCK2.count_table);
+	seq.error(fasta=MOCK2.fasta, count=MOCK2.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=MOCK3);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/MOCK3.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/MOCK3.count_table);
+	seq.error(fasta=MOCK3.fasta, count=MOCK3.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=MOCK4);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/MOCK4.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/MOCK4.count_table);
+	seq.error(fasta=MOCK4.fasta, count=MOCK4.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=MOCK5);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/MOCK5.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/MOCK5.count_table);
+	seq.error(fasta=MOCK5.fasta, count=MOCK5.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=MOCK6);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/MOCK6.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/MOCK6.count_table);
+	seq.error(fasta=MOCK6.fasta, count=MOCK6.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=MOCK7);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/MOCK7.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/MOCK7.count_table);
+	seq.error(fasta=MOCK7.fasta, count=MOCK7.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=MOCK8);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/MOCK8.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/MOCK8.count_table);
+	seq.error(fasta=MOCK8.fasta, count=MOCK8.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=MOCK9);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/MOCK9.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/MOCK9.count_table);
+	seq.error(fasta=MOCK9.fasta, count=MOCK9.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=MOCK10);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/MOCK10.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/MOCK10.count_table);
+	seq.error(fasta=MOCK10.fasta, count=MOCK10.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=MOCK11);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/MOCK11.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/MOCK11.count_table);
+	seq.error(fasta=MOCK11.fasta, count=MOCK11.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=MOCK12);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/MOCK12.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/MOCK12.count_table);
+	seq.error(fasta=MOCK12.fasta, count=MOCK12.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=MOCK13);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/MOCK13.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/MOCK13.count_table);
+	seq.error(fasta=MOCK13.fasta, count=MOCK13.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=MOCK14);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/MOCK14.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/MOCK14.count_table);
+	seq.error(fasta=MOCK14.fasta, count=MOCK14.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=MOCK15);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/MOCK15.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/MOCK15.count_table);
+	seq.error(fasta=MOCK15.fasta, count=MOCK15.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=MOCK16);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/MOCK16.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/MOCK16.count_table);
+	seq.error(fasta=MOCK16.fasta, count=MOCK16.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=Mock1);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/Mock1.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/Mock1.count_table);
+	seq.error(fasta=Mock1.fasta, count=Mock1.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F);
+	get.groups(count=$COUNT, fasta=$FASTA, groups=Mock2);
+	system(mv $WORKDIR/Jan400.pick.fasta $WORKDIR/Mock2.fasta);
+	system(mv $WORKDIR/Jan400.pick.count_table $WORKDIR/Mock2.count_table);
+	seq.error(fasta=Mock2.fasta, count=Mock2.count_table, reference=$REF/HMP_MOCK.v35.fasta, aligned=F)"
+	

@@ -1,3 +1,6 @@
+setwd("submission")
+source('../code/R_packages_setup.R')
+source('../code/APmd.setup.R')
 source('../code/wk6readdata.R')
 source('../code/wk6Xwk6AUCRF.R')
 

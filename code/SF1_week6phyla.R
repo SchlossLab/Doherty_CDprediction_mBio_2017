@@ -75,6 +75,6 @@ pdf("figures/SF1_wk6phyla.pdf", height = 10, width = 12)
 plot_grid(phyRabRESPONSEwk6_figure2, phyRabREMISSwk6_figure2, labels = c("A", "B"), align = "v", nrow=2)
 dev.off()
 
-tiff("figures/Figure2_alltp.adivXvisitXindtrtXRESPONSEwk22.tiff", height = 10, width = 12, units = "in", res = 300)
+tiff("figures/SF1_wk6phyla.pdf.tiff", height = 10, width = 12, units = "in", res = 300)
 plot_grid(phyRabRESPONSEwk6_figure2, phyRabREMISSwk6_figure2, labels = c("A", "B"), align = "v", nrow=2)
 dev.off()

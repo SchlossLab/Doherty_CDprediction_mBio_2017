@@ -37,11 +37,16 @@ APmd.wk6$RelRSPwk8<-as.factor(ifelse(APmd.wk6$percentdelta0_8>=-29.5, print("No"
 APmd.wk6$RelRSPwk22<-as.factor(ifelse(APmd.wk6$percentdelta0_22>=-29.5, print("No"), print("Yes")))
 APmd.wk6$RelRSPwk8_22<-as.factor(ifelse(APmd.wk6$percentdelta8_22>=-29.5, print("No"), print("Yes")))
 APmd.wk6$visit<-factor(APmd.wk6$visit, levels = c("Screening", "Week 4", "Week 6", "Week 22"))
+
 adiv<-read.table(file="../data/Jan400.all.na.omit.cmd.groups.summary", sep="\t", header=T)
 ss3k_shared<-read.table(file="../data/Jan400.all.na.omit.cmd.0.03.subsample.shared", sep="\t", header=T)#Jan400 subsampled to 3K visit=Week.6
 APmd.wk6_adiv<-merge(APmd.wk6, adiv, by.x="group", by.y="group")#nonmatch removed
+
+#merge with rare OTUs removed
 APmd.wk6_shared<-merge(APmd.wk6_adiv, ss3k_shared_U2s, by.x="group", by.y="Group")
 summary(APmd.wk6_shared[,1:20])
+
+#remove duplicates or weird subjects
 APmd.wk6_shared<-APmd.wk6_shared[APmd.wk6_shared$USUBJID!='C0743T26030100002',]
 APmd.wk6_shared<-APmd.wk6_shared[APmd.wk6_shared$group!='E4859941-5',]
 levs<-APmd.wk6_shared %>% group_by(USUBJID) %>% summarise(no_rows = length(USUBJID))
@@ -98,7 +103,7 @@ week6.N.trtd.REMN <- nrow(week6.trtd[week6.trtd$REMISSwk6=='No',])
 week6.N.plac.REMY <- nrow(week6.plac[week6.plac$REMISSwk6=='Yes',])
 week6.N.plac.REMN <- nrow(week6.plac[week6.plac$REMISSwk6=='No',])
 
-all.RESPONSEwk6<-matrix(c('Week 6 Response (No, Yes)', trtd.RESPONSEwk6_sum, plac.RESPONSEwk6_sum, all.RESPONSEwk6.kw.test.pval, all.RESPONSEwk6_AMOVA), ncol = 5)
+#all.RESPONSEwk6<-matrix(c('Week 6 Response (No, Yes)', trtd.RESPONSEwk6_sum, plac.RESPONSEwk6_sum, all.RESPONSEwk6.kw.test.pval, all.RESPONSEwk6_AMOVA), ncol = 5)
 
 week6.N.resp.trtd_sum<-toString(c(week6.N.trtd.respN, week6.N.trtd.respY))
 week6.N.resp.plac_sum<-toString(c(week6.N.plac.respN, week6.N.plac.respY))

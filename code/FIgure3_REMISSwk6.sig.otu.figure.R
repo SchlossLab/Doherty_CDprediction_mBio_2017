@@ -1,3 +1,4 @@
+setwd("submission")
 source('../code/R_packages_setup.R')
 source('../code/APmd.setup.R')
 
@@ -35,21 +36,7 @@ summary(nao.screen.plac[,1:6])
 
 
 tax<- read.table('../data/Jan400.simple.taxonomy.txt', header=T, sep="\t")
-nao.screen.all.distmat<-read.table("../data/Jan400.screening.all.na.omit.cmd.thetayc.0.03.square.ave.dist")
-nao.screen.all.dist<-as.dist(nao.screen.all.distmat)
-nao.screen.trtd.distmat<-read.table("../data/Jan400.screening.ust.na.omit.cmd.thetayc.0.03.square.ave.dist")
-nao.screen.trtd.dist<-as.dist(nao.screen.trtd.distmat)
-nao.screen.plac.distmat<-read.table("../data/Jan400.screening.plac.na.omit.cmd.thetayc.0.03.square.ave.dist")
-nao.screen.plac.dist<-as.dist(nao.screen.plac.distmat)
 
-trtd_trtd.data.distmat<-read.table("../data/Jan400.trtd_trtd.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
-trtd_trtd.data.dist<-as.dist(trtd_trtd.data.distmat)
-trtd_plac.data.distmat<-read.table("../data/Jan400.trtd_plac.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
-trtd_plac.data.dist<-as.dist(trtd_plac.data.distmat)
-plac_plac.data.distmat<-read.table("../data/Jan400.plac_plac.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
-plac_plac.data.dist<-as.dist(plac_plac.data.distmat)
-plac_trtd.data.distmat<-read.table("../data/Jan400.plac_trtd.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
-plac_trtd.data.dist<-as.dist(plac_trtd.data.distmat)
 
 source('../code/otu.analysis.R')
 
@@ -105,7 +92,7 @@ axis(1, at=c(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0), label=c("0", "0.01", "0.1", "1"
 legend('topright', legend=c("Week 6 Active CD", "Week 6 Remission"), pch=c(21, 21), pt.bg=c("orange","royalblue1"), cex=1)
 dev.off()
 
-tiff('figures/basesigOTUabund.REMISSwk6.tiff', height = 6, width = 8, units = "in", res = 300)
+tiff('figures/Figure3_basesigOTUabund.REMISSwk6.tiff', height = 6, width = 8, units = "in", res = 300)
 #pdf('figures/Figure3_basesigOTUabund.REMISSwk6.pdf', height = 6, width = 8)
 layout(1)
 par(mar=c(4, 12, 2, 1))

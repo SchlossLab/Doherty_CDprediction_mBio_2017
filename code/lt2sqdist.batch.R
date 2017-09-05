@@ -30,26 +30,14 @@ read.dist <- function(file, input='lt', make.square=T, diag=0){
 }
 	
 #screening all nao
-dist<-as.matrix(read.dist('Jan400.screening.all.na.omit.cmd.thetayc.0.03.lt.ave.dist'))
-write.table(dist, file='Jan400.screening.all.na.omit.cmd.thetayc.0.03.square.ave.dist', quote=F, sep="\t")
+dist<-as.matrix(read.dist('data/mothur/Jan400.screening.all.na.omit.cmd.thetayc.0.03.lt.ave.dist'))
+write.table(dist, file='data/mothur/Jan400.screening.all.na.omit.cmd.thetayc.0.03.square.ave.dist', quote=F, sep="\t")
 
 #screening ust nao
-dist<-as.matrix(read.dist('Jan400.screening.ust.na.omit.cmd.thetayc.0.03.lt.ave.dist'))
-write.table(dist, file='Jan400.screening.ust.na.omit.cmd.thetayc.0.03.square.ave.dist', quote=F, sep="\t")
+dist<-as.matrix(read.dist('data/mothur/Jan400.screening.ust.na.omit.cmd.thetayc.0.03.lt.ave.dist'))
+write.table(dist, file='data/mothur/Jan400.screening.ust.na.omit.cmd.thetayc.0.03.square.ave.dist', quote=F, sep="\t")
 
 #screening placebo nao
-dist<-as.matrix(read.dist('Jan400.screening.plac.na.omit.cmd.thetayc.0.03.lt.ave.dist'))
-write.table(dist, file='Jan400.screening.plac.na.omit.cmd.thetayc.0.03.square.ave.dist', quote=F, sep="\t")
-
-#screening all 
-dist<-as.matrix(read.dist('Jan400.screen.all.thetayc.0.03.lt.ave.dist'))
-write.table(dist, file='Jan400.screen.all.thetayc.0.03.square.ave.dist', quote=F, sep="\t")
-
-#screening ust
-dist<-as.matrix(read.dist('Jan400.screen.ust.thetayc.0.03.lt.ave.dist'))
-write.table(dist, file='Jan400.screen.ust.thetayc.0.03.square.ave.dist', quote=F, sep="\t")
-
-#screening placebo
-dist<-as.matrix(read.dist('Jan400.screen.plac.thetayc.0.03.lt.ave.dist'))
-write.table(dist, file='Jan400.screen.plac.thetayc.0.03.square.ave.dist', quote=F, sep="\t")
+dist<-as.matrix(read.dist('data/mothur/Jan400.screening.plac.na.omit.cmd.thetayc.0.03.lt.ave.dist'))
+write.table(dist, file='data/mothur/Jan400.screening.plac.na.omit.cmd.thetayc.0.03.square.ave.dist', quote=F, sep="\t")
 

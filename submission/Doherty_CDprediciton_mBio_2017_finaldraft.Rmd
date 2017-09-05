@@ -2408,7 +2408,7 @@ Janssen Research and Development provided financial and technical support for th
 ```{r  Figure4_alltp.adivXvisitXindtrtXrelRSPwk22.pdf}
 ```
 
-\includegraphics{figures/Figure4_alltp.adivXvisitXindtrtXrelRSPwk22.pdf}
+\includegraphics{figures/Figure4_alltp.adivXvisitXindtrtXRESPONSEwk22.pdf}
 
 
 

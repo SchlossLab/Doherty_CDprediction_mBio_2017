@@ -1,3 +1,5 @@
+source('code/R_packages_setup.R')
+setwd("submission")
 source('../code/timereaddata.R')
 
 alltime_data <- alltime_data[alltime_data$TRTGRINDMAN != "Treated_Placebo",]
@@ -61,17 +63,17 @@ ggplot.alltp.treatedrespN <- ggplot.alltp.treatedrespN[, -c(4:6)]
 
 
 fried.trtdrespY <- friedman.test(alltp.treatedrespY)
+fried.trtdrespY 
 fried.trtdrespY$p.value
 friedmc.trtdrespY <- friedmanmc(alltp.treatedrespY)
+friedmc.trtdrespY
 friedmc.trtdrespY.pval <- friedmc.trtdrespY$dif.com
 friedmc.trtdrespY.pval <- friedmc.trtdrespY.pval[friedmc.trtdrespY.pval$difference=="TRUE",]
-pairwise.wilcox.test(ggplot.alltp.treatedrespY$invsimpson, ggplot.alltp.treatedrespY$visit, p.adj="BH", exact=F, paired=T)
 
 
 friedman.test(alltp.treatedrespN)
 friedmc <- friedmanmc(alltp.treatedrespN)
 friedmc
-pairwise.wilcox.test(ggplot.alltp.treatedrespN$invsimpson, ggplot.alltp.treatedrespN$visit, p.adj="BH", exact=F, paired=T)
 
 
 
@@ -117,12 +119,6 @@ friedman.test(alltp.placeborespN)
 friedmc <- friedmanmc(alltp.placeborespN)
 friedmc
 
-
-levels(ggplot.alltp.adiv$visit) <- c("0", "4", "6", "22")
-levels(ggplot.alltp.adiv$RESPONSEwk22) <- c("Nonresponder", "Responder")
-ggplot(ggplot.alltp.treatedrespY, aes(visit, invsimpson))+
-	geom_boxplot() + theme(legend.position="none")
-
 ann_text <- data.frame(visit = 4, invsimpson = 31,
 											 INDTRTGR = "Treated", RESPONSEwk22 = "Responder")
 PNn_text <- data.frame(visit = 2.5, invsimpson = 35,
@@ -133,6 +129,8 @@ TNn_text <- data.frame(visit = 2.5, invsimpson = 35,
 											 INDTRTGR = "Treated", RESPONSEwk22 = "Nonresponder")
 TRn_text <- data.frame(visit = 2.5, invsimpson = 35,
 											 INDTRTGR = "Treated", RESPONSEwk22 = "Responder")
+											 
+levels(ggplot.alltp.adiv$RESPONSEwk22) <- c("Nonresponder", "Responder")
 
 alltp.adivXvisXindtrtXRESPONSEwk22.plot <- ggplot(ggplot.alltp.adiv, aes(x=visit, y=invsimpson, fill=INDTRTGR)) +
 	geom_boxplot(position=position_dodge(width = 1), alpha = .4, outlier.shape = NA) + guides(fill=FALSE) +
@@ -145,6 +143,7 @@ alltp.adivXvisXindtrtXRESPONSEwk22.plot <- ggplot(ggplot.alltp.adiv, aes(x=visit
 	geom_text(data = TRn_text, label = paste("( n =", nrow(alltp.ust.RESPyes)/4, ")"), size=6)+
 	stat_boxplot_custom(qs = c(0, 0.25, 0.5, 0.75, 1))
 
+
 tiff("figures/Figure4_alltp.adivXvisitXindtrtXRESPONSEwk22.tiff", height = 6, width = 10, units = "in", res = 300)
 alltp.adivXvisXindtrtXRESPONSEwk22.plot
 dev.off()
@@ -152,4 +151,8 @@ dev.off()
 pdf("figures/Figure4_alltp.adivXvisitXindtrtXRESPONSEwk22.pdf", height = 6, width = 10)
 alltp.adivXvisXindtrtXRESPONSEwk22.plot
 dev.off()
+
+
+
+
 

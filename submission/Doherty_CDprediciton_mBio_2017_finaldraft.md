@@ -216,19 +216,19 @@ was lower in subjects in remission 6 weeks after induction (median =
 4.13%, IQR = 0.667-15.4). Also, the relative abundance of
 *Faecalibacterium* (OTU7) was not only higher in subjects in remission 6
 weeks after induction (median = 7.43%, IQR = 1.43-11.9) than subjects
-with active CD (median = 0.167%, IQR = 0-5.10), but it was also present
-prior to the start of treatment in every subject who was in remission 6
-weeks after induction.
+with active CD (median = 0.167%, IQR = 0.00-5.10), but it was also
+present prior to the start of treatment in every subject who was in
+remission 6 weeks after induction.
 
 **Association of baseline microbial signatures with treatment response**
 
 We also hypothesized that the composition of the baseline fecal
-microbiota could predict therapeutic response (CDAI decrease ≥ 100 or
-remission) 6 weeks after induction. To test this hypothesis, we again
-used RF models to classify responders from non-responders 6 weeks after
-induction (Table 2). Clinical data alone resulted in an AUC of 0.651
-(specificity = 0.545, sensitivity = 0.724) (Figure 2C). Using only
-microbiota data, the model predicted response with an AUC of 0.762
+microbiota could predict therapeutic response (CDAI decrease ≥ 100
+points or remission) 6 weeks after induction. To test this hypothesis,
+we again used RF models to classify responders from non-responders 6
+weeks after induction (Table 2). Clinical data alone resulted in an AUC
+of 0.651 (specificity = 0.545, sensitivity = 0.724) (Figure 2C). Using
+only microbiota data, the model predicted response with an AUC of 0.762
 (specificity = 0.558, sensitivity = 0.882). When combining clinical
 metadata with the microbiome, the model predicted response with an AUC
 of 0.733 (specificity = 0.724, sensitivity = 0.684).
@@ -329,7 +329,7 @@ stool samples from subjects induced with UST. We were again better able
 to distinguish subjects in remission from subjects with active CD
 compared to responders from non-responders (p = 0.005; Figure 5A). Our
 model could classify response 6 weeks after induction using week 6 stool
-samples from subjects treated with UST with an AUC of 0.72 (sensitivity
+samples from subjects treated with UST with an AUC of 0.720 (sensitivity
 = 0.563, specificity = 0.812). For classifying subjects in remission
 from subjects with active CD 6 weeks after UST induction using week 6
 stool samples, the model had an AUC of 0.866 (sensitivity = 0.833,

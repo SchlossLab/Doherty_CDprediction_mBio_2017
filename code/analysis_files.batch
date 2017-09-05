@@ -1,0 +1,33 @@
+#!bash
+
+#Set local variables
+
+DOWNDIR=data/raw
+WORKDIR=data/mothur
+REF=data/references
+CODE=code
+
+
+#make na.omit files subsampled shared, dist, 
+
+mothur "#set.dir(input=$WORKDIR, output=$WORKDIR);
+	summary.seqs(fasta=Jan400.trim.contigs.fasta, processors=8);
+	
+#Run diversity analysis on na.omit data set;
+	
+	get.groups(shared=Jan400.an.shared, accnos=Jan400.na.omit.cmd.accnos);
+	system(mv $WORKDIR/Jan400.an.0.03.pick.shared $WORKDIR/Jan400.all.na.omit.cmd.shared);
+	summary.single(shared=$WORKDIR/Jan400.all.na.omit.cmd.shared, calc=nseqs-coverage-sobs-invsimpson, subsample=3000);
+	sub.sample(shared=$WORKDIR/Jan400.all.na.omit.cmd.shared, size=3000);
+	get.groups(shared=$WORKDIR/Jan400.an.shared, accnos=$WORKDIR/nao.screen.all.accnos);
+	system(mv $WORKDIR/Jan400.an.0.03.pick.shared $WORKDIR/Jan400.screening.all.na.omit.cmd.shared);
+	dist.shared(shared=Jan400.screening.all.na.omit.cmd.shared, calc=thetayc, subsample=3000);
+	get.groups(shared=$WORKDIR/Jan400.an.shared, accnos=$WORKDIR/nao.screen.ust.accnos);
+	system(mv $WORKDIR/Jan400.an.0.03.pick.shared $WORKDIR/Jan400.screening.ust.na.omit.cmd.shared);
+	dist.shared(shared=Jan400.screening.ust.na.omit.cmd.shared, calc=thetayc, subsample=3000);
+	get.groups(shared=$WORKDIR/Jan400.an.shared, accnos=$WORKDIR/nao.screen.plac.accnos);
+	system(mv $WORKDIR/Jan400.an.0.03.pick.shared $WORKDIR/Jan400.screening.plac.na.omit.cmd.shared);
+	dist.shared(shared=Jan400.screening.plac.na.omit.cmd.shared, calc=thetayc, subsample=3000);"
+
+#covert lt dist files to square for adonis
+R -e "source('$CODE/lt2sqdist.batch.R')"
