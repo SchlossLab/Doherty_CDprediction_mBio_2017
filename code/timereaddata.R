@@ -59,49 +59,7 @@ alltp.all.respY<-alltime_data[alltime_data$RESPONSEwk22=="Yes",]
 alltp.all.respN<-alltime_data[alltime_data$RESPONSEwk22=="No",]
 summary(alltp.all.respY[,1:6])
 
-all.distmat<-read.table("../data/Jan400.all.na.omit.cmd.thetayc.0.03.square.ave.dist")
-all.dist<-as.dist(all.distmat)
-ustdistmat<-read.table("../data/Jan400.ust.na.omit.cmd.thetayc.0.03.square.ave.dist")
-ustdist<-as.dist(ustdistmat)
-pladistmat<-read.table("../data/Jan400.plac.na.omit.cmd.thetayc.0.03.square.ave.dist")
-pladist<-as.dist(pladistmat)
-alltp_distmat<-read.table("../data/Jan400.alltp.noPU.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-alltp_dist<-as.dist(alltp_distmat)
-alltp_ustdistmat<-read.table("../data/Jan400.all.na.omit.cmd.ust.alltp.thetayc.square.ave.dist")
-alltp_ustdist<-as.dist(alltp_ustdistmat)
-alltp_placplacdistmat<-read.table("../data/Jan400.alltp.plac.noPU.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-alltp_placplacdist<-as.dist(alltp_placplacdistmat)
 
-wk046_distmat<-read.table("../data/Jan400.wk046.all.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk046_dist<-as.dist(wk046_distmat)
-wk046_ustdistmat<-read.table("../data/Jan400.wk046.ust.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk046_ustdist<-as.dist(wk046_ustdistmat)
-wk046_placdistmat<-read.table("../data/Jan400.wk046.plac.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk046_placdist<-as.dist(wk046_placdistmat)
-
-wk0.ustdistmat<-read.table("../data/Jan400.alltp.ust.wk0.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk0.ustdist<-as.dist(wk0.ustdistmat)
-wk4.ustdistmat<-read.table("../data/Jan400.alltp.ust.wk4.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk4.ustdist<-as.dist(wk4.ustdistmat)
-wk6.ustdistmat<-read.table("../data/Jan400.alltp.ust.wk6.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk6.ustdist<-as.dist(wk6.ustdistmat)
-
-wk0.placdistmat<-read.table("../data/Jan400.alltp.plac.wk0.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk0.placdist<-as.dist(wk0.placdistmat)
-wk4.placdistmat<-read.table("../data/Jan400.alltp.plac.wk4.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk4.placdist<-as.dist(wk4.placdistmat)
-wk6.placdistmat<-read.table("../data/Jan400.alltp.plac.wk6.na.omit.cmd.thetayc.0.03.square.ave.dist")
-wk6.placdist<-as.dist(wk6.placdistmat)
-
-
-alltp_ustdistmat.respY<-read.table("../data/Jan400.alltp.noPU.trtd.relRSP.Y.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-alltp_ustdist.respY<-as.dist(alltp_ustdistmat.respY)
-alltp_placdistmat.respY<-read.table("../data/Jan400.alltp.noPU.plac.relRSP.Y.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-alltp_placdist.respY<-as.dist(alltp_placdistmat.respY)
-alltp_distmat.respY<-read.table("../data/Jan400.alltp.noPU.relRSP.Y.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-alltp_dist.respY<-as.dist(alltp_distmat.respY)
-alltp_distmat.respN<-read.table("../data/Jan400.alltp.noPU.relRSP.N.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-alltp_dist.respN<-as.dist(alltp_distmat.respN)
 
 wk22remitters<-alltime_data[alltime_data$REMISSwk22=="Yes",]
 summary(subset(wk22remitters, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, REMISSwk22)))
@@ -113,10 +71,3 @@ summary(subset(trtd.wk22remitters, select=c(group, USUBJID, visit, TRTGR, TRTGRI
 plac.wk22remitters<-wk22remitters[wk22remitters$TRTGRINDMAN!="Treated_Placebo",]
 plac.wk22remitters<-plac.wk22remitters[plac.wk22remitters$TRTGRINDMAN!="Treated_Treated",]
 summary(subset(plac.wk22remitters, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, REMISSwk22)))
-
-wk22remitters.distmat<-read.table("../data/Jan400.alltp.wk22remitters.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-wk22remitters.dist<-as.dist(wk22remitters.distmat)
-trtd.wk22remitters.distmat<-read.table("../data/Jan400.alltp.trtd.wk22remitters.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-trtd.wk22remitters.dist<-as.dist(trtd.wk22remitters.distmat)
-plac.wk22remitters.distmat<-read.table("../data/Jan400.alltp.plac.wk22remitters.na.omit.cmd.thetayc.0.03.sq.ave.dist")
-plac.wk22remitters.dist<-as.dist(plac.wk22remitters.distmat)

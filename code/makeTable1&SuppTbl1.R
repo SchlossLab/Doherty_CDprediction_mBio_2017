@@ -1,3 +1,6 @@
+setwd("submission")
+
+source('../code/R_packages_setup.R')
 
 #Read in all data
 source('../code/APmd.setup.R')
@@ -41,20 +44,7 @@ summary(nao.screen.plac[,1:6])
 tax<- read.table('../data/Jan400.simple.taxonomy.txt', header=T, sep="\t")
 nao.screen.all.distmat<-read.table("../data/Jan400.screening.all.na.omit.cmd.thetayc.0.03.square.ave.dist")
 nao.screen.all.dist<-as.dist(nao.screen.all.distmat)
-nao.screen.trtd.distmat<-read.table("../data/Jan400.screening.ust.na.omit.cmd.thetayc.0.03.square.ave.dist")
-nao.screen.trtd.dist<-as.dist(nao.screen.trtd.distmat)
-nao.screen.plac.distmat<-read.table("../data/Jan400.screening.plac.na.omit.cmd.thetayc.0.03.square.ave.dist")
-nao.screen.plac.dist<-as.dist(nao.screen.plac.distmat)
 
-trtd_trtd.data.distmat<-read.table("../data/Jan400.trtd_trtd.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
-trtd_trtd.data.dist<-as.dist(trtd_trtd.data.distmat)
-trtd_plac.data.distmat<-read.table("../data/Jan400.trtd_plac.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
-trtd_plac.data.dist<-as.dist(trtd_plac.data.distmat)
-plac_plac.data.distmat<-read.table("../data/Jan400.plac_plac.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
-plac_plac.data.dist<-as.dist(plac_plac.data.distmat)
-plac_trtd.data.distmat<-read.table("../data/Jan400.plac_trtd.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
-plac_trtd.data.dist<-as.dist(plac_trtd.data.distmat)
-	
 
 
 summary(nao.screen_data[,c("TRTGR")])

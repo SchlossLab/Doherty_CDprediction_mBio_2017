@@ -2,15 +2,7 @@ setwd("submission")
 source('../code/R_packages_setup.R')
 source('../code/APmd.setup.R')
 
-#**Figure 1: Prediction of RESPONSE/REMISSION in treated subjects using all clinical metadata, baseline microbiome alone, and combined**
-#	*Question:* Can the microbiome, clinical metadata, or combined models reliably predict response?
-#*Goal:* Show clinical metadata isn’t great for prediction and improvement of prediction using microbiome. Show taxa marked as important for prediction are abundant enough to care about
-#A. Response ROCs
-#B. Response Model Performance vs. reality
-#C. Top predictive taxa and abundance based on response	
-#D. REMISSION ROCs
-#E. REMISSION Model Performance vs. reality
-#F. Top predictive taxa and abundance based on remission
+
 source('../code/readdataAUCRF.R')
 
 print("RESPONSEwk6 by AUC-RF \\nRelative response defined as a decrease in CDAI from Screening greater than 29.5%.")

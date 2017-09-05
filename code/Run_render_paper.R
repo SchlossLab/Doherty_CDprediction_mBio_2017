@@ -15,4 +15,4 @@ loadLibs(c("knitr", "rmarkdown"))
 
 # Render the final pdfs
 
-render('submission/Doherty_CDprediciton_mBio_2017_finaldraft.Rmd', output_format = "all", clean = FALSE)
+render('submission/Doherty_CDprediciton_mBio_2017_finaldraft.Rmd', output_format = "pdf_document", clean = FALSE)
