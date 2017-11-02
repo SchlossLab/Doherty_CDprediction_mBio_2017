@@ -2353,7 +2353,9 @@ Janssen Research and Development provided financial and technical support for th
 
 #xtable(tbl1)
 ```
+
 \includegraphics{tables/Supp.table1_cohortdiversity.png}
+
 
 \newpage
 
@@ -2366,9 +2368,9 @@ Janssen Research and Development provided financial and technical support for th
 ```{r exp design}
 ```
 
-\includegraphics{figures/Figure1_expdesign.pdf}
+<!-- \includegraphics{figures/Figure1_expdesign.pdf} -->
 
-\newpage
+<!-- \newpage -->
 
 
 
@@ -2380,9 +2382,9 @@ Janssen Research and Development provided financial and technical support for th
 #source('../code/Figure2_prediction.R')
 ```
 
-\includegraphics{figures/Figure2_wk0Xwk6pred.pdf}
+<!-- \includegraphics{figures/Figure2_wk0Xwk6pred.pdf} -->
 
-\newpage
+<!-- \newpage -->
 
 **Supplemental Figure 1: Phyla from baseline stool samples in subjects treated with UST by week six outcome** The relative abundance of each phylum in UST treated subjects were compared based on (A) response and (B) remission status using a Wilcoxon rank sum test and to identify phyla where there was a p-value less than 0.05 following a Benjamini-Hochberg correction for multiple comparisons. No comparisons were significant. Whiskers represent the range and boxes represent the 25-75% interquartile range of the median (black bar).
 
@@ -2391,29 +2393,29 @@ Janssen Research and Development provided financial and technical support for th
 ```
 
 
-\includegraphics{figures/SF1_wk6phyla.pdf}
+<!-- \includegraphics{figures/SF1_wk6phyla.pdf} -->
 
-\newpage
+<!-- \newpage -->
 
 **Figure 3: Differential taxa in baseline stool samples from subjects treated with UST, based on week six remission status** The baseline relative abundance of each OTU was compared between subjects in remission and those with active CD 6 weeks after induction using a Wilcoxon rank sum test followed by a Benjamini-Hochberg correction for multiple comparisons. This identified 2 OTUs with significantly different relative abundance at baseline (p < 0.05). Black bars represent the median relative abundance.
 
 ```{r Figure3_basesigOTUabund.REMISSwk6}
 ```
 
-\includegraphics{figures/Figure3_basesigOTUabund.REMISSwk6.pdf}
+<!-- \includegraphics{figures/Figure3_basesigOTUabund.REMISSwk6.pdf} -->
 
-\newpage
+<!-- \newpage -->
 
 **Figure 4: Change in alpha diversity over time by induction treatment and week 22 response status.** The ${\alpha}$-diversity of `r (nrow(alltp.ust)/4)` subjects induced and maintained with UST and `r (nrow(alltp.placplac)/4)` subjects induced and maintained with placebo was assessed at each time point. Friedman test were performed within each treatment and responder group. Whiskers represent the range and boxes represent the 25-75% interquartile range of the median (black bar). * indicates week 22 is significantly different from baseline (p <0.05).
 
 ```{r  Figure4_alltp.adivXvisitXindtrtXrelRSPwk22.pdf}
 ```
 
-\includegraphics{figures/Figure4_alltp.adivXvisitXindtrtXRESPONSEwk22.pdf}
+<!-- \includegraphics{figures/Figure4_alltp.adivXvisitXindtrtXRESPONSEwk22.pdf} -->
 
 
 
-\newpage
+<!-- \newpage -->
 
 **Figure 5: Classification of week 6 response or remission status using week 6 stool samples from subjects treated with UST** (A) ROC curves for week 6 outcome based on the week 6 microbiota. (B) Predictive OTUs from week 6 stool for remission status at 6 weeks after induction, based on mean decrease in accuracy. Black bars represent the median relative abundance.
 
@@ -2421,7 +2423,7 @@ Janssen Research and Development provided financial and technical support for th
 #source("../code/Figure5_responseREMwk6Xwk6.R")
 ```
 
-\includegraphics{figures/Figure5_wk6Xwk6.pdf}
+<!-- \includegraphics{figures/Figure5_wk6Xwk6.pdf} -->
 
 \newpage
 
