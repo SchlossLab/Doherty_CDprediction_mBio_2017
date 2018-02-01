@@ -1,0 +1,33 @@
+#!/bin/sh
+#PBS -l nodes=1:ppn=2,mem=46gb
+#PBS -l walltime=476:00:00
+#PBS -l cput=9999:00:00
+#PBS -j oe
+#PBS -m abe
+#PBS -V
+#PBS -M mkdohert@med.umich.edu
+#PBS -q first
+#PBS -l qos=flux
+#PBS -q fluxod
+#PBS -A pschloss_fluxod
+
+##PBS -A schloss_lab
+##PBS -W depend=afterok:1135111
+
+echo "ncpus-2.pbs"
+cat $PBS_NODEFILE
+qstat -f $PBS_JOBID
+
+cd $PBS_O_WORKDIR
+
+NCPUS=`wc -l $PBS_NODEFILE | awk '{print $1}'`
+
+mothur "#set.dir(input=/nfs/turbo/schloss-lab/mkdohert/Janssen_data/data/raw/All_reran, output=/nfs/turbo/schloss-lab/mkdohert/);
+        summary.seqs(fasta=/nfs/turbo/schloss-lab/mkdohert/Janssen_data/data/Jan400.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.fasta,count=/nfs/turbo/schloss-lab/mkdohe$
+        get.mimarkspackage(file=/nfs/turbo/schloss-lab/mkdohert/Janssen_data/data/raw/All_reran/Jan400.files, package=human_gut, requiredonly=t);
+        make.sra(file=/nfs/turbo/schloss-lab/mkdohert/Janssen_data/data/raw/All_reran/Jan400.files, project=Jan400.project, mimark=Jan400_MIMarksData.txt, instrument=Illumina_MiSeq, platform=ILLUMINA)
+
+echo "qsub working directory absolute is"
+echo $PBS_O_WORKDIR
+exit
+
