@@ -2366,7 +2366,7 @@ Janssen Research and Development provided financial and technical support for th
 ```{r exp design}
 ```
 
-\includegraphics{figures/Figure1_expdesign.pdf}
+\includegraphics{figures/figure_pdfs/Figure1_expdesign.pdf}
 
 \newpage
 
@@ -2380,7 +2380,7 @@ Janssen Research and Development provided financial and technical support for th
 #source('../code/Figure2_prediction.R')
 ```
 
-\includegraphics{figures/Figure2_wk0Xwk6pred.pdf}
+\includegraphics{figures/figure_pdfs/Figure2_wk0Xwk6pred.pdf}
 
 \newpage
 
@@ -2389,7 +2389,7 @@ Janssen Research and Development provided financial and technical support for th
 ```{r Figure3_basesigOTUabund.REMISSwk6}
 ```
 
-\includegraphics{figures/Figure3_basesigOTUabund.REMISSwk6.pdf}
+\includegraphics{figures/figure_pdfs/Figure3_basesigOTUabund.REMISSwk6.pdf}
 
 \newpage
 
@@ -2398,7 +2398,7 @@ Janssen Research and Development provided financial and technical support for th
 ```{r  Figure4_alltp.adivXvisitXindtrtXrelRSPwk22.pdf}
 ```
 
-\includegraphics{figures/Figure4_alltp.adivXvisitXindtrtXRESPONSEwk22.pdf}
+\includegraphics{figures/figure_pdfs/Figure4_alltp.adivXvisitXindtrtXRESPONSEwk22.pdf}
 
 
 
@@ -2410,7 +2410,7 @@ Janssen Research and Development provided financial and technical support for th
 #source("../code/Figure5_responseREMwk6Xwk6.R")
 ```
 
-\includegraphics{figures/Figure5_wk6Xwk6.pdf}
+\includegraphics{figures/figure_pdfs/Figure5_wk6Xwk6.pdf}
 
 \newpage
 
@@ -2421,7 +2421,7 @@ Janssen Research and Development provided financial and technical support for th
 ```
 
 
-\includegraphics{figures/SF1_wk6phyla.pdf}
+\includegraphics{figures/figure_pdfs/SF1_wk6phyla.pdf}
 
 \newpage
 # References
