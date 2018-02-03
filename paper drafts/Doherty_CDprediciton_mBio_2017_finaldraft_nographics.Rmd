@@ -1,0 +1,2431 @@
+---
+title: Fecal microbiota signatures are associated with response to Ustekinumab therapy
+  among Crohn’s Disease patients
+csl: mbio.csl
+fontsize: 12pt
+output:
+  pdf_document:
+    keep_tex: yes
+    latex_engine: xelatex
+  md_document: default
+  html_document: default
+  word_document: default
+header-includes:
+- \usepackage{setspace}
+- \doublespacing
+- \usepackage{lineno}
+- \linenumbers
+- \renewcommand{\familydefault}{\sfdefault}
+- \usepackage{graphicx}
+geometry: margin=1.0in
+bibliography: My_Library_copy.bib
+---
+
+```{r knitr_settings, cache=FALSE, include=FALSE}
+source('../code/knitr_settings.R')
+#knitr::opts_chunk$set("cache" = T)
+source('../code/R_packages_setup.R')
+```
+
+
+```{r readdata, include=F}
+#Read in all data
+source('../code/APmd.setup.R')
+
+
+
+
+screen_RESPwk22<-APmd_RSPwk22[APmd_RSPwk22$visit=="Screening",] #removes any group with NA in RESPONSEwk22
+
+screen_data<-screen_RESPwk22				#na.omit(screen_RESPwk22)
+summary(subset(screen_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
+
+summary(subset(screen_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
+
+summary(subset(screen_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
+
+
+screen_data<-screen_data[screen_data$TRTGRINDMAN!="Placebo_Not",]
+screen_data<-screen_data[screen_data$TRTGRINDMAN!="Treated_Not",]
+
+summary(screen_data[,c("TRTGR", "TRTGRINDMAN", "visit", "RESPONSEwk6", "RelRSPwk6", "REMISSwk6")])
+
+
+screen.trtd<-screen_data[screen_data$TRTGRINDMAN!="Placebo_Placebo",]
+screen.trtd<-screen.trtd[screen.trtd$TRTGRINDMAN!="Placebo_Treated",]
+summary(screen.trtd[,1:6])
+screen.plac<-screen_data[screen_data$TRTGRINDMAN!="Treated_Placebo",]
+screen.plac<-screen.plac[screen.plac$TRTGRINDMAN!="Treated_Treated",]
+summary(screen.plac[,1:6])
+
+nao.screen_data<-na.omit(screen_data)
+
+nao.screen.trtd<-nao.screen_data[nao.screen_data$TRTGRINDMAN!="Placebo_Placebo",]
+nao.screen.trtd<-nao.screen.trtd[nao.screen.trtd$TRTGRINDMAN!="Placebo_Treated",]
+summary(nao.screen.trtd[,1:6])
+nao.screen.plac<-nao.screen_data[nao.screen_data$TRTGRINDMAN!="Treated_Placebo",]
+nao.screen.plac<-nao.screen.plac[nao.screen.plac$TRTGRINDMAN!="Treated_Treated",]
+summary(nao.screen.plac[,1:6])
+
+
+tax<- read.table('../data/Jan400.simple.taxonomy.txt', header=T, sep="\t")
+nao.screen.all.distmat<-read.table("../data/Jan400.screening.all.na.omit.cmd.thetayc.0.03.square.ave.dist")
+nao.screen.all.dist<-as.dist(nao.screen.all.distmat)
+nao.screen.trtd.distmat<-read.table("../data/Jan400.screening.ust.na.omit.cmd.thetayc.0.03.square.ave.dist")
+nao.screen.trtd.dist<-as.dist(nao.screen.trtd.distmat)
+nao.screen.plac.distmat<-read.table("../data/Jan400.screening.plac.na.omit.cmd.thetayc.0.03.square.ave.dist")
+nao.screen.plac.dist<-as.dist(nao.screen.plac.distmat)
+
+# trtd_trtd.data.distmat<-read.table("../data/Jan400.trtd_trtd.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
+# trtd_trtd.data.dist<-as.dist(trtd_trtd.data.distmat)
+# trtd_plac.data.distmat<-read.table("../data/Jan400.trtd_plac.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
+# trtd_plac.data.dist<-as.dist(trtd_plac.data.distmat)
+# plac_plac.data.distmat<-read.table("../data/Jan400.plac_plac.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
+# plac_plac.data.dist<-as.dist(plac_plac.data.distmat)
+# plac_trtd.data.distmat<-read.table("../data/Jan400.plac_trtd.accnos.na.omit.cmd.thetayc.0.03.square.ave.dist")
+# plac_trtd.data.dist<-as.dist(plac_trtd.data.distmat)
+```	
+
+```{r sum, include=F}
+summary(nao.screen_data[,c("TRTGR")])
+summary(screen_data[,c("TRTGR")])
+```
+
+```{r phylum_otu, include=FALSE}
+
+#screen_data <- screen_data[screen_data$TRTGR=="Treated",]
+#source("../code/SF1_week6phyla.R")
+
+#pdf("figures/SF1_wk6phyla.pdf", height = 10, width = 12)
+#plot_grid(phyRabRESPONSEwk6_figure2, phyRabREMISSwk6_figure2, labels = c("A", "B"), align = "v", nrow=2)
+#dev.off()
+
+
+
+#trtd.screen_data <- screen_data
+#screen_data <- trtd.screen_data[trtd.screen_data$TRTGR=="Treated",]
+#source("../code/Figure3_REMISSwk6.sig.otu.figure.R")
+
+source('../code/phylum.analysis.R')
+source('../code/otu.analysis.R')
+
+screen_data.trtd <- screen_data[screen_data$TRTGR=="Treated",]
+screen_data.trtd_groups <- screen_data.trtd[, c("group", "TRTGR")]
+screen_data.trtd_Otus <- screen_data.trtd[, c("group", "TRTGR", "REMISSwk6")]
+screen.trtd_otu_rel_abund <- merge(screen_data.trtd_groups, otu_rel_abund, by.x = "group", by.y = "row.names")
+rownames(screen.trtd_otu_rel_abund) <- screen.trtd_otu_rel_abund$group
+screen.trtd_otu_rel_abund <- screen.trtd_otu_rel_abund[,-c(1:2)]
+
+screen.trtd_rel_abund_Otus <- merge(screen_data.trtd_Otus, otu_rel_abund, by.x = "group", by.y = "row.names")
+rownames(screen.trtd_rel_abund_Otus) <- screen.trtd_rel_abund_Otus$group
+screen.trtd_rel_abund_Otus <- screen.trtd_rel_abund_Otus[,-c(1:2)]
+screen.trtd_rel_abund_Otus <- subset(screen.trtd_rel_abund_Otus, select = c("REMISSwk6", "Otu00001", "Otu00007"))
+trtd.REMwk6.YES.relabund <- screen.trtd_rel_abund_Otus[screen.trtd_rel_abund_Otus$REMISSwk6=="Yes",]
+trtd.REMwk6.NO.relabund <- screen.trtd_rel_abund_Otus[screen.trtd_rel_abund_Otus$REMISSwk6=="No",]
+
+median(trtd.REMwk6.YES.relabund$Otu00001)
+quantile(trtd.REMwk6.YES.relabund$Otu00001, type = 2)
+quantile(trtd.REMwk6.NO.relabund$Otu00001, type = 2)
+quantile(trtd.REMwk6.YES.relabund$Otu00007, type = 2)
+quantile(trtd.REMwk6.NO.relabund$Otu00007, type = 2)
+#screen_data <- trtd.screen_data 
+```
+
+```{r cdai.cor.test,  include=F}
+set.seed(32016)
+cdai.cor.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, cdail_wk0)))
+n.cdai.cortest<-nrow(cdai.cor.test.data)
+n.cdai.cortest
+cor.cdai<-cor.test(cdai.cor.test.data$cdail_wk0, cdai.cor.test.data$invsimpson, method = "spearman")
+cor.cdai
+cor.cdai.pval<-signif(cor.cdai$p.value, digits = 1)
+cor.cdai.pval
+cor.cdai.rho<-signif(cor.cdai$estimate, digits = 1)
+cor.cdai.rho
+
+
+```
+
+```{r cdaiwk0betadiv, include=F}
+set.seed(32016)
+cdaiwk0.adonis<-adonis(nao.screen.all.dist ~ cdail_wk0, nao.screen_data)
+cdaiwk0.adonis
+cdaiwk0.adonis.pval<-signif(as.numeric(na.omit(cdaiwk0.adonis$aov.tab$`Pr(>F)`)), digits = 1)
+
+CDAI_min<-toString(c('Min=', min(nao.screen_data$cdail_wk0)))
+CDAI_min<-gsub(",", "", CDAI_min)
+CDAI_min<-gsub(" ", "", CDAI_min)
+CDAI_med<-toString(c("Median=", median(nao.screen_data$cdail_wk0)))
+CDAI_med<-gsub(",", "", CDAI_med)
+CDAI_med<-gsub(" ", "", CDAI_med)
+CDAI_max<-toString(c("Max=", max(nao.screen_data$cdail_wk0)))
+CDAI_max<-gsub(",", "", CDAI_max)
+CDAI_max<-gsub(" ", "", CDAI_max)
+CDAI_sum<-toString(c(CDAI_min, CDAI_med, CDAI_max))
+CDAI_n<-n.cdai.cortest
+CDAI_Spear_P<- toString(c('(', cor.cdai.pval, ')'))
+CDAI_Spear_P<-gsub(",", "", CDAI_Spear_P)
+CDAI_Spear_P<-gsub(" ", "", CDAI_Spear_P)
+CDAI_Spear_rho<-toString(c('rho =', cor.cdai.rho))
+CDAI_Spear_rho<-gsub(",", "", CDAI_Spear_rho)
+#CDAI_Spear_rho<-gsub(" ", "", CDAI_Spear_rho)
+CDAI_Spear_Prho<-c(CDAI_Spear_rho, CDAI_Spear_P)
+CDAI_Spear<-toString(c(CDAI_Spear_Prho))
+CDAI_Spear<-gsub(",", "", CDAI_Spear)
+#CDAI_AMOVA_p<-toString(c(cdaiwk0.adonis.pval))
+#CDAI_AMOVA_p<-gsub(",", "", CDAI_AMOVA_p)
+#CDAI_AMOVA_p<-gsub(" ", "", CDAI_AMOVA_p)
+#CDAI_AMOVA<-toString(c(CDAI_AMOVA_p))
+#CDAI_AMOVA<-gsub(",", "", CDAI_AMOVA)
+CDAI<- matrix(c('CDAI', CDAI_Spear_rho, cor.cdai$p.value, as.numeric(na.omit(cdaiwk0.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
+```
+
+```{r stoolfreq adiv, include=F}
+set.seed(32016)
+stool.cor.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, CDSTOOLM_Screening)))
+n.stool.cortest<-nrow(stool.cor.test.data)
+n.stool.cortest
+cor.stool<-cor.test(stool.cor.test.data$CDSTOOLM_Screening, stool.cor.test.data$invsimpson, method = "spearman")
+cor.stool
+cor.stool.pval<-signif(cor.stool$p.value, digits = 1)
+cor.stool.pval
+cor.stool.rho<-signif(cor.stool$estimate, digits = 1)
+cor.stool.rho
+
+```
+
+```{r stoolfreq bdiv, include=F}
+set.seed(32016)
+stool.adonis<-adonis(nao.screen.all.dist ~ CDSTOOLM_Screening, nao.screen_data)
+stool.adonis
+stool.adonis.pval<-signif(as.numeric(na.omit(stool.adonis$aov.tab$`Pr(>F)`)), digits = 1)
+
+Stool_min<-toString(c('Min=', min(nao.screen_data$CDSTOOLM_Screening)))
+Stool_min<-gsub(",", "", Stool_min)
+Stool_min<-gsub(" ", "", Stool_min)
+Stool_med<-toString(c("Median=", median(nao.screen_data$CDSTOOLM_Screening)))
+Stool_med<-gsub(",", "", Stool_med)
+Stool_med<-gsub(" ", "", Stool_med)
+Stool_max<-toString(c("Max=", max(nao.screen_data$CDSTOOLM_Screening)))
+Stool_max<-gsub(",", "", Stool_max)
+Stool_max<-gsub(" ", "", Stool_max)
+Stool_sum<-toString(c(Stool_min, Stool_med, Stool_max))
+Stool_n<-n.stool.cortest
+Stool_Spear_P<- toString(c("(", cor.stool.pval, ")"))
+Stool_Spear_P<-gsub(",", "", Stool_Spear_P)
+Stool_Spear_P<-gsub(" ", "", Stool_Spear_P)
+Stool_Spear_rho<-toString(c('rho =', cor.stool.rho))
+Stool_Spear_rho<-gsub(",", "", Stool_Spear_rho)
+#Stool_Spear_rho<-gsub(" ", "", Stool_Spear_rho)
+Stool_Spear_Prho<-c(Stool_Spear_rho, Stool_Spear_P)
+Stool_Spear<-toString(c(Stool_Spear_Prho))
+Stool_Spear<-gsub(",", "", Stool_Spear)
+
+Stool<- matrix(c('Loose Stool Frequency (per week)', Stool_Spear_rho, cor.stool$p.value, as.numeric(na.omit(stool.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
+```
+
+
+```{r CRP.cor.test, include=F}
+set.seed(32016)
+CRP.cor.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, BL_CRP)))
+n.CRP.cortest<-nrow(CRP.cor.test.data)
+n.CRP.cortest
+cor.CRP<-cor.test(CRP.cor.test.data$BL_CRP, CRP.cor.test.data$invsimpson, method = "spearman")
+cor.CRP
+cor.CRP.pval<-signif(cor.CRP$p.value, digits = 1)
+cor.CRP.pval
+cor.CRP.rho<-signif(cor.CRP$estimate, digits = 1)
+cor.CRP.rho
+
+```
+
+```{r BL_CRP.adonis,  include=F}
+set.seed(32016)
+BL_CRP.adonis<-adonis(nao.screen.all.dist ~ BL_CRP, nao.screen_data)
+BL_CRP.adonis
+BL_CRP.adonis.pval<-signif(as.numeric(na.omit(BL_CRP.adonis$aov.tab$`Pr(>F)`)), digits = 1)
+
+CRP_min<-toString(c('Min=', min(nao.screen_data$BL_CRP)))
+CRP_min<-gsub(",", "", CRP_min)
+CRP_min<-gsub(" ", "", CRP_min)
+CRP_med<-toString(c("Median=", median(nao.screen_data$BL_CRP)))
+CRP_med<-gsub(",", "", CRP_med)
+CRP_med<-gsub(" ", "", CRP_med)
+CRP_max<-toString(c("Max=", max(nao.screen_data$BL_CRP)))
+CRP_max<-gsub(",", "", CRP_max)
+CRP_max<-gsub(" ", "", CRP_max)
+CRP_sum<-toString(c(CRP_min, CRP_med, CRP_max))
+CRP_n<-n.CRP.cortest
+CRP_Spear_P<- toString(c('(', cor.CRP.pval, ")"))
+CRP_Spear_P<-gsub(",", "", CRP_Spear_P)
+CRP_Spear_P<-gsub(" ", "", CRP_Spear_P)
+CRP_Spear_rho<-toString(c('rho =', cor.CRP.rho))
+CRP_Spear_rho<-gsub(",", "", CRP_Spear_rho)
+#CRP_Spear_rho<-gsub(" ", "", CRP_Spear_rho)
+CRP_Spear_Prho<-c(CRP_Spear_rho, CRP_Spear_P)
+CRP_Spear<-toString(c(CRP_Spear_Prho))
+CRP_Spear<-gsub(",", "", CRP_Spear)
+
+CRP<- matrix(c('C-Reactive Protein (mg/L serum)', CRP_Spear_rho, cor.CRP$p.value, as.numeric(na.omit(BL_CRP.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
+```
+
+```{r FCALP.cor.test, include=F}
+set.seed(32016)
+FCALP.cor.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, BL_FCALP)))
+n.FCALP.cortest<-nrow(FCALP.cor.test.data)
+n.FCALP.cortest
+cor.FCALP<-cor.test(FCALP.cor.test.data$BL_FCALP, FCALP.cor.test.data$invsimpson, method = "spearman")
+cor.FCALP
+cor.FCALP.pval<-signif(cor.FCALP$p.value, digits = 1)
+cor.FCALP.pval
+cor.FCALP.rho<-signif(cor.FCALP$estimate, digits = 1)
+cor.FCALP.rho
+
+```
+
+```{r BL_FCALP.adonis,  include=F}
+set.seed(32016)
+BL_FCALP.adonis<-adonis(nao.screen.all.dist ~ BL_FCALP, nao.screen_data)
+BL_FCALP.adonis
+BL_FCALP.adonis.pval<-signif(as.numeric(na.omit(BL_FCALP.adonis$aov.tab$`Pr(>F)`)), digits = 1)
+
+FCALP_min<-toString(c('Min=', min(nao.screen_data$BL_FCALP)))
+FCALP_min<-gsub(",", "", FCALP_min)
+FCALP_min<-gsub(" ", "", FCALP_min)
+FCALP_med<-toString(c("Median=", median(nao.screen_data$BL_FCALP)))
+FCALP_med<-gsub(",", "", FCALP_med)
+FCALP_med<-gsub(" ", "", FCALP_med)
+FCALP_max<-toString(c("Max=", max(nao.screen_data$BL_FCALP)))
+FCALP_max<-gsub(",", "", FCALP_max)
+FCALP_max<-gsub(" ", "", FCALP_max)
+FCALP_sum<-toString(c(FCALP_min, FCALP_med, FCALP_max))
+FCALP_n<-n.FCALP.cortest
+FCALP_Spear_P<- toString(c('(', cor.FCALP.pval,")"))
+FCALP_Spear_P<-gsub(",", "", FCALP_Spear_P)
+FCALP_Spear_P<-gsub(" ", "", FCALP_Spear_P)
+FCALP_Spear_rho<-toString(c('rho =', cor.FCALP.rho))
+FCALP_Spear_rho<-gsub(",", "", FCALP_Spear_rho)
+#FCALP_Spear_rho<-gsub(" ", "", FCALP_Spear_rho)
+FCALP_Spear_Prho<-c(FCALP_Spear_rho, FCALP_Spear_P)
+FCALP_Spear<-toString(c(FCALP_Spear_Prho))
+FCALP_Spear<-gsub(",", "", FCALP_Spear)
+FCALP_AMOVA_p<-toString(c(BL_FCALP.adonis.pval))
+FCALP_AMOVA_p<-gsub(",", "", FCALP_AMOVA_p)
+FCALP_AMOVA_p<-gsub(" ", "", FCALP_AMOVA_p)
+FCALP_AMOVA<-toString(c(FCALP_AMOVA_p))
+FCALP_AMOVA<-gsub(",", "", FCALP_AMOVA)
+FCALP<- matrix(c('Fecal Calprotectin (µg/g)', FCALP_Spear_rho, cor.FCALP$p.value, as.numeric(na.omit(BL_FCALP.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
+```
+
+```{r FLACT.cor.test, include=F}
+set.seed(32016)
+FLACT.cor.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, BL_FLACT)))
+n.FLACT.cortest<-nrow(FLACT.cor.test.data)
+n.FLACT.cortest
+cor.FLACT<-cor.test(FLACT.cor.test.data$BL_FLACT, FLACT.cor.test.data$invsimpson, method = "spearman")
+cor.FLACT
+cor.FLACT.pval<-signif(cor.FLACT$p.value, digits = 1)
+cor.FLACT.pval
+cor.FLACT.rho<-signif(cor.FLACT$estimate, digits = 1)
+cor.FLACT.rho
+
+```
+
+```{r BL_FLACT.adonis,  include=F}
+set.seed(32016)
+BL_FLACT.adonis<-adonis(nao.screen.all.dist ~ BL_FLACT, nao.screen_data)
+BL_FLACT.adonis
+BL_FLACT.adonis.pval<-signif(as.numeric(na.omit(BL_FLACT.adonis$aov.tab$`Pr(>F)`)), digits = 1)
+
+FLACT_min<-toString(c('Min=', min(nao.screen_data$BL_FLACT)))
+FLACT_min<-gsub(",", "", FLACT_min)
+FLACT_min<-gsub(" ", "", FLACT_min)
+FLACT_med<-toString(c("Median=", median(nao.screen_data$BL_FLACT)))
+FLACT_med<-gsub(",", "", FLACT_med)
+FLACT_med<-gsub(" ", "", FLACT_med)
+FLACT_max<-toString(c("Max=", max(nao.screen_data$BL_FLACT)))
+FLACT_max<-gsub(",", "", FLACT_max)
+FLACT_max<-gsub(" ", "", FLACT_max)
+FLACT_sum<-toString(c(FLACT_min, FLACT_med, FLACT_max))
+FLACT_n<-n.FLACT.cortest
+FLACT_Spear_P<- toString(c('(', cor.FLACT.pval,")"))
+FLACT_Spear_P<-gsub(",", "", FLACT_Spear_P)
+FLACT_Spear_P<-gsub(" ", "", FLACT_Spear_P)
+FLACT_Spear_rho<-toString(c('rho =', cor.FLACT.rho))
+FLACT_Spear_rho<-gsub(",", "", FLACT_Spear_rho)
+#FLACT_Spear_rho<-gsub(" ", "", FLACT_Spear_rho)
+FLACT_Spear_Prho<-c(FLACT_Spear_rho, FLACT_Spear_P)
+FLACT_Spear<-toString(c(FLACT_Spear_Prho))
+FLACT_Spear<-gsub(",", "", FLACT_Spear)
+FLACT_AMOVA_p<-toString(c(BL_FLACT.adonis.pval))
+FLACT_AMOVA_p<-gsub(",", "", FLACT_AMOVA_p)
+FLACT_AMOVA_p<-gsub(" ", "", FLACT_AMOVA_p)
+FLACT_AMOVA<-toString(c(FLACT_AMOVA_p))
+FLACT_AMOVA<-gsub(",", "", FLACT_AMOVA)
+FLACT<- matrix(c('Fecal Lactoferrin (µg/g)', FLACT_Spear_rho, cor.FLACT$p.value, as.numeric(na.omit(BL_FLACT.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
+```
+
+```{r BMI.cortest, include=F}
+set.seed(32016)
+BMI.cor.test.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR, invsimpson, BL_BMI)))
+n.BMI.cortest<-nrow(BMI.cor.test.data)
+n.BMI.cortest
+cor.BMI<-cor.test(BMI.cor.test.data$BL_BMI, BMI.cor.test.data$invsimpson, method = "spearman")
+cor.BMI
+cor.BMI.pval<-signif(cor.BMI$p.value, digits = 1)
+cor.BMI.pval
+cor.BMI.rho<-signif(cor.BMI$estimate, digits = 1)
+cor.BMI.rho
+
+```
+
+```{r BL_BMI.adonis,  include=F}
+set.seed(32016)
+BL_BMI.adonis<-adonis(nao.screen.all.dist ~ BL_BMI, nao.screen_data)
+BL_BMI.adonis
+BL_BMI.adonis.pval<-signif(as.numeric(na.omit(BL_BMI.adonis$aov.tab$`Pr(>F)`)), digits = 1)
+
+BMI_min<-toString(c('Min=', min(nao.screen_data$BL_BMI)))
+BMI_min<-gsub(",", "", BMI_min)
+BMI_min<-gsub(" ", "", BMI_min)
+BMI_med<-toString(c("Median=", median(nao.screen_data$BL_BMI)))
+BMI_med<-gsub(",", "", BMI_med)
+BMI_med<-gsub(" ", "", BMI_med)
+BMI_max<-toString(c("Max=", max(nao.screen_data$BL_BMI)))
+BMI_max<-gsub(",", "", BMI_max)
+BMI_max<-gsub(" ", "", BMI_max)
+BMI_sum<-toString(c(BMI_min, BMI_med, BMI_max))
+BMI_n<-n.BMI.cortest
+BMI_Spear_P<- toString(c('(', cor.BMI.pval, ")"))
+BMI_Spear_P<-gsub(",", "", BMI_Spear_P)
+BMI_Spear_P<-gsub(" ", "", BMI_Spear_P)
+BMI_Spear_rho<-toString(c('rho =', cor.BMI.rho))
+BMI_Spear_rho<-gsub(",", "", BMI_Spear_rho)
+#BMI_Spear_rho<-gsub(" ", "", BMI_Spear_rho)
+BMI_Spear_Prho<-c(BMI_Spear_rho, BMI_Spear_P)
+BMI_Spear<-toString(c(BMI_Spear_Prho))
+BMI_Spear<-gsub(",", "", BMI_Spear)
+BMI_AMOVA_p<-toString(c(BL_BMI.adonis.pval))
+BMI_AMOVA_p<-gsub(",", "", BMI_AMOVA_p)
+BMI_AMOVA_p<-gsub(" ", "", BMI_AMOVA_p)
+BMI_AMOVA<-toString(c(BMI_AMOVA_p))
+BMI_AMOVA<-gsub(",", "", BMI_AMOVA)
+BMI<- matrix(c('BMI', BMI_Spear_rho, cor.BMI$p.value, as.numeric(na.omit(BL_BMI.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
+```
+
+```{r weightcor, include=F}
+set.seed(32016)
+weight.cor.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, CDWEIGHM_Screening)))
+n.weight.cortest<-nrow(weight.cor.test.data)
+n.weight.cortest
+cor.weight<-cor.test(weight.cor.test.data$CDWEIGHM_Screening, weight.cor.test.data$invsimpson, method = "spearman")
+cor.weight
+cor.weight.pval<-signif(cor.weight$p.value, digits = 1)
+cor.weight.pval
+cor.weight.rho<-signif(cor.weight$estimate, digits = 1)
+cor.weight.rho
+
+```
+
+```{r CDWEIGHM_Screening.adonis,  include=F}
+set.seed(32016)
+CDWEIGHM_Screening.adonis<-adonis(nao.screen.all.dist ~ CDWEIGHM_Screening, nao.screen_data)
+CDWEIGHM_Screening.adonis
+CDWEIGHM_Screening.adonis.pval<-signif(as.numeric(na.omit(CDWEIGHM_Screening.adonis$aov.tab$`Pr(>F)`)), digits = 1)
+
+weight_min<-toString(c('Min=', min(nao.screen_data$CDWEIGHM_Screening)))
+weight_min<-gsub(",", "", weight_min)
+weight_min<-gsub(" ", "", weight_min)
+weight_med<-toString(c("Median=", median(nao.screen_data$CDWEIGHM_Screening)))
+weight_med<-gsub(",", "", weight_med)
+weight_med<-gsub(" ", "", weight_med)
+weight_max<-toString(c("Max=", max(nao.screen_data$CDWEIGHM_Screening)))
+weight_max<-gsub(",", "", weight_max)
+weight_max<-gsub(" ", "", weight_max)
+weight_sum<-toString(c(weight_min, weight_med, weight_max))
+weight_n<-n.weight.cortest
+weight_Spear_P<- toString(c('(', cor.weight.pval, ")"))
+weight_Spear_P<-gsub(",", "", weight_Spear_P)
+weight_Spear_P<-gsub(" ", "", weight_Spear_P)
+weight_Spear_rho<-toString(c('rho =', cor.weight.rho))
+weight_Spear_rho<-gsub(",", "", weight_Spear_rho)
+#weight_Spear_rho<-gsub(" ", "", weight_Spear_rho)
+weight_Spear_Prho<-c(weight_Spear_rho, weight_Spear_P)
+weight_Spear<-toString(c(weight_Spear_Prho))
+weight_Spear<-gsub(",", "", weight_Spear)
+weight_AMOVA_p<-toString(c(CDWEIGHM_Screening.adonis.pval))
+weight_AMOVA_p<-gsub(",", "", weight_AMOVA_p)
+weight_AMOVA_p<-gsub(" ", "", weight_AMOVA_p)
+weight_AMOVA<-toString(c(weight_AMOVA_p))
+weight_AMOVA<-gsub(",", "", weight_AMOVA)
+weight<- matrix(c('Weight (kg)', weight_Spear_rho, cor.weight$p.value, as.numeric(na.omit(CDWEIGHM_Screening.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
+```
+
+```{r AGE.cor.test, include=F}
+set.seed(32016)
+AGE.cor.test.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR, invsimpson, AGE)))
+n.AGE.cortest<-nrow(AGE.cor.test.data)
+n.AGE.cortest
+cor.AGE<-cor.test(AGE.cor.test.data$AGE, AGE.cor.test.data$invsimpson, method = "spearman")
+cor.AGE
+cor.AGE.pval<-signif(cor.AGE$p.value, digits = 1)
+cor.AGE.pval
+cor.AGE.rho<-signif(cor.AGE$estimate, digits = 1)
+cor.AGE.rho
+
+
+AGE.total.mean<-mean(AGE.cor.test.data$AGE)
+AGE.total.sd<-sd(AGE.cor.test.data$AGE)
+
+AGE.trtd<-AGE.cor.test.data[AGE.cor.test.data$TRTGR=="Treated",]
+AGE.trtd.mean<-signif(mean(AGE.cor.test.data$AGE), digits = 2)
+AGE.trtd.sd<-sd(AGE.cor.test.data$AGE)
+
+AGE.plac<-AGE.cor.test.data[AGE.cor.test.data$TRTGR=="Placebo",]
+AGE.plac.mean<-signif(mean(AGE.cor.test.data$AGE), digits=2)
+AGE.plac.sd<-sd(AGE.cor.test.data$AGE)
+
+
+
+```
+
+```{r AGE.adonis,  include=F}
+set.seed(32016)
+AGE.adonis<-adonis(nao.screen.all.dist ~ AGE, nao.screen_data)
+AGE.adonis
+AGE.adonis.pval<-signif(as.numeric(na.omit(AGE.adonis$aov.tab$`Pr(>F)`)), digits = 1)
+
+AGE_min<-toString(c('Min=', min(nao.screen_data$AGE)))
+AGE_min<-gsub(",", "", AGE_min)
+AGE_min<-gsub(" ", "", AGE_min)
+AGE_med<-toString(c("Median=", median(nao.screen_data$AGE)))
+AGE_med<-gsub(",", "", AGE_med)
+AGE_med<-gsub(" ", "", AGE_med)
+AGE_max<-toString(c("Max=", max(nao.screen_data$AGE)))
+AGE_max<-gsub(",", "", AGE_max)
+AGE_max<-gsub(" ", "", AGE_max)
+AGE_sum<-toString(c(AGE_min, AGE_med, AGE_max))
+AGE_n<-n.AGE.cortest
+
+AGE_Spear_P<- toString(c('(', cor.AGE.pval, ")"))
+AGE_Spear_P<-gsub(",", "", AGE_Spear_P)
+AGE_Spear_P<-gsub(" ", "", AGE_Spear_P)
+AGE_Spear_rho<-toString(c('rho =', cor.AGE.rho))
+AGE_Spear_rho<-gsub(",", "", AGE_Spear_rho)
+#AGE_Spear_rho<-gsub("rho", expression("\U03C1"), AGE_Spear_rho)
+AGE_Spear_Prho<-c(AGE_Spear_rho, AGE_Spear_P)
+AGE_Spear<-toString(c(AGE_Spear_Prho))
+AGE_Spear<-gsub(",", "", AGE_Spear)
+AGE_AMOVA_p<-toString(c(AGE.adonis.pval))
+AGE_AMOVA_p<-gsub(",", "", AGE_AMOVA_p)
+AGE_AMOVA_p<-gsub(" ", "", AGE_AMOVA_p)
+AGE_AMOVA<-toString(c(AGE_AMOVA_p))
+AGE_AMOVA<-gsub(",", "", AGE_AMOVA)
+AGE<- matrix(c('Age (years)', AGE_Spear_rho, cor.AGE$p.value, as.numeric(na.omit(AGE.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
+```
+
+```{r SEX-wilcox, include=F}
+set.seed(32016)
+SEX.wilcox.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, SEX)))
+n.MSEX.wilcoxtest<-nrow(SEX.wilcox.test.data[SEX.wilcox.test.data$SEX=="M",])
+n.MSEX.wilcoxtest
+n.FSEX.wilcoxtest<-nrow(SEX.wilcox.test.data[SEX.wilcox.test.data$SEX=="F",])
+n.FSEX.wilcoxtest
+wilcox.SEX<-wilcox.test(invsimpson ~ SEX, SEX.wilcox.test.data)
+summary(wilcox.SEX)
+wilcox.SEX.pval<-signif(wilcox.SEX$p.value, digits = 1)
+wilcox.SEX.pval
+wilcox.SEX.method<-wilcox.SEX$method
+subT<-wilcox.SEX.method
+
+```
+
+```{r SEX.adonis,  include=F}
+set.seed(32016)
+SEX.adonis<-adonis(nao.screen.all.dist ~ SEX, nao.screen_data)
+SEX.adonis
+SEX.adonis.pval<-signif(as.numeric(na.omit(SEX.adonis$aov.tab$`Pr(>F)`)), digits = 1)
+MSEX<-toString(c(n.MSEX.wilcoxtest))
+FSEX<-toString(c(n.FSEX.wilcoxtest))
+
+
+SEX_sum<-toString(c(FSEX, "/", MSEX))
+SEX_sum<-gsub(",", "", SEX_sum)
+SEX_sum<-gsub(" ", "", SEX_sum)
+
+SEX<- matrix(c('Sex (F/M)', "-", wilcox.SEX$p.value, as.numeric(na.omit(SEX.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
+
+```
+
+```{r BCORT-wilcox, include=F}
+set.seed(32016)
+BCORT.wilcox.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, BCORT)))
+YesBCORT.wilcoxtest<-BCORT.wilcox.test.data[BCORT.wilcox.test.data$BCORT=="Yes",]
+n.YesBCORT.wilcoxtest<-nrow(YesBCORT.wilcoxtest)
+NoBCORT.wilcoxtest<-BCORT.wilcox.test.data[BCORT.wilcox.test.data$BCORT=="No",]
+n.NoBCORT.wilcoxtest<-nrow(NoBCORT.wilcoxtest)
+wilcox.BCORT<-wilcox.test(invsimpson ~ BCORT, BCORT.wilcox.test.data)
+summary(wilcox.BCORT)
+wilcox.BCORT.pval<-signif(wilcox.BCORT$p.value, digits = 1)
+wilcox.BCORT.pval
+wilcox.BCORT.method<-wilcox.BCORT$method
+subT<-wilcox.BCORT.method
+nYesString<-toString(c("Yes=", n.YesBCORT.wilcoxtest))
+nYesString<-gsub(",", "", nYesString)
+nNoString<-toString(c("No=", n.NoBCORT.wilcoxtest))
+nNoString<-gsub(",", "", nNoString)
+
+```
+
+```{r BCORT.adonis,  include=F}
+set.seed(32016)
+BCORT.adonis<-adonis(nao.screen.all.dist ~ BCORT, nao.screen_data)
+BCORT.adonis
+BCORT.adonis.pval<-signif(as.numeric(na.omit(BCORT.adonis$aov.tab$`Pr(>F)`)), digits = 1)
+
+YesBCORT<-toString(c(n.YesBCORT.wilcoxtest))
+
+NoBCORT<-toString(c(n.NoBCORT.wilcoxtest))
+
+
+BCORT_sum<-toString(c(YesBCORT, "/", NoBCORT))
+BCORT_sum<-gsub(",", "", BCORT_sum)
+BCORT_sum<-gsub(" ", "", BCORT_sum)
+
+BCORT<- matrix(c('Corticosteroid Use (Y/N)', "-", wilcox.BCORT$p.value, as.numeric(na.omit(BCORT.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
+```
+
+```{r DDUR.cortest, include=F}
+set.seed(32016)
+cor.test(nao.screen_data$invsimpson, nao.screen_data$DDUR, method = "spearman")
+
+
+DDUR.cor.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, DDUR)))
+n.DDUR.cortest<-nrow(DDUR.cor.test.data)
+n.DDUR.cortest
+cor.DDUR<-cor.test(DDUR.cor.test.data$DDUR, DDUR.cor.test.data$invsimpson, method = "spearman")
+cor.DDUR
+cor.DDUR.pval<-signif(cor.DDUR$p.value, digits = 1)
+cor.DDUR.pval
+cor.DDUR.rho<-signif(cor.DDUR$estimate, digits = 1)
+cor.DDUR.rho
+
+
+```
+
+```{r DDUR.adonis,  include=F}
+set.seed(32016)
+DDUR.adonis<-adonis(nao.screen.all.dist ~ DDUR, nao.screen_data)
+DDUR.adonis
+DDUR.adonis.pval<-signif(as.numeric(na.omit(DDUR.adonis$aov.tab$`Pr(>F)`)), digits = 1)
+
+DDUR_min<-toString(c('Min=', min(nao.screen_data$DDUR)))
+DDUR_min<-gsub(",", "", DDUR_min)
+DDUR_min<-gsub(" ", "", DDUR_min)
+DDUR_med<-toString(c("Median=", median(nao.screen_data$DDUR)))
+DDUR_med<-gsub(",", "", DDUR_med)
+DDUR_med<-gsub(" ", "", DDUR_med)
+DDUR_max<-toString(c("Max=", max(nao.screen_data$DDUR)))
+DDUR_max<-gsub(",", "", DDUR_max)
+DDUR_max<-gsub(" ", "", DDUR_max)
+DDUR_sum<-toString(c(DDUR_min, DDUR_med, DDUR_max))
+DDUR_n<-n.DDUR.cortest
+DDUR_Spear_P<- toString(c("(", cor.DDUR.pval, ")"))
+DDUR_Spear_P<-gsub(",", "", DDUR_Spear_P)
+DDUR_Spear_P<-gsub(" ", "", DDUR_Spear_P)
+DDUR_Spear_rho<-toString(c('rho =', cor.DDUR.rho))
+DDUR_Spear_rho<-gsub(",", "", DDUR_Spear_rho)
+#DDUR_Spear_rho<-gsub(" ", "", DDUR_Spear_rho)
+DDUR_Spear_Prho<-c(DDUR_Spear_rho, DDUR_Spear_P)
+DDUR_Spear_Prho<-toString(c(DDUR_Spear_Prho))
+DDUR_Spear_Prho<-gsub(",", "", DDUR_Spear_Prho)
+
+DDUR<- matrix(c('Disease Duration (years)', DDUR_Spear_rho, cor.DDUR$p.value, as.numeric(na.omit(DDUR.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
+```
+
+```{r kwtissinvol, include=F}
+set.seed(32016)
+summary(nao.screen_data$tissinvol)
+
+tissinvol.kw.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, tissinvol)))
+levels(tissinvol.kw.data$tissinvol)[2]<-"Colon-Ileum"
+tissinvol.kw<-kruskal.test(invsimpson ~ tissinvol, tissinvol.kw.data)
+tissinvol.kw
+#plot(invsimpson ~ tissinvol, tissinvol.kw.data)
+Colon.kw<-tissinvol.kw.data[tissinvol.kw.data$tissinvol=="Colon",]
+n.Colon.kw<-nrow(Colon.kw)
+Colon_Ileum.kw<-tissinvol.kw.data[tissinvol.kw.data$tissinvol=="Colon-Ileum",]
+n.Colon_Ileum.kw<-nrow(Colon_Ileum.kw)
+Ileum.kw<-tissinvol.kw.data[tissinvol.kw.data$tissinvol=="Ileum",]
+n.Ileum.kw<-nrow(Ileum.kw)
+kmc<-kruskalmc(invsimpson ~ tissinvol, tissinvol.kw.data)
+kw.tissinvol<-kruskal.test(invsimpson ~ tissinvol, tissinvol.kw.data)
+summary(kw.tissinvol)
+kw.tissinvol.pval<-signif(kw.tissinvol$p.value, digits = 1)
+kw.tissinvol.pval
+kw.tissinvol.method<-kw.tissinvol$method
+subT<-kw.tissinvol.method
+nColonString<-toString(c("Colon =", n.Colon.kw))
+nColonString<-gsub(",", "", nColonString)
+nColon_IleumString<-toString(c("Colon-Ileum =", n.Colon_Ileum.kw))
+nColon_IleumString<-gsub(",", "", nColon_IleumString)
+nIleumString<-toString(c("Ileum =", n.Ileum.kw))
+nIleumString<-gsub(",", "", nIleumString)
+
+kruskalmc(invsimpson ~ tissinvol, tissinvol.kw.data)
+```
+
+```{r tissinvol.adonis,  include=F}
+set.seed(32016)
+tissinvol.adonis<-adonis(nao.screen.all.dist ~ tissinvol, nao.screen_data)
+tissinvol.adonis
+tissinvol.adonis.pval<-signif(as.numeric(na.omit(tissinvol.adonis$aov.tab$`Pr(>F)`)), digits = 1)
+
+Colon<-toString(c('Colon=', n.Colon.kw))
+Colon<-gsub(",", "", Colon)
+Colon<-gsub(" ", "", Colon)
+ColIle<-toString(c('Colon-Ileum=', n.Colon_Ileum.kw))
+ColIle<-gsub(",", "", ColIle)
+ColIle<-gsub(" ", "", ColIle)
+Ileum<-toString(c('Ileum=', n.Ileum.kw))
+Ileum<-gsub(",", "", Ileum)
+Ileum<-gsub(" ", "", Ileum)
+
+tissinvol_sum<-toString(c(Colon, ColIle, Ileum))
+
+tissinvol<- matrix(c('Tissue Involvement', "-", kw.tissinvol$p.value, as.numeric(na.omit(tissinvol.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
+```
+
+```{r BOWSTRICT-wilcox, include=F}
+set.seed(32016)
+
+BOWSTRICT.wilcox.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, BOWSTRICT)))
+n.YesBOWSTRICT.wilcoxtest<-nrow(BOWSTRICT.wilcox.test.data[BOWSTRICT.wilcox.test.data$BOWSTRICT=="Strict_stenosis",])
+n.YesBOWSTRICT.wilcoxtest
+n.NoBOWSTRICT.wilcoxtest<-nrow(BOWSTRICT.wilcox.test.data[BOWSTRICT.wilcox.test.data$BOWSTRICT=="Other",])
+n.NoBOWSTRICT.wilcoxtest
+wilcox.BOWSTRICT<-wilcox.test(invsimpson ~ BOWSTRICT, BOWSTRICT.wilcox.test.data)
+summary(wilcox.BOWSTRICT)
+wilcox.BOWSTRICT.pval<-signif(wilcox.BOWSTRICT$p.value, digits = 1)
+wilcox.BOWSTRICT.pval
+
+#plot(invsimpson~BOWSTRICT, nao.screen_data)
+```
+
+```{r BOWSTRICT.adonis,  include=F}
+set.seed(32016)
+BOWSTRICT.adonis<-adonis(nao.screen.all.dist ~ BOWSTRICT, nao.screen_data)
+BOWSTRICT.adonis
+BOWSTRICT.adonis.pval<-signif(as.numeric(na.omit(BOWSTRICT.adonis$aov.tab$`Pr(>F)`)), digits = 1)
+
+YesBOWSTRICT<-toString(c('Yes=', n.YesBOWSTRICT.wilcoxtest))
+YesBOWSTRICT<-gsub(",", "", YesBOWSTRICT)
+YesBOWSTRICT<-gsub(" ", "", YesBOWSTRICT)
+NoBOWSTRICT<-toString(c("No=", n.NoBOWSTRICT.wilcoxtest))
+NoBOWSTRICT<-gsub(",", "", NoBOWSTRICT)
+NoBOWSTRICT<-gsub(" ", "", NoBOWSTRICT)
+
+BOWSTRICT_sum<-toString(c(NoBOWSTRICT, YesBOWSTRICT))
+
+	
+BOWSTRICT<-matrix(c('Bowel Stricture', "-", wilcox.BOWSTRICT$p.value, as.numeric(na.omit(BOWSTRICT.adonis$aov.tab$`Pr(>F)`))), ncol = 4)
+```
+
+```{r cohort description, include=F, cache=F}
+N.cohort.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR)))
+N_trtd <- nrow(N.cohort.data[N.cohort.data$TRTGR=="Treated",])
+N_plac <- nrow(N.cohort.data[N.cohort.data$TRTGR=="Placebo",])
+N_total <- nrow(N.cohort.data)
+N.cohort<- matrix(c('', paste("n =", N_trtd), paste("n =", N_plac), paste("n =",N_total)), ncol = 4)
+
+set.seed(32016)
+AGE.total.mean<-signif(mean(AGE.cor.test.data$AGE), digits = 2)
+AGE.total.sd<-signif(sd(AGE.cor.test.data$AGE), digits = 2)
+AGE_total<-toString(c(AGE.total.mean, "±", AGE.total.sd))
+AGE_total<-gsub(",", "", AGE_total)
+#AGE_total<-gsub(" ", "", AGE_total)
+
+AGE.trtd<-AGE.cor.test.data[AGE.cor.test.data$TRTGR=="Treated",]
+AGE.trtd.mean<-signif(mean(AGE.trtd$AGE), digits = 2)
+AGE.trtd.sd<-signif(sd(AGE.trtd$AGE), digits = 2)
+AGE_trtd<-toString(c(AGE.trtd.mean, " ± ", AGE.trtd.sd))
+AGE_trtd<-gsub(",", "", AGE_trtd)
+#AGE_trtd<-gsub(" ", "", AGE_trtd)
+
+AGE.plac<-AGE.cor.test.data[AGE.cor.test.data$TRTGR=="Placebo",]
+AGE.plac.mean<-signif(mean(AGE.plac$AGE), digits = 2)
+AGE.plac.sd<-signif(sd(AGE.plac$AGE), digits = 2)
+AGE_plac<-toString(c(AGE.plac.mean, " ± ", AGE.plac.sd))
+AGE_plac<-gsub(",", "", AGE_plac)
+#AGE_plac<-gsub(" ", "", AGE_plac)
+
+AGE.cohort<- matrix(c('Age (years)', AGE_trtd, AGE_plac, AGE_total), ncol = 4)
+
+SEX.cohort.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR, SEX)))
+n.MSEX.total<-nrow(SEX.cohort.data[SEX.cohort.data$SEX=="M",])
+n.MSEX.total
+n.FSEX.total<-nrow(SEX.cohort.data[SEX.cohort.data$SEX=="F",])
+n.FSEX.total
+
+SEX_total<-toString(c(signif(n.MSEX.total/(n.FSEX.total+n.MSEX.total)*100, 3)))
+SEX_total<-gsub(",", "", SEX_total)
+#SEX_total<-gsub(" ", "", SEX_total)
+
+SEX.trtd<-SEX.cohort.data[SEX.cohort.data$TRTGR=="Treated",]
+n.MSEX.trtd<-nrow(SEX.trtd[SEX.trtd$SEX=="M",])
+n.MSEX.trtd
+n.FSEX.trtd<-nrow(SEX.trtd[SEX.trtd$SEX=="F",])
+n.FSEX.trtd
+SEX_trtd<-toString(c(signif(n.MSEX.trtd/(n.FSEX.trtd + n.MSEX.trtd)*100, 3)))
+SEX_trtd<-gsub(",", "", SEX_trtd)
+#SEX_trtd<-gsub(" ", "", SEX_trtd)
+
+
+SEX.plac<-SEX.cohort.data[SEX.cohort.data$TRTGR=="Placebo",]
+n.MSEX.plac<-nrow(SEX.plac[SEX.plac$SEX=="M",])
+n.MSEX.plac
+n.FSEX.plac<-nrow(SEX.plac[SEX.plac$SEX=="F",])
+n.FSEX.plac
+SEX_plac<-toString(c(signif(n.MSEX.plac/(n.FSEX.plac +n.MSEX.plac)*100, 3)))
+SEX_plac<-gsub(",", "", SEX_plac)
+#SEX_plac<-gsub(" ", "", SEX_plac)
+
+SEX.cohort<- matrix(c('Sex (% Male)', SEX_trtd, SEX_plac, SEX_total), ncol = 4)
+
+RACE.cohort.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR, RACE)))
+n.CRACE.total<-nrow(RACE.cohort.data[RACE.cohort.data$RACE=="Caucasian",])
+n.CRACE.total
+n.ORACE.total<-nrow(RACE.cohort.data[RACE.cohort.data$RACE!="Caucasian",])
+n.ORACE.total
+
+RACE_total<-toString(c(signif(n.CRACE.total/(n.CRACE.total+n.ORACE.total)*100, 3)))
+RACE_total<-gsub(",", "", RACE_total)
+#RACE_total<-gsub(" ", "", RACE_total)
+
+RACE.trtd<-RACE.cohort.data[RACE.cohort.data$TRTGR=="Treated",]
+n.CRACE.trtd<-nrow(RACE.trtd[RACE.trtd$RACE=="Caucasian",])
+n.CRACE.trtd
+n.ORACE.trtd<-nrow(RACE.trtd[RACE.trtd$RACE!="Caucasian",])
+n.ORACE.trtd
+RACE_trtd<-toString(c(signif(n.CRACE.trtd/(n.CRACE.trtd+n.ORACE.trtd)*100, 3)))
+RACE_trtd<-gsub(",", "", RACE_trtd)
+#RACE_trtd<-gsub(" ", "", RACE_trtd)
+
+
+RACE.plac<-RACE.cohort.data[RACE.cohort.data$TRTGR=="Placebo",]
+n.CRACE.plac<-nrow(RACE.plac[RACE.plac$RACE=="Caucasian",])
+n.CRACE.plac
+n.ORACE.plac<-nrow(RACE.plac[RACE.plac$RACE!="Caucasian",])
+n.ORACE.plac
+RACE_plac<-toString(c(signif(n.CRACE.plac/(n.CRACE.plac+n.ORACE.plac)*100, 3)))
+RACE_plac<-gsub(",", "", RACE_plac)
+#RACE_plac<-gsub(" ", "", RACE_plac)
+
+RACE.cohort<- matrix(c('Race (% Caucasian)', RACE_trtd, RACE_plac, RACE_total), ncol = 4)
+
+BCORT.cohort.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR, BCORT)))
+n.YesBCORT.total<-nrow(BCORT.cohort.data[BCORT.cohort.data$BCORT=="Yes",])
+n.YesBCORT.total
+n.NoBCORT.total<-nrow(BCORT.cohort.data[BCORT.cohort.data$BCORT!="Yes",])
+n.NoBCORT.total
+
+BCORT_total<-toString(c(signif(n.YesBCORT.total/(n.YesBCORT.total+n.NoBCORT.total)*100, 3)))
+BCORT_total<-gsub(",", "", BCORT_total)
+BCORT_total<-gsub(" ", "", BCORT_total)
+
+BCORT.trtd<-BCORT.cohort.data[BCORT.cohort.data$TRTGR=="Treated",]
+n.YesBCORT.trtd<-nrow(BCORT.trtd[BCORT.trtd$BCORT=="Yes",])
+n.YesBCORT.trtd
+n.NoBCORT.trtd<-nrow(BCORT.trtd[BCORT.trtd$BCORT!="Yes",])
+n.NoBCORT.trtd
+BCORT_trtd<-toString(c(signif(n.YesBCORT.trtd/(n.YesBCORT.trtd+n.NoBCORT.trtd)*100, 3)))
+BCORT_trtd<-gsub(",", "", BCORT_trtd)
+BCORT_trtd<-gsub(" ", "", BCORT_trtd)
+
+
+BCORT.plac<-BCORT.cohort.data[BCORT.cohort.data$TRTGR=="Placebo",]
+n.YesBCORT.plac<-nrow(BCORT.plac[BCORT.plac$BCORT=="Yes",])
+n.YesBCORT.plac
+n.NoBCORT.plac<-nrow(BCORT.plac[BCORT.plac$BCORT!="Yes",])
+n.NoBCORT.plac
+BCORT_plac<-toString(c(signif(n.YesBCORT.plac/(n.YesBCORT.plac+n.NoBCORT.plac)*100, 3)))
+BCORT_plac<-gsub(",", "", BCORT_plac)
+BCORT_plac<-gsub(" ", "", BCORT_plac)
+
+BCORT.cohort<- matrix(c('Corticosteroid Use (%)', BCORT_trtd, BCORT_plac, BCORT_total), ncol = 4)
+
+BL_BMI.cohort.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR, BL_BMI)))
+BL_BMI.total.mean<-signif(mean(BL_BMI.cohort.data$BL_BMI), digits = 2)
+BL_BMI.total.sd<-signif(sd(BL_BMI.cohort.data$BL_BMI), digits = 2)
+BL_BMI_total<-toString(c(BL_BMI.total.mean, " ± ", BL_BMI.total.sd))
+BL_BMI_total<-gsub(",", "", BL_BMI_total)
+#BL_BMI_total<-gsub(" ", "", BL_BMI_total)
+
+BL_BMI.trtd<-BL_BMI.cohort.data[BL_BMI.cohort.data$TRTGR=="Treated",]
+BL_BMI.trtd.mean<-signif(mean(BL_BMI.trtd$BL_BMI), digits = 2)
+BL_BMI.trtd.sd<-signif(sd(BL_BMI.trtd$BL_BMI), digits = 2)
+BL_BMI_trtd<-toString(c(BL_BMI.trtd.mean, " ± ", BL_BMI.trtd.sd))
+BL_BMI_trtd<-gsub(",", "", BL_BMI_trtd)
+#BL_BMI_trtd<-gsub(" ", "", BL_BMI_trtd)
+
+BL_BMI.plac<-BL_BMI.cohort.data[BL_BMI.cohort.data$TRTGR=="Placebo",]
+BL_BMI.plac.mean<-signif(mean(BL_BMI.plac$BL_BMI), digits = 2)
+BL_BMI.plac.sd<-signif(sd(BL_BMI.plac$BL_BMI), digits = 2)
+BL_BMI_plac<-toString(c(BL_BMI.plac.mean, " ± ", BL_BMI.plac.sd))
+BL_BMI_plac<-gsub(",", "", BL_BMI_plac)
+#BL_BMI_plac<-gsub(" ", "", BL_BMI_plac)
+
+BL_BMI.cohort<- matrix(c('BMI (kg/m^2)', BL_BMI_trtd, BL_BMI_plac, BL_BMI_total), ncol = 4)
+
+
+DDUR.cohort.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR, DDUR)))
+DDUR.total.mean<-signif(mean(DDUR.cohort.data$DDUR), digits = 2)
+DDUR.total.sd<-signif(sd(DDUR.cohort.data$DDUR), digits = 2)
+DDUR_total<-toString(c(DDUR.total.mean, " ± ", DDUR.total.sd))
+DDUR_total<-gsub(",", "", DDUR_total)
+#DDUR_total<-gsub(" ", "", DDUR_total)
+
+DDUR.trtd<-DDUR.cohort.data[DDUR.cohort.data$TRTGR=="Treated",]
+DDUR.trtd.mean<-signif(mean(DDUR.trtd$DDUR), digits = 2)
+DDUR.trtd.sd<-signif(sd(DDUR.trtd$DDUR), digits = 2)
+DDUR_trtd<-toString(c(DDUR.trtd.mean, " ± ", DDUR.trtd.sd))
+DDUR_trtd<-gsub(",", "", DDUR_trtd)
+#DDUR_trtd<-gsub(" ", "", DDUR_trtd)
+
+DDUR.plac<-DDUR.cohort.data[DDUR.cohort.data$TRTGR=="Placebo",]
+DDUR.plac.mean<-signif(mean(DDUR.plac$DDUR), digits = 2)
+DDUR.plac.sd<-signif(sd(DDUR.plac$DDUR), digits = 2)
+DDUR_plac<-toString(c(DDUR.plac.mean, " ± ", DDUR.plac.sd))
+DDUR_plac<-gsub(",", "", DDUR_plac)
+#DDUR_plac<-gsub(" ", "", DDUR_plac)
+
+DDUR.cohort<- matrix(c('Disease Duration (years)', DDUR_trtd, DDUR_plac, DDUR_total), ncol = 4)
+
+cdail_wk0.cohort.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR, cdail_wk0)))
+cdail_wk0.total.mean<-signif(mean(cdail_wk0.cohort.data$cdail_wk0), digits = 2)
+cdail_wk0.total.sd<-signif(sd(cdail_wk0.cohort.data$cdail_wk0), digits = 2)
+cdail_wk0_total<-toString(c(cdail_wk0.total.mean, " ± ", cdail_wk0.total.sd))
+cdail_wk0_total<-gsub(",", "", cdail_wk0_total)
+#cdail_wk0_total<-gsub(" ", "", cdail_wk0_total)
+
+cdail_wk0.trtd<-cdail_wk0.cohort.data[cdail_wk0.cohort.data$TRTGR=="Treated",]
+cdail_wk0.trtd.mean<-signif(mean(cdail_wk0.trtd$cdail_wk0), digits = 2)
+cdail_wk0.trtd.sd<-signif(sd(cdail_wk0.trtd$cdail_wk0), digits = 2)
+cdail_wk0_trtd<-toString(c(cdail_wk0.trtd.mean, " ± ", cdail_wk0.trtd.sd))
+cdail_wk0_trtd<-gsub(",", "", cdail_wk0_trtd)
+#cdail_wk0_trtd<-gsub(" ", "", cdail_wk0_trtd)
+
+cdail_wk0.plac<-cdail_wk0.cohort.data[cdail_wk0.cohort.data$TRTGR=="Placebo",]
+cdail_wk0.plac.mean<-signif(mean(cdail_wk0.plac$cdail_wk0), digits = 2)
+cdail_wk0.plac.sd<-signif(sd(cdail_wk0.plac$cdail_wk0), digits = 2)
+cdail_wk0_plac<-toString(c(cdail_wk0.plac.mean, " ± ", cdail_wk0.plac.sd))
+cdail_wk0_plac<-gsub(",", "", cdail_wk0_plac)
+#cdail_wk0_plac<-gsub(" ", "", cdail_wk0_plac)
+
+cdail_wk0.cohort<- matrix(c('CDAI', cdail_wk0_trtd, cdail_wk0_plac, cdail_wk0_total), ncol = 4)
+
+BOWSTRICT.cohort.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR, BOWSTRICT)))
+n.YesBOWSTRICT.total<-nrow(BOWSTRICT.cohort.data[BOWSTRICT.cohort.data$BOWSTRICT=="Strict_stenosis",])
+n.YesBOWSTRICT.total
+n.NoBOWSTRICT.total<-nrow(BOWSTRICT.cohort.data[BOWSTRICT.cohort.data$BOWSTRICT=="Other",])
+n.NoBOWSTRICT.total
+
+BOWSTRICT_total<-toString(c(signif(n.YesBOWSTRICT.total/(n.YesBOWSTRICT.total+n.NoBOWSTRICT.total)*100, 3)))
+BOWSTRICT_total<-gsub(",", "", BOWSTRICT_total)
+BOWSTRICT_total<-gsub(" ", "", BOWSTRICT_total)
+
+BOWSTRICT.trtd<-BOWSTRICT.cohort.data[BOWSTRICT.cohort.data$TRTGR=="Treated",]
+n.YesBOWSTRICT.trtd<-nrow(BOWSTRICT.trtd[BOWSTRICT.trtd$BOWSTRICT=="Strict_stenosis",])
+n.YesBOWSTRICT.trtd
+n.NoBOWSTRICT.trtd<-nrow(BOWSTRICT.trtd[BOWSTRICT.trtd$BOWSTRICT=="Other",])
+n.NoBOWSTRICT.trtd
+BOWSTRICT_trtd<-toString(c(signif(n.YesBOWSTRICT.trtd/(n.YesBOWSTRICT.trtd+n.NoBOWSTRICT.trtd)*100, 3)))
+BOWSTRICT_trtd<-gsub(",", "", BOWSTRICT_trtd)
+BOWSTRICT_trtd<-gsub(" ", "", BOWSTRICT_trtd)
+
+
+BOWSTRICT.plac<-BOWSTRICT.cohort.data[BOWSTRICT.cohort.data$TRTGR=="Placebo",]
+n.YesBOWSTRICT.plac<-nrow(BOWSTRICT.plac[BOWSTRICT.plac$BOWSTRICT=="Strict_stenosis",])
+n.YesBOWSTRICT.plac
+n.NoBOWSTRICT.plac<-nrow(BOWSTRICT.plac[BOWSTRICT.plac$BOWSTRICT=="Other",])
+n.NoBOWSTRICT.plac
+BOWSTRICT_plac<-toString(c(signif(n.YesBOWSTRICT.plac/(n.YesBOWSTRICT.plac+n.NoBOWSTRICT.plac)*100, 3)))
+BOWSTRICT_plac<-gsub(",", "", BOWSTRICT_plac)
+BOWSTRICT_plac<-gsub(" ", "", BOWSTRICT_plac)
+
+BOWSTRICT.cohort<- matrix(c('Bowel Stricture (%)', BOWSTRICT_trtd, BOWSTRICT_plac, BOWSTRICT_total), ncol = 4)
+
+tissinvol.cohort.data<-na.omit(subset(nao.screen_data, select= c(group, TRTGR, tissinvol)))
+n.Colon.total<-nrow(tissinvol.cohort.data[tissinvol.cohort.data$tissinvol=="Colon",])
+n.Colon.total <- signif(n.Colon.total/N_total*100, 3)
+n.Colon_Ileum.total<-nrow(tissinvol.cohort.data[tissinvol.cohort.data$tissinvol=="Colon_Ileum",])
+n.Colon_Ileum.total <- signif(n.Colon_Ileum.total/N_total*100, 3)
+n.Ileum.total<-nrow(tissinvol.cohort.data[tissinvol.cohort.data$tissinvol=="Ileum",])
+n.Ileum.total <- signif(n.Ileum.total/N_total*100,3)
+
+
+tissinvol_total<-toString(c(n.Colon.total, "/", n.Colon_Ileum.total, "/", n.Ileum.total))
+tissinvol_total<-gsub(",", "", tissinvol_total)
+tissinvol_total<-gsub(" ", "", tissinvol_total)
+
+tissinvol.trtd<-tissinvol.cohort.data[tissinvol.cohort.data$TRTGR=="Treated",]
+n.Colon.trtd<-nrow(tissinvol.trtd[tissinvol.trtd$tissinvol=="Colon",])
+n.Colon.trtd <- signif(n.Colon.trtd/N_trtd*100, 3)
+n.Colon_Ileum.trtd<-nrow(tissinvol.trtd[tissinvol.trtd$tissinvol=="Colon_Ileum",])
+n.Colon_Ileum.trtd <- signif(n.Colon_Ileum.trtd/N_trtd*100, 3)
+n.Ileum.trtd<-nrow(tissinvol.trtd[tissinvol.trtd$tissinvol=="Ileum",])
+n.Ileum.trtd <- signif(n.Ileum.trtd/N_trtd*100, 3)
+
+tissinvol_trtd<-toString(c(n.Colon.trtd, "/", n.Colon_Ileum.trtd, "/", n.Ileum.trtd))
+tissinvol_trtd<-gsub(",", "", tissinvol_trtd)
+tissinvol_trtd<-gsub(" ", "", tissinvol_trtd)
+
+tissinvol.plac<-tissinvol.cohort.data[tissinvol.cohort.data$TRTGR=="Placebo",]
+n.Colon.plac<-nrow(tissinvol.plac[tissinvol.plac$tissinvol=="Colon",])
+n.Colon.plac <- signif(n.Colon.plac/N_plac*100, 3)
+n.Colon_Ileum.plac<-nrow(tissinvol.plac[tissinvol.plac$tissinvol=="Colon_Ileum",])
+n.Colon_Ileum.plac <- signif(n.Colon_Ileum.plac/N_plac*100, 3)
+n.Ileum.plac<-nrow(tissinvol.plac[tissinvol.plac$tissinvol=="Ileum",])
+n.Ileum.plac <- signif(n.Ileum.plac/N_plac*100, 3)
+
+
+tissinvol_plac<-toString(c(n.Colon.plac, "/", n.Colon_Ileum.plac, "/", n.Ileum.plac))
+tissinvol_plac<-gsub(",", "", tissinvol_plac)
+tissinvol_plac<-gsub(" ", "", tissinvol_plac)
+
+tissinvol.cohort<- matrix(c('Tissue Involvement (%) \nColon/Ileocolic/Ileal', tissinvol_trtd, tissinvol_plac, tissinvol_total), ncol = 4)
+
+```
+
+
+```{r wk6-diversity, include=F}
+set.seed(32016)
+all.RESPONSEwk6.wilcox.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, RESPONSEwk6)))
+
+YesRESPONSEwk6.wilcoxtest <- all.RESPONSEwk6.wilcox.test.data[all.RESPONSEwk6.wilcox.test.data$RESPONSEwk6=="Yes",]
+Yes.inv.25quantile <- signif(quantile(YesRESPONSEwk6.wilcoxtest$invsimpson, .25, type = 2), digits=3)
+Yes.inv.75quantile <- signif(quantile(YesRESPONSEwk6.wilcoxtest$invsimpson, .75, type = 2), digits=4)
+
+NoRESPONSEwk6.wilcoxtest <- all.RESPONSEwk6.wilcox.test.data[all.RESPONSEwk6.wilcox.test.data$RESPONSEwk6=="No",]
+No.inv.25quantile <- signif(quantile(NoRESPONSEwk6.wilcoxtest$invsimpson, .25, type = 2), digits=3)
+No.inv.75quantile <- signif(quantile(NoRESPONSEwk6.wilcoxtest$invsimpson, .75, type = 2), digits=4)
+
+all.n.YesRESPONSEwk6.wilcoxtest<-nrow(all.RESPONSEwk6.wilcox.test.data[all.RESPONSEwk6.wilcox.test.data$RESPONSEwk6=="Yes",])
+all.n.YesRESPONSEwk6.wilcoxtest
+all.n.NoRESPONSEwk6.wilcoxtest<-nrow(all.RESPONSEwk6.wilcox.test.data[all.RESPONSEwk6.wilcox.test.data$RESPONSEwk6=="No",])
+all.n.NoRESPONSEwk6.wilcoxtest
+
+all.RESPONSEwk6.kw.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, RESPONSEwk6, TRTGR)))
+all.RESPONSEwk6.kw.test.data$rRSPwk6TRTGR <- as.factor(paste(all.RESPONSEwk6.kw.test.data$RESPONSEwk6, all.RESPONSEwk6.kw.test.data$TRTGR, sep = "_"))
+all.RESPONSEwk6.kw.test <- kruskal.test(all.RESPONSEwk6.kw.test.data$invsimpson ~ all.RESPONSEwk6.kw.test.data$rRSPwk6TRTGR, all.RESPONSEwk6.kw.test.data)
+all.RESPONSEwk6.kw.test.pval <- all.RESPONSEwk6.kw.test$p.value
+
+set.seed(32016)
+all.RESPONSEwk6.adonis<-adonis(nao.screen.all.dist ~ RESPONSEwk6, nao.screen_data, strata=nao.screen_data$TRTGR)
+all.RESPONSEwk6.adonis
+all.RESPONSEwk6.adonis.pval<-signif(as.numeric(na.omit(all.RESPONSEwk6.adonis$aov.tab$`Pr(>F)`)), digits = 2)
+
+all.YesRESPONSEwk6<-toString(c(all.n.YesRESPONSEwk6.wilcoxtest))
+all.YesRESPONSEwk6<-gsub(",", "", all.YesRESPONSEwk6)
+all.YesRESPONSEwk6<-gsub(" ", "", all.YesRESPONSEwk6)
+all.NoRESPONSEwk6<-toString(c(all.n.NoRESPONSEwk6.wilcoxtest))
+all.NoRESPONSEwk6<-gsub(",", "", all.NoRESPONSEwk6)
+all.NoRESPONSEwk6<-gsub(" ", "", all.NoRESPONSEwk6)
+
+all.RESPONSEwk6_sum<-toString(c(all.NoRESPONSEwk6, all.YesRESPONSEwk6))
+
+trtd.RESPONSEwk6.wilcox.test.data<-na.omit(subset(nao.screen.trtd, select= c(group, invsimpson, RESPONSEwk6)))
+trtd.n.YesRESPONSEwk6.wilcoxtest<-nrow(trtd.RESPONSEwk6.wilcox.test.data[trtd.RESPONSEwk6.wilcox.test.data$RESPONSEwk6=="Yes",])
+trtd.n.YesRESPONSEwk6.wilcoxtest
+trtd.n.NoRESPONSEwk6.wilcoxtest<-nrow(trtd.RESPONSEwk6.wilcox.test.data[trtd.RESPONSEwk6.wilcox.test.data$RESPONSEwk6=="No",])
+trtd.n.NoRESPONSEwk6.wilcoxtest
+
+trtd.YesRESPONSEwk6<-toString(c(trtd.n.YesRESPONSEwk6.wilcoxtest))
+trtd.YesRESPONSEwk6<-gsub(",", "", trtd.YesRESPONSEwk6)
+trtd.YesRESPONSEwk6<-gsub(" ", "", trtd.YesRESPONSEwk6)
+trtd.NoRESPONSEwk6<-toString(c(trtd.n.NoRESPONSEwk6.wilcoxtest))
+trtd.NoRESPONSEwk6<-gsub(",", "", trtd.NoRESPONSEwk6)
+trtd.NoRESPONSEwk6<-gsub(" ", "", trtd.NoRESPONSEwk6)
+
+trtd.RESPONSEwk6_sum<-toString(c(trtd.NoRESPONSEwk6, trtd.YesRESPONSEwk6))
+
+plac.RESPONSEwk6.wilcox.test.data<-na.omit(subset(nao.screen.plac, select= c(group, invsimpson, RESPONSEwk6)))
+plac.n.YesRESPONSEwk6.wilcoxtest<-nrow(plac.RESPONSEwk6.wilcox.test.data[plac.RESPONSEwk6.wilcox.test.data$RESPONSEwk6=="Yes",])
+plac.n.YesRESPONSEwk6.wilcoxtest
+plac.n.NoRESPONSEwk6.wilcoxtest<-nrow(plac.RESPONSEwk6.wilcox.test.data[plac.RESPONSEwk6.wilcox.test.data$RESPONSEwk6=="No",])
+plac.n.NoRESPONSEwk6.wilcoxtest
+
+plac.YesRESPONSEwk6<-toString(c(plac.n.YesRESPONSEwk6.wilcoxtest))
+plac.YesRESPONSEwk6<-gsub(",", "", plac.YesRESPONSEwk6)
+plac.YesRESPONSEwk6<-gsub(" ", "", plac.YesRESPONSEwk6)
+plac.NoRESPONSEwk6<-toString(c(plac.n.NoRESPONSEwk6.wilcoxtest))
+plac.NoRESPONSEwk6<-gsub(",", "", plac.NoRESPONSEwk6)
+plac.NoRESPONSEwk6<-gsub(" ", "", plac.NoRESPONSEwk6)
+
+plac.RESPONSEwk6_sum<-toString(c(plac.NoRESPONSEwk6, plac.YesRESPONSEwk6))
+
+all.RESPONSEwk6_AMOVA_p<-toString(c(all.RESPONSEwk6.adonis.pval))
+all.RESPONSEwk6_AMOVA_p<-gsub(",", "", all.RESPONSEwk6_AMOVA_p)
+all.RESPONSEwk6_AMOVA_p<-gsub(" ", "", all.RESPONSEwk6_AMOVA_p)
+all.RESPONSEwk6_AMOVA<-toString(c(all.RESPONSEwk6_AMOVA_p))
+all.RESPONSEwk6_AMOVA<-gsub(",", "", all.RESPONSEwk6_AMOVA)
+all.RESPONSEwk6<-matrix(c('Week 6 Response (No, Yes)', trtd.RESPONSEwk6_sum, plac.RESPONSEwk6_sum, all.RESPONSEwk6.kw.test.pval, all.RESPONSEwk6_AMOVA), ncol = 5)
+
+set.seed(32016)
+all.REMISSwk6.wilcox.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, REMISSwk6)))
+
+all.REMISSwk6.invsimp <- all.REMISSwk6.wilcox.test.data[,-3]
+row.names(all.REMISSwk6.invsimp) <- all.REMISSwk6.invsimp$group
+all.REMISSwk6.invsimp <- all.REMISSwk6.invsimp[,-1]
+REMwk6.invsimp.matrix <- aggregate(all.REMISSwk6.invsimp, by=list(all.REMISSwk6.wilcox.test.data$REMISSwk6), median)
+
+row.names(REMwk6.invsimp.matrix) <- REMwk6.invsimp.matrix$Group.1
+median.REMwk6.invsimp.matrix <- subset(REMwk6.invsimp.matrix, select=-c(Group.1))
+median.REMwk6.invsimp.matrix <- as.matrix(t(subset(median.REMwk6.invsimp.matrix)))
+colnames(median.REMwk6.invsimp.matrix) <- REMwk6.invsimp.matrix$Group.1
+median.REMwk6.invsimp <- data.frame(median.REMwk6.invsimp.matrix)
+
+all.REMISSwk6.Yes <- all.REMISSwk6.wilcox.test.data[all.REMISSwk6.wilcox.test.data$REMISSwk6=="Yes",]
+quantile(all.REMISSwk6.Yes$invsimpson, type = 2)
+
+REMwk6.YES.invsimp <- signif(median.REMwk6.invsimp$Yes, 4)
+
+all.REMISSwk6.No <- all.REMISSwk6.wilcox.test.data[all.REMISSwk6.wilcox.test.data$REMISSwk6=="No",]
+quantile(all.REMISSwk6.No$invsimpson, type = 2)
+
+REMwk6.NO.invsimp <- signif(median.REMwk6.invsimp$No, 3)
+
+
+all.REMISSwk6.kw.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, REMISSwk6, TRTGR)))
+all.REMISSwk6.kw.test.data$REMwk6TRTGR <- as.factor(paste(all.REMISSwk6.kw.test.data$REMISSwk6, all.REMISSwk6.kw.test.data$TRTGR, sep = "_"))
+all.REMISSwk6.kw.test <- kruskal.test(all.REMISSwk6.kw.test.data$invsimpson ~ all.REMISSwk6.kw.test.data$REMwk6TRTGR, all.REMISSwk6.kw.test.data)
+all.REMISSwk6.kw.test
+all.REMISSwk6.kw.test.pval <- all.REMISSwk6.kw.test$p.value
+all.REMISSwk6.kwmc.test <- kruskalmc(all.REMISSwk6.kw.test.data$invsimpson ~ all.REMISSwk6.kw.test.data$REMwk6TRTGR, all.REMISSwk6.kw.test.data)
+all.REMISSwk6.kwmc.test
+
+all.n.YesREMISSwk6.wilcoxtest<-nrow(all.REMISSwk6.wilcox.test.data[all.REMISSwk6.wilcox.test.data$REMISSwk6=="Yes",])
+all.n.YesREMISSwk6.wilcoxtest
+all.n.NoREMISSwk6.wilcoxtest<-nrow(all.REMISSwk6.wilcox.test.data[all.REMISSwk6.wilcox.test.data$REMISSwk6=="No",])
+all.n.NoREMISSwk6.wilcoxtest
+all.wilcox.REMISSwk6<-wilcox.test(invsimpson ~ REMISSwk6, all.REMISSwk6.wilcox.test.data)
+all.wilcox.REMISSwk6
+all.wilcox.REMISSwk6.pval<-signif(all.wilcox.REMISSwk6$p.value, digits = 2)
+all.wilcox.REMISSwk6.pval
+
+set.seed(32016)
+all.REMISSwk6.adonis<-adonis(nao.screen.all.dist ~ REMISSwk6, nao.screen_data, strata=nao.screen_data$TRTGR)
+all.REMISSwk6.adonis
+all.REMISSwk6.adonis.pval<-signif(as.numeric(na.omit(all.REMISSwk6.adonis$aov.tab$`Pr(>F)`)), digits = 2)
+
+all.YesREMISSwk6<-toString(c(all.n.YesREMISSwk6.wilcoxtest))
+all.YesREMISSwk6<-gsub(",", "", all.YesREMISSwk6)
+all.YesREMISSwk6<-gsub(" ", "", all.YesREMISSwk6)
+all.NoREMISSwk6<-toString(c(all.n.NoREMISSwk6.wilcoxtest))
+all.NoREMISSwk6<-gsub(",", "", all.NoREMISSwk6)
+all.NoREMISSwk6<-gsub(" ", "", all.NoREMISSwk6)
+
+all.REMISSwk6_sum<-toString(c(all.NoREMISSwk6, all.YesREMISSwk6))
+
+trtd.REMISSwk6.wilcox.test.data<-na.omit(subset(nao.screen.trtd, select= c(group, invsimpson, REMISSwk6)))
+trtd.n.YesREMISSwk6.wilcoxtest<-nrow(trtd.REMISSwk6.wilcox.test.data[trtd.REMISSwk6.wilcox.test.data$REMISSwk6=="Yes",])
+trtd.n.YesREMISSwk6.wilcoxtest
+trtd.n.NoREMISSwk6.wilcoxtest<-nrow(trtd.REMISSwk6.wilcox.test.data[trtd.REMISSwk6.wilcox.test.data$REMISSwk6=="No",])
+trtd.n.NoREMISSwk6.wilcoxtest
+trtd.YesREMISSwk6<-toString(c(trtd.n.YesREMISSwk6.wilcoxtest))
+trtd.YesREMISSwk6<-gsub(",", "", trtd.YesREMISSwk6)
+trtd.YesREMISSwk6<-gsub(" ", "", trtd.YesREMISSwk6)
+trtd.NoREMISSwk6<-toString(c(trtd.n.NoREMISSwk6.wilcoxtest))
+trtd.NoREMISSwk6<-gsub(",", "", trtd.NoREMISSwk6)
+trtd.NoREMISSwk6<-gsub(" ", "", trtd.NoREMISSwk6)
+
+trtd.REMISSwk6_sum<-toString(c(trtd.NoREMISSwk6, trtd.YesREMISSwk6))
+
+plac.REMISSwk6.wilcox.test.data<-na.omit(subset(nao.screen.plac, select= c(group, invsimpson, REMISSwk6)))
+plac.n.YesREMISSwk6.wilcoxtest<-nrow(plac.REMISSwk6.wilcox.test.data[plac.REMISSwk6.wilcox.test.data$REMISSwk6=="Yes",])
+plac.n.YesREMISSwk6.wilcoxtest
+plac.n.NoREMISSwk6.wilcoxtest<-nrow(plac.REMISSwk6.wilcox.test.data[plac.REMISSwk6.wilcox.test.data$REMISSwk6=="No",])
+plac.n.NoREMISSwk6.wilcoxtest
+plac.YesREMISSwk6<-toString(c(plac.n.YesREMISSwk6.wilcoxtest))
+plac.YesREMISSwk6<-gsub(",", "", plac.YesREMISSwk6)
+plac.YesREMISSwk6<-gsub(" ", "", plac.YesREMISSwk6)
+plac.NoREMISSwk6<-toString(c(plac.n.NoREMISSwk6.wilcoxtest))
+plac.NoREMISSwk6<-gsub(",", "", plac.NoREMISSwk6)
+plac.NoREMISSwk6<-gsub(" ", "", plac.NoREMISSwk6)
+
+plac.REMISSwk6_sum<-toString(c(plac.NoREMISSwk6, plac.YesREMISSwk6))
+
+
+
+
+all.REMISSwk6_AMOVA_p<-toString(c(all.REMISSwk6.adonis.pval))
+all.REMISSwk6_AMOVA_p<-gsub(",", "", all.REMISSwk6_AMOVA_p)
+all.REMISSwk6_AMOVA_p<-gsub(" ", "", all.REMISSwk6_AMOVA_p)
+all.REMISSwk6_AMOVA<-toString(c(all.REMISSwk6_AMOVA_p))
+all.REMISSwk6_AMOVA<-gsub(",", "", all.REMISSwk6_AMOVA)
+all.REMISSwk6<-matrix(c('Week 6 Remission (No, Yes)', trtd.REMISSwk6_sum, plac.REMISSwk6_sum, all.REMISSwk6.kw.test.pval, all.REMISSwk6_AMOVA), ncol = 5)
+```
+
+```{r wk22-diversity, include=F}
+set.seed(32016)
+all.RESPONSEwk22.wilcox.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, RESPONSEwk22)))
+
+all.RESPONSEwk22.kw.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, RESPONSEwk22, TRTGRINDMAN)))
+all.RESPONSEwk22.kw.test.data$rRSPwk22TRTGRINDMAN <- as.factor(paste(all.RESPONSEwk22.kw.test.data$RESPONSEwk22, all.RESPONSEwk22.kw.test.data$TRTGRINDMAN, sep = "_"))
+all.RESPONSEwk22.kw.test <- kruskal.test(all.RESPONSEwk22.kw.test.data$invsimpson ~ all.RESPONSEwk22.kw.test.data$rRSPwk22TRTGRINDMAN, all.RESPONSEwk22.kw.test.data)
+all.RESPONSEwk22.kw.test.pval <- all.RESPONSEwk22.kw.test$p.value
+
+
+all.n.YesRESPONSEwk22.wilcoxtest<-nrow(all.RESPONSEwk22.wilcox.test.data[all.RESPONSEwk22.wilcox.test.data$RESPONSEwk22=="Yes",])
+all.n.YesRESPONSEwk22.wilcoxtest
+all.n.NoRESPONSEwk22.wilcoxtest<-nrow(all.RESPONSEwk22.wilcox.test.data[all.RESPONSEwk22.wilcox.test.data$RESPONSEwk22=="No",])
+all.n.NoRESPONSEwk22.wilcoxtest
+all.wilcox.RESPONSEwk22<-wilcox.test(invsimpson ~ RESPONSEwk22, all.RESPONSEwk22.wilcox.test.data)
+all.wilcox.RESPONSEwk22
+all.wilcox.RESPONSEwk22.pval<-signif(all.wilcox.RESPONSEwk22$p.value, digits = 2)
+all.wilcox.RESPONSEwk22.pval
+
+set.seed(32016)
+kruskalmc(nao.screen_data$invsimpson, nao.screen_data$RESPONSEwk22, data=nao.screen_data)
+
+set.seed(32016)
+all.RESPONSEwk22.adonis<-adonis(nao.screen.all.dist ~ RESPONSEwk22, nao.screen_data, strata=nao.screen_data$TRTGRINDMAN)
+all.RESPONSEwk22.adonis
+all.RESPONSEwk22.adonis.pval<-signif(as.numeric(na.omit(all.RESPONSEwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
+
+all.YesRESPONSEwk22<-toString(c(all.n.YesRESPONSEwk22.wilcoxtest))
+all.YesRESPONSEwk22<-gsub(",", "", all.YesRESPONSEwk22)
+all.YesRESPONSEwk22<-gsub(" ", "", all.YesRESPONSEwk22)
+all.NoRESPONSEwk22<-toString(c(all.n.NoRESPONSEwk22.wilcoxtest))
+all.NoRESPONSEwk22<-gsub(",", "", all.NoRESPONSEwk22)
+all.NoRESPONSEwk22<-gsub(" ", "", all.NoRESPONSEwk22)
+
+all.RESPONSEwk22_sum<-toString(c(all.NoRESPONSEwk22, all.YesRESPONSEwk22))
+
+trtd.RESPONSEwk22.wilcox.test.data<-na.omit(subset(nao.screen.trtd, select= c(group, invsimpson, RESPONSEwk22, TRTGRINDMAN)))
+trtd.RESPONSEwk22.wilcox.test.data<-trtd.RESPONSEwk22.wilcox.test.data[trtd.RESPONSEwk22.wilcox.test.data$TRTGRINDMAN=="Treated_Treated",]
+n.trtd.RESPONSEwk22.wilcox.test.data <- nrow(trtd.RESPONSEwk22.wilcox.test.data)
+trtd.n.YesRESPONSEwk22.wilcoxtest<-nrow(trtd.RESPONSEwk22.wilcox.test.data[trtd.RESPONSEwk22.wilcox.test.data$RESPONSEwk22=="Yes",])
+trtd.n.YesRESPONSEwk22.wilcoxtest
+trtd.n.NoRESPONSEwk22.wilcoxtest<-nrow(trtd.RESPONSEwk22.wilcox.test.data[trtd.RESPONSEwk22.wilcox.test.data$RESPONSEwk22=="No",])
+trtd.n.NoRESPONSEwk22.wilcoxtest
+trtd.YesRESPONSEwk22<-toString(c(trtd.n.YesRESPONSEwk22.wilcoxtest))
+trtd.YesRESPONSEwk22<-gsub(",", "", trtd.YesRESPONSEwk22)
+trtd.YesRESPONSEwk22<-gsub(" ", "", trtd.YesRESPONSEwk22)
+trtd.NoRESPONSEwk22<-toString(c(trtd.n.NoRESPONSEwk22.wilcoxtest))
+trtd.NoRESPONSEwk22<-gsub(",", "", trtd.NoRESPONSEwk22)
+trtd.NoRESPONSEwk22<-gsub(" ", "", trtd.NoRESPONSEwk22)
+
+trtd.RESPONSEwk22_sum<-toString(c(trtd.NoRESPONSEwk22, trtd.YesRESPONSEwk22))
+
+plac.RESPONSEwk22.wilcox.test.data<-na.omit(subset(nao.screen.plac, select= c(group, invsimpson, RESPONSEwk22, TRTGRINDMAN)))
+plac.RESPONSEwk22.wilcox.test.data<-plac.RESPONSEwk22.wilcox.test.data[plac.RESPONSEwk22.wilcox.test.data$TRTGRINDMAN=="Placebo_Placebo",]
+n.plac.RESPONSEwk22.wilcox.test.data <- nrow(plac.RESPONSEwk22.wilcox.test.data)
+plac.n.YesRESPONSEwk22.wilcoxtest<-nrow(plac.RESPONSEwk22.wilcox.test.data[plac.RESPONSEwk22.wilcox.test.data$RESPONSEwk22=="Yes",])
+plac.n.YesRESPONSEwk22.wilcoxtest
+plac.n.NoRESPONSEwk22.wilcoxtest<-nrow(plac.RESPONSEwk22.wilcox.test.data[plac.RESPONSEwk22.wilcox.test.data$RESPONSEwk22=="No",])
+plac.n.NoRESPONSEwk22.wilcoxtest
+plac.YesRESPONSEwk22<-toString(c(plac.n.YesRESPONSEwk22.wilcoxtest))
+plac.YesRESPONSEwk22<-gsub(",", "", plac.YesRESPONSEwk22)
+plac.YesRESPONSEwk22<-gsub(" ", "", plac.YesRESPONSEwk22)
+plac.NoRESPONSEwk22<-toString(c(plac.n.NoRESPONSEwk22.wilcoxtest))
+plac.NoRESPONSEwk22<-gsub(",", "", plac.NoRESPONSEwk22)
+plac.NoRESPONSEwk22<-gsub(" ", "", plac.NoRESPONSEwk22)
+
+plac.RESPONSEwk22_sum<-toString(c(plac.NoRESPONSEwk22, plac.YesRESPONSEwk22))
+
+
+all.RESPONSEwk22_AMOVA_p<-toString(c(all.RESPONSEwk22.adonis.pval))
+all.RESPONSEwk22_AMOVA_p<-gsub(",", "", all.RESPONSEwk22_AMOVA_p)
+all.RESPONSEwk22_AMOVA_p<-gsub(" ", "", all.RESPONSEwk22_AMOVA_p)
+all.RESPONSEwk22_AMOVA<-toString(c(all.RESPONSEwk22_AMOVA_p))
+all.RESPONSEwk22_AMOVA<-gsub(",", "", all.RESPONSEwk22_AMOVA)
+all.RESPONSEwk22<-matrix(c('Week 22 Response (No, Yes)', trtd.RESPONSEwk22_sum, plac.RESPONSEwk22_sum, all.RESPONSEwk22.kw.test.pval, all.RESPONSEwk22_AMOVA), ncol = 5)
+
+set.seed(32016)
+all.REMISSwk22.wilcox.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, REMISSwk22)))
+all.REMISSwk22.kw.test.data<-na.omit(subset(nao.screen_data, select= c(group, invsimpson, REMISSwk22, TRTGRINDMAN)))
+
+all.REMISSwk22.kw.test.data$REMwk6TRTGRINDMAN <-
+	as.factor(paste(all.REMISSwk22.kw.test.data$REMISSwk22, all.REMISSwk22.kw.test.data$TRTGRINDMAN, sep = "_"))
+all.REMISSwk22.kw.test <- kruskal.test(all.REMISSwk22.kw.test.data$invsimpson ~ all.REMISSwk22.kw.test.data$REMwk6TRTGRINDMAN, all.REMISSwk22.kw.test.data)
+all.REMISSwk22.kw.test.pval <- all.REMISSwk22.kw.test$p.value
+
+all.n.YesREMISSwk22.wilcoxtest<-nrow(all.REMISSwk22.wilcox.test.data[all.REMISSwk22.wilcox.test.data$REMISSwk22=="Yes",])
+all.n.YesREMISSwk22.wilcoxtest
+all.n.NoREMISSwk22.wilcoxtest<-nrow(all.REMISSwk22.wilcox.test.data[all.REMISSwk22.wilcox.test.data$REMISSwk22=="No",])
+all.n.NoREMISSwk22.wilcoxtest
+all.wilcox.REMISSwk22<-wilcox.test(invsimpson ~ REMISSwk22, all.REMISSwk22.wilcox.test.data)
+all.wilcox.REMISSwk22
+all.wilcox.REMISSwk22.pval<-signif(all.wilcox.REMISSwk22$p.value, digits = 2)
+all.wilcox.REMISSwk22.pval
+
+set.seed(32016)
+all.REMISSwk22.adonis<-adonis(nao.screen.all.dist ~ REMISSwk22, nao.screen_data, strata=nao.screen_data$TRTGRINDMAN)
+all.REMISSwk22.adonis
+all.REMISSwk22.adonis.pval<-signif(as.numeric(na.omit(all.REMISSwk22.adonis$aov.tab$`Pr(>F)`)), digits = 2)
+
+kruskalmc(nao.screen_data$invsimpson, nao.screen_data$REMISSwk22, data=nao.screen.trtd)
+
+all.YesREMISSwk22<-toString(c(all.n.YesREMISSwk22.wilcoxtest))
+all.YesREMISSwk22<-gsub(",", "", all.YesREMISSwk22)
+all.YesREMISSwk22<-gsub(" ", "", all.YesREMISSwk22)
+all.NoREMISSwk22<-toString(c(all.n.NoREMISSwk22.wilcoxtest))
+all.NoREMISSwk22<-gsub(",", "", all.NoREMISSwk22)
+all.NoREMISSwk22<-gsub(" ", "", all.NoREMISSwk22)
+
+all.REMISSwk22_sum<-toString(c(all.NoREMISSwk22, all.YesREMISSwk22))
+
+trtd.REMISSwk22.wilcox.test.data<-na.omit(subset(nao.screen.trtd, select= c(group, invsimpson, REMISSwk22, TRTGRINDMAN)))
+trtd.REMISSwk22.wilcox.test.data<-trtd.REMISSwk22.wilcox.test.data[trtd.REMISSwk22.wilcox.test.data$TRTGRINDMAN=="Treated_Treated",]
+trtd.n.YesREMISSwk22.wilcoxtest<-nrow(trtd.REMISSwk22.wilcox.test.data[trtd.REMISSwk22.wilcox.test.data$REMISSwk22=="Yes",])
+trtd.n.YesREMISSwk22.wilcoxtest
+trtd.n.NoREMISSwk22.wilcoxtest<-nrow(trtd.REMISSwk22.wilcox.test.data[trtd.REMISSwk22.wilcox.test.data$REMISSwk22=="No",])
+trtd.n.NoREMISSwk22.wilcoxtest
+trtd.YesREMISSwk22<-toString(c(trtd.n.YesREMISSwk22.wilcoxtest))
+trtd.YesREMISSwk22<-gsub(",", "", trtd.YesREMISSwk22)
+trtd.YesREMISSwk22<-gsub(" ", "", trtd.YesREMISSwk22)
+trtd.NoREMISSwk22<-toString(c(trtd.n.NoREMISSwk22.wilcoxtest))
+trtd.NoREMISSwk22<-gsub(",", "", trtd.NoREMISSwk22)
+trtd.NoREMISSwk22<-gsub(" ", "", trtd.NoREMISSwk22)
+
+trtd.REMISSwk22_sum<-toString(c(trtd.NoREMISSwk22, trtd.YesREMISSwk22))
+
+plac.REMISSwk22.wilcox.test.data<-na.omit(subset(nao.screen.plac, select= c(group, invsimpson, REMISSwk22, TRTGRINDMAN)))
+plac.REMISSwk22.wilcox.test.data<-plac.REMISSwk22.wilcox.test.data[plac.REMISSwk22.wilcox.test.data$TRTGRINDMAN=="Placebo_Placebo",]
+plac.n.YesREMISSwk22.wilcoxtest<-nrow(plac.REMISSwk22.wilcox.test.data[plac.REMISSwk22.wilcox.test.data$REMISSwk22=="Yes",])
+plac.n.YesREMISSwk22.wilcoxtest
+plac.n.NoREMISSwk22.wilcoxtest<-nrow(plac.REMISSwk22.wilcox.test.data[plac.REMISSwk22.wilcox.test.data$REMISSwk22=="No",])
+plac.n.NoREMISSwk22.wilcoxtest
+plac.YesREMISSwk22<-toString(c(plac.n.YesREMISSwk22.wilcoxtest))
+plac.YesREMISSwk22<-gsub(",", "", plac.YesREMISSwk22)
+plac.YesREMISSwk22<-gsub(" ", "", plac.YesREMISSwk22)
+plac.NoREMISSwk22<-toString(c(plac.n.NoREMISSwk22.wilcoxtest))
+plac.NoREMISSwk22<-gsub(",", "", plac.NoREMISSwk22)
+plac.NoREMISSwk22<-gsub(" ", "", plac.NoREMISSwk22)
+
+plac.REMISSwk22_sum<-toString(c(plac.NoREMISSwk22, plac.YesREMISSwk22))
+
+
+all.REMISSwk22_AMOVA_p<-toString(c(all.REMISSwk22.adonis.pval))
+all.REMISSwk22_AMOVA_p<-gsub(",", "", all.REMISSwk22_AMOVA_p)
+all.REMISSwk22_AMOVA_p<-gsub(" ", "", all.REMISSwk22_AMOVA_p)
+all.REMISSwk22_AMOVA<-toString(c(all.REMISSwk22_AMOVA_p))
+all.REMISSwk22_AMOVA<-gsub(",", "", all.REMISSwk22_AMOVA)
+all.REMISSwk22<-matrix(c('Week 22 Remission (No, Yes)', trtd.REMISSwk22_sum, plac.REMISSwk22_sum, all.REMISSwk22.kw.test.pval, all.REMISSwk22_AMOVA), ncol = 5)
+
+source('../code/table2diversity.R')
+```
+
+```{r tbl1padj, include=F}
+source('../code/Supptable1.cohortdiv.R')
+
+
+tbl1 <- data.frame(tbl1)
+
+
+```
+
+```{r timereaddata, include=FALSE}
+#Read in all data
+#metadata
+source('../code/timereaddata.R')
+
+
+```
+
+```{r vars, include=F}
+alltp.all.respY<-alltime_data[alltime_data$RESPONSEwk22=="Yes",]
+alltp.ust.RESPy<-alltp.ust[alltp.ust$RESPONSEwk22=="Yes",]
+alltp.placplac.RESPy<-alltp.placplac[alltp.placplac$RESPONSEwk22=="Yes",]
+
+#set.seed(32016)
+#adonis(alltp_dist ~ TRTGR*RESPONSEwk22, alltime_data, strata = alltime_data$visit)
+```
+
+```{r alltp.adiv, include=F}
+alltime_data <- alltime_data[alltime_data$TRTGRINDMAN != "Treated_Placebo",]
+
+summary(alltime_data[, c("USUBJID", "visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RESPONSEwk22", "REMISSwk22")])
+
+#change in adiv over time?
+wk0.all.adiv <- alltime_data[alltime_data$visit=="Screening", c("USUBJID", "visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RESPONSEwk22", "REMISSwk22")]
+wk0.adiv <- wk0.all.adiv
+colnames(wk0.all.adiv)[3] <- "Week0adiv"
+wk0.all.adiv <- subset(wk0.all.adiv, select=-c(visit))
+
+wk4.all.adiv <- alltime_data[alltime_data$visit=="Week 4", c("USUBJID","visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RESPONSEwk22", "REMISSwk22")]
+wk4.adiv <- wk4.all.adiv
+colnames(wk4.all.adiv)[3] <- "Week4adiv"
+wk4.all.adiv <- subset(wk4.all.adiv, select=-c(visit))
+
+wk6.all.adiv <- alltime_data[alltime_data$visit=="Week 6", c("USUBJID","visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RESPONSEwk22", "REMISSwk22")]
+wk6.adiv <- wk6.all.adiv
+colnames(wk6.all.adiv)[3] <- "Week6adiv"
+wk6.all.adiv <- subset(wk6.all.adiv, select=-c(visit))
+
+wk22.all.adiv <- alltime_data[alltime_data$visit=="Week 22", c("USUBJID","visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RESPONSEwk22", "REMISSwk22")]
+wk22.adiv <- wk22.all.adiv
+colnames(wk22.all.adiv)[3] <- "Week22adiv"
+wk22.all.adiv <- subset(wk22.all.adiv, select=-c(visit))
+
+adiv.wk04 <- merge(wk0.all.adiv, wk4.all.adiv)
+adiv.wk046 <- merge(adiv.wk04, wk6.all.adiv)
+adiv.alltp <- merge(adiv.wk046, wk22.all.adiv)
+
+#adiv.alltp <- adiv.alltp[,-1]
+#mean.adiv.byvis <- apply(adiv.alltp[,-c(1:2)], 2, mean)
+treatedresp <- wk0.all.adiv[wk0.all.adiv$TRTGRINDMAN=="Treated_Treated",]
+#treatedrespY <- treatedrespY[treatedrespY$visit=="Screening",]
+treatedrespY <- treatedresp[treatedresp$RESPONSEwk22=="Yes",]
+treatedrespN <- treatedresp[treatedresp$RESPONSEwk22=="No",]
+alltp.treatedrespY <- adiv.alltp[adiv.alltp$USUBJID %in% treatedrespY$USUBJID,]
+n.alltp.treatedrespY <- nrow(alltp.treatedrespY)
+rownames(alltp.treatedrespY) <- alltp.treatedrespY$USUBJID
+alltp.treatedrespY <- as.matrix(subset(alltp.treatedrespY, select = -c(USUBJID, INDTRTGR, RESPONSEwk22, REMISSwk22, TRTGRINDMAN)))
+mean.adiv.byvis <- apply(alltp.treatedrespY, 2, mean)
+
+
+alltp.treatedrespN <- adiv.alltp[adiv.alltp$USUBJID %in% treatedrespN$USUBJID,]
+n.alltp.treatedrespN <- nrow(alltp.treatedrespN)
+rownames(alltp.treatedrespN) <- alltp.treatedrespN$USUBJID
+alltp.treatedrespN <- as.matrix(subset(alltp.treatedrespN,select = -c(USUBJID, INDTRTGR, RESPONSEwk22, REMISSwk22, TRTGRINDMAN)))
+mean.adiv.byvis <- apply(alltp.treatedrespN, 2, mean)
+
+
+ggplot.wk04.adiv<-rbind(wk0.adiv, wk4.adiv)
+ggplot.wk046.adiv<-rbind(ggplot.wk04.adiv, wk6.adiv)
+ggplot.alltp.adiv<-rbind(ggplot.wk046.adiv, wk22.adiv)
+treatedresp <- ggplot.alltp.adiv[ggplot.alltp.adiv$INDTRTGR=="Treated",]
+treatedresp <- treatedresp[treatedresp$visit=="Screening",]
+treatedrespY <- treatedresp[treatedresp$RESPONSEwk22=="Yes",]
+ggplot.alltp.treatedrespY <- ggplot.alltp.adiv[ggplot.alltp.adiv$USUBJID %in% treatedrespY$USUBJID,]
+ggplot.alltp.treatedrespY <- ggplot.alltp.treatedrespY[, -c(4:6)]
+
+
+treatedrespN <- treatedresp[treatedresp$RESPONSEwk22=="No",]
+ggplot.alltp.treatedrespN <- ggplot.alltp.adiv[ggplot.alltp.adiv$USUBJID %in% treatedrespN$USUBJID,]
+ggplot.alltp.treatedrespN <- ggplot.alltp.treatedrespN[, -c(4:6)]
+
+
+
+fried.trtdrespY <- friedman.test(alltp.treatedrespY)
+fried.trtdrespY$p.value
+friedmc.trtdrespY <- friedmanmc(alltp.treatedrespY)
+friedmc.trtdrespY.pval <- friedmc.trtdrespY$dif.com
+friedmc.trtdrespY.pval <- friedmc.trtdrespY.pval[friedmc.trtdrespY.pval$difference=="TRUE",]
+
+
+friedman.test(alltp.treatedrespN)
+friedmc <- friedmanmc(alltp.treatedrespN)
+friedmc
+
+
+
+#adiv.alltp <- adiv.alltp[,-1]
+#mean.adiv.byvis <- apply(adiv.alltp[,-c(1:2)], 2, mean)
+placeboresp <- wk0.all.adiv[wk0.all.adiv$INDTRTGR=="Placebo",]
+#placeborespY <- placeborespY[placeborespY$visit=="Screening",]
+placeborespY <- placeboresp[placeboresp$RESPONSEwk22=="Yes",]
+placeborespN <- placeboresp[placeboresp$RESPONSEwk22=="No",]
+alltp.placeborespY <- adiv.alltp[adiv.alltp$USUBJID %in% placeborespY$USUBJID,]
+#alltp.placeborespY <- alltp.placeborespY[, -c(4:5)]
+rownames(alltp.placeborespY) <- alltp.placeborespY$USUBJID
+alltp.placeborespY <- as.matrix(alltp.placeborespY[,-c(1:5)])
+mean.adiv.byvis <- apply(alltp.placeborespY, 2, mean)
+
+
+
+alltp.placeborespN <- adiv.alltp[adiv.alltp$USUBJID %in% placeborespN$USUBJID,]
+#alltp.placeborespN <- alltp.placeborespN[, -c(4:5)]
+rownames(alltp.placeborespN) <- alltp.placeborespN$USUBJID
+alltp.placeborespN <- as.matrix(alltp.placeborespN[,-c(1:5)])
+mean.adiv.byvis <- apply(alltp.placeborespN, 2, mean)
+
+
+ggplot.wk04.adiv<-rbind(wk0.adiv, wk4.adiv)
+ggplot.wk046.adiv<-rbind(ggplot.wk04.adiv, wk6.adiv)
+ggplot.alltp.adiv<-rbind(ggplot.wk046.adiv, wk22.adiv)
+placeboresp <- ggplot.alltp.adiv[ggplot.alltp.adiv$INDTRTGR=="Placebo",]
+placeboresp <- placeboresp[placeboresp$visit=="Screening",]
+placeborespY <- placeboresp[placeboresp$RESPONSEwk22=="Yes",]
+ggplot.alltp.placeborespY <- ggplot.alltp.adiv[ggplot.alltp.adiv$USUBJID %in% placeborespY$USUBJID,]
+ggplot.alltp.placeborespY <- ggplot.alltp.placeborespY[, -c(4:5)]
+
+
+placeborespN <- placeboresp[placeboresp$RESPONSEwk22=="No",]
+ggplot.alltp.placeborespN <- ggplot.alltp.adiv[ggplot.alltp.adiv$USUBJID %in% placeborespN$USUBJID,]
+ggplot.alltp.placeborespN <- ggplot.alltp.placeborespN[, -c(4:5)]
+
+
+friedman.test(alltp.placeborespY)
+friedmc <- friedmanmc(alltp.placeborespY)
+friedmc
+
+
+friedman.test(alltp.placeborespN)
+friedmc <- friedmanmc(alltp.placeborespN)
+friedmc
+
+#source('../code/Figure4_alltp.adivXvisitXtrtgrXRESPONSEwk22.R')
+
+#pdf("figures/Figure4_alltp.adivXvisitXindtrtXRESPONSEwk22.pdf", height = 6, width = 10)
+#alltp.adivXvisXindtrtXRESPONSEwk22.plot
+#dev.off()
+
+alltp.treatedrespY <- data.frame(alltp.treatedrespY)
+alltp.treatedrespN <- data.frame(alltp.treatedrespN)
+alltp.placeborespY <- data.frame(alltp.placeborespY)
+alltp.placeborespN <- data.frame(alltp.placeborespN)
+
+
+#change in adiv over time?
+wk0.all.adiv <- alltime_data[alltime_data$visit=="Screening", c("USUBJID", "visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RESPONSEwk22", "REMISSwk22")]
+wk0.adiv <- wk0.all.adiv
+colnames(wk0.all.adiv)[3] <- "Week0adiv"
+wk0.all.adiv <- subset(wk0.all.adiv, select=-c(visit))
+
+wk4.all.adiv <- alltime_data[alltime_data$visit=="Week 4", c("USUBJID","visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RESPONSEwk22", "REMISSwk22")]
+wk4.adiv <- wk4.all.adiv
+colnames(wk4.all.adiv)[3] <- "Week4adiv"
+wk4.all.adiv <- subset(wk4.all.adiv, select=-c(visit))
+
+wk6.all.adiv <- alltime_data[alltime_data$visit=="Week 6", c("USUBJID","visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RESPONSEwk22", "REMISSwk22")]
+wk6.adiv <- wk6.all.adiv
+colnames(wk6.all.adiv)[3] <- "Week6adiv"
+wk6.all.adiv <- subset(wk6.all.adiv, select=-c(visit))
+
+wk22.all.adiv <- alltime_data[alltime_data$visit=="Week 22", c("USUBJID","visit", "invsimpson", "INDTRTGR", "TRTGRINDMAN", "RESPONSEwk22", "REMISSwk22")]
+wk22.adiv <- wk22.all.adiv
+colnames(wk22.all.adiv)[3] <- "Week22adiv"
+wk22.all.adiv <- subset(wk22.all.adiv, select=-c(visit))
+
+adiv.wk04 <- merge(wk0.all.adiv, wk4.all.adiv)
+adiv.wk046 <- merge(adiv.wk04, wk6.all.adiv)
+adiv.alltp <- merge(adiv.wk046, wk22.all.adiv)
+
+
+
+
+#adiv.alltp <- adiv.alltp[,-1]
+#mean.adiv.byvis <- apply(adiv.alltp[,-c(1:2)], 2, mean)
+treatedrem <- wk0.all.adiv[wk0.all.adiv$TRTGRINDMAN=="Treated_Treated",]
+#treatedremY <- treatedremY[treatedremY$visit=="Screening",]
+treatedremY <- treatedrem[treatedrem$REMISSwk22=="Yes",]
+treatedremN <- treatedrem[treatedrem$REMISSwk22=="No",]
+alltp.treatedremY <- adiv.alltp[adiv.alltp$USUBJID %in% treatedremY$USUBJID,]
+n.alltp.treatedremY <- nrow(alltp.treatedremY)
+rownames(alltp.treatedremY) <- alltp.treatedremY$USUBJID
+alltp.treatedremY <- as.matrix(subset(alltp.treatedremY,select = -c(USUBJID, INDTRTGR, RESPONSEwk22, REMISSwk22, TRTGRINDMAN)))
+mean.adiv.byvis <- apply(alltp.treatedremY, 2, mean)
+
+alltp.treatedremN <- adiv.alltp[adiv.alltp$USUBJID %in% treatedremN$USUBJID,]
+n.alltp.treatedremN <- nrow(alltp.treatedremN)
+rownames(alltp.treatedremN) <- alltp.treatedremN$USUBJID
+alltp.treatedremN <- as.matrix(subset(alltp.treatedremN,select = -c(USUBJID, INDTRTGR, RESPONSEwk22, REMISSwk22, TRTGRINDMAN)))
+mean.adiv.byvis <- apply(alltp.treatedremN, 2, mean)
+
+ggplot.wk04.adiv<-rbind(wk0.adiv, wk4.adiv)
+ggplot.wk046.adiv<-rbind(ggplot.wk04.adiv, wk6.adiv)
+ggplot.alltp.adiv<-rbind(ggplot.wk046.adiv, wk22.adiv)
+treatedrem <- ggplot.alltp.adiv[ggplot.alltp.adiv$INDTRTGR=="Treated",]
+treatedrem <- treatedrem[treatedrem$visit=="Screening",]
+treatedremY <- treatedrem[treatedrem$REMISSwk22=="Yes",]
+ggplot.alltp.treatedremY <- ggplot.alltp.adiv[ggplot.alltp.adiv$USUBJID %in% treatedremY$USUBJID,]
+ggplot.alltp.treatedremY <- ggplot.alltp.treatedremY[, -c(4:6)]
+
+
+treatedremN <- treatedrem[treatedrem$REMISSwk22=="No",]
+ggplot.alltp.treatedremN <- ggplot.alltp.adiv[ggplot.alltp.adiv$USUBJID %in% treatedremN$USUBJID,]
+ggplot.alltp.treatedremN <- ggplot.alltp.treatedremN[, -c(4:6)]
+
+
+
+fried.trtdremY <- friedman.test(alltp.treatedremY)
+fried.trtdremY$p.value
+friedmc.trtdremY <- friedmanmc(alltp.treatedremY)
+friedmc.trtdremY.pval <- friedmc.trtdremY$dif.com
+friedmc.trtdremY.pval <- friedmc.trtdremY.pval[friedmc.trtdremY.pval$difference=="TRUE",]
+
+
+friedman.test(alltp.treatedremN)
+friedmc <- friedmanmc(alltp.treatedremN)
+friedmc
+
+
+
+#adiv.alltp <- adiv.alltp[,-1]
+#mean.adiv.byvis <- apply(adiv.alltp[,-c(1:2)], 2, mean)
+placeborem <- wk0.all.adiv[wk0.all.adiv$INDTRTGR=="Placebo",]
+#placeboremY <- placeboremY[placeboremY$visit=="Screening",]
+placeboremY <- placeborem[placeborem$REMISSwk22=="Yes",]
+placeboremN <- placeborem[placeborem$REMISSwk22=="No",]
+alltp.placeboremY <- adiv.alltp[adiv.alltp$USUBJID %in% placeboremY$USUBJID,]
+#alltp.placeboremY <- alltp.placeboremY[, -c(4:5)]
+rownames(alltp.placeboremY) <- alltp.placeboremY$USUBJID
+alltp.placeboremY <- as.matrix(alltp.placeboremY[,-c(1:5)])
+mean.adiv.byvis <- apply(alltp.placeboremY, 2, mean)
+
+alltp.placeboremN <- adiv.alltp[adiv.alltp$USUBJID %in% placeboremN$USUBJID,]
+#alltp.placeboremN <- alltp.placeboremN[, -c(4:5)]
+rownames(alltp.placeboremN) <- alltp.placeboremN$USUBJID
+alltp.placeboremN <- as.matrix(alltp.placeboremN[,-c(1:5)])
+mean.adiv.byvis <- apply(alltp.placeboremN, 2, mean)
+
+ggplot.wk04.adiv<-rbind(wk0.adiv, wk4.adiv)
+ggplot.wk046.adiv<-rbind(ggplot.wk04.adiv, wk6.adiv)
+ggplot.alltp.adiv<-rbind(ggplot.wk046.adiv, wk22.adiv)
+placeborem <- ggplot.alltp.adiv[ggplot.alltp.adiv$INDTRTGR=="Placebo",]
+placeborem <- placeborem[placeborem$visit=="Screening",]
+placeboremY <- placeborem[placeborem$REMISSwk22=="Yes",]
+ggplot.alltp.placeboremY <- ggplot.alltp.adiv[ggplot.alltp.adiv$USUBJID %in% placeboremY$USUBJID,]
+ggplot.alltp.placeboremY <- ggplot.alltp.placeboremY[, -c(4:5)]
+
+
+placeboremN <- placeborem[placeborem$REMISSwk22=="No",]
+ggplot.alltp.placeboremN <- ggplot.alltp.adiv[ggplot.alltp.adiv$USUBJID %in% placeboremN$USUBJID,]
+ggplot.alltp.placeboremN <- ggplot.alltp.placeboremN[, -c(4:5)]
+
+
+friedman.test(alltp.placeboremY)
+friedmc <- friedmanmc(alltp.placeboremY)
+friedmc
+
+
+friedman.test(alltp.placeboremN)
+friedmc <- friedmanmc(alltp.placeboremN)
+friedmc
+```
+
+```{r readdataAUCRF, include=FALSE}
+#Read in all data
+source('../code/readdataAUCRF.R')
+
+```	
+
+```{r RESPONSEwk6-AUC-RF, include=F, fig.height=5, fig.width=10}
+print("RESPONSEwk6 by AUC-RF \\nRelative response defined as a decrease in CDAI from Screening greater than 29.5%.")
+set.seed(32016)
+levels(nao.screen.trtd$RESPONSEwk6) <- c(0,1)
+mdotu_respWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd))])]
+#summary(mdotu_respWK6[,c("RESPONSEwk6")])
+mdotu_respWK6<-na.omit(mdotu_respWK6)
+#summary(mdotu_respWK6[,c("RESPONSEwk6")])
+otu_respWK6 <- mdotu_respWK6[, c('RESPONSEwk6', colnames(mdotu_respWK6)[grep('Otu[0123456789]', colnames(mdotu_respWK6))])]
+#summary(otu_respWK6[,c("RESPONSEwk6")])
+#summary(otu_respWK6[,c("RESPONSEwk6")])
+otu_respWK6<-na.omit(otu_respWK6)
+#summary(otu_respWK6[,c("RESPONSEwk6")])
+set.seed(32016)
+otu_respWK6_rf <- AUCRF(RESPONSEwk6~., data=otu_respWK6, ranking='MDA', ntree=500, pdel=0.2)
+##otu_respWK6_rf # prints list of optimal OTUs
+otu_respWK6_probs <- predict(otu_respWK6_rf$RFopt, type='prob')[,2]
+otu_respWK6_roc <- roc(otu_respWK6$RESPONSEwk6~otu_respWK6_probs)
+
+
+md_respWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening")]
+#summary(md_respWK6[,c("RESPONSEwk6")])
+md_respWK6<-na.omit(md_respWK6)
+#summary(md_respWK6[,c("RESPONSEwk6")])
+set.seed(32016)
+md_respWK6_rf <- AUCRF(RESPONSEwk6~., data=md_respWK6, ranking='MDA', ntree=500, pdel=0.3)
+##md_respWK6_rf # prints list of optimal features
+md_respWK6_probs <- predict(md_respWK6_rf$RFopt, type='prob')[,2]
+md_respWK6_roc <- roc(md_respWK6$RESPONSEwk6~md_respWK6_probs)
+
+
+mdotu_respWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd))])]
+#summary(mdotu_respWK6[,c("RESPONSEwk6")])
+mdotu_respWK6<-na.omit(mdotu_respWK6)
+#summary(mdotu_respWK6[,c("RESPONSEwk6")])
+set.seed(32016)
+mdotu_respWK6_rf <- AUCRF(RESPONSEwk6~., data=mdotu_respWK6, ranking='MDA', ntree=500, pdel=0.2)
+#mdotu_respWK6_rf # prints list of optimal features
+mdotu_respWK6_probs <- predict(mdotu_respWK6_rf$RFopt, type='prob')[,2]
+mdotu_respWK6_roc <- roc(mdotu_respWK6$RESPONSEwk6~mdotu_respWK6_probs)
+mdotu_respWK6_rf
+otu_respWK6_rf
+md_respWK6_rf
+
+mdotuvmdWK6resprocsP <- roc.test(mdotu_respWK6_roc, md_respWK6_roc)
+otuvmdWK6resprocsP <- roc.test(otu_respWK6_roc, md_respWK6_roc)
+otuvmdotuWK6resprocsP <- roc.test(otu_respWK6_roc, mdotu_respWK6_roc)
+mdotuvmdWK6resprocsPval <- signif(mdotuvmdWK6resprocsP$p.value, digits=2)
+otuvmdWK6resprocsPval <- signif(otuvmdWK6resprocsP$p.value, digits=2)
+otuvmdotuWK6resprocsP <- signif(otuvmdotuWK6resprocsP$p.value, digits=3)
+```
+
+```{r RESPONSEwk6AUCRFinline, include=F, fig.height=5, fig.width=10}
+cutoff <- coords(roc=md_respWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
+
+### Plot ROC curves
+layout(matrix(c(1,2), nrow=1))
+par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
+plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
+plot(otu_respWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
+plot(md_respWK6_roc, add=T, lwd=2, col='grey5', lty=1)
+plot(mdotu_respWK6_roc, add=T, lwd=2, col='red', lty=1)
+title("Predicting Week 6 Response")
+legend('bottomright', c(sprintf('Week 0 OTUs : AUC=%.3f',otu_respWK6_roc$auc), sprintf('Week 0 Clinical Data: AUC=%.3f',md_respWK6_roc$auc), sprintf('Combined: AUC=%.3f',mdotu_respWK6_roc$auc)), lwd=2, col=c('royalblue', 'grey5', 'red'), bty='n', lty=1)
+
+cutoff <- coords(roc=mdotu_respWK6_roc, x='best', best.method='y', ret=c('threshold'))
+mdotu_respWK6_spec <- coords(mdotu_respWK6_roc, x=cutoff, input='thr', ret='spec')
+mdotu_respWK6_sens <- coords(mdotu_respWK6_roc, x=mdotu_respWK6_spec, input='spec', ret='sens')
+mdotu_respWK6_thr <- coords(mdotu_respWK6_roc, x=mdotu_respWK6_spec, input='spec', ret='thr')
+
+points(coords(mdotu_respWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(mdotu_respWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='red', cex=1.5, pch=10)
+
+cutoff <- coords(roc=otu_respWK6_roc, x='best', best.method='y', ret=c('threshold'))
+otu_respWK6_spec <- coords(otu_respWK6_roc, x=cutoff, input='thr', ret='spec')
+otu_respWK6_sens <- coords(otu_respWK6_roc, x=otu_respWK6_spec, input='spec', ret='sens')
+otu_respWK6_thr <- coords(otu_respWK6_roc, x=otu_respWK6_spec, input='spec', ret='thr')
+points(coords(otu_respWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(otu_respWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='royalblue', cex=1.5, pch=10)
+
+cutoff <- coords(roc=md_respWK6_roc, x='best', best.method='y', ret=c('threshold'))
+md_respWK6_spec <- coords(md_respWK6_roc, x=cutoff, input='thr', ret='spec')
+md_respWK6_sens <- coords(md_respWK6_roc, x=md_respWK6_spec, input='spec', ret='sens')
+md_respWK6_thr <- coords(md_respWK6_roc, x=md_respWK6_spec, input='spec', ret='thr')
+
+points(coords(md_respWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(md_respWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='black', cex=1.5, pch=10)
+
+plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='Response Week 6', xaxt='n', cex.axis=1.2)
+title('Response Status Compared to Combined Model')
+stripchart(at=1, mdotu_respWK6_probs[mdotu_respWK6$'RESPONSEwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
+stripchart(at=2, mdotu_respWK6_probs[mdotu_respWK6$'RESPONSEwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
+mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
+axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
+cutoff <- coords(roc=mdotu_respWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
+abline(h=cutoff, lty=2)
+legend("top", lty=2, sprintf('Model Threshold'))
+
+#mdotu_respWK6_rf # prints list of optimal features
+otu_respWK6_rf 
+```
+
+```{r REMISSwk6-AUC-RF, include=F, fig.height=5, fig.width=10}
+print("REMISSwk6 by AUC-RF")
+set.seed(32016)
+levels(nao.screen.trtd$REMISSwk6) <- c(0,1)
+mdotu_remWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('REMISSwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", "invsimpson", colnames(nao.screen.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd))])]
+
+mdotu_remWK6<-na.omit(mdotu_remWK6)
+
+otu_remWK6 <- mdotu_remWK6[, c('REMISSwk6', colnames(mdotu_remWK6)[grep('Otu[0123456789]', colnames(mdotu_remWK6))])]
+
+otu_remWK6<-na.omit(otu_remWK6)
+
+set.seed(32016)
+otu_remWK6_rf <- AUCRF(REMISSwk6~., data=otu_remWK6, ranking='MDA', ntree=500, pdel=0.2)
+#otu_remWK6_rf # prints list of optimal OTUs
+otu_remWK6_probs <- predict(otu_remWK6_rf$RFopt, type='prob')[,2]
+otu_remWK6_roc <- roc(otu_remWK6$REMISSwk6~otu_remWK6_probs)
+
+
+md_remWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('REMISSwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening")]
+#summary(md_remWK6[,c("REMISSwk6")])
+md_remWK6<-na.omit(md_remWK6)
+#summary(md_remWK6[,c("REMISSwk6")])
+set.seed(32016)
+md_remWK6_rf <- AUCRF(REMISSwk6~., data=md_remWK6, ranking='MDA', ntree=500, pdel=0.3)
+#md_remWK6_rf # prints list of optimal features
+md_remWK6_probs <- predict(md_remWK6_rf$RFopt, type='prob')[,2]
+md_remWK6_roc <- roc(md_remWK6$REMISSwk6~md_remWK6_probs)
+
+
+mdotu_remWK6 <- nao.screen.trtd[nao.screen.trtd$visit=='Screening', c('REMISSwk6', "AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Screening", "CDPAINM_Screening", "CDWELBEM_Screening", "CDARTRTM_Screening", "CDARALGM_Screening", "CDIRITM_Screening", "CDUVEITM_Screening", "CDERYTHM_Screening", "CDPYODEM_Screening", "CDSTOMAM_Screening", "CDFISURM_Screening", "CDFISTUM_Screening", "CDABSCEM_Screening", "CDOTFISM_Screening", "CDFEVERM_Screening", "CDDRGM_Screening", "CDAMASSM_Screening", "CDHCTM_Screening", "CDWEIGHM_Screening", 'invsimpson', colnames(nao.screen.trtd)[grep('Otu[0123456789]', colnames(nao.screen.trtd))])]
+#summary(mdotu_remWK6[,c("REMISSwk6")])
+mdotu_remWK6<-na.omit(mdotu_remWK6)
+#summary(mdotu_remWK6[,c("REMISSwk6")])
+set.seed(32016)
+mdotu_remWK6_rf <- AUCRF(REMISSwk6~., data=mdotu_remWK6, ranking='MDA', ntree=500, pdel=0.2)
+#mdotu_remWK6_rf # prints list of optimal features
+mdotu_remWK6_probs <- predict(mdotu_remWK6_rf$RFopt, type='prob')[,2]
+mdotu_remWK6_roc <- roc(mdotu_remWK6$REMISSwk6~mdotu_remWK6_probs)
+
+
+
+
+otu_respWK6xremWK6rocsP <- roc.test(otu_respWK6_roc, otu_remWK6_roc)
+otu_respWK6xremWK6rocsPval <- signif(otu_respWK6xremWK6rocsP$p.value, digits=3)
+
+mdotu_respWK6xremWK6rocsP <- roc.test(mdotu_respWK6_roc, mdotu_remWK6_roc)
+mdotu_respWK6xremWK6rocsPval <- signif(mdotu_respWK6xremWK6rocsP$p.value, digits=2)
+
+mdotuvmdWK6remrocsP <- roc.test(mdotu_remWK6_roc, md_remWK6_roc)
+otuvmdWK6remrocsP <- roc.test(otu_remWK6_roc, md_remWK6_roc)
+mdotuvmdWK6remrocsPval <- signif(mdotuvmdWK6remrocsP$p.value, digits=2)
+otuvmdWK6remrocsPval <- signif(otuvmdWK6remrocsP$p.value, digits=2)
+mdotuvotuWK6remrocsP <- roc.test(mdotu_remWK6_roc, otu_remWK6_roc)
+mdotuvotuWK6remrocsPval <- signif(mdotuvotuWK6remrocsP$p.value, digits=3)
+
+#source("../code/Figure2_prediction.R")
+```
+
+```{r REMISSwk6AUCRFinline, fig.height=5, fig.width=10, include=FALSE}
+layout(matrix(c(1,2), nrow=1))
+par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
+plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
+plot(otu_remWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
+plot(md_remWK6_roc, add=T, lwd=2, col='grey5', lty=1)
+plot(mdotu_remWK6_roc, add=T, lwd=2, col='red', lty=1)
+title("Predicting Week 6 Remission")
+legend('bottomright', c(sprintf('Week 0 OTUs : AUC=%.3f', otu_remWK6_roc$auc),sprintf('Combined: AUC=%.3f',mdotu_remWK6_roc$auc), sprintf('Week 0 Clinical Data: AUC=%.3f',md_remWK6_roc$auc)), lwd=2, col=c('royalblue', 'red', "grey5"), bty='n', lty=1)
+
+cutoff <- coords(roc=mdotu_remWK6_roc, x='best', best.method='y', ret=c('threshold'))
+mdotu_remWK6_spec <- coords(mdotu_remWK6_roc, x=cutoff, input='thr', ret='spec')
+mdotu_remWK6_sens <- coords(mdotu_remWK6_roc, x=mdotu_remWK6_spec, input='spec', ret='sens')
+mdotu_remWK6_thr <- coords(mdotu_remWK6_roc, x=mdotu_remWK6_spec, input='spec', ret='thr')
+
+points(coords(mdotu_remWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(mdotu_remWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='red', cex=1.5, pch=10)
+
+cutoff <- coords(roc=otu_remWK6_roc, x='best', best.method='y', ret=c('threshold'))
+otu_remWK6_spec <- coords(otu_remWK6_roc, x=cutoff, input='thr', ret='spec')
+otu_remWK6_sens <- coords(otu_remWK6_roc, x=otu_remWK6_spec, input='spec', ret='sens')
+otu_remWK6_thr <- coords(otu_remWK6_roc, x=otu_remWK6_spec, input='spec', ret='thr')
+points(coords(otu_remWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(otu_remWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='royalblue', cex=1.5, pch=10)
+
+cutoff <- coords(roc=md_remWK6_roc, x='best', best.method='y', ret=c('threshold'))
+md_remWK6_spec <- coords(md_remWK6_roc, x=cutoff, input='thr', ret='spec')
+md_remWK6_sens <- coords(md_remWK6_roc, x=md_remWK6_spec, input='spec', ret='sens')
+md_remWK6_thr <- coords(md_remWK6_roc, x=md_remWK6_spec, input='spec', ret='thr')
+
+points(coords(md_remWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(md_remWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='black', cex=1.5, pch=10)
+
+plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='Remission Week 6', xaxt='n', cex.axis=1.2)
+title('Remission Status Compared to Combined Model')
+stripchart(at=1, mdotu_remWK6_probs[mdotu_remWK6$REMISSwk6=='0'], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
+stripchart(at=2, mdotu_remWK6_probs[mdotu_remWK6$REMISSwk6=='1'], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
+mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
+axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
+cutoff <- coords(roc=mdotu_remWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
+abline(h=cutoff, lty=2)
+legend("top", lty=2, sprintf('Model Threshold'))
+
+
+#mdotu_remWK6_rf # prints list of optimal features
+otu_remWK6_rf 
+
+
+```
+
+```{r week6readdata, include=F}
+
+source('../code/wk6readdata.R')
+
+pdf("tables/wk6_wk6.sum.pdf", height=2, width=6)
+grid.table(wk6_wk6)
+dev.off()
+```
+
+```{r RESPONSEwk6Xwk6-AUC-RF, include=F, fig.height=5, fig.width=10}
+print("RESPONSEwk6 by AUC-RF \\nRelative response defined as a decrease in CDAI from Week.6 greater than 29.5%.")
+set.seed(32016)
+levels(trtd.wk6_data$RESPONSEwk6) <- c(0,1)
+
+mdotu_respWK6xWK6 <- trtd.wk6_data[trtd.wk6_data$visit=='Week 6', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Week.6", "CDPAINM_Week.6", "CDWELBEM_Week.6", "CDARTRTM_Week.6", "CDARALGM_Week.6", "CDIRITM_Week.6", "CDUVEITM_Week.6", "CDERYTHM_Week.6", "CDPYODEM_Week.6", "CDSTOMAM_Week.6", "CDFISURM_Week.6", "CDFISTUM_Week.6", "CDABSCEM_Week.6", "CDOTFISM_Week.6", "CDFEVERM_Week.6", "CDDRGM_Week.6", "CDAMASSM_Week.6", "CDHCTM_Week.6", "CDWEIGHM_Week.6", "invsimpson", colnames(trtd.wk6_data)[grep('Otu[0123456789]', colnames(trtd.wk6_data))])]
+#summary(mdotu_respWK6xWK6[,c("RESPONSEwk6")])
+mdotu_respWK6xWK6<-na.omit(mdotu_respWK6xWK6)
+#summary(mdotu_respWK6xWK6[,c("RESPONSEwk6")])
+otu_respWK6xWK6 <- mdotu_respWK6xWK6[, c('RESPONSEwk6', colnames(mdotu_respWK6xWK6)[grep('Otu[0123456789]', colnames(mdotu_respWK6xWK6))])]
+#summary(otu_respWK6xWK6[,c("RESPONSEwk6")])
+#summary(otu_respWK6xWK6[,c("RESPONSEwk6")])
+otu_respWK6xWK6<-na.omit(otu_respWK6xWK6)
+summary(otu_respWK6xWK6[,c("RESPONSEwk6")])
+set.seed(32016)
+otu_respWK6xWK6_rf <- AUCRF(RESPONSEwk6~., data=otu_respWK6xWK6, ranking='MDA', ntree=500, pdel=0.2)
+##otu_respWK6xWK6_rf # prints list of optimal OTUs
+otu_respWK6xWK6_probs <- predict(otu_respWK6xWK6_rf$RFopt, type='prob')[,2]
+otu_respWK6xWK6_roc <- roc(otu_respWK6xWK6$RESPONSEwk6~otu_respWK6xWK6_probs)
+
+
+md_respWK6xWK6 <- trtd.wk6_data[trtd.wk6_data$visit=='Week 6', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Week.6", "CDPAINM_Week.6", "CDWELBEM_Week.6", "CDARTRTM_Week.6", "CDARALGM_Week.6", "CDIRITM_Week.6", "CDUVEITM_Week.6", "CDERYTHM_Week.6", "CDPYODEM_Week.6", "CDSTOMAM_Week.6", "CDFISURM_Week.6", "CDFISTUM_Week.6", "CDABSCEM_Week.6", "CDOTFISM_Week.6", "CDFEVERM_Week.6", "CDDRGM_Week.6", "CDAMASSM_Week.6", "CDHCTM_Week.6", "CDWEIGHM_Week.6")]
+#summary(md_respWK6xWK6[,c("RESPONSEwk6")])
+md_respWK6xWK6<-na.omit(md_respWK6xWK6)
+#summary(md_respWK6xWK6[,c("RESPONSEwk6")])
+set.seed(32016)
+md_respWK6xWK6_rf <- AUCRF(RESPONSEwk6~., data=md_respWK6xWK6, ranking='MDA', ntree=500, pdel=0.3)
+##md_respWK6xWK6_rf # prints list of optimal features
+md_respWK6xWK6_probs <- predict(md_respWK6xWK6_rf$RFopt, type='prob')[,2]
+md_respWK6xWK6_roc <- roc(md_respWK6xWK6$RESPONSEwk6~md_respWK6xWK6_probs)
+
+
+mdotu_respWK6xWK6 <- trtd.wk6_data[trtd.wk6_data$visit=='Week 6', c('RESPONSEwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Week.6", "CDPAINM_Week.6", "CDWELBEM_Week.6", "CDARTRTM_Week.6", "CDARALGM_Week.6", "CDIRITM_Week.6", "CDUVEITM_Week.6", "CDERYTHM_Week.6", "CDPYODEM_Week.6", "CDSTOMAM_Week.6", "CDFISURM_Week.6", "CDFISTUM_Week.6", "CDABSCEM_Week.6", "CDOTFISM_Week.6", "CDFEVERM_Week.6", "CDDRGM_Week.6", "CDAMASSM_Week.6", "CDHCTM_Week.6", "CDWEIGHM_Week.6", "invsimpson", colnames(trtd.wk6_data)[grep('Otu[0123456789]', colnames(trtd.wk6_data))])]
+#summary(mdotu_respWK6xWK6[,c("RESPONSEwk6")])
+mdotu_respWK6xWK6<-na.omit(mdotu_respWK6xWK6)
+#summary(mdotu_respWK6xWK6[,c("RESPONSEwk6")])
+set.seed(32016)
+mdotu_respWK6xWK6_rf <- AUCRF(RESPONSEwk6~., data=mdotu_respWK6xWK6, ranking='MDA', ntree=500, pdel=0.2)
+#mdotu_respWK6xWK6_rf # prints list of optimal features
+mdotu_respWK6xWK6_probs <- predict(mdotu_respWK6xWK6_rf$RFopt, type='prob')[,2]
+mdotu_respWK6xWK6_roc <- roc(mdotu_respWK6xWK6$RESPONSEwk6~mdotu_respWK6xWK6_probs)
+
+
+
+#pdf('../data/figures/RSPwk6aucrf.#pdf', height=6, width=8)
+### Plot ROC curves
+layout(matrix(c(1,2), nrow=1))
+par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
+plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
+#plot(otu_respWK6xWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
+plot(md_respWK6xWK6_roc, add=T, lwd=2, col='grey5', lty=1)
+#plot(mdotu_respWK6xWK6_roc, add=T, lwd=2, col='red', lty=1)
+title("Predicting Week 6 Response using Week 0 Clinical Data")
+legend('bottomright', sprintf('Clinical Data: AUC=%.3f',md_respWK6xWK6_roc$auc), lwd=2, col='grey5', bty='n', lty=1)
+cutoff <- coords(roc=mdotu_respWK6xWK6_roc, x='best', best.method='y', ret=c('threshold'))
+mdotu_respWK6xWK6_spec <- coords(mdotu_respWK6xWK6_roc, x=cutoff, input='thr', ret='spec')
+mdotu_respWK6xWK6_sens <- coords(mdotu_respWK6xWK6_roc, x=mdotu_respWK6xWK6_spec, input='spec', ret='sens')
+mdotu_respWK6xWK6_thr <- coords(mdotu_respWK6xWK6_roc, x=mdotu_respWK6xWK6_spec, input='spec', ret='thr')
+
+points(coords(mdotu_respWK6xWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(mdotu_respWK6xWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='red', cex=1.5, pch=10)
+
+cutoff <- coords(roc=otu_respWK6xWK6_roc, x='best', best.method='y', ret=c('threshold'))
+otu_respWK6xWK6_spec <- coords(otu_respWK6xWK6_roc, x=cutoff, input='thr', ret='spec')
+otu_respWK6xWK6_sens <- coords(otu_respWK6xWK6_roc, x=otu_respWK6xWK6_spec, input='spec', ret='sens')
+otu_respWK6xWK6_thr <- coords(otu_respWK6xWK6_roc, x=otu_respWK6xWK6_spec, input='spec', ret='thr')
+points(coords(otu_respWK6xWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(otu_respWK6xWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='royalblue', cex=1.5, pch=10)
+
+cutoff <- coords(roc=md_respWK6xWK6_roc, x='best', best.method='y', ret=c('threshold'))
+md_respWK6xWK6_spec <- coords(md_respWK6xWK6_roc, x=cutoff, input='thr', ret='spec')
+md_respWK6xWK6_sens <- coords(md_respWK6xWK6_roc, x=md_respWK6xWK6_spec, input='spec', ret='sens')
+md_respWK6xWK6_thr <- coords(md_respWK6xWK6_roc, x=md_respWK6xWK6_spec, input='spec', ret='thr')
+
+points(coords(md_respWK6xWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(md_respWK6xWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='black', cex=1.5, pch=10)
+#dev.off()
+
+#pdf('../data/figures/RSPwk6abunds.#pdf', height=6, width=8)
+plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='', xaxt='n', cex.axis=1.2)
+stripchart(at=1, md_respWK6xWK6_probs[md_respWK6xWK6$'RESPONSEwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
+stripchart(at=2, md_respWK6xWK6_probs[md_respWK6xWK6$'RESPONSEwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
+mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
+axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
+cutoff <- coords(roc=md_respWK6xWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
+#dev.off()
+
+
+md_respWK6xWK6_rf # prints list of optimal features
+
+
+#pdf('../data/figures/RSPwk6aucrf.#pdf', height=6, width=8)
+### Plot ROC curves
+layout(matrix(c(1,2), nrow=1))
+par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
+plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
+plot(otu_respWK6xWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
+plot(md_respWK6xWK6_roc, add=T, lwd=2, col='grey5', lty=1)
+plot(mdotu_respWK6xWK6_roc, add=T, lwd=2, col='red', lty=1)
+title("RESPONSEwk6")
+legend('bottomright', c(sprintf('OTUs : AUC=%.3f',otu_respWK6xWK6_roc$auc),sprintf('Clinical Data: AUC=%.3f',md_respWK6xWK6_roc$auc),sprintf('Combined: AUC=%.3f',mdotu_respWK6xWK6_roc$auc)), lwd=2, col=c('royalblue','grey5', 'red'), bty='n', lty=1)
+#dev.off()
+
+#pdf('../data/figures/RSPwk6abunds.#pdf', height=6, width=8)
+plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='', xaxt='n', cex.axis=1.2)
+stripchart(at=1, mdotu_respWK6xWK6_probs[mdotu_respWK6xWK6$'RESPONSEwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
+stripchart(at=2, mdotu_respWK6xWK6_probs[mdotu_respWK6xWK6$'RESPONSEwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
+mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
+axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
+cutoff <- coords(roc=mdotu_respWK6xWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
+#dev.off()
+
+mdotu_respWK6xWK6_rf # prints list of optimal features
+otu_respWK6xWK6_rf
+md_respWK6xWK6_rf
+```
+
+
+```{r REMISSwk6Xwk6-AUC-RF, include=F, fig.height=5, fig.width=10}
+print("REMISSwk6 by AUC-RF")
+set.seed(32016)
+levels(trtd.wk6_data$REMISSwk6) <- c(0,1)
+mdotu_remWK6xWK6 <- trtd.wk6_data[trtd.wk6_data$visit=='Week 6', c('REMISSwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Week.6", "CDPAINM_Week.6", "CDWELBEM_Week.6", "CDARTRTM_Week.6", "CDARALGM_Week.6", "CDIRITM_Week.6", "CDUVEITM_Week.6", "CDERYTHM_Week.6", "CDPYODEM_Week.6", "CDSTOMAM_Week.6", "CDFISURM_Week.6", "CDFISTUM_Week.6", "CDABSCEM_Week.6", "CDOTFISM_Week.6", "CDFEVERM_Week.6", "CDDRGM_Week.6", "CDAMASSM_Week.6", "CDHCTM_Week.6", "CDWEIGHM_Week.6", "invsimpson", colnames(trtd.wk6_data)[grep('Otu[0123456789]', colnames(trtd.wk6_data))])]
+#summary(mdotu_remWK6xWK6[,c("REMISSwk6")])
+mdotu_remWK6xWK6<-na.omit(mdotu_remWK6xWK6)
+#summary(mdotu_remWK6xWK6[,c("REMISSwk6")])
+otu_remWK6xWK6 <- mdotu_remWK6xWK6[, c('REMISSwk6', colnames(mdotu_remWK6xWK6)[grep('Otu[0123456789]', colnames(mdotu_remWK6xWK6))])]
+#summary(otu_remWK6xWK6[,c("REMISSwk6")])
+#summary(otu_remWK6xWK6[,c("REMISSwk6")])
+otu_remWK6xWK6<-na.omit(otu_remWK6xWK6)
+
+#summary(otu_remWK6xWK6[,c("REMISSwk6")])
+set.seed(32016)
+otu_remWK6xWK6_rf <- AUCRF(REMISSwk6~., data=otu_remWK6xWK6, ranking='MDA', ntree=500, pdel=0.2)
+#otu_remWK6xWK6_rf # prints list of optimal OTUs
+otu_remWK6xWK6_probs <- predict(otu_remWK6xWK6_rf$RFopt, type='prob')[,2]
+otu_remWK6xWK6_roc <- roc(otu_remWK6xWK6$REMISSwk6~otu_remWK6xWK6_probs)
+
+
+md_remWK6xWK6 <- trtd.wk6_data[trtd.wk6_data$visit=='Week 6', c('REMISSwk6',"AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Week.6", "CDPAINM_Week.6", "CDWELBEM_Week.6", "CDARTRTM_Week.6", "CDARALGM_Week.6", "CDIRITM_Week.6", "CDUVEITM_Week.6", "CDERYTHM_Week.6", "CDPYODEM_Week.6", "CDSTOMAM_Week.6", "CDFISURM_Week.6", "CDFISTUM_Week.6", "CDABSCEM_Week.6", "CDOTFISM_Week.6", "CDFEVERM_Week.6", "CDDRGM_Week.6", "CDAMASSM_Week.6", "CDHCTM_Week.6", "CDWEIGHM_Week.6")]
+#summary(md_remWK6xWK6[,c("REMISSwk6")])
+md_remWK6xWK6<-na.omit(md_remWK6xWK6)
+#summary(md_remWK6xWK6[,c("REMISSwk6")])
+set.seed(32016)
+md_remWK6xWK6_rf <- AUCRF(REMISSwk6~., data=md_remWK6xWK6, ranking='MDA', ntree=500, pdel=0.3)
+#md_remWK6xWK6_rf # prints list of optimal features
+md_remWK6xWK6_probs <- predict(md_remWK6xWK6_rf$RFopt, type='prob')[,2]
+md_remWK6xWK6_roc <- roc(md_remWK6xWK6$REMISSwk6~md_remWK6xWK6_probs)
+
+
+mdotu_remWK6xWK6 <- trtd.wk6_data[trtd.wk6_data$visit=='Week 6', c('REMISSwk6', "AGE", "SEX", "BAMINO", "BANTIBIO", "BCORT", "BIMM", "BL_BMI", "DDUR", "DDUR10", "DDUR15", "tissinvol", "BRSP_TNF", "BL_FLACT", "BL_FCALP", "BL_CRP", "BL_CRPLEV", "BL_FCALPLEV", "BL_FLACTLEV", "BOWSTRICT", "CDSTOOLM_Week.6", "CDPAINM_Week.6", "CDWELBEM_Week.6", "CDARTRTM_Week.6", "CDARALGM_Week.6", "CDIRITM_Week.6", "CDUVEITM_Week.6", "CDERYTHM_Week.6", "CDPYODEM_Week.6", "CDSTOMAM_Week.6", "CDFISURM_Week.6", "CDFISTUM_Week.6", "CDABSCEM_Week.6", "CDOTFISM_Week.6", "CDFEVERM_Week.6", "CDDRGM_Week.6", "CDAMASSM_Week.6", "CDHCTM_Week.6", "CDWEIGHM_Week.6", 'invsimpson', colnames(trtd.wk6_data)[grep('Otu[0123456789]', colnames(trtd.wk6_data))])]
+#summary(mdotu_remWK6xWK6[,c("REMISSwk6")])
+mdotu_remWK6xWK6<-na.omit(mdotu_remWK6xWK6)
+#summary(mdotu_remWK6xWK6[,c("REMISSwk6")])
+set.seed(32016)
+mdotu_remWK6xWK6_rf <- AUCRF(REMISSwk6~., data=mdotu_remWK6xWK6, ranking='MDA', ntree=500, pdel=0.2)
+#mdotu_remWK6xWK6_rf # prints list of optimal features
+mdotu_remWK6xWK6_probs <- predict(mdotu_remWK6xWK6_rf$RFopt, type='prob')[,2]
+mdotu_remWK6xWK6_roc <- roc(mdotu_remWK6xWK6$REMISSwk6~mdotu_remWK6xWK6_probs)
+
+
+#pdf('../data/figures/RSPwk6aucrf.#pdf', height=6, width=8)
+### Plot ROC curves
+layout(matrix(c(1,2), nrow=1))
+par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
+plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
+#plot(otu_remWK6xWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
+plot(md_remWK6xWK6_roc, add=T, lwd=2, col='grey5', lty=1)
+#plot(mdotu_remWK6xWK6_roc, add=T, lwd=2, col='red', lty=1)
+title("Predicting Week 6 Remission using Week 6 Clinical Data")
+legend('bottomright', sprintf('Clinical Data: AUC=%.3f',md_remWK6xWK6_roc$auc), lwd=2, col='grey5', bty='n', lty=1)
+
+cutoff <- coords(roc=mdotu_remWK6xWK6_roc, x='best', best.method='y', ret=c('threshold'))
+mdotu_remWK6xWK6_spec <- coords(mdotu_remWK6xWK6_roc, x=cutoff, input='thr', ret='spec')
+mdotu_remWK6xWK6_sens <- coords(mdotu_remWK6xWK6_roc, x=mdotu_remWK6xWK6_spec, input='spec', ret='sens')
+mdotu_remWK6xWK6_thr <- coords(mdotu_remWK6xWK6_roc, x=mdotu_remWK6xWK6_spec, input='spec', ret='thr')
+
+points(coords(mdotu_remWK6xWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(mdotu_remWK6xWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='red', cex=1.5, pch=10)
+
+cutoff <- coords(roc=otu_remWK6xWK6_roc, x='best', best.method='y', ret=c('threshold'))
+otu_remWK6xWK6_spec <- coords(otu_remWK6xWK6_roc, x=cutoff, input='thr', ret='spec')
+otu_remWK6xWK6_sens <- coords(otu_remWK6xWK6_roc, x=otu_remWK6xWK6_spec, input='spec', ret='sens')
+otu_remWK6xWK6_thr <- coords(otu_remWK6xWK6_roc, x=otu_remWK6xWK6_spec, input='spec', ret='thr')
+points(coords(otu_remWK6xWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(otu_remWK6xWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='royalblue', cex=1.5, pch=10)
+
+cutoff <- coords(roc=md_remWK6xWK6_roc, x='best', best.method='y', ret=c('threshold'))
+md_remWK6xWK6_spec <- coords(md_remWK6xWK6_roc, x=cutoff, input='thr', ret='spec')
+md_remWK6xWK6_sens <- coords(md_remWK6xWK6_roc, x=md_remWK6xWK6_spec, input='spec', ret='sens')
+md_remWK6xWK6_thr <- coords(md_remWK6xWK6_roc, x=md_remWK6xWK6_spec, input='spec', ret='thr')
+
+points(coords(md_remWK6xWK6_roc, x=cutoff, input='threshold', ret='specificity'),coords(md_remWK6xWK6_roc, x=cutoff, input='threshold', ret='sensitivity'), col='black', cex=1.5, pch=10)
+#dev.off()
+
+#pdf('../data/figures/RSPwk6abunds.#pdf', height=6, width=8)
+plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='', xaxt='n', cex.axis=1.2)
+stripchart(at=1, md_remWK6xWK6_probs[md_remWK6xWK6$'REMISSwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
+stripchart(at=2, md_remWK6xWK6_probs[md_remWK6xWK6$'REMISSwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
+mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
+axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
+cutoff <- coords(roc=md_remWK6xWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
+#dev.off()
+
+md_remWK6xWK6_rf # prints list of optimal features
+
+
+#pdf('../data/figures/RSPwk6aucrf.#pdf', height=6, width=8)
+### Plot ROC curves
+layout(matrix(c(1,2), nrow=1))
+par(mar=c(3,3,2,1), mgp=c(2,0.5,0))
+plot(c(1,0),c(0,1), type='l', lty=2, xlim=c(1.01,0), ylim=c(-0.01,1.01), xaxs='i', yaxs='i', ylab='Sensitivity', xlab='Specificity', las=1)
+plot(otu_remWK6xWK6_roc, add=T, lwd=2, col='royalblue', lty=1)
+plot(md_remWK6xWK6_roc, add=T, lwd=2, col='grey5', lty=1)
+plot(mdotu_remWK6xWK6_roc, add=T, lwd=2, col='red', lty=1)
+title("Predicting Week 6 Remission using Week 6 Clinical Data")
+legend('bottomright', c(sprintf('OTUs : AUC=%.3f',otu_remWK6xWK6_roc$auc),sprintf('Clinical Data: AUC=%.3f',md_remWK6xWK6_roc$auc),sprintf('Combined: AUC=%.3f',mdotu_remWK6xWK6_roc$auc)), lwd=2, col=c('royalblue','grey5', 'red'), bty='n', lty=1)
+#dev.off()
+
+#pdf('../data/figures/RSPwk6abunds.#pdf', height=6, width=8)
+plot(1, type='n', xlim=c(0.5,2.5), ylim=c(0,1), ylab='', xlab='', xaxt='n', cex.axis=1.2)
+stripchart(at=1, mdotu_remWK6xWK6_probs[mdotu_remWK6xWK6$'REMISSwk6'==0], vertical=T, method='jitter', jitter=0.4, pch=21, bg='orange', add=T, cex=1.5)
+stripchart(at=2, mdotu_remWK6xWK6_probs[mdotu_remWK6xWK6$'REMISSwk6'==1], vertical=T, method='jitter', jitter=0.4, pch=21, bg='royalblue', add=T, cex=1.5)
+mtext(side=2, text='Probability of Response', line=2.2, cex=0.8)
+axis(1, at=c(1,2), labels=c('No', 'Yes'), cex.axis=1.2)
+cutoff <- coords(roc=mdotu_remWK6xWK6_roc, x='best', best.method='y', ret=c('threshold')) #gives best point on curve for cutoff
+#dev.off()
+
+mdotu_remWK6xWK6_rf # prints list of optimal features
+otu_remWK6xWK6_rf
+md_remWK6xWK6_rf
+
+WK6xWK6rocsP <- roc.test(otu_respWK6xWK6_roc, otu_remWK6xWK6_roc)
+WK6xWK6rocsPval <- signif(WK6xWK6rocsP$p.value, digits=2)
+
+#source('../code/Figure5_responseREMwk6Xwk6.R')
+```
+
+```{r week22readdata, include=F}
+
+md<-read.table(file="../data/Jan400.mdshared.wmg.txt", sep="\t", header=T) #wmg=with merged groups
+APmd.wk22<-subset(md, select=c(group, USUBJID, Site, visit, TRTGR, TRTGRINDMAN:COUNTRY, BAMINO, BANTIBIO, BCORT, BIMM, BL_BMI:tissinvol, BRSP_TNF, BL_FLACT:BL_FLACTLEV, BOWSTRICT, RESPONSEwk4:REMISSwk22, RSP_Rwk8n22:RSP_SRwk8N22, REMISSwk22, RESPONSEwk22, cdail_wk0, cdail_wk4, cdail_wk22, cdail_wk8, cdail_wk22, CDSTOOLM_Week.22, CDPAINM_Week.22, CDWELBEM_Week.22, CDARTRTM_Week.22, CDARALGM_Week.22, CDIRITM_Week.22, CDUVEITM_Week.22, CDERYTHM_Week.22, CDPYODEM_Week.22, CDSTOMAM_Week.22, CDFISURM_Week.22, CDFISTUM_Week.22, CDABSCEM_Week.22, CDOTFISM_Week.22, CDFEVERM_Week.22, CDDRGM_Week.22, CDAMASSM_Week.22, CDHCTM_Week.22, CDWEIGHM_Week.22))
+
+levels(APmd.wk22$TRTGR)<-c("Placebo", "Treated")
+levels(APmd.wk22$TRTGRINDMAN)<-c("Placebo_Not", "Placebo_Placebo", "Placebo_Treated", "Treated_Not", "Treated_Placebo", "Treated_Treated")
+
+APmd.wk22$TRTGR_REMISSwk22 <- as.factor(paste(APmd.wk22$TRTGR, APmd.wk22$REMISSwk22))
+APmd.wk22$TRTGR_REMISSwk22 <- as.factor(paste(APmd.wk22$TRTGR, APmd.wk22$REMISSwk22))
+
+APmd.wk22$TRTGR_RESPONSEwk22 <- as.factor(paste(APmd.wk22$TRTGR, APmd.wk22$RESPONSEwk22))
+APmd.wk22$TRTGR_RESPONSEwk22 <- as.factor(paste(APmd.wk22$TRTGR, APmd.wk22$RESPONSEwk22))
+
+APmd.wk22$CDSTOOLM_Week.22[APmd.wk22$CDSTOOLM_Week.22=="."]<-"NA"
+APmd.wk22$CDSTOOLM_Week.22 <-as.integer(APmd.wk22$CDSTOOLM_Week.22)
+APmd.wk22$CDHCTM_Week.22[APmd.wk22$CDHCTM_Week.22=="."]<-"NA"
+APmd.wk22$CDHCTM_Week.22 <-as.integer(APmd.wk22$CDHCTM_Week.22)
+summary(subset(APmd.wk22, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
+
+deltaCDAIwk0_22<-APmd.wk22$cdail_wk22-APmd.wk22$cdail_wk0
+deltaCDAIwk0_8<-APmd.wk22$cdail_wk8-APmd.wk22$cdail_wk0
+deltaCDAIwk0_4<-APmd.wk22$cdail_wk4-APmd.wk22$cdail_wk0
+deltaCDAIwk0_6<-APmd.wk22$cdail_wk22-APmd.wk22$cdail_wk0
+percentdelta0_4<-deltaCDAIwk0_4/APmd.wk22$cdail_wk0*100
+percentdelta0_6<-deltaCDAIwk0_6/APmd.wk22$cdail_wk0*100
+percentdelta0_8<-deltaCDAIwk0_8/APmd.wk22$cdail_wk0*100
+percentdelta0_22<-deltaCDAIwk0_22/APmd.wk22$cdail_wk0*100
+deltaCDAIwk8_22<-APmd.wk22$cdail_wk22-APmd.wk22$cdail_wk8
+percentdelta8_22<-deltaCDAIwk8_22/APmd.wk22$cdail_wk8*100
+APmd.wk22$percentdelta0_4<-percentdelta0_4
+APmd.wk22$percentdelta0_6<-percentdelta0_6
+APmd.wk22$percentdelta0_8<-percentdelta0_8
+APmd.wk22$percentdelta0_22<-percentdelta0_22
+APmd.wk22$percentdelta8_22<-percentdelta8_22
+APmd.wk22$RESPONSEwk4<-as.factor(ifelse(APmd.wk22$percentdelta0_4>=-29.5, print("No"), print("Yes")))
+APmd.wk22$RESPONSEwk22<-as.factor(ifelse(APmd.wk22$percentdelta0_6>=-29.5, print("No"), print("Yes")))
+APmd.wk22$RESPONSEwk8<-as.factor(ifelse(APmd.wk22$percentdelta0_8>=-29.5, print("No"), print("Yes")))
+APmd.wk22$RESPONSEwk22<-as.factor(ifelse(APmd.wk22$percentdelta0_22>=-29.5, print("No"), print("Yes")))
+APmd.wk22$RESPONSEwk8_22<-as.factor(ifelse(APmd.wk22$percentdelta8_22>=-29.5, print("No"), print("Yes")))
+APmd.wk22$visit<-factor(APmd.wk22$visit, levels = c("Screening", "Week 4", "Week 6", "Week 22"))
+adiv<-read.table(file="../data/Jan400.all.na.omit.cmd.groups.summary", sep="\t", header=T)
+ss3k_shared<-read.table(file="../data/Jan400.all.na.omit.cmd.0.03.subsample.shared", sep="\t", header=T)#Jan400 subsampled to 3K visit=Week.22
+APmd.wk22_adiv<-merge(APmd.wk22, adiv, by.x="group", by.y="group")#nonmatch removed
+APmd.wk22_shared<-merge(APmd.wk22_adiv, ss3k_shared_U2s, by.x="group", by.y="Group")
+summary(APmd.wk22_shared[,1:20])
+APmd.wk22_shared<-APmd.wk22_shared[APmd.wk22_shared$USUBJID!='C0743T26030100002',]
+APmd.wk22_shared<-APmd.wk22_shared[APmd.wk22_shared$group!='E4859941-5',]
+levs<-APmd.wk22_shared %>% group_by(USUBJID) %>% summarise(no_rows = length(USUBJID))
+levs
+
+APmd.wk22_shared<-APmd.wk22_shared[APmd.wk22_shared$TRTGRINDMAN!="Placebo_Not",]
+APmd.wk22_shared<-APmd.wk22_shared[APmd.wk22_shared$TRTGRINDMAN!="Treated_Not",]
+
+allwk22_data<-APmd.wk22_shared[APmd.wk22_shared$visit=="Week 22",]
+summary(allwk22_data[,1:20])
+
+trtd.wk22_data<-allwk22_data[allwk22_data$TRTGR=="Treated",]
+summary(trtd.wk22_data[,1:20])
+
+plac.wk22_data<-allwk22_data[allwk22_data$TRTGR!="Treated",]
+summary(plac.wk22_data[,1:20])
+
+wk0_22_data<-APmd.wk22_shared[APmd.wk22_shared$visit!="Week 4",]
+wk0_22_data<-wk0_22_data[wk0_22_data$visit!="Week 6",]
+
+summary(subset(wk0_22_data, select = c(group, USUBJID, visit, nseqs, coverage, sobs, invsimpson)))
+
+levs<-wk0_22_data %>% group_by(USUBJID) %>% summarise(no_rows = length(USUBJID))
+summary(levs)
+subidsover2<-levs[levs$no_rows>=2,]
+summary(subidsover2)
+subidsover2
+zero22subs<-as.character(subidsover2$USUBJID)
+zero22subs_data <- wk0_22_data[wk0_22_data$USUBJID %in% zero22subs,]
+
+
+zero22subs_data<-zero22subs_data[zero22subs_data$TRTGRINDMAN!="Placebo_Not",]
+zero22subs_data<-zero22subs_data[zero22subs_data$TRTGRINDMAN!="Treated_Not",]
+zero22subs_data<-zero22subs_data[zero22subs_data$TRTGRINDMAN!="Placebo_Treated",]
+zero22subs_data<-zero22subs_data[zero22subs_data$TRTGRINDMAN!="Treated_Placebo",]
+summary(subset(zero22subs_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
+
+trtd.zero22subs_data<-zero22subs_data[zero22subs_data$TRTGRINDMAN=="Treated_Treated",]
+plac.zero22subs_data<-zero22subs_data[zero22subs_data$TRTGRINDMAN=="Placebo_Placebo",]
+summary(subset(trtd.zero22subs_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
+summary(subset(plac.zero22subs_data, select=c(group, USUBJID, visit, TRTGR, TRTGRINDMAN, RESPONSEwk8)))
+
+week22.N.all <- nrow(zero22subs_data[zero22subs_data$visit=='Week 22',])
+week22.trtd <- trtd.zero22subs_data[trtd.zero22subs_data$visit=='Week 22',]
+week22.N.trtd <- nrow(trtd.zero22subs_data[trtd.zero22subs_data$visit=='Week 22',])
+week22.N.trtd.respY <- nrow(week22.trtd[week22.trtd$RESPONSEwk22=='Yes',])
+week22.N.trtd.respN <- nrow(week22.trtd[week22.trtd$RESPONSEwk22=='No',])
+week22.plac <- plac.zero22subs_data[plac.zero22subs_data$visit=='Week 22',]
+week22.N.plac <- nrow(plac.zero22subs_data[plac.zero22subs_data$visit=='Week 22',])
+week22.N.plac.respY <- nrow(week22.plac[week22.plac$RESPONSEwk22=='Yes',])
+week22.N.plac.respN <- nrow(week22.plac[week22.plac$RESPONSEwk22=='No',])
+week22.N.trtd.REMY <- nrow(week22.trtd[week22.trtd$REMISSwk22=='Yes',])
+week22.N.trtd.REMN <- nrow(week22.trtd[week22.trtd$REMISSwk22=='No',])
+week22.N.plac.REMY <- nrow(week22.plac[week22.plac$REMISSwk22=='Yes',])
+week22.N.plac.REMN <- nrow(week22.plac[week22.plac$REMISSwk22=='No',])
+
+all.RESPONSEwk22<-matrix(c('Week 22 Response (No, Yes)', trtd.RESPONSEwk22_sum, plac.RESPONSEwk22_sum, all.RESPONSEwk22.kw.test.pval, all.RESPONSEwk22_AMOVA), ncol = 5)
+
+week22.N.resp.trtd_sum<-toString(c(week22.N.trtd.respN, week22.N.trtd.respY))
+week22.N.resp.plac_sum<-toString(c(week22.N.plac.respN, week22.N.plac.respY))
+
+week22.N.REM.trtd_sum<-toString(c(week22.N.trtd.REMN, week22.N.trtd.REMY))
+week22.N.REM.plac_sum<-toString(c(week22.N.plac.REMN, week22.N.plac.REMY))
+
+wk22.RESPONSEwk22 <- matrix(c("Week 22", "Response Week 22 (No, Yes)", week22.N.resp.trtd_sum, week22.N.resp.plac_sum, week22.N.all), ncol=5)
+colnames(wk22.RESPONSEwk22) <- c("Stool Week", 'Status Week', 'Treated (n)', "Placebo (n)", "Total (n)")
+wk22.REMISSwk22 <- matrix(c("Week 22", "Remission Week 22 (No, Yes)", week22.N.REM.trtd_sum, week22.N.REM.plac_sum, week22.N.all), ncol=5)
+colnames(wk22.REMISSwk22) <- c("Stool Week", 'Status Week', 'Treated (n)', "Placebo (n)", "Total (n)")
+
+wk22_wk22 <- rbind(wk22.RESPONSEwk22, wk22.REMISSwk22)
+wk22_wk22 <- wk22_wk22[,-5]
+
+pdf("tables/wk22_wk22.sum.pdf", height=2, width=6)
+grid.table(wk22_wk22)
+dev.off()
+```
+
+
+```{r, inline vars, include=F}
+
+tbl1$Species.Richness..Alpha.diversity.[tbl1$Clinical.Variable=="CDAI"]
+
+stool.adonis.inline.pval <- signif(as.numeric(na.omit(stool.adonis$aov.tab$`Pr(>F)`)), digits = 3)
+BL_CRP.adonis.inline.pval <- signif(as.numeric(na.omit(BL_CRP.adonis$aov.tab$`Pr(>F)`)), digits = 3)
+
+BL_FCALP.adonis.inline.pval <- signif(as.numeric(na.omit(BL_FCALP.adonis$aov.tab$`Pr(>F)`)), digits = 3)
+BL_FLACT.adonis.inline.pval <-  signif(as.numeric(na.omit(BL_FLACT.adonis$aov.tab$`Pr(>F)`)), digits = 3)
+
+AGE.adonis.inline.pval <-  signif(as.numeric(na.omit(AGE.adonis$aov.tab$`Pr(>F)`)), digits = 3)
+
+tissinvol.adonis.inline.pval <-  signif(as.numeric(na.omit(tissinvol.adonis$aov.tab$`Pr(>F)`)), digits = 3)
+
+BCORT.adonis.inline.pval <-  signif(as.numeric(na.omit(BCORT.adonis$aov.tab$`Pr(>F)`)), digits = 3)
+
+DDUR.adonis.inline.pval <-  signif(as.numeric(na.omit(DDUR.adonis$aov.tab$`Pr(>F)`)), digits = 3)
+
+wk6remadivpval <- table2_df[2,4]
+wk6RSPbdivpval <- table2_df[1,5]
+wk6REMbdivpval <- table2_df[2,5]
+wk22RSPbdivpval <- table2_df[3,5]
+wk22REMbdivpval <- table2_df[4,5]
+```
+
+```{r}
+```
+
+\vspace{35mm}
+	
+Running title: Microbiota of Ustekinumab-treated Crohn’s subjects.
+	
+\vspace{35mm}
+Matthew K. Doherty${^1}$, Tao Ding${^1}$${^\alpha}$, Charlie Koumpouras${^1}$, Shannon E. Telesco${^2}$, Calixte Monast${^2}$, Anuk Das${^2}$, Carrie Brodmerkel${^2}$, and Patrick D. Schloss${^1}$${^\dagger}$
+
+$\dagger$ To whom correspondence should be addressed: Patrick D. Schloss, pschloss@umich.edu
+
+1\. Department of Microbiology and Immunology, University of Michigan, Ann Arbor, MI, USA
+
+2\. Janssen Pharmaceutical Companies of Johnson ${\&}$ Johnson, Spring House, PA, USA
+
+
+${\alpha}$ Currently at Department of Biology, New York University, New York, NY, USA.
+
+
+
+
+
+\newpage
+
+
+
+
+
+
+
+
+## Abstract
+The fecal microbiota is a rich source of biomarkers that have previously been shown to be predictive of numerous disease states. Less well studied is the effect of immunomodulatory therapy on the microbiota and its role in response to therapy. This study explored associations between the fecal microbiota and therapeutic response of ustekinumab (UST; STELARA$^{\textregistered}$) treated Crohn’s disease (CD) patients in the phase 2 CERTIFI study. Using stool samples collected over the course of 22 weeks, the composition of these subjects' fecal bacterial communities was characterized by sequencing the 16S rRNA gene. Subjects in remission could be distinguished from those with active disease 6 weeks after treatment using Random Forest models trained on subjects' baseline microbiota and clinical data (AUC = `r mdotu_remWK6_roc$auc`, specificity = `r mdotu_remWK6_spec`, sensitivity = `r mdotu_remWK6_sens`). The most predictive OTUs that were ubiquitous among subjects were affiliated with *Faecalibacterium* and *Escherichia/Shigella*. Among subjects in remission 6 weeks after treatment, the median baseline community diversity was `r signif(median.REMwk6.invsimp$Yes/median.REMwk6.invsimp$No, digits=2)` times higher than treated subjects with active disease (p = `r wk6remadivpval`). Their baseline community structures were also significantly different (p = `r all.REMISSwk6.adonis.pval`). Two OTUs affiliated with *Faecalibacterium* (p = `r round(trtd.REMISSwk6.Otu7p, 3)`) and *Bacteroides* (p = `r trtd.REMISSwk6.Otu19p`) were significantly more abundant at baseline in subjects who were in remission 6 weeks after treatment than those with active CD. The diversity of UST treated clinical responders increased over the 22 weeks of the study, in contrast to nonresponsive subjects (p = `r signif(fried.trtdrespY$p.value, digits = 2)`). The observed baseline differences in fecal microbiota and changes due to therapeutic response support the potential for the microbiota as a response biomarker. (word count= 246/250, TextWrangler)
+
+_Importance:_  CD is a global health concern, with increasing incidence and prevalence, causing large economic and health care impacts. Finding prognostic biomarkers that give clinicians the ability to identify patients more likely to respond to CD treatment at diagnosis will reduce the time subjects receive drugs that are unlikely to be beneficial. OTUs associated with remission after treatment induction, especially *Faecalibacterium*, could be biomarkers for successful UST treatment of anti-TNF-${\alpha}$ refractory CD patients. More broadly, these results suggest the fecal microbiota could be a useful non-invasive biomarker for directing or monitoring the treatment of gastrointestinal diseases. (word count =98/150, TextWrangler)
+
+
+**Keywords: IBD, microbiome, biologics, prediction, biomarkers, remission, Stelara, machine learning**
+
+\newpage
+
+###Introduction
+The microbiome has been correlated with a variety of diseases and has shown promise as a predictive tool for disease outcome for gingivitis [@Huang_gingivitis_2014], cardiovascular disease [@Wang_cvdrisk_2016], *Clostridium difficile* infection [@Schubert_cdiff_2015; @Seekatz_cdiff_2016], and colorectal cancer [@zackular_CRC_2014; @baxter_FIT_2016]. Additionally, the microbiome has been shown to alter the efficacy of vaginal microbicides in African women [@Klatt_microbicide_2017], as well as cardiac drugs [@Haiser_cardiac_2013] and cancer treatments [@Sivan_cancer_2015; @Vetizou_cancer_2015] in murine models of disease. These results demonstrate that it is possible to use biomarkers from within the microbiome to predict response to therapeutics. In relation to inflammatory bowel disease (IBD), previous studies have shown that the bacterial gut microbiota correlates with disease severity in new-onset, pediatric Crohn’s disease (CD) patients [@gevers_pedsCD_2014; @wang_pedsCD_2016]. Additionally, recent studies suggest the gut microbiota could be used to predict clinical response to treatment in adult patients with IBD, including anti-integrin biologics [@Tew2016_UC; @Ananthakrishnan_IBD_2017] and treatment in pediatric IBD with anti-TNF-${\alpha}$ or immunomodulators [@Kolho2015_pedIBD; @Shaw_response_2016]. It remains to be determined, however, whether the composition of the fecal gut microbiota can predict and monitor response to biologic CD therapy directed at other targets, such as interleukin (IL-) 23. Considering the involvement of the immune system and previous evidence for involvement of the microbiome, we hypothesize that response to anti-IL-23 CD therapy can be predicted using microbiome data.
+
+CD is a global health concern causing large economic and health care impacts [@ananthakrishnan_epidemiology_2015; @floyd_economicburden_2015]. The disease is characterized by patches of ulceration and inflammation along the entire gastrointestinal tract, with most cases involving the ileum and colon. Currently, individuals with CD are treated based on disease location and risk of complications using escalating immunosuppressive treatment, and/or surgery, with the goal of achieving and sustaining remission [@randall_CDbiologics_2015; @wils_ust_2015]. Faster induction of remission following diagnosis reduces the risk of irreversible intestinal damage and disability [@wils_ust_2015; @colombel_deepremission_2015; @baert_mucosalhealing_2010]. Ideally, clinicians would be able to determine personalized treatment options for CD patients at diagnosis that would result in faster achievement of remission [@Lichtenstein_biomarkers_2010]. Therefore, recent research has been focused on identifying noninvasive biomarkers to monitor CD severity and predict therapeutic response [@Chang_biomarkers_2015; @Boon_biomarkers_2015; @Falvey_biomarkers_2015]. 
+
+The precise etiology of CD remains unknown, but host genetics, environmental exposure, and the gut microbiome appear to be involved [@ananthakrishnan_epidemiology_2015; @sartor_IBDpath_2006]. Individuals with CD have reduced microbial diversity in their guts, compared to healthy individuals, with a lower relative abundance of *Firmicutes* and an increased relative abundance of *Enterobacteraciae* and *Bacteroides* [@wright_CDmicrobiome_2015; @manichanh_diversityCD_2006; @hansen_pedsIBD_2012; @haberman_pedsCD_2014; @gevers_pedsCD_2014]. Additionally, genome-wide association studies of individuals with CD identified several susceptibility loci including loci involved in the IL-23 signaling pathway, which could impact the gut microbiota composition and function [@randall_CDbiologics_2015; @wright_CDmicrobiome_2015; @Riol-Blanco_IL23microbiome_2010; @Round_IL23microbiome_2009; @Eken_IL23CD_2014; @Shih_IL23Th17_2014]. If the fecal microbiota can be used to monitor disease severity and predict response to specific treatment modalities, then clinicians could use it as a noninvasive tool for prescribing therapies that may result in faster remission [@tedjo_CDactivity_2016]. 
+
+The FDA recently approved ustekinumab (UST; STELARA$^{\textregistered}$), a monoclonal antibody directed against the shared p40 subunit of IL-12 and IL-23, for the treatment of CD [Feagan_UST_2016; @wils_ust_2015; @sandborn_ust_2012; @sandborn_ust_2008; @kopylov_ust_2014]. Given the potential impact of IL-23 on the microbiota [@Riol-Blanco_IL23microbiome_2010; @Round_IL23microbiome_2009; @Eken_IL23CD_2014; @Shih_IL23Th17_2014], we hypothesized that response to UST could be influenced by differences in subjects’ gut microbiota and that UST treatment may alter the fecal microbiota. The effects of biologic treatment of IBD on the microbiota are not yet well described, but are hypothesized to be indirect, as these drugs act on host factors [@randall_CDbiologics_2015]. We analyzed the fecal microbiota of subjects who participated in a double-blinded, placebo-controlled Phase II clinical trial that demonstrated the safety and efficacy of UST for treating subjects with CD refractory to anti_TNF agents [@sandborn_ust_2012]. The original study found that UST induction treatment had an increased rate of response as well as increased rates of response and remission with UST maintenance therapy, compared to placebo. We quantified the association between the fecal microbiota and disease severity, tested whether clinical responders had a microbiota that was distinct from non-responders, and determined whether the fecal microbiota changed in subjects treated with UST using 16S rRNA gene sequence data from these subjects' stool samples.  Our study demonstrates that these associations may be useful in predicting and monitoring UST treatment outcome and suggest the fecal microbiota may be a broadly useful source of biomarkers for predicting response to treatment.
+
+## Results
+
+**Study design**
+
+We characterized the fecal microbiota in a subset of anti-TNF-${\alpha}$ refractory CD patients, with moderate to severe CD, who took part in a randomized, double-blinded, placebo-controlled phase 2b clinical trial that demonstrated the efficacy of UST in treating CD [@sandborn_ust_2012].  Demographic and baseline disease characteristics of this subset are summarized in Table 1. Subjects were randomly assigned to a treatment group in the induction phase of the study and were re-randomized into maintenance therapy groups 8 weeks after induction based on their response (Figure 1A). In the current study, response was defined as a decrease in a subject's initial Crohn's Disease Activity Index (CDAI) greater than 100 points or remission. Remission was defined as a CDAI below 150 points. The CDAI is the standard instrument for evaluating clinical symptoms and disease activity in CD [@PB_CDAI_2016; @Best_CDAI_1976]. The CDAI weights patient reported stool frequency, abdominal pain, and general well being over a week, in combination with weight change, hematocrit, opiate usage for diarrhea, and the presence of abdominal masses or other complications to determine the disease severity score [@Best_CDAI_1976; @PB_CDAI_2016]. Subjects provided stool samples at baseline (screening) and at 4, 6, and 22 weeks after induction for analysis using 16S rRNA gene sequencing (Figure 1B). The number of subjects in each treatment group at the primary and secondary endpoints are summarized in Table 2 by their treatment outcome.
+
+**Association of baseline microbial signatures with treatment remission**
+
+We investigated whether the composition of the baseline fecal microbiota could predict therapeutic remission (CDAI < 150) 6 weeks after induction. To test this hypothesis, we generated Random Forest (RF) models to predict which subjects would be in remission 6 weeks after induction based on the relative abundance of the fecal microbiota at baseline, clinical metadata at baseline, and the combination of microbiota and clinical data. We determined the optimal model based the largest area under the curve (AUC) of the receiver operating characteristic (ROC) curve for the RF model [@baxter_FIT_2016; @calle_aucrf_2011]. Clinical data included components of the CDAI, biomarkers for inflammation, and subject metadata described further in the methods section. We trained these models using `r nrow(nao.screen.trtd)` baseline stool samples from subjects induced with UST; `r trtd.n.YesREMISSwk6.wilcoxtest` of which achieved remission (Table 2). Clinical data alone resulted in an AUC of `r md_remWK6_roc$auc` (specificity = `r md_remWK6_spec`, sensitivity = `r md_remWK6_sens`) (Figure 2A). Using only fecal microbiota data the model had an AUC of `r otu_remWK6_roc$auc` (specificity = `r otu_remWK6_spec`, sensitivity = `r otu_remWK6_sens`). Finally, when combining clinical metadata with the microbiota we achieved an AUC of `r mdotu_remWK6_roc$auc` (specificity = `r mdotu_remWK6_spec`, sensitivity = `r mdotu_remWK6_sens`) for remission 6 weeks after induction. Prediction with clinical metadata alone did not perform as well as models using the baseline fecal microbiome (p = `r round(otuvmdWK6remrocsPval, 3)`) or the combined model (p = `r round(mdotuvmdWK6remrocsPval, 3)`); however, there was not a significant difference between the baseline fecal microbiota model and the combined model (p = `r mdotuvotuWK6remrocsPval`). 
+
+Optimal predictors were determined based on their mean decrease in accuracy (MDA) in the ability of the model to classify remission from active CD (Figure 2B). The majority of OTUs identified as optimal predictors in our model for remission had low abundance. However, two OTUs were differentially abundant for subjects in remission 6 weeks after induction. The relative abundance of *Escherichia/Shigella* (OTU1) was lower in subjects in remission 6 weeks after induction (median = `r round(quantile(trtd.REMwk6.YES.relabund$Otu00001, type = 2, .50), 3)`%, IQR = `r  round(quantile(trtd.REMwk6.YES.relabund$Otu00001, type = 2, .25), 3)`-`r sprintf("%.2f", round(quantile(trtd.REMwk6.YES.relabund$Otu00001, type = 2, .75), 3))`) compared to subjects with active CD (median = `r round(quantile(trtd.REMwk6.NO.relabund$Otu00001, type = 2, .50), 3)`%, IQR = `r  round(quantile(trtd.REMwk6.NO.relabund$Otu00001, type = 2, .25), 3)`-`r round(quantile(trtd.REMwk6.NO.relabund$Otu00001, type = 2, .75), 3)`).  Also, the relative abundance of *Faecalibacterium* (OTU7) was not only higher in subjects in remission 6 weeks after induction (median = `r round(quantile(trtd.REMwk6.YES.relabund$Otu00007, type = 2, .50), 3)`%, IQR = `r  round(quantile(trtd.REMwk6.YES.relabund$Otu00007, type = 2, .25), 3)`-`r round(quantile(trtd.REMwk6.YES.relabund$Otu00007, type = 2, .75), 3)`) than subjects with active CD (median = `r round(quantile(trtd.REMwk6.NO.relabund$Otu00007, type = 2, .50), 3)`%, IQR = `r  sprintf("%.2f", round(quantile(trtd.REMwk6.NO.relabund$Otu00007, type = 2, .25), 3))`-`r sprintf("%.2f", round(quantile(trtd.REMwk6.NO.relabund$Otu00007, type = 2, .75), 3))`), but it was also present prior to the start of UST treatment in every subject who was in remission 6 weeks after induction. 
+
+**Association of baseline microbial signatures with treatment response**
+
+To test whether the composition of the baseline fecal microbiota could predict therapeutic response (CDAI decrease ${\geq}$ 100 points or remission) 6 weeks after induction, we again used RF models to classify responders from non-responders 6 weeks after induction (Table 2). Clinical data alone resulted in an AUC of `r md_respWK6_roc$auc` (specificity = `r sprintf("%.3f", md_respWK6_spec)`, sensitivity = `r md_respWK6_sens`) (Figure 2C). Using only microbiota data, the model predicted response with an AUC of `r otu_respWK6_roc$auc` (specificity = `r otu_respWK6_spec`, sensitivity = `r otu_respWK6_sens`). When combining clinical metadata with the microbiome, the model predicted response with an AUC of `r mdotu_respWK6_roc$auc` (specificity = `r mdotu_respWK6_spec`, sensitivity = `r mdotu_respWK6_sens`). 
+
+The microbiota model was significantly better able to predict response than the metadata alone (p = `r otuvmdWK6resprocsPval`), whereas this was not true for the combined model (p = `r mdotuvmdWK6resprocsPval`). Additionally, the combined model and the fecal microbiota model were not significantly different in their ability to predict response (p = `r otuvmdotuWK6resprocsP`). Optimal predictors were again determined based on their MDA in the ability of the model to classify response (Figure 2D). Also, the baseline combined model was significantly better at classifying remission compared to response (p = `r mdotu_respWK6xremWK6rocsPval`), whereas this was not true for the fecal microbiota model (p = `r otu_respWK6xremWK6rocsPval`).
+
+**Comparison of baseline microbiota based on clinical outcome**
+
+As the RF models identified OTUs abundant across this cohort that were important in classification of outcome, we further investigated differences in the baseline microbiota to assess whether they could serve as potential biomarkers for successful UST treatment. We compared the baseline microbiota of all `r nrow(APmd_shared[APmd_shared$visit=="Screening",])` subjects who provided a baseline sample based on treatment group and treatment outcome 6 weeks after induction to assess diversity measures (Table 2). There was no significant difference in diversity based on response 6 weeks after induction, however the baseline ${\beta}$-diversity was significantly different by response (p = `r wk6RSPbdivpval`). No phyla were significantly different by treatment and response (Fig. S1) and no OTUs were significantly different based on UST response or among subjects receiving placebo for induction, regardless of response and remission status. 
+
+Subjects in remission 6 weeks after induction with UST had significantly higher baseline ${\alpha}$-diversity based on the inverse Simpson diversity index than subjects with active CD (respective median values = `r REMwk6.YES.invsimp` (IQR = `r  Yes.inv.25quantile`-`r Yes.inv.75quantile`), `r REMwk6.NO.invsimp` (IQR = `r  No.inv.25quantile`-`r No.inv.75quantile`), p = `r wk6remadivpval`). The baseline community structure was also significantly different based on remission status in subjects 6 weeks after induction (p = `r all.REMISSwk6.adonis.pval`). Finally, 2 OTUs were significantly more abundant in subjects in remission 6 weeks after induction compared to subjects with active CD: *Bacteroides* (OTU19) (p = `r trtd.REMISSwk6.Otu19p`) and *Faecalibacterium* (OTU7) (p = `r round(trtd.REMISSwk6.Otu7p, 3)`) (Figure 3).  
+
+**Variation in the baseline microbiota is associated with variation in clinical phenotypes**
+
+Based on the associations we identified between baseline microbial diversity and response, we hypothesized that there were associations between the microbiota and clinical variables at baseline that could support the use of the microbiota as a non-invasive biomarker for disease activity [@tedjo_CDactivity_2016]. To test this hypothesis, we compared the baseline microbiota with clinical data at baseline for all `r nrow(APmd_shared[APmd_shared$visit=="Screening",])` samples provided at baseline (Supplemental Table 1). We observed small, but significant correlations for lower ${\alpha}$-diversity correlating with higher CDAI (${\rho}$ = `r signif(cor.cdai$estimate, digits = 3)`, p = `r tbl1$Alpha.Diversity..p.value.[tbl1$Clinical.Variable=="CDAI"]`), higher frequency of loose stools per week (${\rho}$ = `r signif(cor.stool$estimate, digits = 3)`, p = `r tbl1$Alpha.Diversity..p.value.[tbl1$Clinical.Variable=="Loose Stool Frequency (per week)"]`), and longer disease duration (${\rho}$ = `r signif(cor.DDUR$estimate, digits = 3)`, p = `r tbl1$Alpha.Diversity..p.value.[tbl1$Clinical.Variable=="Disease Duration (years)"]`). Corticosteroid use was associated with `r round(median(YesBCORT.wilcoxtest$invsimpson)/median(NoBCORT.wilcoxtest$invsimpson), 2)` times higher ${\alpha}$-diversity (p = `r tbl1$Alpha.Diversity..p.value.[tbl1$Clinical.Variable=="Corticosteroid Use (Y/N)"]`). No significant associations were observed between ${\alpha}$-diversity and CRP, fecal calprotectin, or fecal lactoferrin. However, the ${\beta}$-diversity was significantly different based on CRP (p = `r tbl1$Beta.Diversity..p.value.[3]`), fecal calprotectin (p = `r tbl1$Beta.Diversity..p.value.[4]`), and fecal lactoferrin (p = `r tbl1$Beta.Diversity..p.value.[5]`). The ${\beta}$-diversity was also significantly different based on weekly loose stool frequency (p= `r tbl1$Beta.Diversity..p.value.[2]`), age (p = `r tbl1$Beta.Diversity..p.value.[8]`), the tissue affected (p = `r tbl1$Beta.Diversity..p.value.[tbl1$Clinical.Variable=="Tissue Involvement"]`), corticosteroid use (p =`r tbl1$Beta.Diversity..p.value.[tbl1$Clinical.Variable=="Corticosteroid Use (Y/N)"]`), and disease duration (p = `r tbl1$Beta.Diversity..p.value.[tbl1$Clinical.Variable=="Disease Duration (years)"]`). No significant differences in ${\alpha}$ or ${\beta}$ diversity were observed for BMI, weight, or sex.
+
+**The diversity of the microbiota changes following UST therapy**
+
+We tested whether treatment with UST altered the microbiota by performing a Friedman test comparing ${\alpha}$-diversity, based on the inverse Simpson diversity index, at each time point within each treatment group based on the subject's response 22 weeks after induction. We included `r (nrow(alltp.ust)/4)` subjects induced and maintained with UST (`r (nrow(alltp.ust.RESPyes)/4)` responders, `r (nrow(alltp.ust.RESPno)/4)` non-responders) and `r (nrow(alltp.placplac)/4)` subjects induced and maintained with placebo (`r (nrow(alltp.placplac.RESPyes)/4)` responders, `r (nrow(alltp.placplac.RESPno)/4)` non-responders), who provided samples at every time point (Figure 1). We saw no significant difference in the ${\alpha}$-diversity over time in subjects who did not respond 22 weeks after induction, regardless of treatment, and in subjects who responded to placebo (Figure 4). However, the median ${\alpha}$-diversity of responders 22 weeks after UST induction significantly changed over time (p = `r signif(fried.trtdrespY$p.value, digits = 2)`) having increased from baseline (median = `r median(alltp.treatedrespY$Week0adiv)`, IQR = `r sprintf("%.2f", quantile(alltp.treatedrespY$Week0adiv, 0.25))` - `r quantile(alltp.treatedrespY$Week0adiv, .75)`) to 4 weeks after UST induction(median = `r median(alltp.treatedrespY$Week4adiv)`, IQR = `r quantile(alltp.treatedrespY$Week4adiv, .25)` - `r quantile(alltp.treatedrespY$Week4adiv, .75)`), decreased from 4 to 6 weeks after induction (median = `r median(alltp.treatedrespY$Week6adiv)`, IQR = `r quantile(alltp.treatedrespY$Week6adiv, .25)` - `r quantile(alltp.treatedrespY$Week6adiv, .75)`), and was significantly higher than baseline (p < 0.05) at 22 weeks after induction (median = `r median(alltp.treatedrespY$Week22adiv)`, IQR = 
+`r quantile(alltp.treatedrespY$Week22adiv, .25)` - `r quantile(alltp.treatedrespY$Week22adiv, .75)`).
+
+**The microbiota after induction can distinguish between treatment outcomes**
+
+Having demonstrated the microbiome changes in subjects who responded to UST treatment, we hypothesized that the microbiota could be used to monitor response to UST therapy by classifying subjects based on disease activity [@tedjo_CDactivity_2016]. We again constructed RF classification models to distinguish between subjects by UST treatment outcome based on their fecal microbiota 6 weeks after induction [@baxter_FIT_2016; @calle_aucrf_2011]. The study design resulted in only `r week22.N.trtd` stool samples  week 22 from subjects induced and maintained with UST, so we focused our analysis on the `r nrow(trtd.wk6_data)` stool samples collected at week 6 from subjects induced with UST. We were again better able to distinguish subjects in remission from subjects with active CD than subjects in clinical response versus non-response (p = `r round(WK6xWK6rocsPval, 3)`; Figure 5A). Our model could classify response 6 weeks after induction using week 6 stool samples from subjects treated with UST with an AUC of `r sprintf("%.3f", otu_respWK6xWK6_roc$auc)` (sensitivity = `r otu_respWK6xWK6_sens`, specificity = `r otu_respWK6xWK6_spec`). For classifying subjects in remission from subjects with active CD 6 weeks after UST induction using week 6 stool samples, the model had an AUC of `r otu_remWK6xWK6_roc$auc` (sensitivity = `r otu_remWK6xWK6_sens`, specificity = `r otu_remWK6xWK6_spec`). OTUs that were important for these classifications again included *Faecalibacterium* (OTU7), as well as *Blautia* (OTU124), *Clostridium XIVa* (OTU73), *Ruminococcaceae* (OTU53), and *Roseburia* (OTU12). These all had higher median relative abundance in subjects in remission 6 weeks after induction than those with active disease (Figure 5B).
+
+## Discussion
+
+This study sought to determine whether fecal microbiota can be used to identify patients who will respond to UST therapy and to gain a more detailed understanding of how UST treatment may affect the microbiota. We demonstrated that the microbiota could identify patients more likely to achieve remission following UST therapy, compared to clinical metadata alone, in this unique cohort. If this can be validated in future studies with independent cohorts, than it may lead to a clinically useful prognostic tool. We also found the fecal microbiota to be associated with CD severity metrics and treatment outcomes. Finally, we found that the microbiota of treated responders changed over time. These results helped further our understanding of the interaction between the human gut microbiota and CD in adult subjects with moderate-to-severe CD refractory to anti-TNF-${\alpha}$ therapies.
+
+The development of predictive models for disease or treatment outcome is anticipated to have a significant impact on clinical decision-making in health care [@Vogenberg_progmods_2009]. These models may help clinicians decide on the correct course of disease treatment or interventions for disease prevention with their patients. Additionally, patients may benefit with more individualized care that may potentially reduce adverse effects and result in faster recovery, reduce expenses from ineffective therapies, or increase quality of life by preventing disease in patients at high risk.
+
+Our predictive model revealed potential microbial biomarkers indicative of successful UST therapy and allowed us to generate hypotheses about the biology of CD as it relates to the microbiome and UST response. *Faecalibacterium* frequently occurred in our models. It is associated with health, comprising up to 5% of the relative abundance in healthy individuals, and is generally rare in CD patients [@wright_CDmicrobiome_2015; @hansen_pedsIBD_2012; @naftali_tissinvol_2016; @sartor_microbesIBD_2016]. Each subject in remission 6 weeks after UST induction had measurable *Faecalibacterium* present at baseline. This supports the hypothesis that *Faecalibacterium* impacts CD pathogenesis. It may even be beneficial to administer *Faecalibacterium* as a probiotic during therapy. *Escherichia/Shigella* also occurred frequently in our models. This OTU is associated with inflammation and has been shown to be associated with CD [@sartor_microbesIBD_2016]. Many other taxa observed in our analysis had low abundance or were absent in the majority of subjects. However, in many cases these taxa are related and may serve similar ecologic and metabolic roles in the gut environment. We hypothesize that these microbes may have genes that perform redundant metabolic functions. Performing metagenomics on stool samples in future studies, especially in patients who achieve remission, could reveal these functions, which could be further developed into a clinically useful predictive tool.
+
+We were better able to predict whether a subject would achieve clinical remission rather than clinical response, as determined by CDAI score. We hypothesize that this was due to the relative nature of the response criteria compared to the threshold used to determine remission status. While the field appears to be moving away from CDAI and towards patient reported outcomes and more objectively quantifiable measures such as endoscopic verification of mucosal healing [@colombel_deepremission_2015; @Williet2014_PROs], research is ongoing to discover less invasive and more quantifiable biomarkers [@tedjo_CDactivity_2016; @boon_fmarkers_2015; @chang_monitoring_2015].
+
+We identified several associations between the microbiota and clinical variables that could impact how CD is monitored and treated in the future. Serum CRP, fecal calprotectin, and fecal lactoferrin are widely used as biomarkers to measure inflammation and CD severity. In this study, the microbial community structure was different among subjects based on these markers. These results support the hypothesis that the fecal microbiota could function as a biomarker for measuring disease activity in patients, especially in concert with established inflammatory biomarkers [@tedjo_CDactivity_2016; @boon_fmarkers_2015; @chang_monitoring_2015]. Higher CDAI scores were also associated with lower microbial diversity. This is consistent with other studies on the microbiota in individuals with CD compared to healthy individuals and studies looking at active disease compared to remission [@gevers_pedsCD_2014; @papa_pedsIBD_2012; @tedjo_CDactivity_2016]. However, the CDAI sub score of weekly stool frequency may have driven these differences (Supplementary Table 1), which is consistent with previous studies [@vandeputte_stoolcon_2016]. We also observed differences in the microbial community structure based on disease localization, which is consistent with a study by Naftali et al [@naftali_tissinvol_2016]. Our study also showed that corticosteroid use impacts the composition of the human fecal microbiota, which is consistent with observations in mouse models [@huang_cort_2015]. We also observed that longer disease duration is associated with a reduction in fecal microbial diversity. We hypothesize that prolonged disease duration and the associated inflammation results in the observed decrease in diversity.
+
+Further research into fecal microbiota as a source of biomarkers for predicting therapeutic response could eventually allow for the screening of patients using stool samples at diagnosis to better inform treatment decisions for a wide range of diseases. For CD specifically, using the microbiota to predict response to specific treatment modalities could result in more personalized treatment and faster achievement of remission, thereby increasing patients’ quality of life and reducing economic and health care impacts for CD patients. Our results showing that the ${\alpha}$-diversity of clinical UST responders increased over time, in contrast to non-responsive subjects, and our ability to classify subjects in remission from those with active disease following UST treatment are again consistent with other studies suggesting the microbiota could be a useful biomarker for predicting or monitoring response to treatment [@tedjo_CDactivity_2016]. These predictive biomarkers will need to be validated using independent cohorts in future studies. Additionally, the positive and negative associations between the microbiota and CD allow us to predict the types of mechanisms most likely to alter the microbiota in order to increase the likelihood of acheiveing a therapeutic response or to monitor disease severity. Prior to the initiation of therapy, patients could have their fecal microbiome analyzed. Then the microbial community data could be used to direct the modification of a patient's microbiota prior to or during treatment with the goal of improving treatment outcomes. Since it has been shown experimentally that the microbiome can alter the efficacy of treatments for a variety of diseases [@Klatt_microbicide_2017; @Haiser_cardiac_2013; @Sivan_cancer_2015; @Vetizou_cancer_2015], if fecal microbiota can be validated as biomarkers to non-invasively predict response to therapy, then patients and clinicians will be able to more rapidly ascertain effective therapies that result in increased patient quality of life.
+ 
+
+
+
+\newpage
+
+###Methods
+
+####Study Design and Sample Collection
+
+Previously, a randomized, double-blinded, placebo-controlled phase II clinical study of approximately 500 subjects assessed the safety and efficacy of UST for treating anti-TNF-${\alpha}$ refractory, moderate to severe CD subjects [@sandborn_ust_2012] (Figure 1). Institutional review board approval was acquired at each participating study center and subjects provided written informed consent [@sandborn_ust_2012]. Subject data was de-identified for our study. Participants provided a stool sample prior to the initiation of the study and were then divided into treatment groups. Additional stool samples were provided 4 weeks after induction. At 6 weeks after induction an additional stool sample was collected, subjects were scored for their response to UST based on CDAI, and then divided into groups receiving either subcutaneous injection of UST or placebo at weeks 8 and 16 as maintenance therapy. Clinical response was defined as a reduction from baseline CDAI score of 100 or more points or as remission in subjects with a baseline CDAI score between 220 to 248 points [@sandborn_ust_2012]. Remission was defined as a CDAI below the threshold of 150. Finally, at 22 weeks subjects provided an additional stool sample and were then scored using CDAI for their response to therapy. Frozen fecal samples were shipped to the University of Michigan and stored at -80°C prior to DNA extraction.
+
+####DNA extraction and 16S rRNA gene sequencing 
+
+Microbial genomic DNA was extracted using the PowerSoil-htp 96 Well Soil DNA Isolation Kit (MoBio Laboratories) and an EPMotion 5075 pipetting system [@baxter_FIT_2016; @zackular_CRC_2014]. The V4 region of the 16S rRNA gene from each sample was amplified and sequenced using the Illumina MiSeq$\text{\texttrademark}$ platform [@chang_monitoring_2015]. Sequences were curated as described previously using the mothur software package (v.1.34.4) [@schloss_mothur_2009; @Kozich_MiSeqSOP_2013]. Briefly, we curated the sequences to reduce sequencing and PCR errors [@schloss_PCRartifacts_2011], aligned the resulting sequences to the SILVA 16S rRNA sequence database [@Quast_silva_2013], and used UCHIME to remove any chimeric sequences [@edgar_uchime_2011]. Sequences were clustered into operational taxonomic units (OTU) at a 97% similarity cutoff using the average neighbor algorithm [@schloss_OTUanalysis_2011]. All sequences were classified using a naive Bayesian classifier trained against the RDP training set (version 14) and OTUs were assigned a classification based on which taxonomy had the majority consensus of sequences within a given OTU [@wang_taxonomy_2007].  
+
+Following sequence curation using the mothur software package [@schloss_mothur_2009], we obtained a median of `r median(md$shared_count)` sequences per sample (IQR = `r quantile(md$shared_count, .25, type = 2)`-`r quantile(md$shared_count, .75, type = 2)`). Parallel sequencing of a mock community had an error rate of 0.017%. To limit effects of uneven sampling, we rarefied the dataset to 3,000 sequences per sample. Samples from subjects that completed the clinical trial and had complete clinical metadata were included in our analysis. Of these samples, `r nrow(APmd_shared[APmd_shared$visit=="Screening",])` were provided prior to treatment as well as `r nrow(APmd_shared[APmd_shared$visit=="Week 4",])` provided at week 4, `r nrow(APmd_shared[APmd_shared$visit=="Week 6",])` at week 6, and `r nrow(APmd_shared[APmd_shared$visit=="Week 22",])` at week 22 after treatment, for a total of `r nrow(APmd_shared)` samples. All raw sequence files and a MIMARKS spreadsheet with de-identified clinical metadata have been uploaded into the NCBI Sequence Read Archive (SRP125127) and are available at https://www.ncbi.nlm.nih.gov/bioproject/PRJNA418765. Additonally, detailed and reproducible descriptions of how the data were processed and analyzed can be found at https://github.com/SchlossLab/Doherty_CDprediction_mBio_2017.
+
+####Gut microbiota biomarker discovery and statistical analysis 
+
+R v.3.3.2 (2016-10-31) and mothur were used to analyze the data [@R]. To assess ${\alpha}$-diversity, the inverse Simpson index was calculated for each sample in the dataset. Spearman correlation tests were performed to compare the inverse Simpson index and continuous clinical data. Wilcoxon rank sum tests were performed for pairwise comparisons and Kruskal-Wallis rank sum tests for comparisons with more than two groups [@sokal_biometrystats_1995; @magurran_measuring_2004]. To measure ${\beta}$-diversity, the distance between samples was calculated using the ${\theta}$YC metric, which takes into account the types of bacteria and their abundance to calculate the differences between the communities [@yue_thetaYC_2005]. These distance matrices were assessed for overlap between sets of communities using the non-parametric analysis of molecular variance (AMOVA) test as implemented in the adonis function from the vegan R package (v.`r as.character(packageVersion("vegan"))`) [@oksanen_vegan_2016]. Changes in ${\alpha}$-diversity over time based on week 22 response was assessed using a Friedman test on subjects who provided a sample at each time point [@friedman_1937]. The Friedman test is a function in the stats R package (v.`r as.character(packageVersion('stats'))`). Multiple comparisons following a Friedman test were performed using the friedmanmc function in the pgirmess package (v.`r as.character(packageVersion("pgirmess"))`) [@pgirmess]. Changes in ${\beta}$-diversity over time by treatment group and response were assessed using the adonis function in vegan stratified by subject. We used the relative abundance of each OTU, ${\alpha}$-diversity, age, sex, current medications, BMI, disease duration, disease location, fecal calprotectin, fecal lactoferrin, C-reactive protein, bowel stricture, and CDAI sub scores as input into our RF models constructed with the AUCRF R package (v.`r as.character(packageVersion("AUCRF"))`) [@AUCRF], to identify phylotypes or clinical variables that distinguish between various treatment and response groups, as well as to predict or determine response outcome [@breiman_rf_2001, @calle_aucrf_2011]. Optimal predictors were determined based on their mean decrease in accuracy (MDA) of the model to classify subjects. Differentially abundant OTUs and phyla were selected through comparison of clinical groups using Kruskal-Wallis and Wilcox tests, where appropriate, to identify OTUs/phyla where there was a p-value less than 0.05 following a Benjamini-Hochberg correction for multiple comparisons [@Benjamini_Hochberg_1995].  Other R packages used in our analysis included ggplot2 v.`r as.character(packageVersion("ggplot2"))` [@ggplot2], dplyr v.`r as.character(packageVersion("dplyr"))` [@dplyr], pROC v.`r as.character(packageVersion("pROC"))` [@pROC], knitr v.`r as.character(packageVersion('knitr'))` [@knitr2015], gridExtra v.`r as.character(packageVersion("gridExtra"))` [@gridExtra], devtools v.`r as.character(packageVersion("devtools"))` [@devtools], knitcitations v.`r as.character(packageVersion("knitcitations"))` [@knitcitations], scales v.`r as.character(packageVersion("scales"))` [@scales], tidyr v.`r as.character(packageVersion("tidyr"))` [@tidyr], Hmisc v.`r as.character(packageVersion("Hmisc"))` [@Hmisc], and cowplot v.`r as.character(packageVersion("cowplot"))` [@cowplot]. A reproducible version of this analysis and manuscript are available at https://github.com/SchlossLab/Doherty_CDprediction_mBio_2017.
+
+
+##Funding information.
+Janssen Research and Development provided financial and technical support for this study. 
+
+\newpage
+
+
+## Tables
+**Table 1: Summary of clinical metadata of cohort at baseline**
+
+```{r cohort.table, fig.height=5, fig.width=12, cache=F}
+
+#source('../code/Table1_baseline_metadata.R')
+```
+\includegraphics{tables/Table1_baseline_metadata.pdf}
+
+\newpage
+
+**Table 2: Summary of subjects in each treatment group by endpoint and outcome**
+
+\includegraphics{tables/table2_resposne_treatN.pdf}
+
+\newpage
+
+**Supplemental Table 1: Diversity differences based on clinical metadata of cohort at baseline**
+
+```{r table1}
+#source("../code/Supptable1.cohortdiv.R")
+
+#xtable(tbl1)
+```
+
+\includegraphics{tables/Supp.table1_cohortdiversity.png}
+
+
+\newpage
+
+## Figures
+
+**Figure 1: Experimental design as adapted from Sandborn et al 2012.** (A) Participants were divided into treatment groups receiving placebo or UST by IV for induction. At week 8, subjects were divided into groups receiving either subcutaneous injection of UST or placebo at weeks 8 and 16 as maintenance therapy, based on response at week 6. Finally, at 22 weeks subjects were scored using CDAI for their response to therapy. (B) Stool sampling, treatment, and response evaluation time line. $\uparrow$, treatment administration; IV, intravenous; PE, primary endpoint; R, randomization; RR, re-randomization (only for subjects receiving UST induction therapy); SC, subcutaneous.
+
+
+
+```{r exp design}
+```
+
+<!-- \includegraphics{figures/Figure1_expdesign.pdf} -->
+
+<!-- \newpage -->
+
+
+
+**Figure 2: Prediction of week 6 treatment outcome in subjects treated with UST, using baseline samples** Receiver operating characteristic (ROC) curves for (A) response and (C) remission using microbiota data (blue), clinical metadata (black), and a combined model (red). Top predictive OTUs for the microbiota model based on mean decrease in accuracy (MDA) for (B) response and (D) remission. Black bars represent the median relative abundance. 
+
+
+
+```{r Figure2_wk0Xwk6pred}
+#source('../code/Figure2_prediction.R')
+```
+
+<!-- \includegraphics{figures/Figure2_wk0Xwk6pred.pdf} -->
+
+<!-- \newpage -->
+
+
+**Figure 3: Differential taxa in baseline stool samples from subjects treated with UST, based on week six remission status** The baseline relative abundance of each OTU was compared between subjects in remission and those with active CD 6 weeks after induction using a Wilcoxon rank sum test followed by a Benjamini-Hochberg correction for multiple comparisons. This identified 2 OTUs with significantly different relative abundance at baseline (p < 0.05). Black bars represent the median relative abundance.
+
+```{r Figure3_basesigOTUabund.REMISSwk6}
+```
+
+<!-- \includegraphics{figures/Figure3_basesigOTUabund.REMISSwk6.pdf} -->
+
+<!-- \newpage -->
+
+**Figure 4: Change in alpha diversity over time by induction treatment and week 22 response status.** The ${\alpha}$-diversity of `r (nrow(alltp.ust)/4)` subjects induced and maintained with UST and `r (nrow(alltp.placplac)/4)` subjects induced and maintained with placebo was assessed at each time point. Friedman test were performed within each treatment and responder group. Whiskers represent the range and boxes represent the 25-75% interquartile range of the median (black bar). * indicates week 22 is significantly different from baseline (p <0.05).
+
+```{r  Figure4_alltp.adivXvisitXindtrtXrelRSPwk22.pdf}
+```
+
+<!-- \includegraphics{figures/Figure4_alltp.adivXvisitXindtrtXRESPONSEwk22.pdf} -->
+
+
+
+<!-- \newpage -->
+
+**Figure 5: Classification of week 6 response or remission status using week 6 stool samples from subjects treated with UST** (A) ROC curves for week 6 outcome based on the week 6 microbiota. (B) Predictive OTUs from week 6 stool for remission status at 6 weeks after induction, based on mean decrease in accuracy. Black bars represent the median relative abundance.
+
+```{r Figure5_wk6Xwk6}
+#source("../code/Figure5_responseREMwk6Xwk6.R")
+```
+
+<!-- \includegraphics{figures/Figure5_wk6Xwk6.pdf} -->
+
+**Supplemental Figure 1: Phyla from baseline stool samples in subjects treated with UST by week six outcome** The relative abundance of each phylum in UST treated subjects were compared based on (A) response and (B) remission status using a Wilcoxon rank sum test and to identify phyla where there was a p-value less than 0.05 following a Benjamini-Hochberg correction for multiple comparisons. No comparisons were significant. Whiskers represent the range and boxes represent the 25-75% interquartile range of the median (black bar).
+
+```{r SF1_wk6phyla.pdf}
+
+```
+
+
+<!-- \includegraphics{figures/SF1_wk6phyla.pdf} -->
+
+<!-- \newpage -->
+
+\newpage
+
+# References
